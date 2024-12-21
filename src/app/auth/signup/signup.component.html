@@ -1,0 +1,142 @@
+<div class="col-8 mx-auto shadow p-5 my-5">
+  <h1 class="text-success text-center p-2">Sign Up Page</h1>
+  <form method="post" #form="ngForm">
+    <div>
+      <input
+        type="text"
+        placeholder="First Name"
+        name="fname"
+        class="form-control my-2"
+        [(ngModel)]="firstname"
+        #fname="ngModel"
+        minlength="3"
+        required
+        [class.is-valid]="fname.valid && fname.dirty"
+        [class.is-invalid]="fname.invalid && fname.dirty"
+      />
+    </div>
+
+    <div *ngIf="fname.invalid && fname.dirty">
+      <span class="text-danger" *ngIf="fname.hasError('minlength')">
+        The minimum character length is 3
+      </span>
+      <span class="text-danger" *ngIf="fname.hasError('required')">
+        This field is required
+      </span>
+    </div>
+
+    <div>
+      <input
+        type="text"
+        placeholder="Last Name"
+        name="lname"
+        class="form-control my-2"
+        [(ngModel)]="lastname"
+        #lname="ngModel"
+        minlength="3"
+        required
+        [class.is-valid]="lname.valid && lname.dirty"
+        [class.is-invalid]="lname.invalid && lname.dirty"
+      />
+    </div>
+
+    <div *ngIf="lname.invalid && lname.dirty">
+      <span class="text-danger" *ngIf="lname.hasError('minlength')">
+        The minimum character length is 3
+      </span>
+      <span class="text-danger" *ngIf="lname.hasError('required')">
+        This field is required
+      </span>
+    </div>
+
+    <div>
+      <input
+        type="text"
+        placeholder="Email"
+        name="mail"
+        class="form-control my-2"
+        [(ngModel)]="email"
+        #mail="ngModel"
+        pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+        required
+        [class.is-valid]="mail.valid && mail.dirty"
+        [class.is-invalid]="mail.invalid && mail.dirty"
+      />
+    </div>
+
+    <div *ngIf="mail.invalid && mail.dirty">
+      <span class="text-danger" *ngIf="mail.hasError('pattern')">
+        Please enter a valid email address
+      </span>
+      <span class="text-danger" *ngIf="mail.hasError('required')">
+        This field is required
+      </span>
+    </div>
+
+    <div style="position: relative">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        placeholder="Password"
+        name="pword"
+        class="form-control my-2"
+        [(ngModel)]="password"
+        #pword="ngModel"
+        required
+        [class.is-valid]="pword.valid && (pword.dirty || pword.touched)"
+        [class.is-invalid]="pword.invalid && (pword.dirty || pword.touched)"
+      />
+      <!-- Show/Hide Password Icon -->
+      <i
+        class="toggle-icon fas"
+        [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'"
+        (click)="togglePassword()"
+        style="position: absolute; right: 40px; top: 30%; cursor: pointer"
+      >
+      </i>
+
+      <!-- Clear Icon
+      <i
+        class="clear-icon fas fa-times-circle text-danger"
+        (click)="clearPassword()"
+        *ngIf="password.length > 0"
+        style="position: absolute; right: 10px; top: 40%; cursor: pointer"
+      >
+      </i> -->
+    </div>
+
+    <div *ngIf="pword.invalid && (pword.dirty || pword.touched)">
+      <span class="text-danger" *ngIf="pword.hasError('required')">
+        Password is required
+      </span>
+    </div>
+
+    <label for="jobrole">Choose a role:</label>
+    <select
+      name="jobrole"
+      id="jobrole"
+      [(ngModel)]="role"
+      #jobrole="ngModel"
+      required
+      [class.is-valid]="jobrole.valid && jobrole.touched"
+      [class.is-invalid]="jobrole.invalid && jobrole.touched"
+    >
+      <option value="" disabled selected>Select a Role</option>
+      <option value="job_seeker">Job Seeker</option>
+      <option value="employer">Employer</option>
+    </select>
+
+    <div *ngIf="jobrole.invalid && jobrole.touched">
+      <span class="text-danger" *ngIf="jobrole.hasError('required')">
+        This field is required
+      </span>
+    </div>
+
+    <input
+      type="submit"
+      name="submit"
+      (click)="signup(form)"
+      [disabled]="form.invalid"
+      class="btn btn-success w-100"
+    />
+  </form>
+</div>

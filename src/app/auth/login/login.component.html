@@ -1,0 +1,49 @@
+<div class="col-8 mx-auto shadow p-5 my-5">
+    <h1 class="text-success text-center p-2">Log In</h1>
+      <div>
+  
+      <div>
+        <input
+          type="text"
+          placeholder="Email"
+          name="mail"
+          class="form-control my-2"
+          pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+          required
+        />
+      </div>
+  
+  
+      <div style="position: relative">
+        <input
+      
+          placeholder="Password"
+          name="pword"
+          class="form-control my-2"
+    
+          required
+
+        />
+        <!-- Show/Hide Password Icon -->
+        <i
+          class="toggle-icon fas"
+
+          style="position: absolute; right: 40px; top: 30%; cursor: pointer"
+        >
+        </i>
+  
+        <!-- Clear Icon
+        <i
+          class="clear-icon fas fa-times-circle text-danger"
+          (click)="clearPassword()"
+          *ngIf="password.length > 0"
+          style="position: absolute; right: 10px; top: 40%; cursor: pointer"
+        >
+        </i> -->
+      </div>
+
+
+      <button type="submit" class="btn btn-success w-100">Login</button>
+    
+  </div>
+  
