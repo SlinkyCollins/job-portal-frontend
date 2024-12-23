@@ -85,7 +85,6 @@
         [class.is-valid]="pword.valid && (pword.dirty || pword.touched)"
         [class.is-invalid]="pword.invalid && (pword.dirty || pword.touched)"
       />
-      <!-- Show/Hide Password Icon -->
       <i
         class="toggle-icon fas"
         [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'"
@@ -93,22 +92,29 @@
         style="position: absolute; right: 40px; top: 30%; cursor: pointer"
       >
       </i>
-
-      <!-- Clear Icon
-      <i
-        class="clear-icon fas fa-times-circle text-danger"
-        (click)="clearPassword()"
-        *ngIf="password.length > 0"
-        style="position: absolute; right: 10px; top: 40%; cursor: pointer"
-      >
-      </i> -->
     </div>
-
+    
     <div *ngIf="pword.invalid && (pword.dirty || pword.touched)">
       <span class="text-danger" *ngIf="pword.hasError('required')">
         Password is required
       </span>
     </div>
+
+    <div *ngIf="password && password.length > 0">
+      <p class="text-danger" *ngIf="password && password.length < 5">
+        Password is weak
+      </p>
+      
+      <p class="text-warning" *ngIf="password && password.length >= 5 && password.length < 8">
+        Password is medium
+      </p>
+    
+      <p class="text-success" *ngIf="password && password.length >= 8">
+        Password is strong
+      </p>
+    </div>
+    
+    
 
     <label for="jobrole">Choose a role:</label>
     <select
@@ -138,5 +144,7 @@
       [disabled]="form.invalid"
       class="btn btn-success w-100"
     />
+
+    <p class="text-center my-1">Already have an account? <a routerLink="/login" style="cursor: pointer;">Login</a></p>
   </form>
 </div>

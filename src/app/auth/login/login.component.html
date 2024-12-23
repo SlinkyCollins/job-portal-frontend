@@ -1,49 +1,70 @@
 <div class="col-8 mx-auto shadow p-5 my-5">
-    <h1 class="text-success text-center p-2">Log In</h1>
+  <h1 class="text-success text-center p-2">Log In</h1>
+  <form #form="ngForm">
+    <div>
+      <input
+        type="text"
+        placeholder="Email"
+        name="mail"
+        [(ngModel)]="email"
+        #mail="ngModel"
+        class="form-control my-2"
+        required
+      />
+    </div>
+
+    <div style="position: relative">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        placeholder="Password"
+        name="pword"
+        [(ngModel)]="password"
+        #pword="ngModel"
+        class="form-control my-2"
+        required
+      />
+      <i
+        [title]="showPassword ? 'Hide Password' : 'Show Password'"
+        class="toggle-icon fas"
+        [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'"
+        (click)="togglePassword()"
+        style="position: absolute; right: 40px; top: 30%; cursor: pointer"
+      >
+      </i>
+      <i
+        title="Clear Password"
+        class="clear-icon fas fa-times-circle"
+        (click)="clearPassword()"
+        *ngIf="password && password.length > 0"
+        style="position: absolute; right: 10px; top: 30%; cursor: pointer"
+      >
+      </i>
+    </div>
+
+    <div>
       <div>
-  
+        <input type="checkbox">
+        <span>Remember Me</span>
+      </div>
+
       <div>
-        <input
-          type="text"
-          placeholder="Email"
-          name="mail"
-          class="form-control my-2"
-          pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
-          required
-        />
+        <a>Forgot Password</a>
       </div>
-  
-  
-      <div style="position: relative">
-        <input
-      
-          placeholder="Password"
-          name="pword"
-          class="form-control my-2"
-    
-          required
+    </div>
 
-        />
-        <!-- Show/Hide Password Icon -->
-        <i
-          class="toggle-icon fas"
+    <button
+      type="submit"
+      class="btn btn-success w-100"
+      [disabled]="form.invalid"
+      style="cursor: pointer"
+      (click)="login()"
+    >
+      Login
+    </button>
 
-          style="position: absolute; right: 40px; top: 30%; cursor: pointer"
-        >
-        </i>
-  
-        <!-- Clear Icon
-        <i
-          class="clear-icon fas fa-times-circle text-danger"
-          (click)="clearPassword()"
-          *ngIf="password.length > 0"
-          style="position: absolute; right: 10px; top: 40%; cursor: pointer"
-        >
-        </i> -->
-      </div>
-
-
-      <button type="submit" class="btn btn-success w-100">Login</button>
-    
-  </div>
-  
+    <p class="text-center my-1">
+      Don&apos;t have an account?
+      <a routerLink="/signup" style="cursor: pointer">Sign Up</a>
+    </p>
+  </form>
+</div>
