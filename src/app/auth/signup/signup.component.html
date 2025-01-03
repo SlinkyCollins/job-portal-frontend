@@ -80,12 +80,14 @@
         name="pword"
         class="form-control my-2"
         [(ngModel)]="password"
+        minlength="6"
         #pword="ngModel"
         required
         [class.is-valid]="pword.valid && (pword.dirty || pword.touched)"
         [class.is-invalid]="pword.invalid && (pword.dirty || pword.touched)"
       />
       <i
+        [title]="showPassword ? 'Hide Password' : 'Show Password'"
         class="toggle-icon fas"
         [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'"
         (click)="togglePassword()"
@@ -97,6 +99,9 @@
     <div *ngIf="pword.invalid && (pword.dirty || pword.touched)">
       <span class="text-danger" *ngIf="pword.hasError('required')">
         Password is required
+      </span>
+      <span class="text-danger" *ngIf="pword.hasError('minlength')">
+        Password must be at least six characters
       </span>
     </div>
 
@@ -137,13 +142,17 @@
       </span>
     </div>
 
-    <input
+    <div style="position: relative;">
+      <input
       type="submit"
       name="submit"
       (click)="signup(form)"
-      [disabled]="form.invalid"
+      [disabled]="form.invalid || loading"
+      [value]="loading ? 'Signing Up...' : 'Sign Up'"
       class="btn btn-success w-100"
     />
+    <div *ngIf="loading" class="spinner-border spinner-border-sm text-light" style="position: absolute; left: 8.5rem; top: 50%; transform: translateY(-50%);"></div>
+    </div>
 
     <p class="text-center my-1">Already have an account? <a routerLink="/login" style="cursor: pointer;">Login</a></p>
   </form>

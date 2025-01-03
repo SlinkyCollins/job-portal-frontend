@@ -14,50 +14,49 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SignupComponent {
   constructor
-  (
-    public router:Router,
-    public http:HttpClient,
-    public toastr: ToastrService
-  ){}
+    (
+      public router: Router,
+      public http: HttpClient,
+      public toastr: ToastrService
+    ) { }
 
-  public firstname:string = '';
-  public lastname:string = '';
-  public email:string = '';
-  public password:string = '';
-  public role:string = '';
-  public showPassword:boolean = false;
-  public msg:string = '';
-
-  // ngOnInit() {
-  //   this.toastr.success('Toastr is working!');
-  // }
+  public firstname: string = '';
+  public lastname: string = '';
+  public email: string = '';
+  public password: string = '';
+  public role: string = '';
+  public showPassword: boolean = false;
+  public loading:boolean = false;
 
 
-
-  signup(form: NgForm){
-    let userObj = {
-      fname: this.firstname,
-      lname: this.lastname,
-      mail: this.email,
-      pword: this.password,
-      role: this.role
-    }
-    this.http.post('http://localhost/JobPortal/signup.php', userObj).subscribe((data:any)=>{
-      console.log(data);
-      this.msg = data.msg;
-      if (data.status == '403') {
-        this.toastr.info('Email already exists');  
-      } else if (data.status == true) {
-        this.toastr.success('Signed up sucessfully');  
-        this.router.navigate(['/login']);
+  signup(form: NgForm) {
+      this.loading = true;
+      let userObj = {
+        fname: this.firstname,
+        lname: this.lastname,
+        mail: this.email,
+        pword: this.password,
+        role: this.role
       }
-      form.resetForm();
-    }, (error:any)=>{
-      console.log(error);
-      console.log('Error Response:', error.error);
-      this.toastr.error('Signup failed. Please try again.');  // Display error toast
-    })
-    
+      this.http.post('http://localhost/JobPortal/signup.php', userObj).subscribe((response: any) => {
+        console.log(response);
+        this.loading = false;
+        if (response.status) {
+          this.toastr.success('Signed up successfully');
+          this.router.navigate(['/login']);
+        }
+        form.resetForm();
+      }, (error: any) => {
+        this.loading = false;
+        if (error.status === 403) {
+          this.toastr.info('Email already exists');
+        } else if (error.status === 500) {
+          this.toastr.error('Server error. Please try again.');
+        } else {
+          this.toastr.error('Signup failed. Please try again.');
+        }
+        console.error('Signup Error:', error);
+      })
   }
 
   togglePassword() {

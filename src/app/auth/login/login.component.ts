@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,18 +15,19 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent {
   constructor
-  (
-    public router:Router,
-    public http:HttpClient,
-    public toastr: ToastrService
-  ){}
+    (
+      public router: Router,
+      public http: HttpClient,
+      public toastr: ToastrService,
+      public authService: AuthService
+    ) { }
 
-  public password:string = '';
-  public email:string = '';
-  public showPassword:boolean = false;
-  public msg:string = '';
+  public password: string = '';
+  public email: string = '';
+  public showPassword: boolean = false;
+  public loading: boolean = false;
 
-clearPassword() {
+  clearPassword() {
     this.password = '';
   }
 
@@ -34,24 +36,40 @@ clearPassword() {
   }
 
   login() {
-    let userDetails = {
+    this.loading = true;
+    let credentials = {
       mail: this.email,
       pword: this.password
     }
-    this.http.post("http://localhost/JobPortal/login.php", userDetails).subscribe((data:any)=>{
-      console.log(data);
-      this.msg = data.msg;
-      if (data.status == true) {
-        this.toastr.success('Login successful');  
-        // this.router.navigate(['/']);
-      } else if (data.status == '401') {
-        this.toastr.error('Incorrect password');  
-      } else if (data.status = '404') {
-        this.toastr.error('User not found, please try signing up');  
+
+    this.http.post('http://localhost/JobPortal/login.php', credentials, {
+      withCredentials: true  // Key to send cookies (PHP session)
+    }).subscribe((response: any) => {
+      this.loading = false;
+      console.log(response);
+      if (response.status) {
+        localStorage.setItem('userId', response.user.id);
+        this.toastr.success('Login successful');
+        const role = response.user.role;
+        const routes: { [key: string]: string } = {
+          admin: '/admin/dashboard',
+          employer: '/employer/dashboard',
+          job_seeker: '/jobseeker/dashboard'
+        };
+        this.router.navigate([routes[role] || '/']);
       }
-    }, (error:any)=>{
-      console.log(error);
+    }, (error: any) => {
+      this.loading = false;
+      if (error.status === 401) {
+        this.toastr.error('Incorrect email or password');
+      } else if (error.status === 404) {
+        this.toastr.error('User not found, please try signing up');
+      } else {
+        console.log(error.msg);
+        this.toastr.error('Login failed. Please try again.');
+      }
+      console.error(error);
       console.log('Error Response:', error.error);
-    })
+    });
   }
 }
