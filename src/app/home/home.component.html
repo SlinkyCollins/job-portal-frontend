@@ -1,40 +1,467 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/signup">Sign Up</a>
-          </li>
+<section class="hero-section">
+  <nav class="navbar navbar-expand-lg bg-transparent sticky-top w-100">
+    <div class="container-fluid p-2">
+      <a class="navbar-brand fw-bold text-success ms-4" href="#">JobNet</a>
 
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/login">Login</a>
+      <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> -->
+
+      <!-- Custom Hamburger Icon -->
+      <div
+        class="hamburger me-2"
+        (click)="toggleMenu()"
+        [ngClass]="{ open: isMenuOpen }"
+      >
+        <span class="text-white"></span>
+        <span class="text-white"></span>
+        <span class="text-white"></span>
+      </div>
+
+      <div class="navmenu" [ngClass]="{ show: isMenuOpen }" id="navbarNav">
+        <div>
+          <h2>JobNet</h2>
+        </div>
+        <ul class="navbar-nav mx-auto fs-5">
+          <li class="nav-item me-4">
+            <a
+              class="nav-link text-black fw-medium"
+              routerLink="/"
+              routerLinkActive="active"
+              >Home</a
+            >
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          <li class="nav-item me-4">
+            <a
+              class="nav-link text-black fw-medium"
+              routerLink="/jobs"
+              routerLinkActive="active"
+              >Jobs</a
+            >
+          </li>
+          <li class="nav-item me-4">
+            <a
+              class="nav-link text-black fw-medium"
+              routerLink="/explore"
+              routerLinkActive="active"
+              >Explore</a
+            >
+          </li>
+          <li class="nav-item me-4">
+            <a
+              class="nav-link text-black fw-medium"
+              routerLink="/blog"
+              routerLinkActive="active"
+              >Blog</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <a
+              class="nav-link text-black fw-medium"
+              routerLink="/contact"
+              routerLinkActive="active"
+              >Contact</a
+            >
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav me-3">
+          <li class="nav-item d-none-sm-6">
+            <a class="btn me-2 fw-semibold fs-5" routerLink="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="btn btn-success rounded-pill fw-semibold fs-5 px-4 py-2"
+              routerLink="/signup"
+              >Register</a
+            >
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
+
+  <div class="hero-text">
+    <div>
+      <h1>Find your job without any hassle.</h1>
+      <p>Jobs & Job search. Find jobs in global. Executive jobs & work.</p>
+    </div>
+
+    <div class="heroSearch d-flex flex-column flex-lg-row">
+      <div
+        class="flex-fill customSelectWrapper"
+        [class.open]="isSelectOpen1"
+        (click)="toggleSelectOpen1()"
+      >
+        <label for="job_category" class="form-label">Job Categories</label>
+        <select
+          id="job_category"
+          class="formSelect"
+          (blur)="isSelectOpen1 = false"
+        >
+          <option value="">Developer</option>
+          <option value="">Coder</option>
+          <option value="">Finance</option>
+          <option value="">Accounting</option>
+          <option value="">Design</option>
+          <option value="">Artist</option>
+          <option value="">Application</option>
+          <option value="">Marketing</option>
+          <option value="">Business</option>
+          <option value="">Web</option>
+          <option value="">Data</option>
+          <option value="">Scientist</option>
+          <option value="">Designer</option>
+          <option value="">UX/UI</option>
+          <option value="">Manager</option>
+          <option value="">Engineer</option>
+          <option value="">Writer</option>
+          <option value="">Content</option>
+          <option value="">Graphic</option>
+          <option value="">Management</option>
+          <option value="">Product</option>
+        </select>
+        <span class="customArrow"></span>
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M831.872 340.864L512 652.672L192.128 340.864a30.59 30.59 0 0 0-42.752 0a29.12 29.12 0 0 0 0 41.6L489.664 714.24a32 32 0 0 0 44.672 0l340.288-331.712a29.12 29.12 0 0 0 0-41.728a30.59 30.59 0 0 0-42.752 0z"/></svg> -->
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="m488.832 344.32l-339.84 356.672a32 32 0 0 0 0 44.16l.384.384a29.44 29.44 0 0 0 42.688 0l320-335.872l319.872 335.872a29.44 29.44 0 0 0 42.688 0l.384-.384a32 32 0 0 0 0-44.16L535.168 344.32a32 32 0 0 0-46.336 0"/></svg> -->
+      </div>
+      <hr />
+      <div
+        class="flex-fill customSelectWrapper"
+        [class.open]="isSelectOpen2"
+        (click)="toggleSelectOpen2()"
+      >
+        <label for="location" class="form-label">Location</label>
+        <select id="location" class="formSelect" (blur)="isSelectOpen2 = false">
+          <option value="">Spain, Barcelona</option>
+          <option value="">USA, New York</option>
+          <option value="">USA, Alaska</option>
+          <option value="">USA, California</option>
+          <option value="">UK, London</option>
+          <option value="">USA, Mountain View</option>
+          <option value="">Germany, Berlin</option>
+          <option value="">USA, Cupertino</option>
+          <option value="">USA, Menlo Park</option>
+          <option value="">USA, Redmond</option>
+          <option value="">USA, San Jose</option>
+          <option value="">USA, Palo Alto</option>
+        </select>
+        <span class="customArrow"></span>
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M831.872 340.864L512 652.672L192.128 340.864a30.59 30.59 0 0 0-42.752 0a29.12 29.12 0 0 0 0 41.6L489.664 714.24a32 32 0 0 0 44.672 0l340.288-331.712a29.12 29.12 0 0 0 0-41.728a30.59 30.59 0 0 0-42.752 0z"/></svg> -->
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="m488.832 344.32l-339.84 356.672a32 32 0 0 0 0 44.16l.384.384a29.44 29.44 0 0 0 42.688 0l320-335.872l319.872 335.872a29.44 29.44 0 0 0 42.688 0l.384-.384a32 32 0 0 0 0-44.16L535.168 344.32a32 32 0 0 0-46.336 0"/></svg> -->
+      </div>
+      <hr />
+      <div class="flex-fill">
+        <label for="searchBox" class="form-label">Keywords or Title</label>
+        <input type="text" placeholder="Design, branding" id="searchBox" />
+      </div>
+      <hr />
+      <div class="d-flex align-items-end">
+        <button class="searchBtn">SEARCH</button>
+      </div>
+    </div>
+
+    <div class="uploadCV mt-4">
+      <label for="cvUpload" class="btn bg-white px-2 py-2 rounded-3 fw-medium">
+        Upload your CV
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M11.5 17.77h1v-4.695l2.1 2.1l.708-.713L12 11.154l-3.308 3.308l.714.707l2.094-2.094zM6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3H14.5L19 7.5v11.885q0 .69-.462 1.153T17.384 21zM14 8V4H6.616q-.231 0-.424.192T6 4.615v14.77q0 .23.192.423t.423.192h10.77q.23 0 .423-.192t.192-.424V8zM6 4v4zv16z"
+          />
+        </svg>
+      </label>
+      <input
+        type="file"
+        id="cvUpload"
+        hidden
+        (change)="onFileSelected($event)"
+      />
+      <span id="fileName" class="ms-3 text-muted d-none">No file chosen</span>
+    </div>
+  </div>
+</section>
+
+<section class="body">
+  <h1 class="category-header">Most Demanding Categories.</h1>
+
+  <div class="container my-5">
+    <div class="row custom-gap justify-content-center">
+      <div
+        class="col-12 col-sm-6 col-md-4 col-lg-2"
+        *ngFor="let category of categories"
+      >
+        <div class="category-card text-center">
+          <div class="icon">
+            <svg
+              *ngIf="category.icon === 'edit'"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M469.334 426.667v42.667H42.667v-42.667zM320 42.667l106.667 106.667L192 384H85.334V277.334zM249.747 173.25L128 294.998v46.336h46.336l121.747-121.748zM320 102.998l-40.083 40.082l46.336 46.336l40.083-40.082z"
+              />
+            </svg>
+
+            <svg
+              *ngIf="category.icon === 'code'"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g fill="none">
+                <path d="M0 0h24v24H0z" />
+                <path
+                  fill="currentColor"
+                  d="M14.62 2.662a1.5 1.5 0 0 1 1.04 1.85l-4.431 15.787a1.5 1.5 0 0 1-2.889-.81L12.771 3.7a1.5 1.5 0 0 1 1.85-1.039ZM7.56 6.697a1.5 1.5 0 0 1 0 2.12L4.38 12l3.182 3.182a1.5 1.5 0 1 1-2.122 2.121L1.197 13.06a1.5 1.5 0 0 1 0-2.12l4.242-4.243a1.5 1.5 0 0 1 2.122 0Zm8.88 2.12a1.5 1.5 0 1 1 2.12-2.12l4.243 4.242a1.5 1.5 0 0 1 0 2.121l-4.242 4.243a1.5 1.5 0 1 1-2.122-2.121L19.621 12z"
+                />
+              </g>
+            </svg>
+
+            <svg
+              *ngIf="category.icon === 'phone'"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-miterlimit="10"
+                stroke-width="32"
+                d="M451 374c-15.88-16-54.34-39.35-73-48.76c-24.3-12.24-26.3-13.24-45.4.95c-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39s-47.34-61.62-50.53-76.48s5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3c-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160 160 0 0 0 83 65.37C67 76 58.12 84.83 51.91 98.1s-9 44.38 23.07 102.64s54.57 88.05 101.14 134.49S258.5 406.64 310.85 436c64.76 36.27 89.6 29.2 102.91 23s22.18-15 32.83-31a159 159 0 0 0 13.8-25.8C465 391.17 468 391.17 451 374Z"
+              />
+            </svg>
+
+            <svg
+              *ngIf="category.icon === 'bag'"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g fill="none" stroke="currentColor" stroke-width="1">
+                <path
+                  stroke-linecap="round"
+                  d="M8 12V8a4 4 0 0 1 4-4v0a4 4 0 0 1 4 4v4"
+                />
+                <path
+                  d="M3.694 12.668c.145-1.741.218-2.611.792-3.14S5.934 9 7.681 9h8.639c1.746 0 2.62 0 3.194.528s.647 1.399.792 3.14l.514 6.166c.084 1.013.126 1.52-.17 1.843c-.298.323-.806.323-1.824.323H5.174c-1.017 0-1.526 0-1.823-.323s-.255-.83-.17-1.843z"
+                />
+              </g>
+            </svg>
+
+            <svg
+              *ngIf="category.icon === 'filter'"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M22 18.605a.75.75 0 0 1-.75.75h-5.1a2.93 2.93 0 0 1-5.66 0H2.75a.75.75 0 1 1 0-1.5h7.74a2.93 2.93 0 0 1 5.66 0h5.1a.75.75 0 0 1 .75.75m0-13.21a.75.75 0 0 1-.75.75H18.8a2.93 2.93 0 0 1-5.66 0H2.75a.75.75 0 1 1 0-1.5h10.39a2.93 2.93 0 0 1 5.66 0h2.45a.74.74 0 0 1 .75.75m0 6.6a.74.74 0 0 1-.75.75H9.55a2.93 2.93 0 0 1-5.66 0H2.75a.75.75 0 1 1 0-1.5h1.14a2.93 2.93 0 0 1 5.66 0h11.7a.75.75 0 0 1 .75.75"
+              />
+            </svg>
+
+            <svg
+              *ngIf="category.icon === 'bank'"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M6.5 10h-2v7h2zm6 0h-2v7h2zm8.5 9H2v2h19zm-2.5-9h-2v7h2zm-7-6.74L16.71 6H6.29zm0-2.26L2 6v2h19V6z"
+              />
+            </svg>
+          </div>
+
+          <div class="title">{{ category.header }}</div>
+          <div class="total-job">{{ category.text }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="all-fields text-center mt-40 d-lg-none">
+    <a class="btn" href="">Explore all fields > </a>
+  </div>
+
+  <div class="banner-container">
+    <div class="fancy-banner d-flex flex-column flex-lg-row">
+      <div class="fancy-banner-text col-lg-6">
+        <h2>Get the job of your dreams quickly.</h2>
+        <p>
+          Commonly used in the graphic, print publishing industries for
+          previewing visual mockups. limited social discrimination.
+        </p>
+        <button>
+          Find your job.
+          <span class="fw-light text-decoration-underline">Explore All</span
+          ><span class="ms-2">></span>
+        </button>
+      </div>
+
+      <div class="fancy-banner-img">
+        <img src="/assets/img-1.jpg" />
+      </div>
+    </div>
+
+    <div
+      class="achievements-wrapper d-flex flex-column flex-lg-row gap-5 text-center"
+    >
+      <div class="achievement">
+        <h1>7 Million</h1>
+        <p>Completed Jobs</p>
+      </div>
+
+      <div class="achievement">
+        <h1>30k+</h1>
+        <p>Worldwide Client</p>
+      </div>
+
+      <div class="achievement">
+        <h1>13billion</h1>
+        <p>Dollar Payout</p>
+      </div>
+    </div>
+
+    <hr class="hr-line" />
+  </div>
+
+  <div class="new-jobs">
+    <h1 class="header">New Job Listing</h1>
+
+    <div class="view-jobs-wrapper">
+      <app-job-card *ngFor="let job of jobs" [job]="job"></app-job-card>
+    </div>
+
+    <button>Explore all jobs ></button>
+
+    <div>
+      <p>Do you want to post a job for your company? We can help.</p>
+      <button>Click Here</button>
+    </div>
+  </div>
+
+  <div>
+    <h1>Trusted by leading startups</h1>
+
+    <div>
+      <div>
+        <img src="" alt="" />
+        <h1>Shipbob</h1>
+      </div>
+      <p>"Seattle"</p>
+
+      <p><span>Mark Joge,</span>Marketing Chief</p>
+
+      <hr />
+
+      <div>
+        <p>4.8</p>
+        <p>Awesome</p>
+        <img src="" alt="" />
+      </div>
+    </div>
+
+    <div>
+      <button></button>
+      <button></button>
+    </div>
+  </div>
+
+  <div>
+    <p>Looking for an expert?</p>
+
+    <h1>Find top talents from Jobi.</h1>
+
+    <div class="accordion"></div>
+
+    <button>Find Talents</button>
+
+    <img src="" alt="" />
+  </div>
+
+  <div>
+    <h1>Questions and Answers</h1>
+
+    <div class="accordion"></div>
+
+    <button>Don't find the answer? We can help. Click here</button>
+  </div>
+
+  <div>
+    <hr />
+    <h1>Most complete job portal.</h1>
+    <p>Signup and start find your job and talents.</p>
+
+    <div>
+      <button>Looking for job?</button>
+      <button>Post a job</button>
+    </div>
+    <hr />
+  </div>
+</section>
+
+<section class="footer">
+  <div>
+    <h1>JobNet</h1>
+    <p>jobnetsupport&#64;new.com</p>
+  </div>
+
+  <div>
+    <div>
+      <h1>Services</h1>
+      <div>
+        <p>Browse Jobs</p>
+        <p>Companies</p>
+        <p>Candidates</p>
+        <p>Pricing</p>
+      </div>
+    </div>
+
+    <div>
+      <h1>Company</h1>
+      <div>
+        <p>About Us</p>
+        <p>Blogs</p>
+        <p>FAQ's</p>
+        <p>Contact</p>
+      </div>
+    </div>
+
+    <div>
+      <h1>Support</h1>
+      <div>
+        <p>Terms of use</p>
+        <p>Terms and Conditions</p>
+        <p>Privacy</p>
+        <p>Cookie Policy</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <img src="" alt="" />
+      <img src="" alt="" />
+      <img src="" alt="" />
+      <img src="" alt="" />
+    </div>
+
+    <div>
+      <p>Privacy & Terms.</p>
+      <p>Contact Us</p>
+    </div>
+
+    <div>
+      <p>Copyright &#64;2023 JobNet inc.</p>
+    </div>
+  </div>
+</section>

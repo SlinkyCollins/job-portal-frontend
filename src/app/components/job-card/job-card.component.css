@@ -1,0 +1,88 @@
+.job-card {
+  padding: 1.5rem;
+  background-color: #fff;
+  font-weight: 600;
+  font-size: 2rem;
+  border-bottom-left-radius: 1px;
+  border-bottom-right-radius: 1px;
+  border-bottom: 1px solid #ccc;
+}
+
+.job-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.job-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.job-type {
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+}
+
+.job-tags {
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+  color: #000;
+  font-weight: 600;
+}
+
+.job-meta {
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+  color: #000;
+}
+
+.job-location {
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
+  color: #4e4e50;
+}
+
+.apply-btn {
+  background-color: #00be57;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-transform: uppercase;
+}
+
+.apply-btn:hover {
+  background-color: #009c46;
+}
+
+.savejob-icon-wrapper {
+  border: 1px solid #c4c8c6;
+  border-radius: 50%;
+  object-fit: cover;
+  padding: 0.3rem;
+  cursor: pointer;
+  color: #c4c8c6;
+  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.savejob-icon-wrapper svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  text-align: center;
+  width: 17px;
+  height: 17px;
+}
+
+.savejob-icon-wrapper:hover {
+  background-color: #00be57;
+  color: #e7f6ef;
+}

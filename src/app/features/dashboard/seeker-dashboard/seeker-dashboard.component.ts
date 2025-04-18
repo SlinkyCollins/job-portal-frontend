@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
+
 
 @Component({
   selector: 'app-seeker-dashboard',
@@ -22,7 +23,7 @@ export class SeekerDashboardComponent {
   public user: any = '';
 
   ngOnInit() {
-    this.authService.getUserSession().subscribe(
+    this.authService.getSeekerData().subscribe(
       (response: any) => {
         console.log(response);
         if (response.status == true) {
@@ -69,5 +70,6 @@ export class SeekerDashboardComponent {
 
   logOut() {
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

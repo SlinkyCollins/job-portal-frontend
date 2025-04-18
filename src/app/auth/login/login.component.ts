@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/services/auth.service';
+import { ApiServiceService } from '../../core/services/api-service.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent {
       public router: Router,
       public http: HttpClient,
       public toastr: ToastrService,
-      public authService: AuthService
+      public authService: AuthService,
+      public apiService: ApiServiceService
     ) { }
 
   public password: string = '';

@@ -42,7 +42,19 @@ export class AuthService {
   }
 
   getUserSession() {
+    return this.http.get('http://localhost/JobPortal/dashboard/user_session.php', {
+      withCredentials: true
+    });
+  }
+  
+  getSeekerData() {
     return this.http.get('http://localhost/JobPortal/dashboard/seeker_dashboard.php', {
+      withCredentials: true
+    });
+  }
+  
+  getEmployerData() {
+    return this.http.get('http://localhost/JobPortal/dashboard/employer_dashboard.php', {
       withCredentials: true
     });
   }
