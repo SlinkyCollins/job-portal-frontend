@@ -1,23 +1,24 @@
-@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap");
+
 
 .hero-section {
   background: url("/assets/hero.jpeg") no-repeat center center/cover;
-  height: 130vh; /* Adjusted height */
+  max-width: 100%;
+  min-height: 100vh; /* Let it grow if needed */
   display: flex;
-  align-items: center; /* Centers content vertically */
-  justify-content: center; /* Centers content horizontally */
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  position: relative; /* Makes sure child elements are positioned relative to this */
+  padding: 8.5rem 1rem 6rem; /* Breathing room on small screens */
+  box-sizing: border-box;
 }
 
 .hero-text {
-  color: #000; /* Ensure text is readable */
-  position: absolute; /* Stays within hero-section */
-  top: 50%; /* Move text halfway down */
-  left: 50%;
-  transform: translate(-50%, -50%); /* Perfect center alignment */
+  color: #000;
+  max-width: 700px;
   width: 100%;
 }
+
 
 .hero-text h1 {
   font-family: "EB Garamond", serif;
@@ -316,7 +317,7 @@
 }
 
 .achievements-wrapper {
-  padding: 3rem 1.2rem; 
+  padding: 5rem 1.2rem; 
 }
 
 .achievements-wrapper .achievement {
@@ -350,7 +351,13 @@
 .view-jobs-wrapper {
   border: 1px solid #ccc;
   border-radius: 10px;
+  overflow: hidden;
 }
+
+.view-jobs-wrapper app-job-card:last-child .job-card {
+  border-bottom: none;
+}
+
 
 .custom-gap {
   --bs-gutter-x: 3rem;
@@ -408,6 +415,7 @@
   transform: translateY(-10px) rotate(-45deg);
 }
 
+
 /* Custom responsive menu */
 @media (max-width: 992px) {
   .navbar-collapse {
@@ -420,22 +428,21 @@
     transition: all 0.3s ease-in-out;
     transform: translateY(-100%);
   }
-
-  /* Show menu when class is added */
+  
   .navmenu {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 80%; /* Make sure it has width */
-    overflow-x: hidden;
-    transform: translateX(-100%); /* Start off-screen */
-    transition: transform 0.5s ease-in-out; /* Smooth sliding effect */
-    background-color: #fff;
-    padding: 1rem;
+    width: 80vw;
+    min-height: 100vh;
+    background: white;
+    z-index: 99;
   }
-
   .navmenu.show {
-    transform: translateX(0); /* Slide in */
+    transform: translateX(0);
   }
 }
+
+

@@ -99,27 +99,27 @@
           class="formSelect"
           (blur)="isSelectOpen1 = false"
         >
-          <option value="">Developer</option>
-          <option value="">Coder</option>
-          <option value="">Finance</option>
-          <option value="">Accounting</option>
-          <option value="">Design</option>
-          <option value="">Artist</option>
-          <option value="">Application</option>
-          <option value="">Marketing</option>
-          <option value="">Business</option>
-          <option value="">Web</option>
-          <option value="">Data</option>
-          <option value="">Scientist</option>
-          <option value="">Designer</option>
-          <option value="">UX/UI</option>
-          <option value="">Manager</option>
-          <option value="">Engineer</option>
-          <option value="">Writer</option>
-          <option value="">Content</option>
-          <option value="">Graphic</option>
-          <option value="">Management</option>
-          <option value="">Product</option>
+          <option value="developer">Developer</option>
+          <option value="coder">Coder</option>
+          <option value="finance">Finance</option>
+          <option value="accounting">Accounting</option>
+          <option value="design">Design</option>
+          <option value="artist">Artist</option>
+          <option value="application">Application</option>
+          <option value="marketing">Marketing</option>
+          <option value="business">Business</option>
+          <option value="web">Web</option>
+          <option value="data">Data</option>
+          <option value="scientist">Scientist</option>
+          <option value="designer">Designer</option>
+          <option value="uxui">UX/UI</option>
+          <option value="manager">Manager</option>
+          <option value="engineer">Engineer</option>
+          <option value="writer">Writer</option>
+          <option value="content">Content</option>
+          <option value="graphic">Graphic</option>
+          <option value="management">Management</option>
+          <option value="product">Product</option>
         </select>
         <span class="customArrow"></span>
 
@@ -338,7 +338,7 @@
     <h1 class="header">New Job Listing</h1>
 
     <div class="view-jobs-wrapper">
-      <app-job-card *ngFor="let job of jobs" [job]="job"></app-job-card>
+        <app-job-card *ngFor="let job of jobs" [job]="job"></app-job-card>
     </div>
 
     <button>Explore all jobs ></button>

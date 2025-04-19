@@ -3,10 +3,9 @@
   background-color: #fff;
   font-weight: 600;
   font-size: 2rem;
-  border-bottom-left-radius: 1px;
-  border-bottom-right-radius: 1px;
   border-bottom: 1px solid #ccc;
 }
+
 
 .job-logo {
   width: 50px;
