@@ -2,7 +2,7 @@
 
 
 .hero-section {
-  background: url("/assets/hero.jpeg") no-repeat center center/cover;
+  background: url("/assets/hero.jpg") no-repeat center center/cover;
   max-width: 100%;
   min-height: 100vh; /* Let it grow if needed */
   display: flex;
@@ -249,7 +249,7 @@
   text-align: center;
 }
 
-.all-fields .btn {
+.explore-all .btn {
   font-family: "Gordita-Regular", cursive;
   font-size: 1rem;
   font-weight: 700;
@@ -358,6 +358,173 @@
   border-bottom: none;
 }
 
+.job-posting {
+  background-color: #F1F6F3;
+	border: 0.666667px solid #D6ECE0;
+	border-radius: 30px;
+	display: inline-block;
+	font-family: "Gordita-Regular", cursive;
+	font-weight: 500;
+  font-size: 1rem;
+  line-height: 14px;
+	padding: 8px 25px;
+	text-align: center;
+  max-width: 100%;
+}
+
+.job-posting div {
+  font-size: 1rem; 
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+  line-height: 24px;
+}
+
+.job-posting div span {
+  font-size: 1rem; 
+  font-weight: 600;
+  color: #00be57;
+}
+
+.job-posting a {
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  font-size: 1rem; 
+  font-weight: 400;
+  background: transparent;
+  color: #00be57;
+}
+
+.testimonials {
+  margin: 5rem 0 6rem;
+}
+
+.testimonials .header {
+  font-family: "EB Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+	color: #254035;
+	text-align: center;
+  max-width: 100%;
+}
+
+.talents p {
+  font-size: 14px;
+  font-weight: 300;
+	color: #0000004D;
+	font-family: "Gordita-Regular", cursive;
+	letter-spacing: 1px;
+	margin: 0px 0px 15px;
+	text-transform: uppercase;
+}
+
+.talents .header {
+  font-family: "EB Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+.talents button {
+  text-transform: capitalize;
+  background: transparent;
+  border: 1px solid #00be57;
+  color: #00be57;
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.QandA-wrapper {
+  margin: 5rem 0 6rem;
+} 
+
+
+.customer-support {
+  background-color: #FFF;
+	border: 5px solid #00be57;
+	border-radius: 30px;
+	display: inline-block;
+	font-family: "Gordita-Regular", cursive;
+	font-weight: 500;
+  font-size: 1rem;
+  line-height: 14px;
+	padding: 8px 25px;
+	text-align: center;
+  max-width: 100%;
+}
+
+.customer-support div {
+  font-size: 1rem; 
+  font-weight: 600;
+  display: inline-block;
+  line-height: 24px;
+}
+
+.customer-support div span {
+  font-size: 1rem; 
+  font-weight: 600;
+  color: #00be57;
+}
+
+.customer-support a {
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  font-size: 1rem; 
+  font-weight: 400;
+  background: transparent;
+  color: #00be57;
+}
+
+.userSetup-wrapper {
+  padding: 1.5rem 0 1.5rem;
+}
+
+.userSetup-wrapper h1 {
+  font-family: "EB Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+.userSetup-wrapper p {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0.5rem 0 0;
+  color: #333;
+}
+
+.userSetup-btns .btn1 {
+  text-transform: capitalize;
+  background: transparent;
+  border: 1px solid #00be57;
+  color: #00be57;
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.userSetup-btns .btn2 {
+  background-color: #00be57;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-transform: uppercase;
+}
+
+.userSetup-btns .btn2:hover {
+  background-color: #009c46;
+}
+
+.footer {
+  margin: 3rem 0 3rem;
+  padding: 0 0.8rem;
+}
 
 .custom-gap {
   --bs-gutter-x: 3rem;
