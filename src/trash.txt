@@ -1,0 +1,48 @@
+div.review.pt-40.md-pt-20.mt-40.md-mt-30.d-flex.justify-content-between.align-items-center {
+	align-items: center;
+	border-top: 0.666667px solid #FFFFFF;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	margin: 40px 0px 0px;
+	padding: 40px 0px 0px;
+	user-select: none;
+}
+
+div.name.text-white {
+	box-sizing: border-box;
+	color: #FFFFFF;
+	font-family: __gordita_e76efa, __gordita_Fallback_e76efa;
+	line-height: 24px;
+	user-select: none;
+}
+
+div.review.pt-40.md-pt-20.mt-40.md-mt-30.d-flex.justify-content-between.align-items-center {
+	align-items: center;
+	border-top: 0.666667px solid #FFFFFF;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	margin: 40px 0px 0px;
+	padding: 40px 0px 0px;
+	user-select: none;
+}
+
+div.feedback-block-one.color-two {
+	background-color: #249F47;
+	border-radius: 30px;
+	box-sizing: border-box;
+	padding: 40px 40px 45px;
+	transition: 0.25s ease-in-out;
+	user-select: none;
+}
+
+div.feedback-block-one.color-two {
+	background-color: #249F47;
+	border-radius: 30px;
+	box-sizing: border-box;
+	padding: 40px 40px 45px;
+	transition: 0.25s ease-in-out;
+	user-select: none;
+}
+
