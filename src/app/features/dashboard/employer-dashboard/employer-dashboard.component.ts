@@ -5,11 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-employer-dashboard',
-  standalone: true,
-  imports: [],
-  templateUrl: './employer-dashboard.component.html',
-  styleUrl: './employer-dashboard.component.css'
+    selector: 'app-employer-dashboard',
+    imports: [],
+    templateUrl: './employer-dashboard.component.html',
+    styleUrl: './employer-dashboard.component.css'
 })
 export class EmployerDashboardComponent {
   constructor(

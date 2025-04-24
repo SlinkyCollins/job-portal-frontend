@@ -8,11 +8,10 @@ import { AuthService } from '../../core/services/auth.service';
 import { ApiServiceService } from '../../core/services/api-service.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [RouterLink, CommonModule, FormsModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
   constructor

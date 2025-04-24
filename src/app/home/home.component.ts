@@ -8,11 +8,10 @@ import { faStar as faRegularStar } from '@fortawesome/free-regular-svg-icons';
 
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [RouterLink, CommonModule, JobCardComponent, FontAwesomeModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+    selector: 'app-home',
+    imports: [RouterLink, CommonModule, JobCardComponent, FontAwesomeModule],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent {
   faStarFull = faSolidStar;
