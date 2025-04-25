@@ -399,8 +399,8 @@
 
       <!-- CONTROLS -->
       <div class="carousel-controls">
-        <div 
-        class="prev-icon" 
+        <div
+        class="prev-icon"
         data-bs-target="#carouselExample"
         data-bs-slide="prev">
           <svg
@@ -421,7 +421,7 @@
           </svg>
         </div>
 
-        <div 
+        <div
         class="next-icon"
         data-bs-target="#carouselExample"
         data-bs-slide="next"
@@ -452,69 +452,78 @@
 
     <h1 class="header">Find top talents from JobNet.</h1>
 
-    <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button
-            class="accordion-button"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseOne"
-            aria-expanded="true"
-            aria-controls="panelsStayOpen-collapseOne"
+      <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseOne"
+              aria-expanded="true"
+              aria-controls="panelsStayOpen-collapseOne"
+            >
+              Seamless Search
+            </button>
+          </h2>
+          <div
+            id="panelsStayOpen-collapseOne"
+            class="accordion-collapse collapse show"
+            data-bs-parent="#accordionPanelsStayOpenExample"
           >
-            Seamless Search
-          </button>
-        </h2>
-        <div
-          id="panelsStayOpen-collapseOne"
-          class="accordion-collapse collapse show"
-          data-bs-parent="#accordionPanelsStayOpenExample"
-        >
-          <div class="accordion-body">
-            It only takes 5 minutes. Set-up is smooth and simple, with fully
-            customizable page design to reflect your brand. It only takes 5
-            minutes.
+            <div class="accordion-body">
+              It only takes 5 minutes. Set-up is smooth and simple, with fully
+              customizable page design to reflect your brand. It only takes 5
+              minutes.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseTwo"
+              aria-expanded="false"
+              aria-controls="flush-collapseTwo"
+            >
+              Hire Top Talents
+            </button>
+          </h2>
+          <div
+            id="flush-collapseTwo"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionFlushExample"
+          >
+            <div class="accordion-body">
+              Practice what you learned on realistic lorem quis test questions
+              testing.
+            </div>
           </div>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseTwo"
-            aria-expanded="false"
-            aria-controls="flush-collapseTwo"
-          >
-            Hire Top Talents
-          </button>
-        </h2>
-        <div
-          id="flush-collapseTwo"
-          class="accordion-collapse collapse"
-          data-bs-parent="#accordionFlushExample"
-        >
-          <div class="accordion-body">
-            Practice what you learned on realistic lorem quis test questions
-            testing.
-          </div>
+
+      <button class="talent-btn">Find Talents</button>
+
+      <div class="talent-imgs row align-items-center mt-5">
+        <!-- <img src="assets/shape-1.svg" class="w-10"/> -->
+        <div class="col-6">  
+          <img src="/assets/img_7.jpg" class="w-100 h-auto" loading="lazy"/>
         </div>
+        <div class="col-6">
+          <img src="/assets/img_8.jpg" class="w-100 h-auto mb-4" loading="lazy"/>
+          <img src="/assets/img_9.jpg" class="w-100 h-auto" loading="lazy"/>
+        </div>
+        <!-- <img src="assets/shape-2.svg" class="w-10"/> -->
       </div>
-    </div>
 
-    <button>Find Talents</button>
-
-    <div>
-      <img src="/assets/img_7.jpg" alt="" width="50" height="50" />
-      <img src="/assets/img_8.jpg" alt="" width="50" height="50" />
-      <img src="/assets/img_9.jpg" alt="" width="50" height="50" />
     </div>
-  </div>
+    
+
 
   <div class="QandA-wrapper">
-    <h1>Questions and Answers</h1>
+    <h1 class="header">Questions & Answers</h1>
 
     <div class="accordion" id="accordionExample">
       <div class="accordion-item">
@@ -527,7 +536,7 @@
             aria-expanded="true"
             aria-controls="collapseOne"
           >
-            Accordion Item #1
+            How does the free trial work?
           </button>
         </h2>
         <div
@@ -631,7 +640,7 @@
 <section class="footer">
   <div>
     <h1>JobNet</h1>
-    <p>jobnetsupport&#64;new.com</p>
+    <a href="">jobnetsupport&#64;new.com</a>
   </div>
 
   <div>
@@ -684,3 +693,8 @@
     </div>
   </div>
 </section>
+
+
+<button class="top-btn">
+  <fa-icon></fa-icon>
+</button>

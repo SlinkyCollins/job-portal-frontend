@@ -291,7 +291,7 @@
   font-size: 1.1rem;
   line-height: 1.8;
   letter-spacing: 0.2px;
-  max-width: 100%; 
+  max-width: 100%;
 }
 
 .fancy-banner .fancy-banner-text button {
@@ -317,7 +317,7 @@
 }
 
 .achievements-wrapper {
-  padding: 5rem 1.2rem; 
+  padding: 5rem 1.2rem;
 }
 
 .achievements-wrapper .achievement {
@@ -373,7 +373,7 @@
 }
 
 .job-posting div {
-  font-size: 1rem; 
+  font-size: 1rem;
   font-weight: 600;
   display: inline-block;
   margin-bottom: 10px;
@@ -381,7 +381,7 @@
 }
 
 .job-posting div span {
-  font-size: 1rem; 
+  font-size: 1rem;
   font-weight: 600;
   color: #00be57;
 }
@@ -390,7 +390,7 @@
   border: none;
   outline: none;
   text-decoration: underline;
-  font-size: 1rem; 
+  font-size: 1rem;
   font-weight: 400;
   background: transparent;
   color: #00be57;
@@ -522,48 +522,95 @@
 
 .talents .header {
   font-family: "EB Garamond", serif;
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   font-weight: 500;
   max-width: 100%;
 }
 
-.talents button {
+.talents .talent-btn {
   text-transform: capitalize;
   background: transparent;
   border: 1px solid #00be57;
   color: #00be57;
-  border-radius: 10px;
-  padding: 10px 15px;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.talents .talent-btn:hover {
+  color: #fff;
+  background-color:#244034;
+}
+
+.accordion {
+  margin: 1.5rem 0 2rem;
+  font-family: "Gordita-Regular", cursive;
+}
+
+.accordion .accordion-button {
+  background: transparent;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  box-shadow: none;
+}
+
+.accordion .accordion-item {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  padding: 0;
+}
+
+.accordion-item .accordion-header .accordion-button {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.accordion-item .accordion-collapse .accordion-body {
+  font-size: .9rem;
+  font-weight: 500;
 }
 
 .QandA-wrapper {
   margin: 5rem 0 6rem;
-} 
+}
+
+.QandA-wrapper .header {
+  font-size: 1.4rem;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem;
+}
 
 
 .customer-support {
   background-color: #FFF;
-	border: 5px solid #00be57;
-	border-radius: 30px;
+	border: 2px solid #00be57;
+	border-radius: 35px;
 	display: inline-block;
 	font-family: "Gordita-Regular", cursive;
 	font-weight: 500;
   font-size: 1rem;
   line-height: 14px;
-	padding: 8px 25px;
+	padding: 5px 25px;
 	text-align: center;
   max-width: 100%;
 }
 
 .customer-support div {
-  font-size: 1rem; 
+  font-size: 1rem;
   font-weight: 600;
-  display: inline-block;
+  display: inline;
   line-height: 24px;
 }
 
 .customer-support div span {
-  font-size: 1rem; 
+  font-size: 1rem;
   font-weight: 600;
   color: #00be57;
 }
@@ -572,7 +619,7 @@
   border: none;
   outline: none;
   text-decoration: underline;
-  font-size: 1rem; 
+  font-size: 1rem;
   font-weight: 400;
   background: transparent;
   color: #00be57;
@@ -587,6 +634,7 @@
   font-size: 2.5rem;
   font-weight: 500;
   max-width: 100%;
+  padding: 2px;
 }
 
 .userSetup-wrapper p {
@@ -594,6 +642,11 @@
   font-weight: 400;
   margin: 0.5rem 0 0;
   color: #333;
+  padding: 5px;
+}
+
+.userSetup-btns {
+  margin: 1rem 0 3rem;
 }
 
 .userSetup-btns .btn1 {
@@ -603,27 +656,37 @@
   color: #00be57;
   border-radius: 10px;
   padding: 10px 15px;
+  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.userSetup-btns .btn1:hover {
+  color: #fff;
+  background-color:#244034;
 }
 
 .userSetup-btns .btn2 {
   background-color: #00be57;
   color: white;
-  padding: 0.4rem 0.8rem;
+  padding: 10px 15px;
   border: none;
-  border-radius: 30px;
+  outline: none;
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
   text-transform: uppercase;
 }
 
 .userSetup-btns .btn2:hover {
-  background-color: #009c46;
+  color: #fff;
+  background-color:#244034;
 }
 
 .footer {
-  margin: 3rem 0 3rem;
+  margin: 1rem 0 3rem;
   padding: 0 0.8rem;
 }
 
@@ -696,7 +759,7 @@
     transition: all 0.3s ease-in-out;
     transform: translateY(-100%);
   }
-  
+
   .navmenu {
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);

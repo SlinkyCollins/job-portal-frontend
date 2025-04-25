@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { JobCardComponent } from "../components/job-card/job-card.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faStar as faSolidStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faRegularStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as faRegularStar } from '@fortawesome/free-regular-svg-icons'; 
 
 
 @Component({
