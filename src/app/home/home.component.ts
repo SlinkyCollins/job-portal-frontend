@@ -25,6 +25,8 @@ export class HomeComponent {
 
   public isMenuOpen = false;
 
+  public showScrollTop = false;
+
   public selectedFileName: string = 'No file chosen';
 
   public categories = [
@@ -251,6 +253,17 @@ export class HomeComponent {
     } else {
       navbar.classList.remove('scrolled');
     }
+    this.showScrollTop = window.pageYOffset > 300; // Show button after scrolling 300px
   }
+
+
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // makes it scroll smoothly
+    });
+  }
+  
+
 
 }

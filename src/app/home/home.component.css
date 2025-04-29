@@ -580,9 +580,9 @@
 }
 
 .QandA-wrapper .header {
-  font-size: 1.4rem;
+  font-size: 2.5rem;
   font-family: "EB Garamond", serif;
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
   padding: 1rem;
 }
@@ -686,6 +686,10 @@
   background-color:#244034;
 }
 
+.footer-wrapper {
+  margin: 0 0 1rem;
+}
+
 .footer {
   margin: 0 0 3rem;
   padding: 0 0.8rem;
@@ -726,6 +730,61 @@
 
 .footer-category-links p a:hover {
   color: #00be57;
+}
+
+.socials-wrapper i {
+  color: #000000b3;
+  width: 35px;
+  cursor: pointer;
+  transition: color ease-in-out 0.3s;
+}
+
+.socials-wrapper i:hover {
+  color: #00be57;
+}
+
+.other-links-wrapper {
+  font-weight: 600;
+  font-family: "Gordita-Regular", cursive;
+  color: #000;
+  font-size: 1rem;
+}
+
+.other-links-wrapper p {
+  cursor: pointer;
+}
+
+.copyright {
+  color: #000000b3;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 500;
+  font-size: .9rem;
+}
+
+.top-btn {
+	appearance: button;
+  border: none;
+  outline: none;
+	background-color: #00BF58;
+  padding: 10px 12px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: fixed;
+  z-index: 499;
+  bottom: 1rem;
+  right: .5rem;
+  box-shadow: 0 10px 7.5px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.top-btn i {
+  cursor: pointer;
+  display: inline;
+  color: #fff;
+  font-size: 1rem;
 }
 
 .custom-gap {
@@ -807,7 +866,7 @@
     width: 80vw;
     min-height: 100vh;
     background: white;
-    z-index: 99;
+    z-index: 500;
   }
   .navmenu.show {
     transform: translateX(0);

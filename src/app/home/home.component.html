@@ -507,7 +507,7 @@
       <button class="talent-btn">Find Talents</button>
       <div>
         <img src="/assets/shape-1.svg" width="55" height="55" class="mt-4 ms-5" />
-  
+
         <div class="talent-imgs row align-items-center">
           <div class="col-6">
             <img src="/assets/img_7.jpg" class="w-100 h-auto" loading="lazy"/>
@@ -546,14 +546,7 @@
           data-bs-parent="#accordionExample"
         >
           <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is
-            shown by default, until the collapse plugin adds the appropriate
-            classes that we use to style each element. These classes control the
-            overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or
-            overriding our default variables. It's also worth noting that just
-            about any HTML can go within the <code>.accordion-body</code>,
-            though the transition does limit overflow.
+            Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
           </div>
         </div>
       </div>
@@ -567,7 +560,7 @@
             aria-expanded="false"
             aria-controls="collapseTwo"
           >
-            Accordion Item #2
+          How do you find different criteria in your process?
           </button>
         </h2>
         <div
@@ -576,14 +569,7 @@
           data-bs-parent="#accordionExample"
         >
           <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is
-            hidden by default, until the collapse plugin adds the appropriate
-            classes that we use to style each element. These classes control the
-            overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or
-            overriding our default variables. It's also worth noting that just
-            about any HTML can go within the <code>.accordion-body</code>,
-            though the transition does limit overflow.
+            Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
           </div>
         </div>
       </div>
@@ -597,7 +583,7 @@
             aria-expanded="false"
             aria-controls="collapseThree"
           >
-            Accordion Item #3
+            What do you look for in a founding team?
           </button>
         </h2>
         <div
@@ -606,14 +592,55 @@
           data-bs-parent="#accordionExample"
         >
           <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is
-            hidden by default, until the collapse plugin adds the appropriate
-            classes that we use to style each element. These classes control the
-            overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or
-            overriding our default variables. It's also worth noting that just
-            about any HTML can go within the <code>.accordion-body</code>,
-            though the transition does limit overflow.
+            Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseFour"
+            aria-expanded="false"
+            aria-controls="collapseFour"
+          >
+            Do you recommend Pay as you go or Pre pay?
+          </button>
+        </h2>
+        <div
+          id="collapseFour"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseFive"
+            aria-expanded="false"
+            aria-controls="collapseFive"
+          >
+            What do I get for $0 with my plan?
+          </button>
+        </h2>
+        <div
+          id="collapseFive"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
           </div>
         </div>
       </div>
@@ -683,26 +710,28 @@
 
 
 
-  <div>
+  <div class="footer-end d-flex align-items-center justify-content-center text-center">
     <div>
-      <!-- <i class="bi bi-whatsapp"></i>
-      <i class="bi bi-google"></i>
-      <i class="bi bi-instagram"></i> -->
-      <img src="/assets/web_select.png"/>
-    </div>
-
-    <div>
-      <p>Privacy & Terms.</p>
-      <p>Contact Us</p>
-    </div>
-
-    <div>
-      <p>Copyright &#64;2023 JobNet inc.</p>
+      <div class="socials-wrapper d-flex flex-row gap-2 justify-content-center">
+        <i class="fa-brands fa-whatsapp"></i>
+        <i class="fa-solid fa-basketball"></i>
+        <i class="fa-brands fa-google"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+  
+      <div class="other-links-wrapper d-flex flex-row gap-3 mt-4">
+        <p>Privacy & Terms.</p>
+        <p>Contact Us</p>
+      </div>
+  
+      <div class="copyright mt-1">
+        <p>Copyright &#64;2025 JobNet inc.</p>
+      </div>
     </div>
   </div>
 </section>
 
 
-<button class="top-btn">
-  <fa-icon></fa-icon>
-</button>
+<div class="top-btn" *ngIf="showScrollTop" (click)="scrollToTop()"> 
+  <i class="fa-solid fa-arrow-up"></i>
+</div>
