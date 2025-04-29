@@ -187,7 +187,7 @@
 }
 
 .body {
-  padding: 4rem .8rem;
+  padding: 4rem .8rem 2rem;
 }
 
 .category-header {
@@ -581,7 +581,7 @@
 
 .QandA-wrapper .header {
   font-size: 1.4rem;
-  font-family: "Gordita-Regular", cursive;
+  font-family: "EB Garamond", serif;
   font-weight: 600;
   text-align: center;
   padding: 1rem;
@@ -627,11 +627,12 @@
 
 .userSetup-wrapper {
   padding: 1.5rem 0 1.5rem;
+  text-align: center;
 }
 
 .userSetup-wrapper h1 {
   font-family: "EB Garamond", serif;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: 500;
   max-width: 100%;
   padding: 2px;
@@ -686,8 +687,45 @@
 }
 
 .footer {
-  margin: 1rem 0 3rem;
+  margin: 0 0 3rem;
   padding: 0 0.8rem;
+}
+
+.footer-header h1 {
+  color: #24483a;
+  font-size: 2rem;
+  font-family: "EB Garamond", serif;
+}
+
+.footer-header a {
+  color: #00be57;
+  margin: 1rem 0 1rem;
+}
+
+.footer-category h1 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: "Gordita-Regular", cursive;
+  margin: 0 0 1rem;
+  color: #000;
+}
+
+.footer-category-links p a {
+  font-size: 1rem;
+  font-weight: lighter;
+  font-family: "Gordita-Regular", cursive;
+  margin: 1rem 0 0;
+  text-decoration: none;
+  color: #000000b3;
+  transition: color ease-in-out 0.3s;
+}
+
+.footer-category-links p a:first-child {
+  margin-top: 0;
+}
+
+.footer-category-links p a:hover {
+  color: #00be57;
 }
 
 .custom-gap {
