@@ -46,10 +46,10 @@
 .apply-btn {
   background-color: #00be57;
   color: white;
-  padding: 0.4rem 0.8rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 30px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;

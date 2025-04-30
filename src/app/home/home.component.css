@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap");
 
-
 .hero-section {
   background: url("/assets/hero.jpg") no-repeat center center/cover;
   max-width: 100%;
@@ -18,7 +17,6 @@
   max-width: 700px;
   width: 100%;
 }
-
 
 .hero-text h1 {
   font-family: "EB Garamond", serif;
@@ -187,7 +185,7 @@
 }
 
 .body {
-  padding: 4rem .8rem 2rem;
+  padding: 4rem 0.8rem 2rem;
 }
 
 .category-header {
@@ -287,7 +285,7 @@
 .fancy-banner .fancy-banner-text p {
   font-weight: 400;
   margin-bottom: 2rem;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.1rem;
   line-height: 1.8;
   letter-spacing: 0.2px;
@@ -359,16 +357,16 @@
 }
 
 .job-posting {
-  background-color: #F1F6F3;
-	border: 0.666667px solid #D6ECE0;
-	border-radius: 30px;
-	display: inline-block;
-	font-family: "Gordita-Regular", cursive;
-	font-weight: 500;
+  background-color: #f1f6f3;
+  border: 0.666667px solid #d6ece0;
+  border-radius: 30px;
+  display: inline-block;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 500;
   font-size: 1rem;
   line-height: 14px;
-	padding: 8px 25px;
-	text-align: center;
+  padding: 8px 25px;
+  text-align: center;
   max-width: 100%;
 }
 
@@ -411,13 +409,13 @@
   background-color: #755146;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   padding: 30px 15px 30px;
-	transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
   cursor: pointer;
 }
 
 .carousel-inner:hover {
-  background-color: #249F47;
-	user-select: none;
+  background-color: #249f47;
+  user-select: none;
 }
 
 .carousel-content {
@@ -437,10 +435,10 @@
   cursor: pointer;
   margin: 1.5rem 0;
   box-sizing: border-box;
-	display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .carousel-controls .prev-icon,
@@ -453,7 +451,7 @@
 
 .carousel-controls .prev-icon:hover,
 .carousel-controls .next-icon:hover {
-  background-color: #D2F34C;
+  background-color: #d2f34c;
 }
 
 .logo {
@@ -466,7 +464,7 @@
   color: #fff;
   opacity: 0.85;
   text-align: left;
-  font-family: 'Gordita-Regular', cursive;
+  font-family: "Gordita-Regular", cursive;
   margin-bottom: 1.2rem;
   font-size: 1.5rem;
   font-weight: 600;
@@ -484,7 +482,7 @@
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  color: #FFF;
+  color: #fff;
 }
 
 .testifier-name {
@@ -500,24 +498,23 @@
   font-weight: 600;
 }
 
-
 .testimonials .header {
   font-family: "EB Garamond", serif;
   font-size: 2.5rem;
   font-weight: 500;
-	color: #254035;
-	text-align: center;
+  color: #254035;
+  text-align: center;
   max-width: 100%;
 }
 
 .talents p {
   font-size: 14px;
   font-weight: 300;
-	color: #0000004D;
-	font-family: "Gordita-Regular", cursive;
-	letter-spacing: 1px;
-	margin: 0px 0px 15px;
-	text-transform: uppercase;
+  color: #0000004d;
+  font-family: "Gordita-Regular", cursive;
+  letter-spacing: 1px;
+  margin: 0px 0px 15px;
+  text-transform: uppercase;
 }
 
 .talents .header {
@@ -542,7 +539,7 @@
 
 .talents .talent-btn:hover {
   color: #fff;
-  background-color:#244034;
+  background-color: #244034;
 }
 
 .accordion {
@@ -571,7 +568,7 @@
 }
 
 .accordion-item .accordion-collapse .accordion-body {
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
@@ -587,18 +584,17 @@
   padding: 1rem;
 }
 
-
 .customer-support {
-  background-color: #FFF;
-	border: 2px solid #00be57;
-	border-radius: 35px;
-	display: inline-block;
-	font-family: "Gordita-Regular", cursive;
-	font-weight: 500;
+  background-color: #fff;
+  border: 2px solid #00be57;
+  border-radius: 35px;
+  display: inline-block;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 500;
   font-size: 1rem;
   line-height: 14px;
-	padding: 5px 25px;
-	text-align: center;
+  padding: 5px 25px;
+  text-align: center;
   max-width: 100%;
 }
 
@@ -663,7 +659,7 @@
 
 .userSetup-btns .btn1:hover {
   color: #fff;
-  background-color:#244034;
+  background-color: #244034;
 }
 
 .userSetup-btns .btn2 {
@@ -683,7 +679,7 @@
 
 .userSetup-btns .btn2:hover {
   color: #fff;
-  background-color:#244034;
+  background-color: #244034;
 }
 
 .footer-wrapper {
@@ -758,14 +754,14 @@
   color: #000000b3;
   font-family: "Gordita-Regular", cursive;
   font-weight: 500;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .top-btn {
-	appearance: button;
+  appearance: button;
   border: none;
   outline: none;
-	background-color: #00BF58;
+  background-color: #00bf58;
   padding: 10px 12px;
   border-radius: 50%;
   display: flex;
@@ -775,7 +771,7 @@
   position: fixed;
   z-index: 499;
   bottom: 1rem;
-  right: .5rem;
+  right: 0.5rem;
   box-shadow: 0 10px 7.5px rgba(0, 0, 0, 0.25);
   transition: opacity 0.3s ease-in-out;
 }
@@ -791,25 +787,6 @@
   --bs-gutter-x: 3rem;
   --bs-gutter-y: 3rem;
 }
-
-/* Tablet (768px and up) */
-@media (min-width: 768px) {
-  .hero-section {
-    height: 100vh;
-  }
-}
-
-/* Desktop (1024px and up) */
-@media (min-width: 1024px) {
-  .hero-section {
-    height: 100vh;
-  }
-}
-
-/* Hide Bootstrap's default toggler */
-/* .navbar-toggler {
-    display: none !important;
-  } */
 
 /* Custom hamburger menu */
 .hamburger {
@@ -843,6 +820,55 @@
   transform: translateY(-10px) rotate(-45deg);
 }
 
+.container-fluid .navbar-brand {
+  font-family: "EB Garamond", serif;
+  font-size: 1.5rem;
+  color: #24483a;
+  font-weight: 600;
+}
+
+.container-fluid .smlogin-link {
+  text-decoration: none;
+  font-weight: 600;
+  color: #212529;
+}
+
+.navmenu .header h2 {
+  color: #24483a;
+  font-size: 2rem;
+  font-family: "EB Garamond", serif;
+}
+
+.navbar-nav .nav-item a {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  margin: 1rem 0 0;
+  font-family: "Gordita-Regular", cursive;
+  transition: color ease-in 0.2s;
+}
+
+.navbar-nav .nav-item a:hover {
+  color: #00be57;
+}
+
+.navbar-nav .nav-item .signupbtn {
+  color: #fff;
+  background-color: #00be57;
+  font-family: "Gordita-Regular", cursive;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  transition: color ease 0.2s;
+  transition: background-color ease-in-out 0.2s;
+}
+
+.navbar-nav .nav-item .signupbtn:hover {
+  color: #fff;
+  background-color: #244034;
+}
 
 /* Custom responsive menu */
 @media (max-width: 992px) {
@@ -872,5 +898,3 @@
     transform: translateX(0);
   }
 }
-
-

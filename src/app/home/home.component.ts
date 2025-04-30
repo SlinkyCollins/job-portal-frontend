@@ -4,22 +4,22 @@ import { RouterLink } from '@angular/router';
 import { JobCardComponent } from "../components/job-card/job-card.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faStar as faSolidStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faRegularStar } from '@fortawesome/free-regular-svg-icons'; 
+import { faStar as faRegularStar } from '@fortawesome/free-regular-svg-icons';
 
 
 @Component({
-    selector: 'app-home',
-    imports: [RouterLink, CommonModule, JobCardComponent, FontAwesomeModule],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css'
+  selector: 'app-home',
+  imports: [RouterLink, CommonModule, JobCardComponent, FontAwesomeModule],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
 })
 export class HomeComponent {
   faStarFull = faSolidStar;
   faStarHalf = faStarHalfAlt;
   faStarEmpty = faRegularStar;
 
-  
-  ngOnInit(){
+
+  ngOnInit() {
 
   };
 
@@ -178,9 +178,9 @@ export class HomeComponent {
       role: "InfoSec Analyst",
       rating: 4.7,
       review: "Excellent"
-    }    
+    }
   ];
-  
+
 
   public faqs = [
     {
@@ -201,22 +201,22 @@ export class HomeComponent {
     const full = Math.floor(rating);
     const hasHalf = rating % 1 >= 0.5;
     const stars: ('full' | 'half' | 'empty')[] = [];
-  
+
     for (let i = 0; i < full; i++) {
       stars.push('full');
     }
-  
+
     if (hasHalf) {
       stars.push('half');
     }
-  
+
     while (stars.length < 5) {
       stars.push('empty');
     }
-  
+
     return stars;
   }
-  
+
 
   isSelectOpen1 = false;
   isSelectOpen2 = false;
@@ -263,7 +263,7 @@ export class HomeComponent {
       behavior: 'smooth' // makes it scroll smoothly
     });
   }
-  
+
 
 
 }
