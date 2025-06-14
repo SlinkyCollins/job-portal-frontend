@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg bg-transparent sticky-top w-100">
+    <div class="container-fluid">
+      <div
+        class="d-flex justify-content-between align-items-center w-100 pt-2 ps-2"
+      >
+        <div>
+          <a class="navbar-brand" routerLink="/">JobNet</a>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center gap-3">
+          <a
+            routerLink="/login"
+            class="smlogin-link d-xs-block d-sm-block d-lg-none"
+            >Login</a
+          >
+          <!-- Custom Hamburger Icon -->
+          <div
+            class="hamburger me-1"
+            (click)="toggleMenu()"
+            [ngClass]="{ open: isMenuOpen }"
+          >
+            <span class="text-white"></span>
+            <span class="text-white"></span>
+            <span class="text-white"></span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="navmenu px-3 pt-4"
+        [ngClass]="{ show: isMenuOpen }"
+        id="navbarNav"
+      >
+        <div class="header text-start">
+          <h2>JobNet</h2>
+        </div>
+        <ul class="navbar-nav text-start">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/jobs" routerLinkActive="active"
+              >Jobs</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/explore" routerLinkActive="active"
+              >Explore</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/blog" routerLinkActive="active"
+              >Blog</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contact" routerLinkActive="active"
+              >Contact</a
+            >
+          </li>
+        </ul>
+        <ul class="navbar-nav text-center">
+          <li class="nav-item d-none d-lg-block d-xl-block d-xxl-block">
+            <a class="btn loginbtn me-2 fw-semibold fs-5" routerLink="/login"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="btn signupbtn" routerLink="/signup">Register</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

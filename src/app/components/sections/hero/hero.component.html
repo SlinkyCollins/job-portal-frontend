@@ -1,0 +1,93 @@
+<section class="hero-section">
+
+  <div class="hero-text">
+    <div>
+      <h1>Find your job without any hassle.</h1>
+      <p>Jobs & Job search. Find jobs in global. Executive jobs & work.</p>
+    </div>
+
+    <div class="heroSearch d-flex flex-column flex-lg-row">
+      <div
+        class="flex-fill customSelectWrapper"
+        [class.open]="isSelectOpen1"
+        (click)="toggleSelectOpen1()"
+      >
+        <label for="job_category" class="form-label">Job Categories</label>
+        <select
+          id="job_category"
+          class="formSelect"
+          (blur)="isSelectOpen1 = false"
+        >
+          <option value="developer">Developer</option>
+          <option value="coder">Coder</option>
+          <option value="finance">Finance</option>
+          <option value="accounting">Accounting</option>
+          <option value="design">Design</option>
+          <option value="artist">Artist</option>
+          <option value="application">Application</option>
+          <option value="marketing">Marketing</option>
+          <option value="business">Business</option>
+          <option value="web">Web</option>
+          <option value="data">Data</option>
+          <option value="scientist">Scientist</option>
+          <option value="designer">Designer</option>
+          <option value="uxui">UX/UI</option>
+          <option value="manager">Manager</option>
+          <option value="engineer">Engineer</option>
+          <option value="writer">Writer</option>
+          <option value="content">Content</option>
+          <option value="graphic">Graphic</option>
+          <option value="management">Management</option>
+          <option value="product">Product</option>
+        </select>
+        <span class="customArrow"></span>
+      </div>
+      <hr />
+      <div
+        class="flex-fill customSelectWrapper"
+        [class.open]="isSelectOpen2"
+        (click)="toggleSelectOpen2()"
+      >
+        <label for="location" class="form-label">Location</label>
+        <select id="location" class="formSelect" (blur)="isSelectOpen2 = false">
+          <option value="">Spain, Barcelona</option>
+          <option value="">USA, New York</option>
+          <option value="">USA, Alaska</option>
+          <option value="">USA, California</option>
+          <option value="">UK, London</option>
+          <option value="">USA, Mountain View</option>
+          <option value="">Germany, Berlin</option>
+          <option value="">USA, Cupertino</option>
+          <option value="">USA, Menlo Park</option>
+          <option value="">USA, Redmond</option>
+          <option value="">USA, San Jose</option>
+          <option value="">USA, Palo Alto</option>
+        </select>
+        <span class="customArrow"></span>
+      </div>
+      <hr />
+      <div class="flex-fill">
+        <label for="searchBox" class="form-label">Keywords or Title</label>
+        <input type="text" placeholder="Design, branding" id="searchBox" />
+      </div>
+      <hr />
+      <div class="d-flex align-items-end">
+        <button class="searchBtn">SEARCH</button>
+      </div>
+    </div>
+
+    <div class="uploadCV mt-4">
+      <label for="cvUpload" class="btn bg-white px-2 py-2 rounded-3 fw-medium">
+        Upload your CV
+        <i class="bi bi-file-earmark-arrow-up"></i>
+      </label>
+      <input
+        type="file"
+        id="cvUpload"
+        hidden
+        (change)="onFileSelected($event)"
+      />
+      <span id="fileName" class="ms-3 text-muted d-none">No file chosen</span>
+    </div>
+  </div>
+</section>

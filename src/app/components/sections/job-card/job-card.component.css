@@ -1,3 +1,20 @@
+.new-jobs .header {
+  font-size: 2.2rem;
+  font-family: "EB Garamond", serif;
+  font-weight: 500;
+  margin: 0 0 3rem;
+}
+
+.view-jobs-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.view-jobs-wrapper app-job-card:last-child .job-card {
+  border-bottom: none;
+}
+
 .job-card {
   padding: 1.5rem;
   background-color: #fff;
@@ -5,7 +22,6 @@
   font-size: 2rem;
   border-bottom: 1px solid #ccc;
 }
-
 
 .job-logo {
   width: 50px;
@@ -84,4 +100,42 @@
 .savejob-icon-wrapper:hover {
   background-color: #00be57;
   color: #e7f6ef;
+}
+
+.job-posting {
+  background-color: #f1f6f3;
+  border: 0.666667px solid #d6ece0;
+  border-radius: 30px;
+  display: inline-block;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 14px;
+  padding: 8px 25px;
+  text-align: center;
+  max-width: 100%;
+}
+
+.job-posting div {
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+  line-height: 24px;
+}
+
+.job-posting div span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #00be57;
+}
+
+.job-posting a {
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  font-size: 1rem;
+  font-weight: 400;
+  background: transparent;
+  color: #00be57;
 }

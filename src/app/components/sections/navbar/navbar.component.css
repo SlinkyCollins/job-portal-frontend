@@ -1,0 +1,135 @@
+.navbar {
+  transition: background-color 0.3s ease-in-out;
+  position: fixed;
+}
+
+.scrolled {
+  background-color: #fff !important;
+  animation-name: scroll;
+  animation-duration: 1s;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.custom-gap {
+  --bs-gutter-x: 3rem;
+  --bs-gutter-y: 3rem;
+}
+
+/* Custom hamburger menu */
+.hamburger {
+  display: block;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  background-color: #00be57;
+}
+
+.hamburger span {
+  display: block;
+  width: 27px;
+  height: 2px;
+  margin: 6px 0;
+  transition: 0.4s;
+  background: transparent; /* Inherits light green */
+  border: 1px solid white; /* White lines instead of background */
+}
+
+/* Default state (normal hamburger) */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+.container-fluid .navbar-brand {
+  font-family: "EB Garamond", serif;
+  font-size: 1.5rem;
+  color: #24483a;
+  font-weight: 600;
+}
+
+.container-fluid .smlogin-link {
+  text-decoration: none;
+  font-weight: 600;
+  color: #212529;
+}
+
+.navmenu .header h2 {
+  color: #24483a;
+  font-size: 2rem;
+  font-family: "EB Garamond", serif;
+}
+
+.navbar-nav .nav-item a {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  margin: 1rem 0 0;
+  font-family: "Gordita-Regular", cursive;
+  transition: color ease-in 0.2s;
+}
+
+.navbar-nav .nav-item a:hover {
+  color: #00be57;
+}
+
+.navbar-nav .nav-item .signupbtn {
+  color: #fff;
+  background-color: #00be57;
+  font-family: "Gordita-Regular", cursive;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  transition: color ease 0.2s;
+  transition: background-color ease-in-out 0.2s;
+}
+
+.navbar-nav .nav-item .signupbtn:hover {
+  color: #fff;
+  background-color: #244034;
+}
+
+/* Custom responsive menu */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 15px;
+    transition: all 0.3s ease-in-out;
+    transform: translateY(-100%);
+  }
+
+  .navmenu {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80vw;
+    min-height: 100vh;
+    background: white;
+    z-index: 500;
+  }
+  .navmenu.show {
+    transform: translateX(0);
+  }
+}

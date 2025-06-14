@@ -1,0 +1,74 @@
+.footer-wrapper {
+  margin: 0 0 1rem;
+}
+
+.footer {
+  margin: 0 0 3rem;
+  padding: 0 0.8rem;
+}
+
+.footer-header h1 {
+  color: #24483a;
+  font-size: 2rem;
+  font-family: "EB Garamond", serif;
+}
+
+.footer-header a {
+  color: #00be57;
+  margin: 1rem 0 1rem;
+}
+
+.footer-category h1 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: "Gordita-Regular", cursive;
+  margin: 0 0 1rem;
+  color: #000;
+}
+
+.footer-category-links p a {
+  font-size: 1rem;
+  font-weight: lighter;
+  font-family: "Gordita-Regular", cursive;
+  margin: 1rem 0 0;
+  text-decoration: none;
+  color: #000000b3;
+  transition: color ease-in-out 0.3s;
+}
+
+.footer-category-links p a:first-child {
+  margin-top: 0;
+}
+
+.footer-category-links p a:hover {
+  color: #00be57;
+}
+
+.socials-wrapper i {
+  color: #000000b3;
+  width: 35px;
+  cursor: pointer;
+  transition: color ease-in-out 0.3s;
+}
+
+.socials-wrapper i:hover {
+  color: #00be57;
+}
+
+.other-links-wrapper {
+  font-weight: 600;
+  font-family: "Gordita-Regular", cursive;
+  color: #000;
+  font-size: 1rem;
+}
+
+.other-links-wrapper p {
+  cursor: pointer;
+}
+
+.copyright {
+  color: #000000b3;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 500;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,163 @@
+.hero-section {
+  background: url("/assets/hero.jpg") no-repeat center center/cover;
+  max-width: 100%;
+  min-height: 100vh; /* Let it grow if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8.5rem 1rem 6rem; /* Breathing room on small screens */
+  box-sizing: border-box;
+}
+
+.hero-text {
+  color: #000;
+  max-width: 700px;
+  width: 100%;
+}
+
+.hero-text h1 {
+  font-family: "EB Garamond", serif;
+  font-size: 2.8rem;
+  font-weight: 500;
+  letter-spacing: -1px;
+  line-height: 47.61px;
+  padding: 0 1rem 0 1rem;
+}
+
+.hero-text p {
+  margin: 1.5rem 0 1.8rem;
+  font-family: "Gordita-Regular", cursive;
+  color: #000000b3;
+  font-size: 1.1rem;
+  line-height: 29px;
+  text-align: center;
+}
+
+.heroSearch {
+  background-color: #fff;
+  padding: 0.6rem 0;
+  margin: 1rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.searchBtn {
+  padding: 0.7rem 1.8rem;
+  background-color: #00be57;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  appearance: button;
+  cursor: pointer;
+  font-family: "Gordita-Regular", cursive;
+  font-weight: 700;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+  margin: -5px auto 0;
+  letter-spacing: 1px;
+}
+.searchBtn:hover {
+  background-color: #244034;
+}
+
+.form-label {
+  color: #a2a2a2;
+  font-size: 14px;
+  font-family: "Gordita-Regular", cursive;
+  margin: 0 0 8px 4px;
+  text-align: left;
+  display: block;
+  padding-left: 18px;
+}
+
+.customSelectWrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.formSelect {
+  appearance: none; /* removes default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  outline: none;
+  padding-right: 40px; /* leave space for custom arrow */
+  color: #585656;
+  font-size: 1rem;
+  font-family: "Gordita-Regular", cursive;
+  text-align: left;
+  display: block;
+  width: 98%;
+  /* height: 30px; */
+  padding-left: 18px;
+  cursor: pointer;
+  user-select: none;
+  background-color: #fff;
+}
+
+.customArrow {
+  content: "";
+  position: absolute;
+  top: 60%;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #7c7c7c;
+  border-bottom: 2px solid #7c7c7c;
+  transform: translateY(-50%) rotate(45deg);
+  transition: transform 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.customSelectWrapper.open .customArrow {
+  transform: translateY(-50%) rotate(-135deg);
+}
+
+.formSelect option {
+  background-color: #fff;
+  color: #00be57;
+  font-size: 1rem;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Scrollbar */
+.formSelect::-webkit-scrollbar {
+  width: 10px;
+}
+.formSelect::-webkit-scrollbar-thumb {
+  background-color: #00be57;
+  border-radius: 10px;
+}
+.formSelect::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+#searchBox {
+  border: none;
+  outline: none;
+  width: 100%;
+  display: block;
+  padding: 0 0 0 21px;
+  font-size: 1rem;
+}
+
+#searchBox::placeholder {
+  font-size: 17px;
+  color: #7c7c7c;
+}
+
+.uploadCV {
+  color: #000;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  /* padding: .5rem 1rem; */
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
