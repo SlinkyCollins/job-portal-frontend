@@ -10,12 +10,12 @@ import { Component } from '@angular/core';
 export class JobCardComponent {
   public jobs = [
     {
-      title: 'Developer & expert in Java, C++',
+      title: 'Developer & expert in java c++',
       type: 'Fulltime',
       date: '18 Jul 2024',
       company: 'Slack',
       location: 'Spain, Barcelona',
-      tags: 'Developer, Coder',
+      tags: 'Developer,Coder',
       logo: '/assets/img-2.png'
     },
 
@@ -24,7 +24,7 @@ export class JobCardComponent {
       type: 'Part time',
       date: '25 Jul 2024',
       company: 'Google',
-      location: 'USA, New York',
+      location: 'USA,New York',
       tags: 'Finance, Accounting',
       logo: '/assets/img-6.png'
     },
@@ -35,17 +35,17 @@ export class JobCardComponent {
       date: '25 Jan 2024',
       company: 'Pinterest',
       location: 'USA, Alaska',
-      tags: 'Design, Artist',
+      tags: 'Design,Artist',
       logo: '/assets/img-3.png'
     },
 
     {
-      title: 'Developer & expert in Javascript, C+',
+      title: 'Developer & expert in javascript c++',
       type: 'Fulltime',
       date: '10 Feb 2024',
       company: 'Instagram',
       location: 'USA, California',
-      tags: 'Application, Marketing',
+      tags: 'Application,Marketing',
       logo: '/assets/img-4.png'
     },
 
@@ -55,7 +55,7 @@ export class JobCardComponent {
       date: '15 Feb 2024',
       company: 'LinkedIn',
       location: 'UK, London',
-      tags: 'Finance, Business',
+      tags: 'Finance,Business',
       logo: '/assets/img-5.png'
     },
   ];

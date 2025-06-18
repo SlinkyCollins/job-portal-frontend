@@ -9,6 +9,8 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .view-jobs-wrapper app-job-card:last-child .job-card {
@@ -16,11 +18,24 @@
 }
 
 .job-card {
-  padding: 1.5rem;
+  padding: 2rem 1rem;
   background-color: #fff;
-  font-weight: 600;
-  font-size: 2rem;
   border-bottom: 1px solid #ccc;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-height: 160px;
+  gap: 1rem;
+}
+
+.job-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.job-actions {
+  min-width: 160px;
+  flex-shrink: 0;
+  justify-content: flex-end;
 }
 
 .job-logo {
@@ -31,24 +46,21 @@
 }
 
 .job-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 25px;
+  color: #000;
 }
 
 .job-type {
-  font-size: 0.95rem;
   margin: 0.25rem 0;
 }
 
 .job-tags {
-  font-size: 0.95rem;
   margin: 0.25rem 0;
   color: #000;
-  font-weight: 600;
 }
 
 .job-meta {
-  font-size: 0.95rem;
   margin: 0.25rem 0;
   color: #000;
 }
@@ -62,11 +74,13 @@
 .apply-btn {
   background-color: #00be57;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.5rem;
   border: none;
   border-radius: 30px;
-  font-size: 14px;
+  font-size: 0.75rem;
   font-weight: 600;
+  letter-spacing: 1px;
+  font-family: "Gordita-Regular", cursive;
   cursor: pointer;
   transition: background-color 0.2s ease;
   text-transform: uppercase;
@@ -77,29 +91,26 @@
 }
 
 .savejob-icon-wrapper {
-  border: 1px solid #c4c8c6;
-  border-radius: 50%;
-  object-fit: cover;
-  padding: 0.3rem;
-  cursor: pointer;
-  color: #c4c8c6;
-  transition: background-color 0.2s ease;
-  transition: color 0.2s ease;
-}
-
-.savejob-icon-wrapper svg {
+  width: 36px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  text-align: center;
-  width: 17px;
-  height: 17px;
+  border: 1px solid #c4c8c6;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #c4c8c6;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .savejob-icon-wrapper:hover {
   background-color: #00be57;
   color: #e7f6ef;
+}
+
+.savejob-icon-wrapper svg {
+  width: 18px;
+  height: 18px;
 }
 
 .job-posting {
@@ -138,4 +149,127 @@
   font-weight: 400;
   background: transparent;
   color: #00be57;
+}
+
+.explore-all .btn {
+  font-family: "Gordita-Regular", cursive;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 25px;
+  text-decoration: underline;
+  color: #00be57;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+
+@media (min-width: 360px) and (max-width: 413px){
+  .job-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 3;
+  }
+  .job-card {
+    align-items: start !important;
+  }
+
+  .job-actions {
+    margin-left: 2.5rem;
+  }
+}
+
+@media (min-width: 414px) and (max-width: 575px) {
+  .job-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 3;
+  }
+
+  .job-card {
+    align-items: start !important;
+  }
+
+  .job-actions {
+    margin-left: 2.5rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+
+  .job-card {
+    align-items: start !important;
+  }
+  .job-actions {
+    margin-left: 2.5rem;
+  }
+  .new-jobs {
+    padding: 0 2rem 0;
+  }
+
+  .job-posting {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 6px 20px;
+  }
+
+  .job-content {
+    gap: 5rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .job-content {
+    gap: 5rem !important;
+  }
+   .job-info {
+    flex: 1;
+  }
+
+  .job-actions {
+    flex-shrink: 0;
+  }
+
+  .job-title {
+    font-size: 1.5rem;
+  }
+  .new-jobs .header {
+    font-size: 2.5rem;
+  }
+   .apply-btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .job-title {
+    font-size: 1.75rem;
+  }
+  .new-jobs .header {
+    font-size: 2.75rem;
+  }
+}
+
+/* Optional tweak for very wide screens */
+@media (min-width: 1200px) {
+  .job-card {
+    padding: 2rem 2rem;
+  }
+
+  .job-info {
+    max-width: 100%;
+  }
+
+  .job-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1400px) {
+  .job-card {
+    padding: 2.5rem;
+  }
 }
