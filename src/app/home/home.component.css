@@ -1,6 +1,11 @@
+.home{
+  max-width: 1440px;
+  margin: 0 auto;
+}
 .body {
   padding: 4rem 0.8rem 2rem;
 }
+
 .scroll-to-top-btn {
   appearance: button;
   border: none;

@@ -1,15 +1,17 @@
 <app-navbar></app-navbar>
-<app-hero></app-hero>
-<section class="body">
-  <app-category-list></app-category-list>
-  <app-fancybanner></app-fancybanner>
-  <app-job-card></app-job-card>
-  <app-testimonials></app-testimonials>
-  <app-findtalents></app-findtalents>
-  <app-q-a></app-q-a>
-  <app-cta></app-cta>
-</section>
-<app-footer></app-footer>
+<div class="home">
+  <app-hero></app-hero>
+  <section class="body">
+    <app-category-list></app-category-list>
+    <app-fancybanner></app-fancybanner>
+    <app-job-card></app-job-card>
+    <app-testimonials></app-testimonials>
+    <app-findtalents></app-findtalents>
+    <app-q-a></app-q-a>
+    <app-cta></app-cta>
+  </section>
+  <app-footer></app-footer>
+</div>
 <div class="scroll-to-top-btn" *ngIf="showScrollTop" (click)="scrollToTop()">
   <i class="fa-solid fa-arrow-up"></i>
 </div>

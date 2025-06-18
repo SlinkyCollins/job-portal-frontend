@@ -2,15 +2,14 @@
   font-size: 2.2rem;
   font-family: "EB Garamond", serif;
   font-weight: 500;
-  margin: 0 0 3rem;
 }
 
 .view-jobs-wrapper {
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
-  max-width: 1200px;
-  margin: auto;
+  max-width: 1400px;
+  margin: 3rem auto 0;
 }
 
 .view-jobs-wrapper app-job-card:last-child .job-card {
@@ -162,7 +161,7 @@
   text-decoration-thickness: 2px;
 }
 
-@media (min-width: 360px) and (max-width: 413px){
+@media (min-width: 360px) and (max-width: 413px) {
   .job-content {
     display: flex;
     flex-direction: column;
@@ -172,9 +171,12 @@
   .job-card {
     align-items: start !important;
   }
-
   .job-actions {
     margin-left: 2.5rem;
+  }
+  .job-posting div {
+    display: inline;
+    margin-bottom: 0;
   }
 }
 
@@ -193,10 +195,14 @@
   .job-actions {
     margin-left: 2.5rem;
   }
+
+  .job-posting div {
+    display: inline;
+    margin-bottom: 0;
+  }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
-
   .job-card {
     align-items: start !important;
   }
@@ -220,11 +226,13 @@
 }
 
 @media (min-width: 768px) {
-
+  .new-jobs {
+    padding: 0 2rem 0;
+  }
   .job-content {
     gap: 5rem !important;
   }
-   .job-info {
+  .job-info {
     flex: 1;
   }
 
@@ -233,28 +241,84 @@
   }
 
   .job-title {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
   }
   .new-jobs .header {
     font-size: 2.5rem;
   }
-   .apply-btn {
+  .apply-btn {
     font-size: 1rem;
     padding: 0.6rem 1.2rem;
+  }
+
+  .job-posting {
+    margin: 2rem auto 0;
+    display: block;
+    width: 90%;
+    padding: 0.3rem 0.8rem;
   }
 }
 
 @media (min-width: 992px) {
-  .job-title {
-    font-size: 1.75rem;
+  .new-jobs {
+    padding: 0 3rem 0;
   }
   .new-jobs .header {
-    font-size: 2.75rem;
+    font-size: 3rem;
+  }
+  .job-posting {
+    margin: 2rem auto 0;
+    display: block;
+    width: 70%;
+  }
+
+  .job-content {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .job-content > div {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+
+  .job-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .job-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
   }
 }
 
 /* Optional tweak for very wide screens */
 @media (min-width: 1200px) {
+  .new-jobs {
+    padding: 0 1rem 0;
+  }
+
+  .new-jobs .header {
+    font-size: 3.8rem;
+    font-weight: 500;
+  }
+
+  .view-jobs-wrapper {
+    margin: 5rem auto 0;
+  }
+
+  .job-posting {
+    margin: 4rem auto 0;
+    display: block;
+    padding: 4px 10px;
+    width: 55%;
+    text-align: center;
+  }
+
   .job-card {
     padding: 2rem 2rem;
   }
@@ -272,4 +336,10 @@
   .job-card {
     padding: 2.5rem;
   }
+
+  .new-jobs {
+    padding: 0 3rem 0;
+  }
+}
+@media (min-width: 1441px) and (max-width: 2560px) {
 }
