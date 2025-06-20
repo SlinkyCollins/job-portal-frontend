@@ -2,7 +2,7 @@
   <div class="d-lg-flex align-items-lg-center justify-content-lg-between">
     <h1 class="header">New Job Listing</h1>
     <div class="explore-all mb-4 d-none d-lg-block d-sm-none d-md-none">
-      <a class="btn" href="">Explore all jobs ></a>
+      <a class="btn" href="">Explore all jobs &gt;</a>
     </div>
   </div>
 
@@ -11,62 +11,53 @@
       *ngFor="let job of jobs"
       class="job-card d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center"
     >
-      <!-- LEFT: Logo + Info -->
+      <!-- LEFT + MAIN INFO -->
       <div class="d-flex gap-3 w-100 align-items-start">
-        <img [src]="job.logo" alt="Company logo" class="job-logo" />
+        <img [src]="job.logo" alt="Company Logo" class="job-logo" />
 
-        <div class="job-info d-flex flex-column flex-grow-1">
+        <div class="job-main">
           <h2 class="job-title">{{ job.title }}</h2>
-          <div class="job-content d-flex flex-column flex-md-row">
-            <div>
-              <p
-                class="job-type"
-                [style.color]="job.type === 'Fulltime' ? '#00be57' : 'red'"
-              >
-                {{ job.type }}
-              </p>
-              <p class="job-meta">
-                <span style="color: #646765; font-weight: 400"
-                  >{{ job.date }} by</span
-                >
-                {{ job.company }}
-              </p>
+
+          <div class="job-details">
+            <p class="job-type" [style.color]="job.type === 'Fulltime' ? '#00be57' : 'red'">{{ job.type }}</p>
+            <p class="job-meta">
+              <span style="color: #646765; font-weight: 400">
+                {{ job.date }} by
+              </span> {{ job.company }}
+            </p>
+          </div>
+
+          <div class="job-location-tags">
+            <p class="job-location">{{ job.location }}</p>
+            <p class="job-tags">{{ job.tags }}</p>
+          </div>
+
+          <div class="job-actions">
+            <div class="savejob-icon-wrapper" title="Save Job">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 21l-7-4l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                />
+              </svg>
             </div>
-            <div>
-              <p class="job-location">{{ job.location }}</p>
-              <p class="job-tags">{{ job.tags }}</p>
-            </div>
+            <button class="apply-btn">Apply</button>
           </div>
         </div>
-      </div>
-
-      <!-- RIGHT: Buttons -->
-      <div class="job-actions d-flex align-items-center gap-3 mt-3 mt-md-0">
-        <div class="savejob-icon-wrapper" title="Save Job">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 21l-7-4l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-            />
-          </svg>
-        </div>
-        <button class="apply-btn">Apply</button>
       </div>
     </div>
   </div>
 
   <div class="explore-all text-center mt-5 mb-4 d-lg-none">
-    <a class="btn" href="">Explore all jobs ></a>
+    <a class="btn" href="">Explore all jobs &gt;</a>
   </div>
 
   <div class="job-posting">
-    <div>
-      Do you want to post a job for your company? <span>We can help.</span>
-    </div>
+    <div>Do you want to post a job for your company? <span>We can help.</span></div>
     <a href="">Click Here</a>
   </div>
 </div>
