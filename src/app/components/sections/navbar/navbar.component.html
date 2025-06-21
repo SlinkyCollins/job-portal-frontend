@@ -1,37 +1,59 @@
 <nav class="navbar navbar-expand-lg bg-transparent sticky-top w-100">
-    <div class="container-fluid">
-      <div
-        class="d-flex justify-content-between align-items-center w-100 pt-2 ps-2"
-      >
-        <div>
-          <a class="navbar-brand" routerLink="/">JobNet</a>
-        </div>
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center w-100">
+      <!-- Brand -->
+      <a class="navbar-brand" routerLink="/">JobNet</a>
 
-        <div class="d-flex align-items-center justify-content-center gap-3">
-          <a
-            routerLink="/login"
-            class="smlogin-link d-xs-block d-sm-block d-lg-none"
-            >Login</a
-          >
-          <!-- Custom Hamburger Icon -->
-          <div
-            class="hamburger me-1"
-            (click)="toggleMenu()"
-            [ngClass]="{ open: isMenuOpen }"
-          >
-            <span class="text-white"></span>
-            <span class="text-white"></span>
-            <span class="text-white"></span>
-          </div>
-        </div>
+      <!-- Desktop Menu -->
+      <ul class="fullmenu d-none d-lg-flex gap-4 mt-3">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/jobs">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/explore">Explore</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/blog">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+          </li>
+      </ul>
+
+      <!-- Right Controls -->
+      <div class="d-flex align-items-center justify-content-center gap-4">
+        <a routerLink="/login" class="smlogin-link">Login</a>
+        <a class="btn register-link d-none d-md-block" routerLink="/signup">Register</a>
+
+        <!-- Accessible Hamburger -->
+        <button
+          class="hamburger me-1"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="isMenuOpen"
+          aria-label="Toggle menu"
+          aria-controls="mobileNavMenu"
+          [ngClass]="{ open: isMenuOpen }"
+        >
+          <span class="text-white"></span><span class="text-white"></span><span class="text-white"></span>
+        </button>
       </div>
+    </div>
 
-      <div
-        class="navmenu px-3 pt-4"
-        [ngClass]="{ show: isMenuOpen }"
-        id="navbarNav"
-      >
-        <div class="header text-start">
+    <!-- Mobile Menu -->
+    <div
+      id="mobileNavMenu"
+      class="navmenu px-3 pt-4"
+      role="navigation"
+      [ngClass]="{ show: isMenuOpen }"
+      [attr.aria-hidden]="!isMenuOpen"
+    >
+      <div class="header text-start">
           <h2>JobNet</h2>
         </div>
         <ul class="navbar-nav text-start">
@@ -62,15 +84,10 @@
           </li>
         </ul>
         <ul class="navbar-nav text-center">
-          <li class="nav-item d-none d-lg-block d-xl-block d-xxl-block">
-            <a class="btn loginbtn me-2 fw-semibold fs-5" routerLink="/login"
-              >Login</a
-            >
-          </li>
           <li class="nav-item">
-            <a class="btn signupbtn" routerLink="/signup">Register</a>
+            <a class="btn signupbtn d-block d-md-none" routerLink="/signup">Register</a>
           </li>
         </ul>
-      </div>
     </div>
-  </nav>
+  </div>
+</nav>

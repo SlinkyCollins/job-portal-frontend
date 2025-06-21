@@ -1,12 +1,18 @@
 .navbar {
   transition: background-color 0.3s ease-in-out;
   position: fixed;
+  max-width: 1440px;
+}
+
+.container-fluid {
+  padding: 0.5rem 0.8rem;
 }
 
 .scrolled {
   background-color: #fff !important;
   animation-name: scroll;
   animation-duration: 1s;
+  padding: 0.1rem 0.1rem;
 }
 
 @keyframes scroll {
@@ -18,28 +24,28 @@
   }
 }
 
-.custom-gap {
+/* .custom-gap {
   --bs-gutter-x: 3rem;
   --bs-gutter-y: 3rem;
-}
+} */
 
 /* Custom hamburger menu */
+
 .hamburger {
   display: block;
   cursor: pointer;
   padding: 0.3rem 0.5rem;
-  border-radius: 5px;
   background-color: #00be57;
+  border-radius: 5px;
+  border: none;
 }
-
 .hamburger span {
-  display: block;
   width: 27px;
   height: 2px;
   margin: 6px 0;
-  transition: 0.4s;
-  background: transparent; /* Inherits light green */
-  border: 1px solid white; /* White lines instead of background */
+  background-color: #fff; /* Simpler than border for white bars */
+  transition: all 0.4s;
+  display: block;
 }
 
 /* Default state (normal hamburger) */
@@ -62,10 +68,38 @@
   font-weight: 600;
 }
 
+.fullmenu li {
+  list-style: none;
+}
+
+.fullmenu li a {
+  font-size: 0.9rem;
+  font-weight: bolder;
+  font-family: "Gordita-Regular", cursive;
+}
+
 .container-fluid .smlogin-link {
   text-decoration: none;
   font-weight: 600;
   color: #212529;
+}
+
+.container-fluid .register-link {
+  font-family: "Gordita-Regular", cursive;
+  color: #fff;
+  background-color: #00be57;
+  border-radius: 30px;
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 100%;
+  border: none;
+  outline: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navmenu {
+  display: none;
 }
 
 .navmenu .header h2 {
@@ -105,6 +139,15 @@
   background-color: #244034;
 }
 
+@media (min-width: 768px) {
+  .container-fluid {
+    padding: 0.8rem 0.8rem;
+  }
+  .scrolled {
+    padding: 0;
+  }
+}
+
 /* Custom responsive menu */
 @media (max-width: 992px) {
   .navbar-collapse {
@@ -119,6 +162,7 @@
   }
 
   .navmenu {
+    display: block;
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);
     position: fixed;
@@ -126,10 +170,29 @@
     left: 0;
     width: 80vw;
     min-height: 100vh;
+    max-width: 350px;
     background: white;
     z-index: 500;
   }
   .navmenu.show {
     transform: translateX(0);
+  }
+}
+
+@media (min-width: 992px) {
+  .hamburger {
+    display: none;
+  }
+
+  .fullmenu li a {
+    font-size: 0.9rem;
+    color: #000;
+    font-weight: 700;
+  }
+  .container-fluid {
+    padding: 0.4rem 1rem;
+  }
+  .scrolled {
+    padding: 0 0.5rem;
   }
 }
