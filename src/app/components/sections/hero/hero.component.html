@@ -1,12 +1,11 @@
 <section class="hero-section">
-
   <div class="hero-text">
     <div>
       <h1>Find your job without any hassle.</h1>
       <p>Jobs & Job search. Find jobs in global. Executive jobs & work.</p>
     </div>
 
-    <div class="heroSearch d-flex flex-column flex-lg-row">
+    <div class="heroSearch d-flex flex-column flex-md-row gap-md-3">
       <div
         class="flex-fill customSelectWrapper"
         [class.open]="isSelectOpen1"
@@ -42,7 +41,7 @@
         </select>
         <span class="customArrow"></span>
       </div>
-      <hr />
+      <hr/>
       <div
         class="flex-fill customSelectWrapper"
         [class.open]="isSelectOpen2"
@@ -65,19 +64,22 @@
         </select>
         <span class="customArrow"></span>
       </div>
-      <hr />
+      <hr/>
       <div class="flex-fill">
         <label for="searchBox" class="form-label">Keywords or Title</label>
         <input type="text" placeholder="Design, branding" id="searchBox" />
       </div>
-      <hr />
+      <hr/>
       <div class="d-flex align-items-end">
         <button class="searchBtn">SEARCH</button>
       </div>
     </div>
 
     <div class="uploadCV mt-4">
-      <label for="cvUpload" class="btn bg-white px-2 py-2 rounded-3 fw-medium">
+      <label
+        for="cvUpload"
+        class="btn px-2 py-2 px-sm-3 py-sm-2 rounded-3 fw-medium"
+      >
         Upload your CV
         <i class="bi bi-file-earmark-arrow-up"></i>
       </label>
