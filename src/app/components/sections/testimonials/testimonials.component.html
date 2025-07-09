@@ -1,14 +1,28 @@
 <div class="testimonials">
-  <h1 class="header mb-5">Trusted by leading startups.</h1>
+  <div class="testimonials-header">
+    <h1 class="header">Trusted by leading startups.</h1>
 
-  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <!-- Carousel Item -->
-      <div
-        class="carousel-item"
-        *ngFor="let item of testimonials; let i = index"
-        [ngClass]="{ active: i === 0 }"
-      >
+    <!-- DESKTOP NAV BUTTONS (768px and up) -->
+    <div class="swiper-nav-buttons desktop-nav">
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+
+  <!-- SWIPER CONTAINER -->
+  <swiper-container
+    #swiperEl
+    class="mySwiper"
+    pagination="false"
+    autoplay='{"delay": 2000, "disableOnInteraction": true}'
+    breakpoints='{
+      "0": { "slidesPerView": 1 },
+      "768": { "slidesPerView": 2, "spaceBetween": 20 },
+      "992": { "slidesPerView": 3, "spaceBetween": 40 }
+    }'
+  >
+    <swiper-slide *ngFor="let item of testimonials">
+      <div class="testimonial-slide">
         <div class="carousel-content">
           <img src="{{ item.logo }}" alt="Logo" class="logo" />
           <blockquote class="testimonial-quote">"{{ item.quote }}"</blockquote>
@@ -18,8 +32,10 @@
           </p>
           <hr class="rating-divider" />
           <div class="rating">
-            <p>{{ item.rating }}</p>
-            <p class="rating-review">{{ item.review }}</p>
+            <div class="rating-review">
+              <p>{{ item.rating }}</p>
+              <p>{{ item.review }}</p>
+            </div>
             <ul class="rating-count">
               <li *ngFor="let star of getStars(item.rating)">
                 <fa-icon
@@ -30,62 +46,18 @@
                       ? faStarHalf
                       : faStarEmpty
                   "
-                >
-                </fa-icon>
+                ></fa-icon>
               </li>
             </ul>
           </div>
         </div>
       </div>
-    </div>
+    </swiper-slide>
+  </swiper-container>
 
-    <!-- CONTROLS -->
-    <div class="carousel-controls">
-      <div
-        class="prev-icon"
-        data-bs-target="#carouselExample"
-        data-bs-slide="prev"
-      >
-        <svg
-          class="text-black"
-          xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
-          viewBox="0 0 16 9"
-        >
-          <path
-            fill="currentColor"
-            d="M12.5 5h-9c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h9c.28 0 .5.22.5.5s-.22.5-.5.5"
-          />
-          <path
-            fill="currentColor"
-            d="M6 8.5a.47.47 0 0 1-.35-.15l-3.5-3.5c-.2-.2-.2-.51 0-.71L5.65.65c.2-.2.51-.2.71 0s.2.51 0 .71L3.21 4.51l3.15 3.15c.2.2.2.51 0 .71c-.1.1-.23.15-.35.15Z"
-          />
-        </svg>
-      </div>
-
-      <div
-        class="next-icon"
-        data-bs-target="#carouselExample"
-        data-bs-slide="next"
-      >
-        <svg
-          class="text-black"
-          xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
-          viewBox="0 0 16 9"
-        >
-          <path
-            fill="currentColor"
-            d="M12.5 5h-9c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h9c.28 0 .5.22.5.5s-.22.5-.5.5"
-          />
-          <path
-            fill="currentColor"
-            d="M10 8.5a.47.47 0 0 1-.35-.15c-.2-.2-.2-.51 0-.71l3.15-3.15l-3.15-3.15c-.2-.2-.2-.51 0-.71s.51-.2.71 0l3.5 3.5c.2.2.2.51 0 .71l-3.5 3.5c-.1.1-.23.15-.35.15Z"
-          />
-        </svg>
-      </div>
-    </div>
+  <!-- MOBILE NAV BUTTONS (below swiper on small screens) -->
+  <div class="swiper-nav-buttons mobile-nav">
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
   </div>
 </div>

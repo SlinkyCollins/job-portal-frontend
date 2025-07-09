@@ -78,3 +78,128 @@
   width: 100%;
   margin: 0 auto;
 }
+
+/* >=576px (sm and up): reduce image height for better balance */
+@media (min-width: 576px) {
+  .fancy-banner-img img {
+    max-height: 400px;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .fancy-banner-text {
+    padding: 3.5rem 2rem;
+  }
+}
+
+/* Tablet and Up (>=768px) */
+@media (min-width: 768px) {
+  .fancy-banner {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .fancy-banner-text {
+    flex: 1;
+    padding: 4rem 3rem;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 30px;
+  }
+
+  .fancy-banner-img {
+    flex: 1;
+    max-height: 420px;
+  }
+
+  .fancy-banner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 30px;
+  }
+
+  .fancy-banner .fancy-banner-text button {
+    width: auto;
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+
+@media (min-width: 992px) {
+  .fancy-banner {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 100%;
+    align-items: stretch;
+  }
+
+  .fancy-banner .fancy-banner-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 0;
+  }
+
+  .fancy-banner-img {
+    flex: 1;
+    display: flex;
+  }
+
+  .fancy-banner-img img {
+    width: 100%;
+    /* height: auto; */
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+}
+
+
+
+/* Desktop and Up (>=1200px) */
+@media (min-width: 1200px) {
+  .fancy-banner-text {
+    padding: 5.5rem 5rem;
+  }
+
+  .fancy-banner-img img {
+    max-height: 430px;
+  }
+
+  .fancy-banner .fancy-banner-text h2 {
+    font-size: 3.2rem;
+  }
+
+  .fancy-banner .fancy-banner-text p {
+    font-size: 1.2rem;
+    max-width: 90%;
+  }
+
+  .achievements-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    gap: 6rem;
+    padding: 6rem 2rem;
+  }
+
+  .achievements-wrapper .achievement h1 {
+    font-size: 2.2rem;
+  }
+
+  .achievements-wrapper .achievement p {
+    font-size: 1.1rem;
+  }
+}

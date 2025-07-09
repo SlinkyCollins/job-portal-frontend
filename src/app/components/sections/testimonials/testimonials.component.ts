@@ -1,19 +1,44 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { faStar as faSolidStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faRegularStar } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-testimonials',
+  standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './testimonials.component.html',
-  styleUrl: './testimonials.component.css'
+  styleUrl: './testimonials.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class TestimonialsComponent {
+export class TestimonialsComponent implements AfterViewInit {
+  @ViewChild('swiperEl', { static: false }) swiperElRef!: ElementRef;
+
   faStarFull = faSolidStar;
   faStarHalf = faStarHalfAlt;
   faStarEmpty = faRegularStar;
+
+  ngAfterViewInit() {
+    const swiper: any = this.swiperElRef.nativeElement.swiper;
+
+    // Attach click handlers for custom nav buttons
+    const buttons = document.querySelectorAll('.swiper-button-prev, .swiper-button-next');
+    buttons.forEach(btn => {
+      btn.classList.contains('swiper-button-prev')
+        ? btn.addEventListener('click', () => swiper.slidePrev())
+        : btn.addEventListener('click', () => swiper.slideNext());
+    });
+
+    // 💥 Force start autoplay if it’s not running
+    if (swiper && swiper.autoplay && !swiper.autoplay.running) {
+      swiper.autoplay.start();
+      console.log('✅ Autoplay started manually');
+    }
+
+    console.log('Swiper autoplay:', swiper.autoplay);
+
+  }
 
   getStars(rating: number): ('full' | 'half' | 'empty')[] {
     const full = Math.floor(rating);
@@ -33,7 +58,7 @@ export class TestimonialsComponent {
     }
 
     return stars;
-  };
+  }
 
   public testimonials = [
     {
@@ -70,7 +95,7 @@ export class TestimonialsComponent {
     },
     {
       logo: "/assets/monday-logo.png",
-      quote: "We’ve tried other platforms but none matched the speed and flexibility of JobNet.",
+      quote: "We've tried other platforms but none matched the speed and flexibility of JobNet.",
       name: "Brian Lee",
       role: "Senior Developer",
       rating: 4.6,
