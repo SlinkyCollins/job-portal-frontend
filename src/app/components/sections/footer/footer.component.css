@@ -1,3 +1,4 @@
+/* Mobile First - Base Styles (320px to 575px) */
 .footer-wrapper {
   margin: 0 0 1rem;
 }
@@ -71,4 +72,77 @@
   font-family: "Gordita-Regular", cursive;
   font-weight: 500;
   font-size: 0.9rem;
+}
+
+/* 576px+ - footerBiggerMobile: 3 columns side by side */
+@media (min-width: 576px) {
+  .footer-category-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 1.5rem !important;
+  }
+}
+
+/* 768px+ - footerTablet: Flexed with better alignment and padding */
+@media (min-width: 768px) {
+  .footer {
+    padding: 0 3rem;
+  }
+
+  .footer-header {
+    margin-bottom: 3rem;
+  }
+
+  .footer-category-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 3rem !important;
+    padding: 0 1rem;
+  }
+
+  .footer-category {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .footer-end {
+    margin-top: 4rem;
+    padding: 0 1rem;
+  }
+}
+
+/* 992px+ - footerLaptop: Logo left, categories right, footer split */
+@media (min-width: 992px) {
+  .footer {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 4rem !important;
+    padding: 0 3rem;
+  }
+
+  .footer-header {
+    flex: 0 0 300px;
+    margin-bottom: 0;
+  }
+
+  .footer-category-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 3rem !important;
+    flex: 1;
+    padding: 0;
+  }
+
+  .footer-category {
+    margin-bottom: 0 !important;
+  }
+
+  .footer-end {
+    padding: 0 3rem;
+    margin-top: 2rem;
+  }
 }

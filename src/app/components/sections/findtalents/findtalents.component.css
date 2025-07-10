@@ -63,19 +63,53 @@
   font-weight: 500;
 }
 
+.talent-imgs {
+  max-width: 576px;
+  margin: 0 auto;
+}
 
-@media (min-width: 576px){
-  .talents{
+@media (min-width: 576px) {
+  .talents {
     margin: 0 1rem 0;
   }
 
   .talents p {
     margin: 0 0 1rem 1rem;
-    font-size: .9rem;
-}
+    font-size: 0.9rem;
+  }
 
-.talents .header {
+  .talents .header {
     margin: 0 0 0 1rem;
     font-size: 2.3rem;
+  }
 }
+
+@media (min-width: 992px) {
+  .talents {
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .talent-imgs {
+    max-width: 800px;
+    margin: 0 0;
+  }
+
+  .talents .header {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+
+  .accordion-item .accordion-header .accordion-button {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .accordion-item .accordion-collapse .accordion-body {
+    font-size: 1rem;
+    font-weight: 500;
+  }
 }
