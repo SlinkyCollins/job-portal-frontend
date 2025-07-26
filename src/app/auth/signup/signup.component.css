@@ -1,0 +1,113 @@
+.signupWrapper {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.signupContainer {
+  margin: 6rem 0 3rem;
+  background-color: #eff6f3;
+  padding-bottom: 1rem;
+}
+
+.signupHeader {
+  text-align: center;
+  padding: 4rem 0;
+  margin-bottom: 2rem;
+  color: #fff;
+  background-color: #244034;
+}
+
+.signupHeader h1 {
+  font-family: "EB Garamond", serif;
+}
+
+.signupHeader p {
+  font-family: "Gordita-Regular", cursive;
+}
+
+
+.signupForm {
+  background-color: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 0.8rem 1.2rem 0.8rem;
+  margin: 5rem auto;
+  width: 100%;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  transition: max-width 0.2s, padding 0.2s;
+}
+
+@media (min-width: 568px) {
+  .signupForm {
+    max-width: 520px;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .signupForm {
+    max-width: 650px;
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .signupForm {
+    max-width: 750px;
+    padding: 3rem 3rem 2.5rem 3rem;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .signupForm {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.1rem;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  display: block;
+  color: #244034;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.6rem;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 0.2rem;
+  background: #f8fafb;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #00be57;
+  outline: none;
+  background: #fff;
+}
+
+.invalid-feedback {
+  font-size: 0.92rem;
+}
+
+.signupH1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.signupH1 {
+  font-family: "EB Garamond", serif;
+}

@@ -1,7 +1,7 @@
 .navbar {
   transition: background-color 0.3s ease-in-out;
   position: fixed;
-  max-width: 1440px;
+  width: 100%;
 }
 
 .container-fluid {

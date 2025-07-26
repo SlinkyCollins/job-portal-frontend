@@ -1,73 +1,93 @@
-<div class="col-8 mx-auto shadow p-5 my-5">
-  <h1 class="text-success text-center p-2">Log In</h1>
-  <form #form="ngForm">
-    <div>
+<app-navbar></app-navbar>
+<div class="loginForm">
+  <div class="loginWelcome text-center mb-3">
+    <h2 class="loginH1">Hi, welcome back</h2>
+    <p class="loginSub">Log in to your account to continue</p>
+  </div>
+  <form #form="ngForm" novalidate>
+    <div class="form-group">
+      <label for="mail" class="form-label">Email</label>
       <input
-        type="text"
+        id="mail"
+        type="email"
         placeholder="Email"
         name="mail"
         autocomplete="username"
         [(ngModel)]="email"
         #mail="ngModel"
-        class="form-control my-2"
+        class="form-control"
         required
+        [class.is-valid]="mail.valid && mail.dirty"
+        [class.is-invalid]="mail.invalid && mail.dirty"
       />
+      <div *ngIf="mail.invalid && mail.dirty" class="invalid-feedback d-block">
+        <span *ngIf="mail.hasError('required')">This field is required</span>
+      </div>
     </div>
 
-    <div style="position: relative">
+    <div class="form-group" style="position: relative;">
+      <label for="pword" class="form-label">Password</label>
       <input
+        id="pword"
         [type]="showPassword ? 'text' : 'password'"
         placeholder="Password"
         name="pword"
         autocomplete="current-password"
         [(ngModel)]="password"
         #pword="ngModel"
-        class="form-control my-2"
+        class="form-control"
         required
+        [class.is-valid]="pword.valid && (pword.dirty || pword.touched)"
+        [class.is-invalid]="pword.invalid && (pword.dirty || pword.touched)"
       />
       <i
         [title]="showPassword ? 'Hide Password' : 'Show Password'"
         class="toggle-icon fas"
         [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'"
         (click)="togglePassword()"
-        style="position: absolute; right: 40px; top: 30%; cursor: pointer"
-      >
-      </i>
+        style="position: absolute; right: 40px; top: 56%; cursor: pointer"
+      ></i>
       <i
         title="Clear Password"
         class="clear-icon fas fa-times-circle"
         (click)="clearPassword()"
         *ngIf="password && password.length > 0"
-        style="position: absolute; right: 10px; top: 30%; cursor: pointer"
+        style="position: absolute; right: 10px; top: 56%; cursor: pointer"
+      ></i>
+      <div *ngIf="pword.invalid && (pword.dirty || pword.touched)" class="invalid-feedback d-block">
+        <span *ngIf="pword.hasError('required')">This field is required</span>
+      </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between align-items-center mb-2">
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="rememberMe" />
+        <label class="form-check-label" for="rememberMe">Remember Me</label>
+      </div>
+      <div>
+        <a routerLink="/forgot-password" class="forgot-link">Forgot Password?</a>
+      </div>
+    </div>
+
+    <div class="form-group mt-4" style="position: relative;">
+      <button
+        type="submit"
+        class="btn btn-success w-100 text-uppercase fw-semibold p-3"
+        [disabled]="form.invalid || loading"
+        [value]="loading ? 'Logging In...' : 'Login'"
+        style="cursor: pointer"
+        (click)="login()"
       >
-      </i>
+        {{ loading ? 'Logging In...' : 'Login' }}
+      </button>
+      <div *ngIf="loading" class="spinner-border spinner-border-sm text-light"
+        style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"></div>
     </div>
 
-    <div>
-      <div>
-        <input type="checkbox">
-        <span>Remember Me</span>
-      </div>
-
-      <div>
-        <a>Forgot Password</a>
-      </div>
-    </div>
-
-    <button
-      type="submit"
-      class="btn btn-success w-100"
-      [disabled]="form.invalid || loading"
-      [value]="loading ? 'Logging In...' : 'Login'"
-      style="cursor: pointer"
-      (click)="login()"
-    >
-      Login
-    </button>
-
-    <p class="text-center my-1">
+    <p class="text-center my-2">
       Don&apos;t have an account?
-      <a routerLink="/signup" style="cursor: pointer">Sign Up</a>
+      <a routerLink="/signup" style="cursor: pointer; text-decoration: none; color: #31795a; font-weight: 700;">Sign Up</a>
     </p>
   </form>
 </div>
+<app-footer></app-footer>

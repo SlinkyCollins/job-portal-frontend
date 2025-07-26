@@ -4,10 +4,12 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
+import { FooterComponent } from '../../components/sections/footer/footer.component';
 
 @Component({
     selector: 'app-signup',
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, NavbarComponent, FooterComponent],
     templateUrl: './signup.component.html',
     styleUrl: './signup.component.css'
 })
