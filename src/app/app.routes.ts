@@ -8,16 +8,37 @@ import { EmployerDashboardComponent } from './features/dashboard/employer-dashbo
 import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
+import { DashboardHomeComponent } from './components/sections/dashboard-home/dashboard-home.component';
+import { ProfileComponent } from './components/sections/profile/profile.component';
+import { ResumeComponent } from './components/sections/resume/resume.component';
+import { JobalertsComponent } from './components/sections/jobalerts/jobalerts.component';
+import { SavedJobsComponent } from './components/sections/saved-jobs/saved-jobs.component';
+import { AccountsettingsComponent } from './components/sections/accountsettings/accountsettings.component';
+import { DeleteaccountComponent } from './components/sections/deleteaccount/deleteaccount.component';
 
 
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'home', redirectTo: '', pathMatch: 'full'},
-    {path: 'signup', component: SignupComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'jobseeker/dashboard', component: SeekerDashboardComponent, canActivate: [jobSeekerGuardGuard]},
-    {path: 'employer/dashboard', component: EmployerDashboardComponent, canActivate: [employerGuardGuard]},
-    {path: 'admin/dashboard', component: AdminDashboardComponent},
-    {path: '**', component: ErrorpageComponent},
+    { path: '', component: HomeComponent },
+    { path: 'home', redirectTo: '', pathMatch: 'full' },
+    { path: 'signup', component: SignupComponent },
+    { path: 'login', component: LoginComponent },
+    {
+        path: 'dashboard/jobseeker',
+        component: SeekerDashboardComponent,
+        children: [
+            { path: '', component: DashboardHomeComponent },
+            { path: 'profile', component: ProfileComponent },
+            { path: 'resume', component: ResumeComponent },
+            { path: 'job-alert', component: JobalertsComponent },
+            { path: 'saved-jobs', component: SavedJobsComponent },
+            { path: 'account-settings', component: AccountsettingsComponent },
+            { path: 'delete-account', component: DeleteaccountComponent },
+            // ...add more as needed
+        ],
+        canActivate: [jobSeekerGuardGuard]
+    },
+    { path: 'dashboard/employer', component: EmployerDashboardComponent, canActivate: [employerGuardGuard] },
+    { path: 'admin/dashboard', component: AdminDashboardComponent },
+    { path: '**', component: ErrorpageComponent },
 ];

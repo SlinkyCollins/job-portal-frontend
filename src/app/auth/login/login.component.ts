@@ -55,9 +55,9 @@ export class LoginComponent {
         this.toastr.success('Login successful');
         const role = response.user.role;
         const routes: { [key: string]: string } = {
-          admin: '/admin/dashboard',
-          employer: '/employer/dashboard',
-          job_seeker: '/jobseeker/dashboard'
+          admin: 'dashboard/admin',
+          employer: 'dashboard/employer',
+          job_seeker: 'dashboard/jobseeker'
         };
         this.router.navigate([routes[role] || '/']);
       }

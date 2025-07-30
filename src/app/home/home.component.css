@@ -6,32 +6,6 @@
   padding: 4rem 0.8rem 2rem;
 }
 
-.scroll-to-top-btn {
-  appearance: button;
-  border: none;
-  outline: none;
-  background-color: #00bf58;
-  padding: 10px 12px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: fixed;
-  z-index: 499;
-  bottom: 1rem;
-  right: 0.5rem;
-  box-shadow: 0 10px 7.5px rgba(0, 0, 0, 0.25);
-  transition: opacity 0.3s ease-in-out;
-}
-
-.scroll-to-top-btn i {
-  cursor: pointer;
-  display: inline;
-  color: #fff;
-  font-size: 1rem;
-}
-
 
 /* CSS utility class (for basic reusability) */
 /* .btn {

@@ -1,25 +1,169 @@
-<p>seeker-dashboard works!</p>
+<!-- Main Container -->
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.sidebar-open]="sidebarOpen">
+    <!-- Mobile Close Button -->
+    <button class="mobile-close-btn" (click)="closeSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
 
-<!-- <div *ngIf="applications.length > 0; else noApps">
-    <h2>Your Applications</h2>
-    <ul>
-      <li *ngFor="let app of applications">
-        {{ app.job_title }} - {{ app.status }}
-      </li>
-    </ul>
+    <!-- Logo -->
+    <div class="logo">
+      <span class="logo-text">JobNet</span>
+    </div>
+
+    <!-- User Profile -->
+    <div class="user-profile" (click)="toggleUserDropdown()">
+      <div class="user-avatar">
+        <img src="https://mighty.tools/mockmind-api/content/human/80.jpg" alt="User Avatar">
+        <div class="status-indicator"></div>
+      </div>
+      <span class="username">{{ user.firstname || 'John Doe' }}</span>
+      <i class="fas fa-chevron-down dropdown-icon" [class.rotated]="userDropdownOpen"></i>
+    </div>
+
+    <!-- User Dropdown Menu -->
+    <div class="user-dropdown" [class.open]="userDropdownOpen">
+      <a href="#" class="dropdown-item">
+        <i class="fas fa-user-circle"></i>
+        <span>View Profile</span>
+      </a>
+      <a href="#" class="dropdown-item">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+      <a href="#" class="dropdown-item">
+        <i class="fas fa-bell"></i>
+        <span>Notifications</span>
+      </a>
+      <div class="dropdown-divider"></div>
+      <a href="#" class="dropdown-item" (click)="showLogoutModal($event)">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+      <a routerLink="/dashboard/jobseeker" 
+         routerLinkActive="active" 
+         class="nav-item"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="onNavItemClick()">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="profile" 
+         routerLinkActive="active" 
+         class="nav-item"
+         (click)="onNavItemClick()">
+        <i class="fas fa-user"></i>
+        <span>My Profile</span>
+      </a>
+      <a routerLink="resume" 
+         routerLinkActive="active" 
+         class="nav-item"
+         (click)="onNavItemClick()">
+        <i class="fas fa-plus-circle"></i>
+        <span>Resume</span>
+      </a>
+      <a routerLink="job-alert" 
+         routerLinkActive="active" 
+         class="nav-item"
+         (click)="onNavItemClick()">
+        <i class="fas fa-bell"></i>
+        <span>Job Alert</span>
+      </a>
+      <a routerLink="saved-jobs" 
+         routerLinkActive="active" 
+         class="nav-item"
+         (click)="onNavItemClick()">
+        <i class="fas fa-bookmark"></i>
+        <span>Saved Job</span>
+      </a>
+      <a routerLink="account-settings" 
+         routerLinkActive="active" 
+         class="nav-item"
+         (click)="onNavItemClick()">
+        <i class="fas fa-cog"></i>
+        <span>Account Settings</span>
+      </a>
+      <a routerLink="delete-account" 
+         routerLinkActive="active" 
+         class="nav-item"
+         (click)="onNavItemClick()">
+        <i class="fas fa-trash"></i>
+        <span>Delete Account</span>
+      </a>
+    </nav>
+
+    <!-- Profile Progress -->
+    <div class="profile-progress">
+      <div class="progress-info">
+        <span class="progress-percentage">87%</span>
+        <span class="progress-label">Profile Complete</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 87%"></div>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <button class="logout-btn" (click)="showLogoutModal($event)">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <button class="mobile-menu-btn" (click)="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="header-actions">
+        <!-- Search box for desktop, hidden on <=480px -->
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search here..">
+        </div>
+        <button class="notification-btn">
+          <i class="fas fa-bell"></i>
+          <span class="notification-badge"></span>
+        </button>
+        <button class="search-job-btn">Hunt Jobs</button>
+      </div>
+    </header>
+    
+    <!-- This is where your routed content will appear -->
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Logout Confirmation Modal -->
+  <div class="modal-overlay" [class.active]="showLogoutConfirm" (click)="hideLogoutModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Confirm Logout</h3>
+        <button class="modal-close-btn" (click)="hideLogoutModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="logout-icon">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <p>Are you sure you want to logout?</p>
+        <p class="modal-subtitle">You will need to login again to access your account.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="hideLogoutModal()">Cancel</button>
+        <button class="btn-confirm" (click)="confirmLogout()">Logout</button>
+      </div>
+    </div>
   </div>
-  
-  <ng-template #noApps>
-    <p>No job applications found. Start applying now!</p>
-  </ng-template> -->
-  
-  <div class="text-success">Hello, {{this.user.firstname}}</div>
-
-  <button>Ping Me</button>
-  <textarea name="" id="" cols="30" rows="10"></textarea>
-
-  <div>
-    <button (click)="logOut()">Log Out</button>
-  </div>
-
-  
+</div>

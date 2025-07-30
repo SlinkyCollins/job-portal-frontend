@@ -26,8 +26,8 @@ import { ButtonComponent } from "../components/ui/button/button.component";
     FancybannerComponent,
     FindtalentsComponent,
     JobCardComponent,
-    ButtonComponent
-],
+    ButtonComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -35,8 +35,6 @@ export class HomeComponent {
   ngOnInit() {
 
   };
-
-  public showScrollTop = false;
 
   // public faqs = [
   //   {
@@ -52,17 +50,5 @@ export class HomeComponent {
   //     answer: "To apply for a job, click on the job listing and follow the application process."
   //   },
   // ];
-
-  @HostListener("window:scroll", [])
-  onWindowScroll() {
-    this.showScrollTop = window.pageYOffset > 300; // Show button after scrolling 300px
-  }
-
-  scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // makes it scroll smoothly
-    });
-  }
 
 }

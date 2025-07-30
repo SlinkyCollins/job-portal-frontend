@@ -1,25 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-seeker-dashboard',
-    imports: [CommonModule],
-    templateUrl: './seeker-dashboard.component.html',
-    styleUrl: './seeker-dashboard.component.css'
+  selector: 'app-seeker-dashboard',
+  imports: [CommonModule, RouterLink, RouterModule],
+  templateUrl: './seeker-dashboard.component.html',
+  styleUrl: './seeker-dashboard.component.css'
 })
-export class SeekerDashboardComponent {
+export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+  public applications: any[] = [];
+  public user: any = '';
+  public sidebarOpen: boolean = false;
+  public userDropdownOpen: boolean = false;
+  public showLogoutConfirm: boolean = false;
+  private chart: any;
+
   constructor(
     public router: Router,
     public toastr: ToastrService,
     public authService: AuthService,
   ) { }
-
-  public applications: any[] = [];
-  public user: any = '';
 
   ngOnInit() {
     this.authService.getSeekerData().subscribe(
@@ -65,6 +69,91 @@ export class SeekerDashboardComponent {
         this.router.navigate(['/login']);
       }
     );
+
+    // Close sidebar and dropdowns on window resize
+    window.addEventListener('resize', this.handleWindowResize.bind(this));
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', this.handleDocumentClick.bind(this));
+  }
+
+  ngAfterViewInit() {
+    // Initialize chart if needed
+    this.initializeChart();
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.handleWindowResize.bind(this));
+    document.removeEventListener('click', this.handleDocumentClick.bind(this));
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  }
+
+  private handleWindowResize() {
+    if (window.innerWidth > 1024) {
+      this.sidebarOpen = false;
+      this.userDropdownOpen = false;
+    }
+  }
+
+  private handleDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    
+    // Close user dropdown if clicking outside
+    if (!target.closest('.user-profile') && !target.closest('.user-dropdown')) {
+      this.userDropdownOpen = false;
+    }
+  }
+
+  private initializeChart() {
+    // You can implement Chart.js or any other charting library here
+    console.log('Chart initialized');
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+    // Close user dropdown when opening sidebar
+    if (this.sidebarOpen) {
+      this.userDropdownOpen = false;
+    }
+  }
+
+  closeSidebar() {
+    this.sidebarOpen = false;
+    this.userDropdownOpen = false;
+  }
+
+  toggleUserDropdown() {
+    this.userDropdownOpen = !this.userDropdownOpen;
+  }
+
+  onNavItemClick() {
+    // Close mobile sidebar when nav item is clicked for better UX
+    if (window.innerWidth <= 1024) {
+      this.closeSidebar();
+    }
+  }
+
+  showLogoutModal(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.showLogoutConfirm = true;
+    this.userDropdownOpen = false;
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+  }
+
+  hideLogoutModal() {
+    this.showLogoutConfirm = false;
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+  }
+
+  confirmLogout() {
+    this.hideLogoutModal();
+    this.logOut();
   }
 
   logOut() {
