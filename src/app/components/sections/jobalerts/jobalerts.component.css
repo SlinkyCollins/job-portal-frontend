@@ -1,0 +1,270 @@
+/* job-alert.component.css */
+
+/* Header Styles */
+.job-alerts-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.sort-label {
+  font-size: 0.875rem;
+  color: #4a5568;
+  white-space: nowrap;
+}
+
+.sort-select {
+  min-width: 120px;
+  font-size: 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.75rem;
+}
+
+/* Table Styles */
+.job-alerts-table {
+  background: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.table-header {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.875rem;
+  border: none;
+  padding: 1.25rem 1rem;
+  vertical-align: middle;
+}
+
+.job-row {
+  border-bottom: 1px solid #f1f3f4;
+  transition: background-color 0.2s ease;
+}
+
+.job-row:hover {
+  background-color: #f8f9fa;
+}
+
+.job-row:last-child {
+  border-bottom: none;
+}
+
+/* Table Cell Styles */
+.job-title-cell,
+.alert-cell,
+.job-cell,
+.time-cell,
+.actions-cell {
+  padding: 1.25rem 1rem;
+  vertical-align: middle;
+  border: none;
+}
+
+.job-title {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.alert-type {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+.alert-fulltime {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-parttime {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-details {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.alert-categories {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.jobs-found {
+  color: #0066cc;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.time-cell {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #adb5bd;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.action-btn:hover {
+  color: #6c757d;
+  background-color: #f8f9fa;
+}
+
+/* Mobile Card Styles */
+.mobile-card .card {
+  border: 1px solid #e9ecef;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.mobile-card .card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-card .job-title {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.mobile-alert-info .alert-type {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.mobile-label {
+  font-size: 0.75rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+/* Pagination Styles */
+.pagination {
+  margin: 0;
+  gap: 0.25rem;
+}
+
+.page-link {
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.page-link:hover {
+  background-color: #f8f9fa;
+  color: #495057;
+  border-color: #adb5bd;
+}
+
+.page-item.active .page-link {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  color: #adb5bd;
+  background-color: transparent;
+  border-color: #dee2e6;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e9ecef;
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+  .job-alerts-title {
+    font-size: 1.75rem;
+  }
+  
+  .sort-label {
+    font-size: 0.8rem;
+  }
+  
+  .sort-select {
+    min-width: 100px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .job-alerts-title {
+    font-size: 1.5rem;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .page-link {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Focus States for Accessibility */
+.sort-select:focus,
+.page-link:focus,
+.action-btn:focus,
+.dropdown-item:focus {
+  outline: 2px solid #28a745;
+  outline-offset: 2px;
+}

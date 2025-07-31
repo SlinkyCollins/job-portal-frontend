@@ -1,1 +1,142 @@
-<p>jobalerts works!</p>
+<!-- job-alert.component.html -->
+<div class="container-fluid px-3 px-md-4 py-4">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+    <h2 class="job-alerts-title mb-3 mb-md-0">Job Alerts</h2>
+    <div class="d-flex align-items-center gap-2">
+      <span class="sort-label">Sort by:</span>
+      <select class="form-select sort-select">
+        <option selected>New</option>
+        <option>Old</option>
+        <option>Category</option>
+        <option>Job Type</option>
+        <option>Title</option>
+        <option>Frequency</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Desktop Table View -->
+  <div class="d-none d-lg-block">
+    <div class="table-responsive">
+      <table class="table job-alerts-table">
+        <thead>
+          <tr>
+            <th class="table-header">Title</th>
+            <th class="table-header">Alert</th>
+            <th class="table-header">Job</th>
+            <th class="table-header">Time</th>
+            <th class="table-header">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alert of alerts" class="job-row">
+            <td class="job-title-cell">
+              <div class="job-title">{{ alert.title }}</div>
+            </td>
+            <td class="alert-cell">
+              <div class="alert-type" [ngClass]="getAlertTypeClass(alert.type)">
+                {{ alert.type }}
+              </div>
+              <div class="alert-details">{{ alert.salary }} · {{ alert.location }}</div>
+              <div class="alert-categories">{{ alert.categories }}</div>
+            </td>
+            <td class="job-cell">
+              <span class="jobs-found">{{ alert.jobsFound }}</span>
+            </td>
+            <td class="time-cell">{{ alert.frequency }}</td>
+            <td class="actions-cell">
+              <div class="dropdown">
+                <button class="btn action-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#">View</a></li>
+                  <li><a class="dropdown-item" href="#">Share</a></li>
+                  <li><a class="dropdown-item" href="#">Edit</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mobile Card View -->
+  <div class="d-lg-none">
+    <div class="mobile-card mb-3" *ngFor="let alert of alerts">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h6 class="job-title mb-0">{{ alert.title }}</h6>
+            <div class="dropdown">
+              <button class="btn action-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">View</a></li>
+                <li><a class="dropdown-item" href="#">Share</a></li>
+                <li><a class="dropdown-item" href="#">Edit</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="mobile-alert-info mb-3">
+            <div class="alert-type mb-2" [ngClass]="getAlertTypeClass(alert.type)">
+              {{ alert.type }}
+            </div>
+            <div class="alert-details mb-1">{{ alert.salary }} · {{ alert.location }}</div>
+            <div class="alert-categories">{{ alert.categories }}</div>
+          </div>
+          
+          <div class="row">
+            <div class="col-6">
+              <div class="mobile-label">Job</div>
+              <div class="jobs-found">{{ alert.jobsFound }}</div>
+            </div>
+            <div class="col-6">
+              <div class="mobile-label">Time</div>
+              <div>{{ alert.frequency }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Job alerts pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+          <i class="fas fa-chevron-left"></i>
+        </a>
+      </li>
+      
+      <li *ngFor="let page of visiblePages" 
+          class="page-item" 
+          [class.active]="page === currentPage">
+        <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+      </li>
+      
+      <li *ngIf="showEllipsis" class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+      
+      <li *ngIf="totalPages > 5" class="page-item">
+        <a class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</a>
+      </li>
+      
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
