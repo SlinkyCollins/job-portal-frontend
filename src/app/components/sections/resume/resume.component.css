@@ -1,0 +1,71 @@
+/* resume.component.css */
+
+/* General layout */
+.container {
+  max-width: 1800px;
+  margin: auto;
+}
+
+.card {
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.card-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #244034;
+  margin: 0 0 1.5rem;
+}
+
+/* Resume Selector Section */
+.resume-selector select.form-select,
+.resume-selector input.form-control {
+  font-size: 0.9rem;
+}
+
+/* Skill tag display */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background-color: #e9f5ec;
+  color: #28a745;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.skill-tag i {
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+/* Portfolio preview */
+.portfolio-preview {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  max-height: 140px;
+  object-fit: cover;
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 1rem;
+  }
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .skill-tags {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

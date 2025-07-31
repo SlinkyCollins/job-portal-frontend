@@ -1,1 +1,146 @@
-<p>resume works!</p>
+<!-- resume.component.html -->
+<div class="container py-4">
+    <h5 class="card-title fw-bold">My Resume</h5>
+    <form>
+        <!-- Resume Title -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h6 class="fw-bold">Resume Attachment</h6>
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-6">
+                        <label class="form-label">CV Attachment*</label>
+                        <div>
+                            <input type="file" class="form-control" accept=".pdf,.doc,.docx">
+                            <small class="form-text text-muted">Upload your CV in PDF or Word format.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-primary w-100">Upload CV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intro & Overview -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h6 class="fw-bold">Intro & Overview</h6>
+
+                <div class="mb-3">
+                    <label class="form-label">Overview</label>
+                    <textarea class="form-control" rows="3"
+                        placeholder="Tell us about your experience and background"></textarea>
+                </div>
+                <span>Brief description for your resume. URLs are hyperlinked.</span>
+
+               <!-- Add intro Video Section -->
+                <div class="mb-3 mt-3">
+                    <label class="form-label">Intro Video</label>
+                    <input type="file" class="form-control" accept="video/*">
+                    <small class="form-text text-muted">Upload a short introduction video (max 2 minutes).</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h6 class="fw-bold">Education</h6>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">School Name</label>
+                        <input type="text" class="form-control" placeholder="University of Lagos">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Field of Study</label>
+                        <input type="text" class="form-control" placeholder="Computer Engineering">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Start Year</label>
+                        <input type="text" class="form-control" placeholder="2018">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">End Year</label>
+                        <input type="text" class="form-control" placeholder="2023">
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"
+                            placeholder="Write what you studied, projects etc..."></textarea>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-3">+ Add Education</button>
+            </div>
+        </div>
+
+        <!-- Skills & Experience -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h6 class="fw-bold">Skills & Experience</h6>
+
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-select">
+                        <option>Frontend</option>
+                        <option>Backend</option>
+                        <option>Full Stack</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Skills</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-light border text-dark">HTML</span>
+                        <span class="badge bg-light border text-dark">CSS</span>
+                        <span class="badge bg-light border text-dark">Angular</span>
+                        <span class="badge bg-light border text-dark">React</span>
+                        <span class="badge bg-light border text-dark">Vue</span>
+                        <span class="badge bg-light border text-dark">Node.js</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Add New Skill</label>
+                    <input type="text" class="form-control" placeholder="e.g. TypeScript">
+                </div>
+
+                <button type="button" class="btn btn-outline-secondary btn-sm">+ Add Skill</button>
+            </div>
+        </div>
+
+        <!-- Portfolio -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h6 class="fw-bold">Portfolio</h6>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="border rounded p-3 text-center">
+                            <img src="https://via.placeholder.com/150" class="img-fluid mb-2" alt="Portfolio Item">
+                            <p class="mb-0">Project Title</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border rounded p-3 text-center">
+                            <img src="https://via.placeholder.com/150" class="img-fluid mb-2" alt="Portfolio Item">
+                            <p class="mb-0">Project Title</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-3">+ Add More</button>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-start">
+            <button type="submit" class="btn btn-success me-2">Save</button>
+            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+        </div>
+    </form>
+</div>
