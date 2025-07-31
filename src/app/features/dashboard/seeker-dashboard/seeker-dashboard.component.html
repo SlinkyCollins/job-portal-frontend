@@ -24,20 +24,20 @@
 
     <!-- User Dropdown Menu -->
     <div class="user-dropdown" [class.open]="userDropdownOpen">
-      <a href="#" class="dropdown-item">
+      <a routerLink="profile" class="dropdown-item">
         <i class="fas fa-user-circle"></i>
         <span>View Profile</span>
       </a>
-      <a href="#" class="dropdown-item">
+      <a routerLink="account-settings" class="dropdown-item">
         <i class="fas fa-cog"></i>
         <span>Settings</span>
       </a>
-      <a href="#" class="dropdown-item">
+      <a routerLink="notifications" class="dropdown-item">
         <i class="fas fa-bell"></i>
         <span>Notifications</span>
       </a>
       <div class="dropdown-divider"></div>
-      <a href="#" class="dropdown-item" (click)="showLogoutModal($event)">
+      <a class="dropdown-item" (click)="showLogoutModal($event)">
         <i class="fas fa-sign-out-alt"></i>
         <span>Logout</span>
       </a>
