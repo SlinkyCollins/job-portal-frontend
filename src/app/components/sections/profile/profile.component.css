@@ -1,0 +1,52 @@
+/* profile.component.css */
+
+.container {
+  max-width: 1800px;
+  margin: auto;
+}
+
+/* Profile avatar image */
+img.rounded-circle {
+  object-fit: cover;
+  border: 2px solid #dee2e6;
+}
+
+/* Card titles */
+.card-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #244034;
+  margin: 0 0 1.5rem;
+}
+
+/* Buttons */
+.btn-outline-secondary {
+  border-radius: 20px;
+}
+
+/* Textarea */
+textarea.form-control {
+  resize: vertical;
+}
+
+/* Map placeholder */
+.map-placeholder {
+  height: 150px;
+  border: 2px dashed #ced4da;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 1rem;
+  }
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
