@@ -4,10 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
 import { RouterModule } from '@angular/router';
+import { DeleteaccountComponent } from '../../../components/sections/deleteaccount/deleteaccount.component';
 
 @Component({
   selector: 'app-seeker-dashboard',
-  imports: [CommonModule, RouterLink, RouterModule],
+  imports: [CommonModule, RouterLink, RouterModule, DeleteaccountComponent],
   templateUrl: './seeker-dashboard.component.html',
   styleUrl: './seeker-dashboard.component.css'
 })
@@ -17,6 +18,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   public sidebarOpen: boolean = false;
   public userDropdownOpen: boolean = false;
   public showLogoutConfirm: boolean = false;
+  public showDeleteModal = false; // Delete modal state
   private chart: any;
 
   constructor(
@@ -98,7 +100,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
   private handleDocumentClick(event: Event) {
     const target = event.target as HTMLElement;
-    
+
     // Close user dropdown if clicking outside
     if (!target.closest('.user-profile') && !target.closest('.user-dropdown')) {
       this.userDropdownOpen = false;
@@ -132,6 +134,26 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     if (window.innerWidth <= 1024) {
       this.closeSidebar();
     }
+  }
+
+  // Delete Account Modal Methods
+  openDeleteModal() {
+    this.showDeleteModal = true
+    console.log("Delete modal opened") // For debugging
+  }
+
+  handleAccountDeletion() {
+    console.log("Account deletion confirmed!")
+    // Your deletion logic here
+    this.showDeleteModal = false // Close modal
+
+    // You can add your actual account deletion API call here
+    // this.authService.deleteAccount().subscribe(...)
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false
+    console.log("Delete modal closed") // For debugging
   }
 
   showLogoutModal(event?: Event) {

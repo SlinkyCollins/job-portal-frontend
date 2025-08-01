@@ -10,7 +10,6 @@ import { FooterComponent } from "../components/sections/footer/footer.component"
 import { FancybannerComponent } from "../components/sections/fancybanner/fancybanner.component";
 import { FindtalentsComponent } from "../components/sections/findtalents/findtalents.component";
 import { JobCardComponent } from "../components/sections/job-card/job-card.component";
-import { ButtonComponent } from "../components/ui/button/button.component";
 
 @Component({
   selector: 'app-home',
@@ -26,7 +25,6 @@ import { ButtonComponent } from "../components/ui/button/button.component";
     FancybannerComponent,
     FindtalentsComponent,
     JobCardComponent,
-    ButtonComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

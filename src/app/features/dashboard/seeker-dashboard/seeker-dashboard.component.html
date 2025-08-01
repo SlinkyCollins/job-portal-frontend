@@ -6,12 +6,10 @@
     <button class="mobile-close-btn" (click)="closeSidebar()">
       <i class="fas fa-times"></i>
     </button>
-
     <!-- Logo -->
     <div class="logo">
       <span class="logo-text">JobNet</span>
     </div>
-
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
       <div class="user-avatar">
@@ -21,7 +19,6 @@
       <span class="username">{{ user.firstname || 'John Doe' }}</span>
       <i class="fas fa-chevron-down dropdown-icon" [class.rotated]="userDropdownOpen"></i>
     </div>
-
     <!-- User Dropdown Menu -->
     <div class="user-dropdown" [class.open]="userDropdownOpen">
       <a routerLink="profile" class="dropdown-item">
@@ -42,61 +39,39 @@
         <span>Logout</span>
       </a>
     </div>
-
     <!-- Navigation Menu -->
     <nav class="nav-menu">
-      <a routerLink="/dashboard/jobseeker" 
-         routerLinkActive="active" 
-         class="nav-item"
-         [routerLinkActiveOptions]="{ exact: true }"
-         (click)="onNavItemClick()">
+      <a routerLink="/dashboard/jobseeker" routerLinkActive="active" class="nav-item"
+        [routerLinkActiveOptions]="{ exact: true }" (click)="onNavItemClick()">
         <i class="fas fa-th-large"></i>
         <span>Dashboard</span>
       </a>
-      <a routerLink="profile" 
-         routerLinkActive="active" 
-         class="nav-item"
-         (click)="onNavItemClick()">
+      <a routerLink="profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
         <i class="fas fa-user"></i>
         <span>My Profile</span>
       </a>
-      <a routerLink="resume" 
-         routerLinkActive="active" 
-         class="nav-item"
-         (click)="onNavItemClick()">
+      <a routerLink="resume" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
         <i class="fas fa-plus-circle"></i>
         <span>Resume</span>
       </a>
-      <a routerLink="job-alert" 
-         routerLinkActive="active" 
-         class="nav-item"
-         (click)="onNavItemClick()">
+      <a routerLink="job-alert" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
         <i class="fas fa-bell"></i>
         <span>Job Alert</span>
       </a>
-      <a routerLink="saved-jobs" 
-         routerLinkActive="active" 
-         class="nav-item"
-         (click)="onNavItemClick()">
+      <a routerLink="saved-jobs" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
         <i class="fas fa-bookmark"></i>
         <span>Saved Job</span>
       </a>
-      <a routerLink="account-settings" 
-         routerLinkActive="active" 
-         class="nav-item"
-         (click)="onNavItemClick()">
+      <a routerLink="account-settings" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
         <i class="fas fa-cog"></i>
         <span>Account Settings</span>
       </a>
-      <a routerLink="delete-account" 
-         routerLinkActive="active" 
-         class="nav-item"
-         (click)="onNavItemClick()">
+      <!-- CHANGED: Remove routerLink and routerLinkActive, add click handler -->
+      <a href="#" class="nav-item" (click)="openDeleteModal(); onNavItemClick(); $event.preventDefault()">
         <i class="fas fa-trash"></i>
         <span>Delete Account</span>
       </a>
     </nav>
-
     <!-- Profile Progress -->
     <div class="profile-progress">
       <div class="progress-info">
@@ -107,14 +82,12 @@
         <div class="progress-fill" style="width: 87%"></div>
       </div>
     </div>
-
     <!-- Logout Button -->
     <button class="logout-btn" (click)="showLogoutModal($event)">
       <i class="fas fa-sign-out-alt"></i>
       <span>Logout</span>
     </button>
   </aside>
-
   <!-- Main Content -->
   <main class="main-content">
     <!-- Header -->
@@ -122,7 +95,6 @@
       <button class="mobile-menu-btn" (click)="toggleSidebar()">
         <i class="fas fa-bars"></i>
       </button>
-
       <div class="header-actions">
         <!-- Search box for desktop, hidden on <=480px -->
         <div class="search-box">
@@ -136,13 +108,17 @@
         <button class="search-job-btn">Hunt Jobs</button>
       </div>
     </header>
-    
     <!-- This is where your routed content will appear -->
     <router-outlet></router-outlet>
   </main>
-
   <!-- Mobile Overlay -->
   <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Delete Account Modal -->
+  <app-delete-account [showModal]="showDeleteModal" (confirmed)="handleAccountDeletion()"
+    (cancelled)="closeDeleteModal()">
+    >
+  </app-delete-account>
 
   <!-- Logout Confirmation Modal -->
   <div class="modal-overlay" [class.active]="showLogoutConfirm" (click)="hideLogoutModal()">

@@ -1,1 +1,25 @@
-<p>deleteaccount works!</p>
+<!-- delete-account.component.html -->
+<!-- Only render the modal elements when showModal is true -->
+<div *ngIf="showModal">
+  <!-- Modal Backdrop -->
+  <div class="modal-backdrop show" (click)="onCancel()"></div>
+  
+  <!-- Modal Container -->
+  <div class="modal show" tabindex="-1" role="dialog" aria-modal="true" [attr.aria-hidden]="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center p-4">
+          <div class="icon-container mx-auto mb-4">
+            <i class="fas fa-trash-alt trash-icon"></i>
+          </div>
+          <h3 class="modal-title mb-2">{{ title }}</h3>
+          <p class="modal-description mb-4">{{ description }}</p>
+          <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn btn-confirm" (click)="onConfirm()">{{ confirmButtonText }}</button>
+            <button type="button" class="btn btn-cancel" (click)="onCancel()">{{ cancelButtonText }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
