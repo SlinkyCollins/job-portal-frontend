@@ -39,7 +39,7 @@ export class SignupComponent {
         pword: this.password,
         role: this.role
       }
-      this.http.post('https://jobnet.infinityfreeapp.com/JobPortal/signup.php', userObj, { withCredentials: true }).subscribe((response: any) => {
+      this.http.post('http://localhost/JobPortal/signup.php', userObj, { withCredentials: true }).subscribe((response: any) => {
         console.log(response);
         this.loading = false;
         if (response.status) {
