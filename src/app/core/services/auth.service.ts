@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   logout() {
-    this.http.post('http://localhost/JobPortal/logout.php', {}, { withCredentials: true }).subscribe(
+    this.http.post('https://jobnet.infinityfreeapp.com/logout.php', {}, { withCredentials: true }).subscribe(
       (response: any) => {
         console.log(response);
         if (response.status) {
@@ -42,19 +42,19 @@ export class AuthService {
   }
 
   getUserSession() {
-    return this.http.get('http://localhost/JobPortal/dashboard/user_session.php', {
+    return this.http.get('https://jobnet.infinityfreeapp.com/dashboard/user_session.php', {
       withCredentials: true
     });
   }
   
   getSeekerData() {
-    return this.http.get('http://localhost/JobPortal/dashboard/seeker_dashboard.php', {
+    return this.http.get('https://jobnet.infinityfreeapp.com/dashboard/seeker_dashboard.php', {
       withCredentials: true
-    });
+    }); 
   }
   
   getEmployerData() {
-    return this.http.get('http://localhost/JobPortal/dashboard/employer_dashboard.php', {
+    return this.http.get('https://jobnet.infinityfreeapp.com/dashboard/employer_dashboard.php', {
       withCredentials: true
     });
   }
