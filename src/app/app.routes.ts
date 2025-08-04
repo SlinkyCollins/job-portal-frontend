@@ -15,6 +15,7 @@ import { JobalertsComponent } from './components/sections/jobalerts/jobalerts.co
 import { SavedJobsComponent } from './components/sections/saved-jobs/saved-jobs.component';
 import { AccountsettingsComponent } from './components/sections/accountsettings/accountsettings.component';
 import { DeleteaccountComponent } from './components/sections/deleteaccount/deleteaccount.component';
+import { JobsListComponent } from './jobs-list/jobs-list.component';
 
 
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
     { path: 'home', redirectTo: '', pathMatch: 'full' },
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'jobs', component: JobsListComponent },
     {
         path: 'dashboard/jobseeker',
         component: SeekerDashboardComponent,
