@@ -1,0 +1,155 @@
+<app-navbar></app-navbar>
+<div class="contact-container">
+  <!-- Map Section -->
+  <div class="map-section">
+    <div class="map-placeholder">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106356.52064285!2d150.8831!3d-33.8688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae401e8b983f%3A0x5017d681632ccc0!2sSydney%20NSW%2C%20Australia!5e0!3m2!1sen!2sus!4v1635000000000!5m2!1sen!2sus"
+        width="100%" 
+        height="300" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Contact Content -->
+  <div class="container">
+    <div class="contact-content">
+      <!-- Header -->
+      <div class="text-center mb-5">
+        <h2 class="contact-title">Get in touch</h2>
+      </div>
+
+      <!-- Contact Info Cards -->
+      <div class="row mb-5">
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="contact-info-card text-center">
+            <div class="contact-icon">
+              <i [class]="contactInfo.address.icon"></i>
+            </div>
+            <h5 class="contact-info-title">{{contactInfo.address.title}}</h5>
+            <p class="contact-info-details">{{contactInfo.address.details}}</p>
+            <p class="contact-info-location">{{contactInfo.address.location}}</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="contact-info-card text-center">
+            <div class="contact-icon">
+              <i [class]="contactInfo.contact.icon"></i>
+            </div>
+            <h5 class="contact-info-title">{{contactInfo.contact.title}}</h5>
+            <p class="contact-info-details">{{contactInfo.contact.details}}</p>
+            <p class="contact-info-phone">{{contactInfo.contact.phone}}</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="contact-info-card text-center">
+            <div class="contact-icon">
+              <i [class]="contactInfo.support.icon"></i>
+            </div>
+            <h5 class="contact-info-title">{{contactInfo.support.title}}</h5>
+            <p class="contact-info-details">{{contactInfo.support.details}}</p>
+            <p class="contact-info-website">{{contactInfo.support.website}}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <form (ngSubmit)="onSubmit()" #contactFormRef="ngForm" class="contact-form">
+            
+            <!-- Success Message -->
+            <div *ngIf="submitSuccess" class="alert alert-success mb-4" role="alert">
+              <i class="fas fa-check-circle me-2"></i>
+              Thank you! Your message has been sent successfully.
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="submitError" class="alert alert-danger mb-4" role="alert">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              Sorry, there was an error sending your message. Please try again.
+            </div>
+
+            <div class="row">
+              <!-- Name Field -->
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    [class]="getFormValidationClass('name')"
+                    placeholder="Your Name*"
+                    [(ngModel)]="contactForm.name"
+                    name="name"
+                    required>
+                </div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <input 
+                    type="email" 
+                    class="form-control"
+                    [class]="getFormValidationClass('email')"
+                    placeholder="Email Address*"
+                    [(ngModel)]="contactForm.email"
+                    name="email"
+                    required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subject Field -->
+            <div class="mb-3">
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [class]="getFormValidationClass('subject')"
+                  placeholder="Write about the subject here..."
+                  [(ngModel)]="contactForm.subject"
+                  name="subject"
+                  required>
+                <small class="form-text text-muted">Subject (optional)</small>
+              </div>
+            </div>
+
+            <!-- Message Field -->
+            <div class="mb-4">
+              <div class="form-group">
+                <textarea 
+                  class="form-control"
+                  [class]="getFormValidationClass('message')"
+                  rows="6"
+                  placeholder="Your message*"
+                  [(ngModel)]="contactForm.message"
+                  name="message"
+                  required></textarea>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button 
+                type="submit" 
+                class="btn btn-submit"
+                [disabled]="!isFormValid() || isSubmitting">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span *ngIf="isSubmitting">SENDING...</span>
+                <span *ngIf="!isSubmitting">SEND MESSAGE</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

@@ -16,6 +16,7 @@ import { SavedJobsComponent } from './components/sections/saved-jobs/saved-jobs.
 import { AccountsettingsComponent } from './components/sections/accountsettings/accountsettings.component';
 import { DeleteaccountComponent } from './components/sections/deleteaccount/deleteaccount.component';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 
@@ -25,6 +26,7 @@ export const routes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },
     { path: 'jobs', component: JobsListComponent },
+    { path: 'contact', component: ContactComponent },
     {
         path: 'dashboard/jobseeker',
         component: SeekerDashboardComponent,
@@ -38,7 +40,7 @@ export const routes: Routes = [
             { path: 'delete-account', component: DeleteaccountComponent },
             // ...add more as needed
         ],
-        canActivate: [jobSeekerGuardGuard]
+        // canActivate: [jobSeekerGuardGuard]
     },
     { path: 'dashboard/employer', component: EmployerDashboardComponent, canActivate: [employerGuardGuard] },
     { path: 'admin/dashboard', component: AdminDashboardComponent },
