@@ -18,6 +18,7 @@ import { DeleteaccountComponent } from './components/sections/deleteaccount/dele
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
+import { JobWishlistComponent } from './job-wishlist/job-wishlist.component';
 
 
 
@@ -29,6 +30,7 @@ export const routes: Routes = [
     { path: 'jobs', component: JobsListComponent },
     { path: 'contact', component: ContactComponent },
     { path: 'jobdetails', component: JobDetailsComponent },
+    { path: 'jobwishlist', component: JobWishlistComponent },
     {
         path: 'dashboard/jobseeker',
         component: SeekerDashboardComponent,

@@ -2,6 +2,7 @@ import { Component } from "@angular/core"
 import { NavbarComponent } from "../components/sections/navbar/navbar.component"
 import { FooterComponent } from "../components/sections/footer/footer.component"
 import { CommonModule } from "@angular/common"
+import { CtaComponent } from "../components/sections/cta/cta.component"
 
 interface JobDetails {
   title: string
@@ -25,7 +26,7 @@ interface RelatedJob {
 
 @Component({
   selector: "app-job-details",
-  imports: [NavbarComponent, FooterComponent, CommonModule],
+  imports: [NavbarComponent, FooterComponent, CommonModule, CtaComponent],
   standalone: true,
   templateUrl: "./job-details.component.html",
   styleUrls: ["./job-details.component.css"],

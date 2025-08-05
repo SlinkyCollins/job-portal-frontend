@@ -1,0 +1,391 @@
+/* Mobile-first responsive design */
+
+/* Base styles */
+.job-wishlist-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Header Section */
+.wishlist-header {
+  background: linear-gradient(135deg, #2d5a3d 0%, #1e3a2a 100%);
+  color: white;
+  padding: 3rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.wishlist-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  opacity: 0.3;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Main Content */
+.main-content {
+  padding: 2rem 1rem;
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d5a3d;
+  margin: 0;
+}
+
+/* Controls Bar */
+.controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.job-count {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.count-text {
+  font-weight: 500;
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-dropdown select {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.view-toggle {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+}
+
+/* Jobs Container */
+.jobs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.jobs-container.view-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Job Card */
+.job-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid #f1f3f4;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Company Logo */
+.company-logo {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+/* Job Content */
+.job-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.job-type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.job-type-badge.fixed-price {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.job-type-badge.full-time {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.job-type-badge.contract {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.job-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.job-title:hover {
+  color: #2d5a3d;
+}
+
+.job-details {
+  margin-bottom: 1rem;
+}
+
+.location-salary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.location-salary span {
+  position: relative;
+}
+
+.location-salary span:not(:last-child)::after {
+  content: "•";
+  margin-left: 0.5rem;
+  opacity: 0.5;
+}
+
+.salary {
+  font-weight: 600;
+  color: #2d5a3d;
+}
+
+/* Job Actions */
+.job-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-save {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid #dee2e6;
+  background: white;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+  background-color: #f8f9fa;
+  border-color: #2d5a3d;
+  color: #2d5a3d;
+}
+
+.btn-save.saved {
+  background-color: #2d5a3d;
+  border-color: #2d5a3d;
+  color: white;
+}
+
+.btn-apply {
+  background-color: #2d5a3d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-apply:hover {
+  background-color: #1e3a2a;
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6c757d;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #dee2e6;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+
+/* Small tablets */
+@media (min-width: 576px) {
+  .jobs-container.view-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-content {
+    padding: 2rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 768px) {
+  .header-title {
+    font-size: 3rem;
+  }
+
+  .header-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .job-card {
+    padding: 2rem;
+  }
+
+  .company-logo {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+  }
+
+  .job-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  .jobs-container.view-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .controls-bar {
+    flex-wrap: nowrap;
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+
+  .jobs-container.view-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Utility classes */
+.btn {
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:focus {
+  outline: 2px solid #2d5a3d;
+  outline-offset: 2px;
+}
+
+/* Animation for smooth transitions */
+* {
+  transition: all 0.2s ease;
+}
+
+/* Track by function helper */
+.job-card {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,124 @@
+<app-navbar></app-navbar>
+<div class="job-wishlist-container">
+  <!-- Header Section -->
+  <div class="wishlist-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1 class="header-title">Wishlist</h1>
+          <p class="header-subtitle">Find your desire company and get your dream job</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container main-content">
+    <div class="row">
+      <div class="col-12">
+        <!-- Section Header -->
+        <div class="section-header">
+          <h2 class="section-title">Wishlist Jobs</h2>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+          <div class="job-count">
+            <span class="count-text">All {{ jobCount }} jobs found</span>
+          </div>
+          
+          <div class="controls-right">
+            <!-- Sort Dropdown -->
+            <div class="sort-dropdown">
+              <select 
+                class="form-select form-select-sm" 
+                [(ngModel)]="sortBy" 
+                (change)="onSortChange(sortBy)"
+              >
+                <option value="recent">Most Recent</option>
+                <option value="salary-high">Salary: High to Low</option>
+                <option value="salary-low">Salary: Low to High</option>
+                <option value="company">Company A-Z</option>
+              </select>
+            </div>
+
+            <!-- View Toggle -->
+            <button 
+              class="btn btn-outline-secondary btn-sm view-toggle"
+              (click)="toggleViewMode()"
+              [title]="viewMode === 'list' ? 'Switch to grid view' : 'Switch to list view'"
+            >
+              <i class="fas" [ngClass]="viewMode === 'list' ? 'fa-th' : 'fa-list'"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Job Cards -->
+        <div class="jobs-container" [ngClass]="'view-' + viewMode">
+          <div 
+            class="job-card" 
+            *ngFor="let job of filteredJobs; trackBy: trackByJobId"
+          >
+            <!-- Company Logo -->
+            <div class="company-logo" [style.background-color]="job.logoColor">
+              <span class="logo-text">{{ job.companyLogo }}</span>
+            </div>
+
+            <!-- Job Content -->
+            <div class="job-content">
+              <!-- Job Type Badge -->
+              <div class="job-type-badge" [ngClass]="getJobTypeBadgeClass(job.jobType)">
+                {{ job.jobType }}
+              </div>
+
+              <!-- Job Title -->
+              <h3 class="job-title" (click)="viewJobDetails(job.id)">
+                {{ job.title }}
+              </h3>
+
+              <!-- Job Details -->
+              <div class="job-details">
+                <div class="location-salary">
+                  <span class="location">{{ job.location }}</span>
+                  <span class="salary">{{ job.salary }}</span>
+                  <span class="experience">{{ job.experienceLevel }}</span>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="job-actions">
+                <button 
+                  class="btn btn-save"
+                  [class.saved]="job.isSaved"
+                  (click)="toggleSaveJob(job.id)"
+                  [title]="job.isSaved ? 'Remove from wishlist' : 'Add to wishlist'"
+                >
+                  <i class="fas" [ngClass]="job.isSaved ? 'fa-bookmark' : 'fa-bookmark-o'"></i>
+                </button>
+
+                <button 
+                  class="btn btn-apply"
+                  (click)="applyToJob(job.id)"
+                >
+                  APPLY
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="jobCount === 0">
+          <div class="empty-icon">
+            <i class="fas fa-bookmark"></i>
+          </div>
+          <h3>No saved jobs yet</h3>
+          <p>Start exploring jobs and save the ones you're interested in!</p>
+          <button class="btn btn-primary">Browse Jobs</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-cta></app-cta>
+<app-footer></app-footer>
