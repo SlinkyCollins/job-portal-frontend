@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
   user: any = {
-    profileImage: 'https://mighty.tools/mockmind-api/content/human/80.jpg',
+    // profileImage: 'https://mockmind-api.uifaces.co/content/human/80.jpg',
     name: 'John Doe',
     email: 'company@gmail.com',
     website: 'http://companysite.com',
