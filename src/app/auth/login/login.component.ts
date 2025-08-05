@@ -45,7 +45,7 @@ export class LoginComponent {
       pword: this.password
     }
 
-    this.http.post('http://localhost/JobPortal/login.php', credentials, {
+    this.http.post(`${this.apiService.apiUrl}/login.php`, credentials, {
       withCredentials: true  // Key to send cookies (PHP session)
     }).subscribe((response: any) => {
       this.loading = false;

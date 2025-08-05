@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
 import { FooterComponent } from '../../components/sections/footer/footer.component';
+import { ApiServiceService } from '../../core/services/api-service.service';
 
 @Component({
     selector: 'app-signup',
@@ -18,7 +19,8 @@ export class SignupComponent {
     (
       public router: Router,
       public http: HttpClient,
-      public toastr: ToastrService
+      public toastr: ToastrService,
+      public apiService: ApiServiceService
     ) { }
 
   public firstname: string = '';
@@ -39,7 +41,7 @@ export class SignupComponent {
         pword: this.password,
         role: this.role
       }
-      this.http.post('http://localhost/JobPortal/signup.php', userObj, { withCredentials: true }).subscribe((response: any) => {
+      this.http.post(`${this.apiService.apiUrl}/signup.php`, userObj, { withCredentials: true }).subscribe((response: any) => {
         console.log(response);
         this.loading = false;
         if (response.status) {

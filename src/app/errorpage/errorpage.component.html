@@ -1,1 +1,161 @@
-<p>errorpage works!</p>
+<div class="error-page-container">
+  <div class="container-fluid">
+    <div class="row min-vh-100 align-items-center">
+      
+      <!-- Desktop Layout -->
+      <div class="col-12 d-none d-lg-block">
+        <div class="row align-items-center">
+          
+          <!-- Illustration Section -->
+          <div class="col-lg-6">
+            <div class="illustration-container" [class.animated]="isAnimated">
+              
+              <!-- Main Character -->
+              <div class="character-wrapper">
+                <div class="character">
+                  <!-- Woman illustration -->
+                  <div class="woman-illustration">
+                    <div class="head">
+                      <div class="hair"></div>
+                      <div class="face">
+                        <div class="eyes">
+                          <div class="eye left-eye"></div>
+                          <div class="eye right-eye"></div>
+                        </div>
+                        <div class="glasses">
+                          <div class="lens left-lens"></div>
+                          <div class="lens right-lens"></div>
+                          <div class="bridge"></div>
+                        </div>
+                        <div class="earrings">
+                          <div class="earring left-earring"></div>
+                          <div class="earring right-earring"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="body">
+                      <div class="shirt"></div>
+                      <div class="arms">
+                        <div class="arm left-arm"></div>
+                        <div class="arm right-arm"></div>
+                      </div>
+                      <div class="hands">
+                        <div class="hand left-hand"></div>
+                        <div class="hand right-hand"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Floating Elements -->
+                <div class="floating-elements">
+                  <div class="element computer-screen">
+                    <div class="screen">
+                      <div class="screen-header"></div>
+                      <div class="screen-content">404</div>
+                    </div>
+                  </div>
+                  
+                  <div class="element magnifying-glass">
+                    <div class="glass-circle">
+                      <div class="x-mark">×</div>
+                    </div>
+                    <div class="glass-handle"></div>
+                  </div>
+                  
+                  <div class="element warning-triangle">
+                    <div class="triangle">
+                      <div class="exclamation">!</div>
+                    </div>
+                  </div>
+                  
+                  <div class="element circle-1"></div>
+                  <div class="element circle-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content Section -->
+          <div class="col-lg-6">
+            <div class="error-content" [class.animated]="isAnimated">
+              <div class="error-code">{{errorCode}}</div>
+              <h1 class="error-title">{{errorTitle}}</h1>
+              <p class="error-message">{{errorMessage}}</p>
+              
+              <button 
+                type="button" 
+                class="btn btn-go-back"
+                (click)="goBack()"
+                (mouseenter)="onButtonHover(true)"
+                (mouseleave)="onButtonHover(false)">
+                GO BACK
+                <i class="fas fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mobile Layout -->
+      <div class="col-12 d-lg-none">
+        <div class="mobile-error-content text-center">
+          
+          <!-- Error Info -->
+          <div class="error-info mb-4" [class.animated]="isAnimated">
+            <div class="error-code-mobile">{{errorCode}}</div>
+            <h1 class="error-title-mobile">{{errorTitle}}</h1>
+            <p class="error-message-mobile">{{errorMessage}}</p>
+            
+            <button 
+              type="button" 
+              class="btn btn-go-back-mobile"
+              (click)="goBack()">
+              GO BACK
+              <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+          
+          <!-- Mobile Illustration -->
+          <div class="mobile-illustration" [class.animated]="isAnimated">
+            <div class="mobile-character-wrapper">
+              
+              <!-- Simplified illustration for mobile -->
+              <div class="mobile-woman">
+                <div class="mobile-head">
+                  <div class="mobile-hair"></div>
+                  <div class="mobile-face">
+                    <div class="mobile-eyes">
+                      <div class="mobile-eye"></div>
+                      <div class="mobile-eye"></div>
+                    </div>
+                    <div class="mobile-glasses"></div>
+                    <div class="mobile-earrings">
+                      <div class="mobile-earring"></div>
+                      <div class="mobile-earring"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mobile-body">
+                  <div class="mobile-shirt"></div>
+                  <div class="mobile-arms">
+                    <div class="mobile-arm"></div>
+                    <div class="mobile-arm"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Mobile floating elements -->
+              <div class="mobile-floating-elements">
+                <div class="mobile-element mobile-computer">404</div>
+                <div class="mobile-element mobile-magnifier">🔍</div>
+                <div class="mobile-element mobile-warning">⚠️</div>
+                <div class="mobile-element mobile-circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

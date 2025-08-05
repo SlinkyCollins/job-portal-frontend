@@ -38,9 +38,8 @@ export const routes: Routes = [
             { path: 'saved-jobs', component: SavedJobsComponent },
             { path: 'account-settings', component: AccountsettingsComponent },
             { path: 'delete-account', component: DeleteaccountComponent },
-            // ...add more as needed
         ],
-        // canActivate: [jobSeekerGuardGuard]
+        canActivate: [jobSeekerGuardGuard]
     },
     { path: 'dashboard/employer', component: EmployerDashboardComponent, canActivate: [employerGuardGuard] },
     { path: 'admin/dashboard', component: AdminDashboardComponent },

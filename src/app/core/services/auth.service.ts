@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ApiServiceService } from './api-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class AuthService {
     public http: HttpClient,
     public router: Router,
     public toastr: ToastrService,
+    public apiService: ApiServiceService
   ) {}
 
   setUser(user: any) {
@@ -23,7 +25,7 @@ export class AuthService {
   }
 
   logout() {
-    this.http.post('http://localhost/JobPortal/logout.php', {}, { withCredentials: true }).subscribe(
+    this.http.post(`${this.apiService.apiUrl}/logout.php`, {}, { withCredentials: true }).subscribe(
       (response: any) => {
         console.log(response);
         if (response.status) {
@@ -42,19 +44,19 @@ export class AuthService {
   }
 
   getUserSession() {
-    return this.http.get('http://localhost/JobPortal/dashboard/user_session.php', {
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/user_session.php`, {
       withCredentials: true
     });
   }
   
   getSeekerData() {
-    return this.http.get('http://localhost/JobPortal/dashboard/seeker_dashboard.php', {
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`, {
       withCredentials: true
     }); 
   }
   
   getEmployerData() {
-    return this.http.get('http://localhost/JobPortal/dashboard/employer_dashboard.php', {
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/employer_dashboard.php`, {
       withCredentials: true
     });
   }
