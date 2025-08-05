@@ -7,23 +7,64 @@
       <!-- Desktop Menu -->
       <ul class="fullmenu d-none d-lg-flex gap-4 mt-3">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/jobs">Jobs</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/explore">Explore</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/blog">Blog</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/contact">Contact</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-          </li>
+          <a class="nav-link" routerLink="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/jobs">Jobs</a>
+        </li>
+
+        <li class="nav-item dropdown position-relative explore-desktop">
+          <a class="nav-link" href="#" (mouseenter)="showMegaDropdown = true" (mouseleave)="showMegaDropdown = false">
+            Explore
+          </a>
+          <div *ngIf="showMegaDropdown"
+            class="mega-dropdown p-4 bg-white shadow animate__animated animate__fadeInUp"
+            (mouseenter)="showMegaDropdown = true" (mouseleave)="showMegaDropdown = false"
+            [ngClass]="{'animate__fadeInUp': showMegaDropdown}">
+            <div class="row">
+              <div class="col-md-4">
+                <strong class="text-success">Candidates</strong>
+                <ul class="list-unstyled">
+                  <li><a href="#">Candidates V-1</a></li>
+                  <li><a href="#">Candidates V-2</a></li>
+                  <li><a href="#">Candidates V-3</a></li>
+                  <li><a href="#">Candidates V-4</a></li>
+                  <li><a href="#">Candidates Details V-1</a></li>
+                  <li><a href="#">Candidates Details V-2</a></li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <strong class="text-success">Company</strong>
+                <ul class="list-unstyled">
+                  <li><a href="#">Company V-1</a></li>
+                  <li><a href="#">Company V-2</a></li>
+                  <li><a href="#">Company V-3</a></li>
+                  <li><a href="#">Company V-4</a></li>
+                  <li><a href="#">Company Details</a></li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <strong class="text-success">Essential</strong>
+                <ul class="list-unstyled">
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Pricing</a></li>
+                  <li><a href="#">FAQ</a></li>
+                  <li><a href="#">Register</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/blog">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        </li>
       </ul>
 
       <!-- Right Controls -->
@@ -32,62 +73,79 @@
         <a class="btn register-link d-none d-md-block" routerLink="/signup">Register</a>
 
         <!-- Accessible Hamburger -->
-        <button
-          class="hamburger me-1"
-          (click)="toggleMenu()"
-          [attr.aria-expanded]="isMenuOpen"
-          aria-label="Toggle menu"
-          aria-controls="mobileNavMenu"
-          [ngClass]="{ open: isMenuOpen }"
-        >
+        <button class="hamburger me-1" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen" aria-label="Toggle menu"
+          aria-controls="mobileNavMenu" [ngClass]="{ open: isMenuOpen }">
           <span class="text-white"></span><span class="text-white"></span><span class="text-white"></span>
         </button>
       </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div
-      id="mobileNavMenu"
-      class="navmenu px-3 pt-4"
-      role="navigation"
-      [ngClass]="{ show: isMenuOpen }"
-      [attr.aria-hidden]="!isMenuOpen"
-    >
+    <div id="mobileNavMenu" class="navmenu px-3 pt-4" role="navigation" [ngClass]="{ show: isMenuOpen }"
+      [attr.aria-hidden]="!isMenuOpen">
       <div class="header text-start">
-          <h2>JobNet</h2>
-        </div>
-        <ul class="navbar-nav text-start">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/" routerLinkActive="active"
-              >Home</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/jobs" routerLinkActive="active"
-              >Jobs</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/explore" routerLinkActive="active"
-              >Explore</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/blog" routerLinkActive="active"
-              >Blog</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/contact" routerLinkActive="active"
-              >Contact</a
-            >
-          </li>
-        </ul>
-        <ul class="navbar-nav text-center">
-          <li class="nav-item">
-            <a class="btn signupbtn d-block d-md-none" routerLink="/signup">Register</a>
-          </li>
-        </ul>
+        <h2>JobNet</h2>
+      </div>
+      <ul class="navbar-nav text-start">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/jobs" routerLinkActive="active">Jobs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex justify-content-between align-items-center" (click)="toggleExploreDropdown()"
+            href="#">
+            Explore
+            <span [class.rotate]="isExploreOpen" class="ms-2">&#9662;</span> <!-- Down arrow -->
+          </a>
+          <div *ngIf="isExploreOpen" class="dropdown-explore bg-light p-3 rounded">
+            <div>
+              <strong class="text-success">Candidates</strong>
+              <ul class="list-unstyled ps-3 mb-3">
+                <li><a class="nav-link" href="#" routerLink="/explore" routerLinkActive="active">Candidates V-1</a></li>
+                <li><a class="nav-link" href="#">Candidates V-2</a></li>
+                <li><a class="nav-link" href="#">Candidates V-3</a></li>
+                <li><a class="nav-link" href="#">Candidates V-4</a></li>
+                <li><a class="nav-link" href="#">Candidates Details V-1</a></li>
+                <li><a class="nav-link" href="#">Candidates Details V-2</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <strong class="text-success">Company</strong>
+              <ul class="list-unstyled ps-3 mb-3">
+                <li><a class="nav-link" href="#">Company V-1</a></li>
+                <li><a class="nav-link" href="#">Company V-2</a></li>
+                <li><a class="nav-link" href="#">Company V-3</a></li>
+                <li><a class="nav-link" href="#">Company V-4</a></li>
+                <li><a class="nav-link" href="#">Company Details</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <strong class="text-success">Essential</strong>
+              <ul class="list-unstyled ps-3">
+                <li><a class="nav-link" href="#">About Us</a></li>
+                <li><a class="nav-link" href="#">Pricing</a></li>
+                <li><a class="nav-link" href="#">FAQ</a></li>
+                <li><a class="nav-link" href="#">Register</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/blog" routerLinkActive="active">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav text-center">
+        <li class="nav-item">
+          <a class="btn signupbtn d-block d-md-none" routerLink="/signup">Register</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

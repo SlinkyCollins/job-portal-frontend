@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../components/sections/navbar/navbar.component';
 import { FooterComponent } from '../components/sections/footer/footer.component';
 import { FormsModule } from '@angular/forms';
+import { CtaComponent } from '../components/sections/cta/cta.component';
 
 interface Job {
   id: number;
@@ -28,7 +29,7 @@ interface FilterOptions {
 
 @Component({
   selector: 'app-jobs-list',
-  imports: [CommonModule, NavbarComponent, FooterComponent, FormsModule],
+  imports: [CommonModule, NavbarComponent, FooterComponent, FormsModule, CtaComponent],
   standalone: true,
   templateUrl: './jobs-list.component.html',
   styleUrls: ['./jobs-list.component.css']

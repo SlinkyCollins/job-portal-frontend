@@ -10,8 +10,14 @@ import { RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
   public isMenuOpen = false;
+  public isExploreOpen: boolean = false;
+  public showMegaDropdown: boolean = false;
 
-   toggleMenu() {
+  toggleExploreDropdown() {
+    this.isExploreOpen = !this.isExploreOpen;
+  }
+
+  toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 

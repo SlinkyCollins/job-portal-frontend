@@ -1,3 +1,5 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+
 .navbar {
   transition: background-color 0.3s ease-in-out;
   position: fixed;
@@ -139,6 +141,69 @@
   color: #fff;
   background-color: #244034;
 }
+
+/* Explore dropdown mega menu */
+
+.explore-desktop {
+  position: relative;
+}
+
+.mega-dropdown ul li a {
+  color: #333;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: block;
+  padding: 0.25rem 0;
+}
+
+.mega-dropdown ul li a:hover {
+  color: #00be57;
+}
+
+.mega-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  width: max-content;
+  min-width: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mega-dropdown .dropdown-header {
+  font-weight: 700;
+  color: #244034;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.dropdown-explore {
+  background-color: #f4fcca;
+  border: 1px solid #e1eec8;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.dropdown-explore .nav-link {
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.dropdown-explore strong {
+  font-size: 0.85rem;
+}
+
+.rotate {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
 
 @media (min-width: 768px) {
   .container-fluid {
