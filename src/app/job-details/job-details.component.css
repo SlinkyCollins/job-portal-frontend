@@ -1,0 +1,382 @@
+/* Mobile-first responsive design */
+
+/* Base styles */
+.job-details-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Header Section */
+.job-header {
+  background: linear-gradient(135deg, #2d5a3d 0%, #1e3a2a 100%);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.job-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.job-meta span {
+  display: flex;
+  align-items: center;
+}
+
+.job-meta span:before {
+  content: "•";
+  margin-right: 0.5rem;
+  opacity: 0.7;
+}
+
+.job-meta span:first-child:before {
+  display: none;
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+  padding: 0 1rem;
+}
+
+.job-content {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.content-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.content-section:last-child {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-icon {
+  width: 2rem;
+  height: 2rem;
+  background-color: #e8f5e8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  color: #2d5a3d;
+}
+
+.section-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2d5a3d;
+}
+
+.overview-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Lists */
+.responsibility-list,
+.skills-list,
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.responsibility-list li,
+.skills-list li,
+.benefits-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.responsibility-list li:before,
+.skills-list li:before,
+.benefits-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Apply Section */
+.apply-section {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.btn-apply {
+  background-color: #2d5a3d;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-apply:hover {
+  background-color: #1e3a2a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(45, 90, 61, 0.3);
+}
+
+/* Sidebar */
+.sidebar {
+  padding-left: 0;
+}
+
+.sidebar-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.sidebar-card .card-header {
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.sidebar-card .card-header h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2d5a3d;
+}
+
+.sidebar-card .card-body {
+  padding: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.info-item strong {
+  color: #495057;
+  font-weight: 600;
+}
+
+.info-item span {
+  color: #6c757d;
+  text-align: right;
+}
+
+/* Related Jobs */
+.related-jobs-section {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+  margin-top: 3rem;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2d5a3d;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.related-job-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.related-job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.job-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d5a3d;
+  margin: 0;
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.job-type-badge {
+  background-color: #e8f5e8;
+  color: #2d5a3d;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.job-card-body {
+  margin-bottom: 1rem;
+}
+
+.company-name {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.25rem;
+}
+
+.job-location {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.job-card-footer {
+  margin-top: auto;
+}
+
+/* Responsive Design */
+
+/* Tablet styles */
+@media (min-width: 768px) {
+  .job-title {
+    font-size: 2.25rem;
+  }
+
+  .main-content {
+    padding: 0 2rem;
+  }
+
+  .sidebar {
+    padding-left: 1rem;
+  }
+
+  .job-meta {
+    font-size: 1rem;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 992px) {
+  .job-title {
+    font-size: 2.5rem;
+  }
+
+  .job-header {
+    padding: 3rem 0;
+  }
+
+  .sidebar {
+    padding-left: 2rem;
+  }
+
+  .content-section {
+    padding: 2rem;
+  }
+
+  .apply-section {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Large desktop styles */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* Button utilities */
+.btn-block {
+  width: 100%;
+}
+
+.btn-outline-primary {
+  color: #2d5a3d;
+  border-color: #2d5a3d;
+}
+
+.btn-outline-primary:hover {
+  background-color: #2d5a3d;
+  border-color: #2d5a3d;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.2s ease;
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+button:focus {
+  outline: 2px solid #2d5a3d;
+  outline-offset: 2px;
+}

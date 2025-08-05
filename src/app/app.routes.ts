@@ -17,6 +17,7 @@ import { AccountsettingsComponent } from './components/sections/accountsettings/
 import { DeleteaccountComponent } from './components/sections/deleteaccount/deleteaccount.component';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { ContactComponent } from './contact/contact.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
 
 
 
@@ -27,6 +28,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'jobs', component: JobsListComponent },
     { path: 'contact', component: ContactComponent },
+    { path: 'jobdetails', component: JobDetailsComponent },
     {
         path: 'dashboard/jobseeker',
         component: SeekerDashboardComponent,
