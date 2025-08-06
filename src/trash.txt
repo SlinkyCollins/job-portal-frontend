@@ -51,9 +51,9 @@ Here’s what we’re focusing on ONLY:
 ### **DAY 1: Finish the Frontend**
 
 * ✅ Touch up login/signup if needed
-* 🔲 Build **User Dashboard** UI — simple welcome, job listings, logout btn
-* 🔲 Build **Job Listings Page** — show jobs in card format 
-* 🔲 Build **Job Details Page** — open a specific job on click
+* ✅ Build **User Dashboard** UI — simple welcome, job listings, logout btn
+* ✅ Build **Job Listings Page** — show jobs in card format 
+* ✅ Build **Job Details Page** — open a specific job on click
 * 🔲 Add **Apply button/modal or form**
 * 💡 Use dummy JSON at first if backend is not connected yet
 
