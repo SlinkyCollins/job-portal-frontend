@@ -1,102 +1,62 @@
-import { Component } from "@angular/core"
-import { NavbarComponent } from "../components/sections/navbar/navbar.component"
-import { FooterComponent } from "../components/sections/footer/footer.component"
-import { CommonModule } from "@angular/common"
-import { CtaComponent } from "../components/sections/cta/cta.component"
-
-interface JobDetails {
-  title: string
-  company: string
-  location: string
-  salary?: string
-  tags: string[]
-  overview: string
-  description: string
-  responsibilities: string[]
-  requiredSkills: string[]
-  benefits: string[]
-}
-
-interface RelatedJob {
-  title: string
-  company: string
-  location: string
-  type: string
-}
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { NavbarComponent } from '../components/sections/navbar/navbar.component';
+import { FooterComponent } from '../components/sections/footer/footer.component';
+import { CommonModule } from '@angular/common';
+import { CtaComponent } from '../components/sections/cta/cta.component';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
-  selector: "app-job-details",
+  selector: 'app-job-details',
   imports: [NavbarComponent, FooterComponent, CommonModule, CtaComponent],
+  templateUrl: './job-details.component.html',
+  styleUrls: ['./job-details.component.css'],
   standalone: true,
-  templateUrl: "./job-details.component.html",
-  styleUrls: ["./job-details.component.css"],
 })
-export class JobDetailsComponent {
-  job: JobDetails = {
-    title: "Senior Product & Brand Design",
-    company: "TechCorp Inc.",
-    location: "Remote",
-    salary: "$80,000 - $120,000",
-    tags: ["Full-time", "Remote", "Design", "Senior Level"],
-    overview:
-      "We are looking for a talented and experienced Senior Product & Brand Designer to join our dynamic team. This role combines strategic thinking with hands-on design execution, requiring someone who can think both big picture and dive into the details when needed.",
-    description:
-      "As a Product Designer at TechCorp Inc., you'll have the opportunity to shape the future of our product offerings. You'll work closely with cross-functional teams to create user-centered designs that drive business results and deliver exceptional user experiences.",
-    responsibilities: [
-      "Lead end-to-end design process from concept to final implementation, including user research, wireframing, prototyping, and visual design",
-      "Collaborate closely with product managers, engineers, and other stakeholders to define and execute product vision",
-      "Conduct user research, usability testing, and data analysis to inform design decisions",
-      "Create and maintain design systems, style guides, and design documentation",
-      "Mentor junior designers and contribute to the overall design culture of the organization",
-      "Stay up-to-date with design trends, tools, and best practices in the industry",
-      "Present design concepts and rationale to stakeholders and leadership team",
-    ],
-    requiredSkills: [
-      "5+ years of experience in product design or related field",
-      "Proficiency in design tools such as Figma, Sketch, Adobe Creative Suite",
-      "Strong portfolio demonstrating user-centered design process and outcomes",
-      "Experience with user research methodologies and usability testing",
-      "Knowledge of front-end development principles and constraints",
-      "Excellent communication and presentation skills",
-      "Bachelor's degree in Design, HCI, or related field preferred",
-    ],
-    benefits: [
-      "Competitive salary and equity package",
-      "Comprehensive health, dental, and vision insurance",
-      "Flexible work arrangements and remote-first culture",
-      "Professional development budget and learning opportunities",
-      "Generous PTO and sabbatical programs",
-    ],
+export class JobDetailsComponent implements OnInit {
+  jobId: number | null = null;
+  job: any = null;
+  isLoading = true;
+  errorMsg: string | null = null;
+
+  constructor(private route: ActivatedRoute, public authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.jobId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.jobId) {
+      this.fetchJobDetails(this.jobId);
+    } else {
+      this.errorMsg = 'Invalid job ID';
+      this.isLoading = false;
+    }
   }
 
-  relatedJobs: RelatedJob[] = [
-    {
-      title: "Application Security Engineer",
-      company: "SecureTech",
-      location: "Remote",
-      type: "Full-time",
-    },
-    {
-      title: "Data Science Expert With Algorithms",
-      company: "DataCorp",
-      location: "San Francisco",
-      type: "Full-time",
-    },
-    {
-      title: "Software Engineer",
-      company: "InnovateLab",
-      location: "New York",
-      type: "Full-time",
-    },
-  ]
+  fetchJobDetails(id: number): void {
+    this.authService.getJobDetails(id).subscribe({
+      next: (res: any) => {
+        if (res.status && res.job) {
+          this.job = res.job;
+        } else {
+          this.errorMsg = res.msg || 'Job not found';
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMsg = 'An error occurred while fetching job details.';
+        this.isLoading = false;
+      },
+    });
+  }
 
   onApplyNow(): void {
-    // Handle apply now action
-    console.log("Apply now clicked")
+    console.log('User clicked apply for job ID:', this.jobId);
+    // handle navigation or modal opening here
   }
 
   onSaveJob(): void {
-    // Handle save job action
-    console.log("Save job clicked")
+    console.log('Save job clicked for job ID:', this.jobId);
+    // save job logic here
   }
 }

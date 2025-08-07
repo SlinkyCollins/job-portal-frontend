@@ -4,11 +4,12 @@ import { NavbarComponent } from '../components/sections/navbar/navbar.component'
 import { FooterComponent } from '../components/sections/footer/footer.component';
 import { CtaComponent } from '../components/sections/cta/cta.component';
 import { AuthService } from '../core/services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-jobs-list',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, FooterComponent, CtaComponent],
+  imports: [CommonModule, NavbarComponent, FooterComponent, CtaComponent, RouterLink],
   templateUrl: './jobs-list.component.html',
   styleUrls: ['./jobs-list.component.css']
 })

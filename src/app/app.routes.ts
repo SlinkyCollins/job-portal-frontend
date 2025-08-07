@@ -28,8 +28,8 @@ export const routes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },
     { path: 'jobs', component: JobsListComponent },
+    { path: 'jobs/jobdetails/:id', component: JobDetailsComponent },
     { path: 'contact', component: ContactComponent },
-    { path: 'jobdetails', component: JobDetailsComponent },
     { path: 'jobwishlist', component: JobWishlistComponent },
     {
         path: 'dashboard/jobseeker',

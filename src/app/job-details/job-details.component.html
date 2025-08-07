@@ -1,180 +1,44 @@
 <app-navbar></app-navbar>
-<div class="job-details-container">
-  <!-- Header Section -->
-  <div class="job-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="job-title">{{ job.title }}</h1>
-          <div class="job-meta">
-            <span class="company">{{ job.company }}</span>
-            <span class="location">{{ job.location }}</span>
-            <span class="salary" *ngIf="job.salary">{{ job.salary }}</span>
-          </div>
-          <div class="job-tags">
-            <span class="tag" *ngFor="let tag of job.tags">{{ tag }}</span>
-          </div>
-        </div>
-      </div>
+
+<div class="container py-5">
+  <ng-container *ngIf="isLoading">
+    <p>Loading job details...</p>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && errorMsg">
+    <p class="text-danger">{{ errorMsg }}</p>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && job">
+    <h1 class="mb-2">{{ job.job_title }}</h1>
+    <p class="text-muted">{{ job.location }} | {{ job.job_type }}</p>
+    <p><strong>Salary:</strong> ₦{{ job.salary }}</p>
+    <p><strong>Deadline:</strong> {{ job.deadline }}</p>
+
+    <div class="my-4">
+      <h4>Job Description</h4>
+      <p>{{ job.job_description }}</p>
     </div>
-  </div>
 
-  <!-- Main Content -->
-  <div class="container main-content">
-    <div class="row">
-      <!-- Left Column - Job Details -->
-      <div class="col-lg-8 col-md-12">
-        <div class="job-content">
-          <!-- Overview Section -->
-          <div class="content-section">
-            <div class="section-header">
-              <div class="section-icon">
-                <i class="fas fa-info-circle"></i>
-              </div>
-              <h3>Overview</h3>
-            </div>
-            <p class="overview-text">{{ job.overview }}</p>
-          </div>
+    <div class="my-4">
+      <h4>Qualifications</h4>
 
-          <!-- Job Description -->
-          <div class="content-section">
-            <div class="section-header">
-              <div class="section-icon">
-                <i class="fas fa-file-alt"></i>
-              </div>
-              <h3>Job Description</h3>
-            </div>
-            <p>{{ job.description }}</p>
-          </div>
+      <ul *ngIf="job.qualifications?.length > 0; else noQualifications">
+        <li *ngFor="let q of job.qualifications">{{ q }}</li>
+      </ul>
 
-          <!-- Responsibilities -->
-          <div class="content-section">
-            <div class="section-header">
-              <div class="section-icon">
-                <i class="fas fa-tasks"></i>
-              </div>
-              <h3>Responsibilities</h3>
-            </div>
-            <ul class="responsibility-list">
-              <li *ngFor="let responsibility of job.responsibilities">
-                {{ responsibility }}
-              </li>
-            </ul>
-          </div>
-
-          <!-- Required Skills -->
-          <div class="content-section">
-            <div class="section-header">
-              <div class="section-icon">
-                <i class="fas fa-cogs"></i>
-              </div>
-              <h3>Required Skills</h3>
-            </div>
-            <ul class="skills-list">
-              <li *ngFor="let skill of job.requiredSkills">
-                {{ skill }}
-              </li>
-            </ul>
-          </div>
-
-          <!-- Benefits -->
-          <div class="content-section">
-            <div class="section-header">
-              <div class="section-icon">
-                <i class="fas fa-gift"></i>
-              </div>
-              <h3>Benefits</h3>
-            </div>
-            <ul class="benefits-list">
-              <li *ngFor="let benefit of job.benefits">
-                {{ benefit }}
-              </li>
-            </ul>
-          </div>
-
-          <!-- Apply Button -->
-          <div class="apply-section">
-            <button class="btn btn-apply" (click)="onApplyNow()">
-              Apply for this position
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column - Sidebar -->
-      <div class="col-lg-4 col-md-12">
-        <div class="sidebar">
-          <!-- Quick Actions -->
-          <div class="sidebar-card">
-            <div class="card-header">
-              <h4>Quick Actions</h4>
-            </div>
-            <div class="card-body">
-              <button class="btn btn-outline-primary btn-block mb-2" (click)="onApplyNow()">
-                <i class="fas fa-paper-plane"></i> Apply Now
-              </button>
-              <button class="btn btn-outline-secondary btn-block" (click)="onSaveJob()">
-                <i class="fas fa-bookmark"></i> Save Job
-              </button>
-            </div>
-          </div>
-
-          <!-- Job Info -->
-          <div class="sidebar-card">
-            <div class="card-header">
-              <h4>Job Information</h4>
-            </div>
-            <div class="card-body">
-              <div class="info-item">
-                <strong>Company:</strong>
-                <span>{{ job.company }}</span>
-              </div>
-              <div class="info-item">
-                <strong>Location:</strong>
-                <span>{{ job.location }}</span>
-              </div>
-              <div class="info-item" *ngIf="job.salary">
-                <strong>Salary:</strong>
-                <span>{{ job.salary }}</span>
-              </div>
-              <div class="info-item">
-                <strong>Type:</strong>
-                <span>Full-time</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ng-template #noQualifications>
+        <p class="text-muted">No qualifications listed for this job.</p>
+      </ng-template>
     </div>
-  </div>
 
-  <!-- Related Jobs Section -->
-  <div class="related-jobs-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <h2 class="section-title">Related Jobs</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-4" *ngFor="let relatedJob of relatedJobs">
-          <div class="related-job-card">
-            <div class="job-card-header">
-              <h5 class="job-card-title">{{ relatedJob.title }}</h5>
-              <span class="job-type-badge">{{ relatedJob.type }}</span>
-            </div>
-            <div class="job-card-body">
-              <p class="company-name">{{ relatedJob.company }}</p>
-              <p class="job-location">{{ relatedJob.location }}</p>
-            </div>
-            <div class="job-card-footer">
-              <button class="btn btn-outline-primary btn-sm">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <div class="mt-5">
+      <button class="btn btn-success me-2" (click)="onApplyNow()">Apply Now</button>
+      <button class="btn btn-outline-secondary" (click)="onSaveJob()">Save Job</button>
     </div>
-  </div>
+  </ng-container>
 </div>
+
 <app-cta></app-cta>
 <app-footer></app-footer>
