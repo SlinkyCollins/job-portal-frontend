@@ -14,7 +14,7 @@ export class AuthService {
     public router: Router,
     public toastr: ToastrService,
     public apiService: ApiServiceService
-  ) {}
+  ) { }
 
   setUser(user: any) {
     localStorage.setItem('userId', JSON.stringify(user));
@@ -48,17 +48,21 @@ export class AuthService {
       withCredentials: true
     });
   }
-  
+
   getSeekerData() {
     return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`, {
       withCredentials: true
-    }); 
+    });
   }
-  
+
   getEmployerData() {
     return this.http.get(`${this.apiService.apiUrl}/dashboard/employer_dashboard.php`, {
       withCredentials: true
     });
+  }
+
+  getAllJobs() {
+    return this.http.get(`${this.apiService.apiUrl}/jobs.php`, { withCredentials: true });
   }
 
 }
