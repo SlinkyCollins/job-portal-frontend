@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../components/sections/navbar/navbar.component';
 import { FooterComponent } from '../components/sections/footer/footer.component';
 import { CommonModule } from '@angular/common';
@@ -19,10 +18,12 @@ export class JobDetailsComponent implements OnInit {
   job: any = null;
   isLoading = true;
   errorMsg: string | null = null;
+  userRole: string | null = null;
 
-  constructor(private route: ActivatedRoute, public authService: AuthService) { }
+  constructor(private route: ActivatedRoute, public authService: AuthService, public router: Router) { }
 
   ngOnInit(): void {
+    this.userRole = localStorage.getItem('role');
     this.jobId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.jobId) {
       this.fetchJobDetails(this.jobId);
@@ -52,11 +53,33 @@ export class JobDetailsComponent implements OnInit {
 
   onApplyNow(): void {
     console.log('User clicked apply for job ID:', this.jobId);
-    // handle navigation or modal opening here
+    console.log('User ID:', this.authService.getUser());
+
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      this.authService.toastr.warning('You need to log in before applying.');
+      this.router.navigate(['/login']); // redirect to login page
+      return;
+    }
+
+    this.authService.applyToJob(this.jobId!).subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          this.authService.toastr.success(res.msg);
+        } else {
+          this.authService.toastr.error(res.msg);
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.authService.toastr.error('An error occurred while applying for the job');
+      }
+    });
+
   }
 
   onSaveJob(): void {
     console.log('Save job clicked for job ID:', this.jobId);
-    // save job logic here
   }
 }

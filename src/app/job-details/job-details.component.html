@@ -34,7 +34,7 @@
 
 
     <div class="mt-5">
-      <button class="btn btn-success me-2" (click)="onApplyNow()">Apply Now</button>
+      <button class="btn btn-success me-2" *ngIf="userRole === 'job_seeker' || '' " (click)="onApplyNow()">Apply Now</button>
       <button class="btn btn-outline-secondary" (click)="onSaveJob()">Save Job</button>
     </div>
   </ng-container>

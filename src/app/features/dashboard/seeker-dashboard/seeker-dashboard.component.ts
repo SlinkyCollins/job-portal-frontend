@@ -8,7 +8,7 @@ import { DeleteaccountComponent } from '../../../components/sections/deleteaccou
 
 @Component({
   selector: 'app-seeker-dashboard',
-  imports: [CommonModule, RouterLink, RouterModule, DeleteaccountComponent],
+  imports: [CommonModule, RouterLink, RouterModule, DeleteaccountComponent, RouterLink],
   templateUrl: './seeker-dashboard.component.html',
   styleUrl: './seeker-dashboard.component.css'
 })
@@ -31,6 +31,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     this.authService.getSeekerData().subscribe(
       (response: any) => {
         console.log(response);
+        localStorage.setItem('role', response.user.role);
         if (response.status == true) {
           this.user = response.user;
           this.authService.setUser(response.user.user_id);
@@ -179,6 +180,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   logOut() {
+    localStorage.removeItem('role');
     this.authService.logout();
     this.router.navigate(['/login']);
   }

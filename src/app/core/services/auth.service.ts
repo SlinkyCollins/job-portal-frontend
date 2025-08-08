@@ -68,5 +68,9 @@ export class AuthService {
   getJobDetails(jobId: number) {
     return this.http.get(`${this.apiService.apiUrl}/jobdetails.php?id=${jobId}`, { withCredentials: true });
   }
+  
+  applyToJob(jobId: number) {
+    return this.http.post(`${this.apiService.apiUrl}/apply.php`, { jobId }, { withCredentials: true });
+  }
 
 }
