@@ -51,7 +51,7 @@ export class LoginComponent {
       this.loading = false;
       console.log(response);
       if (response.status) {
-        localStorage.setItem('userId', response.user.id);
+        this.authService.setUser(response.user.id);
         this.toastr.success('Login successful');
         const role = response.user.role;
         const routes: { [key: string]: string } = {

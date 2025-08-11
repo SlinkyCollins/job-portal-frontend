@@ -23,6 +23,7 @@ export class EmployerDashboardComponent {
   ngOnInit():void {
     this.authService.getEmployerData().subscribe((response: any) => {
       console.log(response);
+      localStorage.setItem('role', response.user.role);
       if (response.status) {
         this.user = response.user;
         this.authService.setUser(response.user.user_id);
@@ -65,6 +66,7 @@ export class EmployerDashboardComponent {
 
 
   logOut() {
+    localStorage.removeItem('role');
     this.authService.logout();
     this.router.navigate(['/login']);
   }

@@ -16,7 +16,8 @@ import { AuthService } from '../core/services/auth.service';
 export class JobDetailsComponent implements OnInit {
   jobId: number | null = null;
   job: any = null;
-  isLoading = true;
+  isLoading: boolean = true;
+  hasApplied: boolean = false;
   errorMsg: string | null = null;
   userRole: string | null = null;
 
@@ -25,6 +26,7 @@ export class JobDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
     this.jobId = Number(this.route.snapshot.paramMap.get('id'));
+
     if (this.jobId) {
       this.fetchJobDetails(this.jobId);
     } else {
@@ -38,6 +40,7 @@ export class JobDetailsComponent implements OnInit {
       next: (res: any) => {
         if (res.status && res.job) {
           this.job = res.job;
+          this.hasApplied = res.job.hasApplied || false; // ✅ No separate API call
         } else {
           this.errorMsg = res.msg || 'Job not found';
         }
@@ -53,19 +56,18 @@ export class JobDetailsComponent implements OnInit {
 
   onApplyNow(): void {
     console.log('User clicked apply for job ID:', this.jobId);
-    console.log('User ID:', this.authService.getUser());
-
     const userId = localStorage.getItem('userId');
 
     if (!userId) {
-      this.authService.toastr.warning('You need to log in before applying.');
-      this.router.navigate(['/login']); // redirect to login page
+      this.authService.toastr.warning('Please log in to apply.');
+      this.router.navigate(['/login']);
       return;
     }
 
     this.authService.applyToJob(this.jobId!).subscribe({
       next: (res: any) => {
         if (res.status) {
+          this.hasApplied = true; // ✅ Instantly disable button
           this.authService.toastr.success(res.msg);
         } else {
           this.authService.toastr.error(res.msg);
@@ -73,10 +75,9 @@ export class JobDetailsComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.authService.toastr.error('An error occurred while applying for the job');
+        this.authService.toastr.error('An error occurred while applying.');
       }
     });
-
   }
 
   onSaveJob(): void {

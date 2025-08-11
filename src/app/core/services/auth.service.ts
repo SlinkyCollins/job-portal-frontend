@@ -16,8 +16,8 @@ export class AuthService {
     public apiService: ApiServiceService
   ) { }
 
-  setUser(user: any) {
-    localStorage.setItem('userId', JSON.stringify(user));
+  setUser(userId: any) {
+    localStorage.setItem('userId', JSON.stringify(userId));
   }
 
   getUser() {
