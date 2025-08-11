@@ -18,6 +18,7 @@ export class JobDetailsComponent implements OnInit {
   job: any = null;
   isLoading: boolean = true;
   hasApplied: boolean = false;
+  isSaved: boolean = false;
   errorMsg: string | null = null;
   userRole: string | null = null;
 
@@ -41,6 +42,7 @@ export class JobDetailsComponent implements OnInit {
         if (res.status && res.job) {
           this.job = res.job;
           this.hasApplied = res.job.hasApplied || false; // ✅ No separate API call
+          this.isSaved = res.job.isSaved || false; // ✅ No separate API call
         } else {
           this.errorMsg = res.msg || 'Job not found';
         }
@@ -81,6 +83,28 @@ export class JobDetailsComponent implements OnInit {
   }
 
   onSaveJob(): void {
-    console.log('Save job clicked for job ID:', this.jobId);
+    console.log('User clicked for save job ID:', this.jobId);
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      this.authService.toastr.warning('Please log in to save jobs.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.authService.addToWishlist(this.jobId!).subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          this.isSaved = true; // ✅ Instantly disable button
+          this.authService.toastr.success(res.msg);
+        } else {
+          this.authService.toastr.error(res.msg);
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.authService.toastr.error('An error occurred while saving the job.');
+      }
+    });
   }
 }

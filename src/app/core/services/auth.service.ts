@@ -73,4 +73,8 @@ export class AuthService {
     return this.http.post(`${this.apiService.apiUrl}/apply.php`, { jobId }, { withCredentials: true });
   }
 
+  addToWishlist(jobId: number) {
+    return this.http.post(`${this.apiService.apiUrl}/wishlist.php`, { jobId }, { withCredentials: true });
+  }
+
 }

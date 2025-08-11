@@ -40,7 +40,7 @@
         {{ hasApplied ? 'Already Applied' : 'Apply Now' }}
       </button>
 
-      <button class="btn btn-outline-secondary" (click)="onSaveJob()">Save Job</button>
+      <button class="btn btn-outline-secondary" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="isSaved" (click)="onSaveJob()">{{ isSaved ? 'Saved' : 'Save Job' }}</button>
     </div>
 
 
