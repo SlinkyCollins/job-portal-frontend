@@ -14,7 +14,7 @@
         </li>
 
         <li class="nav-item dropdown position-relative explore-desktop">
-          <a class="nav-link" href="#" (mouseenter)="showMegaDropdown = true" (mouseleave)="showMegaDropdown = false">
+          <a class="nav-link" (mouseenter)="showMegaDropdown = true" (mouseleave)="showMegaDropdown = false">
             Explore
           </a>
           <div *ngIf="showMegaDropdown" class="mega-dropdown p-4 bg-white shadow animate__animated animate__fadeInUp"
@@ -62,7 +62,7 @@
           <a class="nav-link" routerLink="/contact">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="goToDashboard($event)">Dashboard</a>
+          <a class="nav-link" (click)="goToDashboard($event)">Dashboard</a>
         </li>
       </ul>
 

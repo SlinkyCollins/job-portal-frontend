@@ -26,13 +26,13 @@ Now it’s time to **lock in, simplify what’s left, and beast your way to MVP*
 * **Dashboard** — In Progress
 * **Remaining Backend Tasks:**
 
-  * Add Job (for testing) — or later via DB
-  * Get All Jobs
-  * Get Job by ID
-  * Apply to Job endpoint
+  * Add Job (for testing) — or later via DB - Done
+  * Get All Jobs - Done
+  * Get Job by ID - Done
+  * Apply to Job endpoint - Done
   * (Optional: User can view applied jobs later)
 
----
+
 
 ## 🏁 REFINED GOAL: MVP Roadmap (Realistic + Beast Mode)
 
@@ -63,11 +63,11 @@ Here’s what we’re focusing on ONLY:
 
 ### **DAY 2: Backend MVP**
 
-* 🔲 Complete Dashboard logic if it’s user-specific
-* 🔲 **Add Job** manually to DB or a seed file (or skip adding jobs for now)
-* 🔲 Create API: `/jobs` → return all jobs
-* 🔲 Create API: `/jobs/:id` → return single job
-* 🔲 Create API: `/apply` → accept user & job info, store it (no need to send email or notify for now)
+* ✅ Complete Dashboard logic if it’s user-specific
+* ✅ **Add Job** manually to DB or a seed file (or skip adding jobs for now)
+* ✅ Create API: `/jobs` → return all jobs
+* ✅ Create API: `/jobs/:id` → return single job
+* ✅ Create API: `/apply` → accept user & job info, store it (no need to send email or notify for now)
 
 > Goal: Backend fully supports frontend — even with dummy DB
 
@@ -75,10 +75,10 @@ Here’s what we’re focusing on ONLY:
 
 ### **DAY 3: Connect Frontend + Backend**
 
-* 🔲 Hook up frontend to real API
+* ✅ Hook up frontend to real API
 
   * Axios or Fetch to get jobs, view job, and apply
-* 🔲 Test the full flow:
+* ✅ Test the full flow:
 
   * Sign up → log in → dashboard → view jobs → apply
 * 🔲 Clean up UI if time allows (just small polish)
@@ -102,10 +102,6 @@ You can now add:
 You’ve already passed the **hardest part** (getting started and sticking with it).
 
 Now you’re in the **execution and wrapping up phase** — it’s time to be sharp, fast, and focused.
-
----
-
-Want me to help you break down **Day 1's tasks into tiny chunks** so you know what to do today, hour by hour?
 
 
 

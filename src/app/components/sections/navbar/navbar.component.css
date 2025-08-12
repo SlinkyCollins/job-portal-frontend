@@ -71,6 +71,10 @@
   font-weight: 600;
 }
 
+.fullmenu .nav-item .nav-link {
+  cursor: pointer;
+}
+
 .fullmenu li {
   list-style: none;
 }
