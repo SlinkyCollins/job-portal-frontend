@@ -2,7 +2,7 @@
 .userSetup-wrapper {
   padding: 2rem 1rem;
   text-align: center;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
 }
 
@@ -12,7 +12,7 @@
   font-weight: 500;
   max-width: 100%;
   margin: 1rem 0 0.5rem;
-  color: #333;
+  color: #000;
   line-height: 1.2;
 }
 
@@ -20,7 +20,7 @@
   font-size: 1rem;
   font-weight: 400;
   margin: 0 0 2rem;
-  color: #666;
+  color: #494949;
   line-height: 1.4;
 }
 
@@ -34,10 +34,10 @@
 }
 
 hr {
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   border: none;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #6d6b6b;
 }
 
 .userSetup-btns .btn1 {
@@ -112,7 +112,7 @@ hr {
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
-    padding: 2.5rem 0;
+    padding: 4rem .3rem;
   }
 
   .userSetup-text {
@@ -152,7 +152,7 @@ hr {
   }
 
   .userSetup-wrapper h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
   }
 
   .userSetup-wrapper p {

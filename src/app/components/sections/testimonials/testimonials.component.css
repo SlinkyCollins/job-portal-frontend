@@ -135,10 +135,10 @@
   color: #fff;
 }
 
-.rating .rating-review{
+.rating .rating-review {
   margin-top: 1rem;
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .rating-count {
@@ -183,6 +183,9 @@ swiper-container {
 
 /* === DESKTOP STYLES === */
 @media (min-width: 768px) {
+  .testimonials {
+    margin: 8rem auto 7rem;
+  }
   .mobile-nav {
     display: none !important;
   }
@@ -198,6 +201,10 @@ swiper-container {
 }
 
 @media (min-width: 992px) {
+  .testimonials {
+    margin: 10rem auto 8rem;
+  }
+
   .carousel-content {
     min-height: 500px;
   }

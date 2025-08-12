@@ -137,14 +137,13 @@
 }
 
 .custom-social-btn {
-  border: 1px solid #757575;
+  border: 1px solid #e5e5e5;
   color: #000000;
   background-color: #fff;
 }
 
 .custom-social-btn:hover {
   background-color: #f8f9fa;
-  border-color: #757575;
 }
 
 .custom-social-btn:focus {

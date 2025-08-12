@@ -67,7 +67,8 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
           );
         }
 
-        // Clear user session and redirect after error
+        // Clear user session, user role and redirect after error
+        localStorage.removeItem('role');
         localStorage.removeItem('userId');
         this.router.navigate(['/login']);
       }

@@ -91,6 +91,7 @@
     flex-direction: row-reverse;
     align-items: center;
     justify-content: space-around;
+    margin: 2rem 1rem 0;
   }
 
   .talent-imgs {

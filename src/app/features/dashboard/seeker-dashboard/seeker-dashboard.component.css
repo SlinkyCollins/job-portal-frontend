@@ -59,17 +59,18 @@ body {
 }
 
 .sidebar::-webkit-scrollbar {
-  width: 4px;
+  /* width: 4px; */
+  width: 0.5em;
 }
 
-.sidebar::-webkit-scrollbar-track {
+/* .sidebar::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 2px;
-}
+} */
 
 /* Mobile Close Button */
 .mobile-close-btn {

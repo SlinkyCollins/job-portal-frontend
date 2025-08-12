@@ -108,39 +108,83 @@
   height: 1.125rem;
 }
 
+
 .job-posting {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
   background-color: #f1f6f3;
   border: 0.0625rem solid #d6ece0;
-  border-radius: 1.875rem;
+  border-radius: 2rem;
   font-size: clamp(0.95rem, 1vw, 1rem);
   font-weight: 500;
   line-height: 1.5;
-  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(.5rem, 2vw, .8rem);
   text-align: center;
   max-width: 100%;
-  margin: 2rem auto 0;
+  margin: 3rem auto 0;
+  word-break: break-word;
 }
 
-.job-posting div {
-  font-size: clamp(1rem, 1vw, 1.1rem);
+.job-text {
+  font-size: clamp(1rem, 1vw, 1.5rem);
   font-weight: 600;
 }
 
-.job-posting div span {
-  font-size: clamp(1rem, 1vw, 1.1rem);
-  font-weight: 600;
-  color: #00be57;
-}
-
-.job-posting a {
+.job-link a {
   font-size: clamp(1rem, 1vw, 1.1rem);
   font-weight: 400;
   color: #00be57;
   text-decoration: underline;
+  margin-left: 0.25rem;
 }
+
+@media (max-width: 767.98px) {
+  .job-posting {
+    flex-direction: column;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .job-text {
+    margin-bottom: 0.5rem;
+  }
+
+  .job-link {
+    margin-top: 0.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .job-posting {
+    max-width: 80% !important;
+    padding: .2rem 0;
+    margin: 3.5rem auto 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .job-posting {
+    max-width: 40rem !important;
+    padding: .2rem 0;
+    margin: 4rem auto 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .job-posting {
+    max-width: 45rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .job-posting {
+    max-width: 50rem;
+    margin-top: 5rem;
+  }
+}
+
+
 
 .explore-all .btn {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
@@ -186,10 +230,6 @@
     justify-content: flex-end;
     align-items: flex-start;
   }
-
-  .job-posting {
-    max-width: 40rem;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -208,18 +248,9 @@
   .job-card {
     padding: 2rem;
   }
-
-  .job-posting {
-    max-width: 45rem;
-  }
 }
 
 @media (min-width: 1400px) {
-  .job-posting {
-    max-width: 50rem;
-    margin-top: 5rem;
-  }
-
   .new-jobs .header {
     font-size: clamp(4rem, 3vw, 4.5rem);
   }
