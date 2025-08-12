@@ -26,7 +26,6 @@
   font-family: "Gordita-Regular", cursive;
 }
 
-
 .signupForm {
   background-color: #fff;
   border-radius: 1.25rem;
@@ -49,6 +48,9 @@
 }
 
 @media (min-width: 768px) {
+  .signupForm .signupH1 {
+    font-size: 3rem !important;
+  }
   .signupForm {
     max-width: 650px;
     padding: 2.5rem 2.5rem 2rem 2.5rem;
@@ -56,12 +58,14 @@
 }
 
 @media (min-width: 992px) {
+  .signupForm .signupH1 {
+    font-size: 3.5rem !important;
+  }
   .signupForm {
     max-width: 750px;
     padding: 3rem 3rem 2.5rem 3rem;
   }
 }
-
 
 @media (max-width: 600px) {
   .signupForm {
@@ -104,9 +108,48 @@
 }
 
 .signupForm .signupH1 {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 500;
   color: #284b3c;
   letter-spacing: 0.01em;
   font-family: "EB Garamond", serif;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.or-divider:not(:empty)::before {
+  margin-right: 1rem;
+}
+
+.or-divider:not(:empty)::after {
+  margin-left: 1rem;
+}
+
+.custom-social-btn {
+  border: 1px solid #757575;
+  color: #000000;
+  background-color: #fff;
+}
+
+.custom-social-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #757575;
+}
+
+.custom-social-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(117, 117, 117, 0.25);
 }

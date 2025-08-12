@@ -82,7 +82,8 @@
           <label class="form-check-label" for="terms">
             <input type="checkbox" id="terms" name="terms" [(ngModel)]="termsAccepted" #terms="ngModel"
               [class.is-invalid]="terms.invalid && terms.dirty" required class="form-check-input" />
-            By hitting the Register button, you agree to the <a href="#" style="color: #31795a; text-decoration: none;">Terms conditions & Privacy Policy</a>
+            By hitting the Register button, you agree to the <a href="#"
+              style="color: #31795a; text-decoration: none;">Terms conditions & Privacy Policy</a>
           </label>
           <div *ngIf="terms.invalid && terms.dirty" class="invalid-feedback d-block">
             <span *ngIf="terms.hasError('required')">You must accept the terms and conditions</span>
@@ -91,12 +92,33 @@
 
         <div class="form-group mt-4" style="position: relative;">
           <input type="submit" name="submit" (click)="signup(form)" [disabled]="form.invalid || loading"
-            [value]="loading ? 'Signing Up...' : 'Register'" class="btn btn-success w-100 p-3 text-uppercase fw-semibold" />
+            [value]="loading ? 'Signing Up...' : 'Register'"
+            class="btn btn-success w-100 p-3 text-uppercase fw-semibold" />
           <div *ngIf="loading" class="spinner-border spinner-border-sm text-light"
             style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"></div>
         </div>
 
-        <p class="text-center my-2">Already have an account? <a routerLink="/login" style="cursor: pointer; text-decoration: none; color: #31795a; font-weight: 700;">Login</a>
+        <div class="or-divider">OR</div>
+
+        <div class="row mb-4">
+          <div class="col-sm-6 mb-2 mb-sm-0">
+            <button type="button" class="btn custom-social-btn w-100 p-3 fw-semibold">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                alt="Google" width="20" height="20" class="me-2"> Signup with Google
+            </button>
+          </div>
+          <div class="col-sm-6">
+            <button type="button" class="btn custom-social-btn w-100 p-3 fw-semibold">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
+                alt="Facebook" width="20" height="20" class="me-2"> Signup with Facebook
+            </button>
+          </div>
+        </div>
+
+        <p class="text-center my-2">Already have an account? <a routerLink="/login"
+            style="cursor: pointer; text-decoration: none; color: #31795a; font-weight: 700;">Login</a>
         </p>
       </form>
     </div>
