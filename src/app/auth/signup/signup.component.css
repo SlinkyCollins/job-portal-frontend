@@ -41,6 +41,9 @@
 }
 
 @media (min-width: 568px) {
+  .signupContainer{
+    margin: 6.5rem 0 3rem;
+  }
   .signupForm {
     max-width: 520px;
     padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -48,6 +51,9 @@
 }
 
 @media (min-width: 768px) {
+   .signupContainer{
+    margin: 7rem 0 3rem;
+  }
   .signupForm .signupH1 {
     font-size: 3rem !important;
   }
@@ -58,6 +64,9 @@
 }
 
 @media (min-width: 992px) {
+   .signupContainer{
+    margin: 8rem 0 3rem;
+  }
   .signupForm .signupH1 {
     font-size: 3.5rem !important;
   }

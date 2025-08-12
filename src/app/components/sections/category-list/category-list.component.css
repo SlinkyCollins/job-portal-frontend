@@ -95,4 +95,14 @@
   .category-card .title {
     font-size: 20px;
   }
+
+  .category-header {
+  font-size: 45px;
+  }
+}
+
+@media (min-width: 992px) {
+  .category-header {
+    font-size: 50px;
+  }
 }

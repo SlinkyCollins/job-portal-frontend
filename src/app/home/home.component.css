@@ -6,6 +6,8 @@
 }
 .body {
   padding: 4rem 0.8rem 2rem;
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
 /* CSS utility class (for basic reusability) */

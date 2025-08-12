@@ -273,13 +273,13 @@
 
 @media (min-width: 1200px) {
   .hero-icon-1 {
-    top: 22%;
-    left: 5%;
+    top: 24%;
+    left: 7%;
   }
 
   .hero-icon-2 {
-    top: 20%;
-    right: 8%;
+    top: 22%;
+    right: 10%;
   }
 
   .hero-icon-3 {
@@ -288,7 +288,7 @@
   }
 
   .hero-icon-4 {
-    bottom: 35%;
+    bottom: 40%;
     right: 5%;
   }
 
@@ -409,6 +409,7 @@
   .hero-section {
     padding: 7.5rem 1rem 6rem;
     min-height: 70vh;
+    margin: 0 0 4rem;
   }
   .hero-text {
     max-width: 800px;
@@ -456,6 +457,7 @@
 
 @media (min-width: 1400px) {
   .hero-text h1 {
-    font-size: 5rem;
+    font-size: 5.5rem;
+    line-height: 5.8rem;
   }
 }

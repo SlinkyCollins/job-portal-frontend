@@ -115,6 +115,11 @@
 
 /* 992px+ - footerLaptop: Logo left, categories right, footer split */
 @media (min-width: 992px) {
+  .footer-wrapper {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
   .footer {
     display: flex !important;
     flex-direction: row !important;

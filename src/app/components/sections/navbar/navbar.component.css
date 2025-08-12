@@ -14,7 +14,7 @@
   background-color: #fff !important;
   animation-name: scroll;
   animation-duration: 1s;
-  padding: 0.1rem 0.1rem;
+  padding: 0.5rem 0.1rem;
   box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -196,7 +196,7 @@
 .dropdown-explore .nav-link {
   padding: 0.25rem 0;
   font-size: 0.9rem;
-  color: #333;
+  color: #000;
 }
 
 .dropdown-explore strong {
@@ -208,13 +208,15 @@
   transition: transform 0.3s ease;
 }
 
-
 @media (min-width: 768px) {
   .container-fluid {
     padding: 0.8rem 0.8rem;
   }
   .scrolled {
-    padding: 0;
+    padding: 0.5rem 2rem;
+  }
+  .navbar {
+    padding: 1rem 0.8rem;
   }
 }
 
@@ -254,6 +256,10 @@
     display: none;
   }
 
+  .navbar {
+    padding: 1.6rem;
+  }
+
   .fullmenu li a {
     font-size: 0.9rem;
     color: #000;
@@ -263,6 +269,6 @@
     padding: 0.4rem 1rem;
   }
   .scrolled {
-    padding: 0 0.5rem;
+    padding: 0.5rem 2rem;
   }
 }
