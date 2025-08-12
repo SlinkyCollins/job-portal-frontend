@@ -103,12 +103,10 @@
   font-size: 0.92rem;
 }
 
-.signupH1 {
-  font-size: 1.7rem;
-  font-weight: 700;
+.signupForm .signupH1 {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #284b3c;
   letter-spacing: 0.01em;
-}
-
-.signupH1 {
   font-family: "EB Garamond", serif;
 }

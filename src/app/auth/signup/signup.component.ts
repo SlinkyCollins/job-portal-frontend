@@ -30,6 +30,7 @@ export class SignupComponent {
   public role: string = '';
   public showPassword: boolean = false;
   public loading:boolean = false;
+  public termsAccepted: boolean = false;
 
 
   signup(form: NgForm) {
@@ -39,7 +40,8 @@ export class SignupComponent {
         lname: this.lastname,
         mail: this.email,
         pword: this.password,
-        role: this.role
+        role: this.role,
+        terms: this.termsAccepted
       }
       this.http.post(`${this.apiService.apiUrl}/signup.php`, userObj, { withCredentials: true }).subscribe((response: any) => {
         console.log(response);

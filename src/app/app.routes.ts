@@ -25,7 +25,7 @@ import { JobWishlistComponent } from './job-wishlist/job-wishlist.component';
 export const routes: Routes = [
     { path: '', component: HomeComponent, title: 'JobNet' },
     { path: 'home', redirectTo: '', pathMatch: 'full' },
-    { path: 'signup', component: SignupComponent, title: 'Signup | JobNet' },
+    { path: 'signup', component: SignupComponent, title: 'Register | JobNet' },
     { path: 'login', component: LoginComponent, title: 'Login | JobNet' },
     { path: 'jobs', component: JobsListComponent, title: 'Jobs | JobNet' },
     { path: 'jobdetails/:id', component: JobDetailsComponent, title: 'Job Details | JobNet' },
