@@ -1,8 +1,7 @@
-
 .loginForm {
   background-color: #fff;
   border-radius: 1.25rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 1.5rem 0.8rem 1.2rem 0.8rem;
   margin: 8rem auto 5rem auto;
   width: 100%;
@@ -15,6 +14,10 @@
 }
 
 @media (min-width: 568px) {
+  .loginH1 {
+    font-size: 2rem !important;
+  }
+
   .loginForm {
     max-width: 420px;
     padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -22,6 +25,10 @@
 }
 
 @media (min-width: 768px) {
+   .loginH1 {
+    font-size: 2.5rem !important;
+  }
+
   .loginForm {
     max-width: 520px;
     padding: 2.5rem 2.5rem 2rem 2.5rem;
@@ -29,6 +36,10 @@
 }
 
 @media (min-width: 992px) {
+   .loginH1 {
+    font-size: 3rem !important;
+  }
+
   .loginForm {
     max-width: 600px;
     padding: 3rem 3rem 2.5rem 3rem;
@@ -47,7 +58,7 @@
 }
 .loginH1 {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-family: "EB Garamond", serif;
   color: #244034;
 }
@@ -68,7 +79,8 @@
   color: #244034;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
   border-radius: 0.6rem;
   padding: 0.7rem 1rem;
   font-size: 1rem;
@@ -78,7 +90,8 @@
   transition: border-color 0.2s;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   border-color: #00be57;
   outline: none;
   background: #fff;
@@ -98,7 +111,6 @@
   color: #244034;
   text-decoration: underline;
 }
-
 
 .or-divider {
   display: flex;
