@@ -8,6 +8,8 @@ import { QAComponent } from "../components/sections/q-a/q-a.component";
 import { FancybannerComponent } from "../components/sections/fancybanner/fancybanner.component";
 import { FindtalentsComponent } from "../components/sections/findtalents/findtalents.component";
 import { JobCardComponent } from "../components/sections/job-card/job-card.component";
+import { NavbarComponent } from '../components/sections/navbar/navbar.component';
+import { FooterComponent } from '../components/sections/footer/footer.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +23,8 @@ import { JobCardComponent } from "../components/sections/job-card/job-card.compo
     FancybannerComponent,
     FindtalentsComponent,
     JobCardComponent,
+    NavbarComponent,
+    FooterComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
