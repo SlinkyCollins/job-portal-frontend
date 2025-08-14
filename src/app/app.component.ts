@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { ScrolltopbtnComponent } from './components/ui/scrolltopbtn/scrolltopbtn.component';
 import { filter } from 'rxjs/operators';
+import { NavbarComponent } from './components/sections/navbar/navbar.component';
+import { FooterComponent } from './components/sections/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ScrolltopbtnComponent],
+  imports: [RouterOutlet, ScrolltopbtnComponent, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

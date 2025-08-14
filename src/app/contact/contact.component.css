@@ -9,6 +9,7 @@
   width: 100%;
   height: 300px;
   overflow: hidden;
+  margin-top: 5rem;
 }
 
 .map-placeholder {
@@ -189,20 +190,32 @@
   color: #721c24;
 }
 
+@media (min-width: 768px) {
+  .map-section {
+    margin-top: 6rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .map-section {
+    margin-top: 7rem;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 991.98px) {
   .contact-content {
     padding: 40px 0;
   }
-  
+
   .contact-title {
     font-size: 2rem;
   }
-  
+
   .contact-form {
     padding: 30px 20px;
   }
-  
+
   .contact-info-card {
     padding: 30px 20px;
     margin-bottom: 20px;
@@ -213,24 +226,24 @@
   .map-section {
     height: 250px;
   }
-  
+
   .contact-title {
     font-size: 1.75rem;
   }
-  
+
   .contact-form {
     padding: 25px 15px;
   }
-  
+
   .btn-submit {
     padding: 12px 40px;
     min-width: 180px;
   }
-  
+
   .contact-info-card {
     padding: 25px 15px;
   }
-  
+
   .contact-icon {
     width: 50px;
     height: 50px;
@@ -242,12 +255,12 @@
   .contact-content {
     padding: 30px 0;
   }
-  
+
   .contact-form {
     margin: 0 -15px;
     border-radius: 0;
   }
-  
+
   .btn-submit {
     width: 100%;
     max-width: 300px;

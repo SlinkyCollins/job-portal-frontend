@@ -19,6 +19,9 @@ import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { JobWishlistComponent } from './job-wishlist/job-wishlist.component';
+import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
+import { TermsComponent } from './terms/terms.component';
+import { CookiepolicyComponent } from './cookiepolicy/cookiepolicy.component';
 
 
 
@@ -27,6 +30,9 @@ export const routes: Routes = [
     { path: 'home', redirectTo: '', pathMatch: 'full' },
     { path: 'signup', component: SignupComponent, title: 'Register | JobNet' },
     { path: 'login', component: LoginComponent, title: 'Login | JobNet' },
+    { path: 'privacy-policy', component: PrivacypolicyComponent, title: 'Privacy Policy | JobNet' },
+    { path: 'terms-of-service', component: TermsComponent, title: 'Terms of Service | JobNet' },
+    { path: 'cookie-policy', component: CookiepolicyComponent, title: 'Cookie Policy | JobNet' },
     { path: 'jobs', component: JobsListComponent, title: 'Jobs | JobNet' },
     { path: 'jobdetails/:id', component: JobDetailsComponent, title: 'Job Details | JobNet' },
     { path: 'contact', component: ContactComponent, title: 'Contact | JobNet' },

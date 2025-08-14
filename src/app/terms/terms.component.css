@@ -1,0 +1,15 @@
+.policy-container {
+  min-height: 70vh;
+  margin: 5rem auto 0;
+  font-family: "Gordita-Regular", cursive;
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+.card h1 {
+  font-size: 2rem;
+  color: #212529;
+  font-family: "EB Garamond", serif;
+}

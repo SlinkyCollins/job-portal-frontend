@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { CtaComponent } from "../components/sections/cta/cta.component";
-import { NavbarComponent } from "../components/sections/navbar/navbar.component";
 import { HeroComponent } from "../components/sections/hero/hero.component";
 import { CategoryListComponent } from "../components/sections/category-list/category-list.component";
 import { TestimonialsComponent } from "../components/sections/testimonials/testimonials.component";
 import { QAComponent } from "../components/sections/q-a/q-a.component";
-import { FooterComponent } from "../components/sections/footer/footer.component";
 import { FancybannerComponent } from "../components/sections/fancybanner/fancybanner.component";
 import { FindtalentsComponent } from "../components/sections/findtalents/findtalents.component";
 import { JobCardComponent } from "../components/sections/job-card/job-card.component";
@@ -16,12 +14,10 @@ import { JobCardComponent } from "../components/sections/job-card/job-card.compo
   imports: [
     CommonModule,
     CtaComponent,
-    NavbarComponent,
     HeroComponent,
     CategoryListComponent,
     TestimonialsComponent,
     QAComponent,
-    FooterComponent,
     FancybannerComponent,
     FindtalentsComponent,
     JobCardComponent,

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FooterComponent } from '../components/sections/footer/footer.component';
-import { NavbarComponent } from '../components/sections/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,7 +12,7 @@ interface ContactForm {
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [FooterComponent, NavbarComponent, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })

@@ -1,0 +1,26 @@
+.cookie-policy-container {
+  max-width: 900px;
+  margin: 7rem auto 5rem;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: "Gordita-Regular", cursive;
+}
+
+.cookie-policy-container h1,
+.cookie-policy-container h2 {
+  font-size: 2rem;
+  color: #212529;
+  font-family: "EB Garamond", serif;
+}
+
+.cookie-policy-container p,
+.cookie-policy-container li {
+  line-height: 1.6;
+  color: #555;
+}
+
+.cookie-policy-container ul {
+  padding-left: 20px;
+}

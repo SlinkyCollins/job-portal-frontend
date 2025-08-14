@@ -1,6 +1,4 @@
 import { Component } from "@angular/core"
-import { NavbarComponent } from "../components/sections/navbar/navbar.component"
-import { FooterComponent } from "../components/sections/footer/footer.component"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import { CtaComponent } from "../components/sections/cta/cta.component"
@@ -22,7 +20,7 @@ interface WishlistJob {
 @Component({
   selector: "app-job-wishlist",
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, CommonModule, FormsModule, CtaComponent, RouterLink],
+  imports: [CommonModule, FormsModule, CtaComponent, RouterLink],
   templateUrl: "./job-wishlist.component.html",
   styleUrls: ["./job-wishlist.component.css"],
 })
