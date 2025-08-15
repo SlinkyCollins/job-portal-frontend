@@ -6,11 +6,13 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/services/auth.service';
 import { ApiServiceService } from '../../core/services/api-service.service';
+import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
+import { FooterComponent } from '../../components/sections/footer/footer.component';
 
 
 @Component({
     selector: 'app-login',
-    imports: [RouterLink, CommonModule, FormsModule],
+    imports: [RouterLink, CommonModule, FormsModule, NavbarComponent, FooterComponent],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css'
 })

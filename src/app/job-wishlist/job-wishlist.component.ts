@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import { CtaComponent } from "../components/sections/cta/cta.component"
 import { RouterLink } from "@angular/router"
+import { NavbarComponent } from "../components/sections/navbar/navbar.component"
+import { FooterComponent } from "../components/sections/footer/footer.component"
 
 interface WishlistJob {
   id: number
@@ -20,7 +22,7 @@ interface WishlistJob {
 @Component({
   selector: "app-job-wishlist",
   standalone: true,
-  imports: [CommonModule, FormsModule, CtaComponent, RouterLink],
+  imports: [CommonModule, FormsModule, CtaComponent, RouterLink, NavbarComponent, FooterComponent],
   templateUrl: "./job-wishlist.component.html",
   styleUrls: ["./job-wishlist.component.css"],
 })

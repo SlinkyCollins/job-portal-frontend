@@ -3,10 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CtaComponent } from '../components/sections/cta/cta.component';
 import { AuthService } from '../core/services/auth.service';
+import { NavbarComponent } from '../components/sections/navbar/navbar.component';
+import { FooterComponent } from '../components/sections/footer/footer.component';
 
 @Component({
   selector: 'app-job-details',
-  imports: [CommonModule, CtaComponent],
+  imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent],
   templateUrl: './job-details.component.html',
   styleUrls: ['./job-details.component.css'],
   standalone: true,
