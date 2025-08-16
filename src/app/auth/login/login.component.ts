@@ -11,10 +11,10 @@ import { FooterComponent } from '../../components/sections/footer/footer.compone
 
 
 @Component({
-    selector: 'app-login',
-    imports: [RouterLink, CommonModule, FormsModule, NavbarComponent, FooterComponent],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+  selector: 'app-login',
+  imports: [RouterLink, CommonModule, FormsModule, NavbarComponent, FooterComponent],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   constructor
@@ -74,6 +74,37 @@ export class LoginComponent {
       }
       console.error(error);
       console.log('Error Response:', error.error);
+    });
+  }
+
+
+  googleLogin() {
+    this.loading = true;
+    this.authService.signInWithGoogle().subscribe({
+      next: (credential) => {
+        this.loading = false;
+        this.authService.handleSocialLogin(credential)
+      },
+      error: (err) => {
+        this.loading = false;
+        this.toastr.error('Google login failed');
+        console.error(err);
+      }
+    });
+  }
+
+  facebookLogin() {
+    this.loading = true;
+    this.authService.signInWithFacebook().subscribe({
+      next: (credential) => {
+        this.loading = false;
+        this.authService.handleSocialLogin(credential)
+      },
+      error: (err) => {
+        this.loading = false;
+        this.toastr.error('Facebook login failed');
+        console.error(err);
+      }
     });
   }
 }

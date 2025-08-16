@@ -22,6 +22,7 @@ import { JobWishlistComponent } from './job-wishlist/job-wishlist.component';
 import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
 import { TermsComponent } from './terms/terms.component';
 import { CookiepolicyComponent } from './cookiepolicy/cookiepolicy.component';
+import { RoleSelectComponent } from './role-select/role-select.component';
 
 
 
@@ -37,6 +38,7 @@ export const routes: Routes = [
     { path: 'jobdetails/:id', component: JobDetailsComponent, title: 'Job Details | JobNet' },
     { path: 'contact', component: ContactComponent, title: 'Contact | JobNet' },
     { path: 'jobwishlist', component: JobWishlistComponent, title: 'Job Wishlist | JobNet' },
+    { path: 'role-select', component: RoleSelectComponent, title: 'Role Select | JobNet' },
     {
         path: 'dashboard/jobseeker',
         component: SeekerDashboardComponent,

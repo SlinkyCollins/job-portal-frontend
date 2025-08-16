@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'http://localhost/JobPortal/';
+  apiUrl = 'http://localhost/JobPortal';
 }
