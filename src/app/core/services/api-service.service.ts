@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'http://localhost/JobPortal';
+  apiUrl = 'https://690784b1d1a5.ngrok-free.app/JobPortal';
 }
