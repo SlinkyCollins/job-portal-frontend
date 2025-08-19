@@ -182,7 +182,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
   logOut() {
     localStorage.removeItem('role');
-    this.authService.logout();
+    this.authService.firebaseSignOut();
     this.router.navigate(['/login']);
   }
 }
