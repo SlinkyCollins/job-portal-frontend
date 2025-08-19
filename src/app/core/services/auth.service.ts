@@ -33,7 +33,6 @@ export class AuthService {
   logout() {
     this.http.post(`${this.apiService.apiUrl}/logout.php`, {}, { withCredentials: true }).subscribe(
       (response: any) => {
-        console.log(response);
         if (response.status) {
           this.toastr.success('Logged out');
           localStorage.removeItem('userId');
@@ -44,7 +43,6 @@ export class AuthService {
       },
       err => {
         this.toastr.error('Logout failed');
-        console.log('Logout error:', err);
       }
     );
   }
@@ -112,7 +110,6 @@ export class AuthService {
     this.ngZone.run(() => {
       const user = credential.user;
       if (user) {
-        console.log('User:', user); // Debug
         const userDoc = doc(this.firestore, `users/${user.uid}`);
         setDoc(userDoc, {
           uid: user.uid,
@@ -124,12 +121,10 @@ export class AuthService {
 
         from(user.getIdToken()).pipe(
           switchMap(token => {
-            console.log('Sending token to backend:', token); // Debug
             return this.http.post(`${this.apiService.apiUrl}/social_login.php`, { token }, { withCredentials: true });
           })
         ).subscribe({
           next: (response: any) => {
-            console.log('Backend response:', response); // Debug
             if (response.status) {
               this.toastr.success('Login successful');
               this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : '/dashboard/employer']);

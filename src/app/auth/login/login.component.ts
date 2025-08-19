@@ -50,7 +50,6 @@ export class LoginComponent {
       withCredentials: true  // Key to send cookies (PHP session)
     }).subscribe((response: any) => {
       this.loading = false;
-      console.log(response);
       if (response.status) {
         this.authService.setUser(response.user.id);
         this.toastr.success('Login successful');

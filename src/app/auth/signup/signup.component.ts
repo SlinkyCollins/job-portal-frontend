@@ -46,7 +46,6 @@ export class SignupComponent {
       terms: this.termsAccepted
     }
     this.http.post(`${this.apiService.apiUrl}/signup.php`, userObj, { withCredentials: true }).subscribe((response: any) => {
-      console.log(response);
       this.loading = false;
       if (response.status) {
         this.toastr.success('Signed up successfully');
