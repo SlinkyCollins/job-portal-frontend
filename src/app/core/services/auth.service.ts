@@ -95,7 +95,14 @@ export class AuthService {
   signInWithFacebook(): Observable<UserCredential> {
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {
-        this.toastr.error(err.code === 'auth/popup-closed-by-user' ? 'Popup closed. Try again.' : 'Facebook login failed');
+        if (err.code === 'auth/account-exists-with-different-credential') {
+          this.toastr.error('Account exists with different provider. Try another login method or link accounts.');
+          console.error('Facebook login error:', err);
+        } else if (err.code === 'auth/popup-closed-by-user') {
+          this.toastr.error('Popup closed. Try again.');
+        } else {
+          this.toastr.error('Facebook login failed');
+        }
         throw err;
       })
     );
