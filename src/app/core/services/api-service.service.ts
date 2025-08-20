@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'https://36b8d26bb8c2.ngrok-free.app/JobPortal';
+  apiUrl = 'https://open-honeybee-endlessly.ngrok-free.app/JobPortal';
 }
