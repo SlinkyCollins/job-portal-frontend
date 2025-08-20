@@ -28,56 +28,43 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit() {
-    this.authService.getSeekerData().subscribe(
-      (response: any) => {
-        localStorage.setItem('role', response.user.role);
-        if (response.status == true) {
-          this.user = response.user;
-          this.authService.setUser(response.user.user_id);
-        }
-      },
-      (err: any) => {
-        console.error('Error fetching session:', err.status, err.message);
-
-        if (err.status == 401) {
-          this.toastr.warning(
-            'Your session has expired. Please log in again.',
-            'Session Timeout'
-          );
-        } else if (err.status == 403) {
-          this.toastr.error(
-            'You do not have permission to access this page.',
-            'Access Denied'
-          );
-        } else if (err.status == 404) {
-          this.toastr.info(
-            'We could not find your user data. Please contact support.',
-            'User Not Found'
-          );
-        } else if (err.status == 500) {
-          this.toastr.error(
-            'Something went wrong on our end. Please try again later.',
-            'Server Error'
-          );
-        } else {
-          this.toastr.error(
-            'An unexpected error occurred. Please log in again.',
-            'Error'
-          );
-        }
-
-        // Clear user session, user role and redirect after error
-        localStorage.removeItem('role');
-        localStorage.removeItem('userId');
-        this.router.navigate(['/login']);
+  this.authService.getSeekerData().subscribe(
+    (response: any) => {
+      localStorage.setItem('role', response.user.role);
+      if (response.status === true) {
+        this.user = response.user;
+        this.authService.setUser(response.user.user_id);
       }
-    );
+    },
+    (err: any) => {
+      console.error('Error fetching session:', err.status, err.statusText, err.message);
+      let errorMsg = 'An unexpected error occurred. Please log in again.';
+      if (err.status === 401) {
+        errorMsg = 'Your session has expired. Please log in again.';
+        this.toastr.warning(errorMsg, 'Session Timeout');
+      } else if (err.status === 403) {
+        errorMsg = 'You do not have permission to access this page.';
+        this.toastr.error(errorMsg, 'Access Denied');
+      } else if (err.status === 404) {
+        errorMsg = 'We could not find your user data. Please contact support.';
+        this.toastr.info(errorMsg, 'User Not Found');
+      } else if (err.status === 500) {
+        errorMsg = 'Something went wrong on our end. Please try again later.';
+        this.toastr.error(errorMsg, 'Server Error');
+      } else {
+        this.toastr.error(errorMsg, 'Error');
+      }
 
-    // Close sidebar and dropdowns on window resize
-    window.addEventListener('resize', this.handleWindowResize.bind(this));
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', this.handleDocumentClick.bind(this));
-  }
+      localStorage.removeItem('role');
+      localStorage.removeItem('userId');
+      this.router.navigate(['/login']);
+      throw err; // Keep for debugging
+    }
+  );
+
+  window.addEventListener('resize', this.handleWindowResize.bind(this));
+  document.addEventListener('click', this.handleDocumentClick.bind(this));
+}
 
   ngAfterViewInit() {
     // Initialize chart if needed
