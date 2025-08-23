@@ -8,5 +8,5 @@ export const environment = {
     messagingSenderId: "798206947787",
     appId: "1:798206947787:web:aea350f70dd4f0070bc64e"
   },
-  apiUrl: ' https://open-honeybee-endlessly.ngrok-free.app'
+  apiUrl: 'http://localhost/JobPortal'
 };
