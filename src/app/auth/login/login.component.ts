@@ -54,6 +54,7 @@ export class LoginComponent {
         this.authService.setUser(response.user.id);
         this.toastr.success('Login successful');
         const role = response.user.role;
+        localStorage.setItem('role', response.user.role);
         const routes: { [key: string]: string } = {
           admin: 'dashboard/admin',
           employer: 'dashboard/employer',

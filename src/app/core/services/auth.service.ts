@@ -53,19 +53,10 @@ export class AuthService {
     });
   }
 
-  // getSeekerData() {
-  //   return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`, {
-  //     withCredentials: true
-  //   });
-  // }
-
   getSeekerData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`, { withCredentials: true }).pipe(
-      catchError(err => {
-        console.error('Seeker data error:', err.status, err.statusText, err.message);
-        throw err;
-      })
-    );
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`, {
+      withCredentials: true
+    });
   }
 
   getEmployerData() {

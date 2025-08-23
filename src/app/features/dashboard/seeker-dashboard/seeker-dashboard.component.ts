@@ -30,7 +30,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit() {
   this.authService.getSeekerData().subscribe(
     (response: any) => {
-      localStorage.setItem('role', response.user.role);
       if (response.status === true) {
         this.user = response.user;
         this.authService.setUser(response.user.user_id);
