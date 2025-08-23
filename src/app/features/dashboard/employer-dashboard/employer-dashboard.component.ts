@@ -58,6 +58,7 @@ export class EmployerDashboardComponent {
       }
 
       // Clear user session and redirect after error
+      localStorage.removeItem('role');
       localStorage.removeItem('userId');
       this.router.navigate(['/login']);
     })
