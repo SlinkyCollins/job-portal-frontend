@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'https://open-honeybee-endlessly.ngrok-free.app/JobPortal';
+  apiUrl = 'https://job-portal-backend-rua3.onrender.com';
 }
