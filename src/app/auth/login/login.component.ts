@@ -55,12 +55,13 @@ export class LoginComponent {
         this.toastr.success('Login successful');
         const role = response.user.role;
         localStorage.setItem('role', response.user.role);
-        const routes: { [key: string]: string } = {
-          admin: 'dashboard/admin',
-          employer: 'dashboard/employer',
-          job_seeker: 'dashboard/jobseeker'
-        };
-        this.router.navigate([routes[role] || '/']);
+        // const routes: { [key: string]: string } = {
+        //   admin: 'dashboard/admin',
+        //   employer: 'dashboard/employer',
+        //   job_seeker: 'dashboard/jobseeker'
+        // };
+        // this.router.navigate([routes[role] || '/']);
+        window.location.href = response.redirect || '/'; // Fallback
       }
     }, (error: any) => {
       this.loading = false;
