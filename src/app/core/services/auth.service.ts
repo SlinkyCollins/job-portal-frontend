@@ -127,7 +127,7 @@ export class AuthService {
           next: (response: any) => {
             if (response.status) {
               this.toastr.success('Login successful');
-              this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : '/dashboard/employer']);
+              // this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : '/dashboard/employer']);
             } else if (response.newUser) {
               this.router.navigate(['/role-select'], { state: { uid: user.uid, token: response.token } });
             }
