@@ -4,15 +4,15 @@ import { inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 export const employerGuardGuard: CanActivateFn = (route, state) => {
-  let user = localStorage.getItem('userId');
+  let role = localStorage.getItem('role');
   let router = inject(Router);
   let authService = inject(AuthService);
 
-  if (!user) {
-    return authService.getUserSession().pipe(
+  if (!role) {
+    return authService.getUserData().pipe(
       tap((response: any) => {
         if (response?.status && response.user.role === 'employer') {
-          localStorage.setItem('userId', response.user.user_id);
+          localStorage.setItem('role', response.user.role);
         } else {
           router.navigate(['/login']);
         }

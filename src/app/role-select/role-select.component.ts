@@ -33,7 +33,6 @@ export class RoleSelectComponent {
   constructor(
     private http: HttpClient,
     private apiService: ApiServiceService,
-    private authService: AuthService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -42,9 +41,9 @@ export class RoleSelectComponent {
     this.http.post(`${this.apiService.apiUrl}/save_role.php`, { token: this.token, role: this.role }, { withCredentials: true }).subscribe({
       next: (response: any) => {
         if (response.status) {
-          this.authService.setUser(response.user.id);
           this.toastr.success('Role selected');
           this.router.navigate([`/dashboard/${this.role.replace('_', '')}`]);
+          localStorage.setItem('role', this.role);
         }
       },
       error: () => this.toastr.error('Role save failed')

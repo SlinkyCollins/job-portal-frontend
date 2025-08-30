@@ -58,9 +58,9 @@ export class JobDetailsComponent implements OnInit {
 
   onApplyNow(): void {
     console.log('User clicked apply for job ID:', this.jobId);
-    const userId = localStorage.getItem('userId');
+    const userRole = localStorage.getItem('role');
 
-    if (!userId) {
+    if (!userRole) {
       this.authService.toastr.warning('Please log in to apply.');
       this.router.navigate(['/login']);
       return;
@@ -84,9 +84,9 @@ export class JobDetailsComponent implements OnInit {
 
   onSaveJob(): void {
     console.log('User clicked for save job ID:', this.jobId);
-    const userId = localStorage.getItem('userId');
+    const userRole = localStorage.getItem('role');
 
-    if (!userId) {
+    if (!userRole) {
       this.authService.toastr.warning('Please log in to save jobs.');
       this.router.navigate(['/login']);
       return;

@@ -51,17 +51,15 @@ export class LoginComponent {
     }).subscribe((response: any) => {
       this.loading = false;
       if (response.status) {
-        this.authService.setUser(response.user.id);
         this.toastr.success('Login successful');
         const role = response.user.role;
         localStorage.setItem('role', response.user.role);
-        // const routes: { [key: string]: string } = {
-        //   admin: 'dashboard/admin',
-        //   employer: 'dashboard/employer',
-        //   job_seeker: 'dashboard/jobseeker'
-        // };
-        // this.router.navigate([routes[role] || '/']);
-        window.location.href = response.redirect || '/'; // Fallback
+        const routes: { [key: string]: string } = {
+          admin: 'dashboard/admin',
+          employer: 'dashboard/employer',
+          job_seeker: 'dashboard/jobseeker'
+        };
+        this.router.navigate([routes[role] || '/']);
       }
     }, (error: any) => {
       this.loading = false;

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, RESPONSE_INIT } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
@@ -22,13 +22,13 @@ export class AuthService {
     private ngZone: NgZone
   ) { }
 
-  setUser(userId: any) {
-    localStorage.setItem('userId', JSON.stringify(userId));
-  }
+  // setUser(userId: any) {
+  //   localStorage.setItem('userId', JSON.stringify(userId));
+  // }
 
-  getUser() {
-    return JSON.parse(localStorage.getItem('userId')!);
-  }
+  // getUser() {
+  //   return JSON.parse(localStorage.getItem('userId')!);
+  // }
 
   logout() {
     this.http.post(`${this.apiService.apiUrl}/logout.php`, {}, { withCredentials: true }).subscribe(
@@ -47,8 +47,8 @@ export class AuthService {
     );
   }
 
-  getUserSession() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/user_session.php`, {
+  getUserData() {
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/user_data.php`, {
       withCredentials: true
     });
   }
@@ -127,7 +127,8 @@ export class AuthService {
           next: (response: any) => {
             if (response.status) {
               this.toastr.success('Login successful');
-              // this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : '/dashboard/employer']);
+              localStorage.setItem('role', response.user.role);
+              this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : (response.user.role === 'employer' ? '/dashboard/employer' : '/dashboard/admin')]);
             } else if (response.newUser) {
               this.router.navigate(['/role-select'], { state: { uid: user.uid, token: response.token } });
             }

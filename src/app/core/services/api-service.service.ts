@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'https://job-portal-backend-rua3.onrender.com';
+  apiUrl = 'https://jobnet.vercel.app/api';
 }

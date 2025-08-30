@@ -32,7 +32,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     (response: any) => {
       if (response.status === true) {
         this.user = response.user;
-        this.authService.setUser(response.user.user_id);
       }
     },
     (err: any) => {
