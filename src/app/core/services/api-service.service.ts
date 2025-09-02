@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'http://localhost/JobPortal';
+  apiUrl = 'https://job-portal-backend-rua3.onrender.com';
 }
