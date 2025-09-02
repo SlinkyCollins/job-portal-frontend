@@ -22,20 +22,13 @@ export class AuthService {
     private ngZone: NgZone
   ) { }
 
-  // setUser(userId: any) {
-  //   localStorage.setItem('userId', JSON.stringify(userId));
-  // }
-
-  // getUser() {
-  //   return JSON.parse(localStorage.getItem('userId')!);
-  // }
-
   logout() {
     this.http.post(`${this.apiService.apiUrl}/logout.php`, {}, { withCredentials: true }).subscribe(
       (response: any) => {
         if (response.status) {
           this.toastr.success('Logged out');
-          localStorage.removeItem('userId');
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
           this.router.navigate(['/login']);
         } else {
           this.toastr.error('Logout failed');

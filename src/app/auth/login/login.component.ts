@@ -46,34 +46,35 @@ export class LoginComponent {
       pword: this.password
     }
 
-    this.http.post(`${this.apiService.apiUrl}/login.php`, credentials, {
-      withCredentials: true  // Key to send cookies (PHP session)
-    }).subscribe((response: any) => {
-      this.loading = false;
-      if (response.status) {
-        this.toastr.success('Login successful');
-        const role = response.user.role;
-        localStorage.setItem('role', response.user.role);
-        const routes: { [key: string]: string } = {
-          admin: 'dashboard/admin',
-          employer: 'dashboard/employer',
-          job_seeker: 'dashboard/jobseeker'
-        };
-        this.router.navigate([routes[role] || '/']);
+    this.http.post(`${this.apiService.apiUrl}/login.php`, credentials).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.status) {
+          const role = response.user.role;
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.user.role);
+          this.toastr.success('Login successful');
+          const routes: { [key: string]: string } = {
+            admin: 'dashboard/admin',
+            employer: 'dashboard/employer',
+            job_seeker: 'dashboard/jobseeker'
+          };
+          this.router.navigate([routes[role] || '/']);
+        }
+      }, (error: any) => {
+        this.loading = false;
+        if (error.status === 401) {
+          this.toastr.error('Incorrect email or password');
+        } else if (error.status === 404) {
+          this.toastr.error('User not found, please try signing up');
+        } else {
+          console.log(error.msg);
+          this.toastr.error('Login failed. Please try again.');
+        }
+        console.error(error);
+        console.log('Error Response:', error.error);
       }
-    }, (error: any) => {
-      this.loading = false;
-      if (error.status === 401) {
-        this.toastr.error('Incorrect email or password');
-      } else if (error.status === 404) {
-        this.toastr.error('User not found, please try signing up');
-      } else {
-        console.log(error.msg);
-        this.toastr.error('Login failed. Please try again.');
-      }
-      console.error(error);
-      console.log('Error Response:', error.error);
-    });
+    );
   }
 
 

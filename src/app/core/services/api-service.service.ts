@@ -7,5 +7,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'https://jobnet.vercel.app/api';
+  apiUrl = 'http://localhost/JobPortal';
 }
