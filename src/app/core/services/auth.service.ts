@@ -23,7 +23,7 @@ export class AuthService {
   ) { }
 
   logout() {
-    this.http.post(`${this.apiService.apiUrl}/logout.php`, {}, { withCredentials: true }).subscribe(
+    this.http.post(`${this.apiService.apiUrl}/logout.php`, {}).subscribe(
       (response: any) => {
         if (response.status) {
           this.toastr.success('Logged out');
@@ -41,37 +41,31 @@ export class AuthService {
   }
 
   getUserData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/user_data.php`, {
-      withCredentials: true
-    });
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/user_data.php`);
   }
 
   getSeekerData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`, {
-      withCredentials: true
-    });
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`);
   }
 
   getEmployerData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/employer_dashboard.php`, {
-      withCredentials: true
-    });
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/employer_dashboard.php`);
   }
 
   getAllJobs() {
-    return this.http.get(`${this.apiService.apiUrl}/jobs.php`, { withCredentials: true });
+    return this.http.get(`${this.apiService.apiUrl}/jobs.php`);
   }
 
   getJobDetails(jobId: number) {
-    return this.http.get(`${this.apiService.apiUrl}/jobdetails.php?id=${jobId}`, { withCredentials: true });
+    return this.http.get(`${this.apiService.apiUrl}/jobdetails.php?id=${jobId}`);
   }
 
   applyToJob(jobId: number) {
-    return this.http.post(`${this.apiService.apiUrl}/apply.php`, { jobId }, { withCredentials: true });
+    return this.http.post(`${this.apiService.apiUrl}/apply.php`, { jobId });
   }
 
   addToWishlist(jobId: number) {
-    return this.http.post(`${this.apiService.apiUrl}/wishlist.php`, { jobId }, { withCredentials: true });
+    return this.http.post(`${this.apiService.apiUrl}/wishlist.php`, { jobId });
   }
 
   signInWithGoogle(): Observable<UserCredential> {
@@ -114,7 +108,7 @@ export class AuthService {
 
         from(user.getIdToken()).pipe(
           switchMap(token => {
-            return this.http.post(`${this.apiService.apiUrl}/social_login.php`, { token }, { withCredentials: true });
+            return this.http.post(`${this.apiService.apiUrl}/social_login.php`, { token });
           })
         ).subscribe({
           next: (response: any) => {
