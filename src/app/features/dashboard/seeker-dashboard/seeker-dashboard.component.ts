@@ -35,29 +35,30 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
       }
     },
     (err: any) => {
-      console.error('Error fetching session:', err.status, err.statusText, err.message);
-      let errorMsg = 'An unexpected error occurred. Please log in again.';
-      if (err.status === 401) {
-        errorMsg = 'Your session has expired. Please log in again.';
-        this.toastr.warning(errorMsg, 'Session Timeout');
-      } else if (err.status === 403) {
-        errorMsg = 'You do not have permission to access this page.';
-        this.toastr.error(errorMsg, 'Access Denied');
-      } else if (err.status === 404) {
-        errorMsg = 'We could not find your user data. Please contact support.';
-        this.toastr.info(errorMsg, 'User Not Found');
-      } else if (err.status === 500) {
-        errorMsg = 'Something went wrong on our end. Please try again later.';
-        this.toastr.error(errorMsg, 'Server Error');
-      } else {
-        this.toastr.error(errorMsg, 'Error');
-      }
+        console.error('Error fetching user data:', err.status, err.statusText, err.message);
+        let errorMsg = 'An unexpected error occurred. Please log in again.';
+        if (err.status === 401) {
+          errorMsg = 'Your token has expired. Please log in again.';
+          this.toastr.warning(errorMsg, 'Token Timeout');
+        } else if (err.status === 403) {
+          errorMsg = 'You do not have permission to access this page.';
+          this.toastr.error(errorMsg, 'Access Denied');
+        } else if (err.status === 404) {
+          errorMsg = 'We could not find your user data. Please contact support.';
+          this.toastr.info(errorMsg, 'User Not Found');
+        } else if (err.status === 500) {
+          errorMsg = 'Something went wrong on our end. Please try again later.';
+          this.toastr.error(errorMsg, 'Server Error');
+        } else {
+          this.toastr.error(errorMsg, 'Error');
+        }
 
-      localStorage.removeItem('role');
-      localStorage.removeItem('userId');
-      this.router.navigate(['/login']);
-      throw err; // Keep for debugging
-    }
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        this.router.navigate(['/login']);
+        throw err; // Keep for debugging
+      }
   );
 
   window.addEventListener('resize', this.handleWindowResize.bind(this));
@@ -165,7 +166,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   logOut() {
-    localStorage.removeItem('role');
     this.authService.firebaseSignOut();
     this.router.navigate(['/login']);
   }
