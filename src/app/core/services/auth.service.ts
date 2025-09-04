@@ -113,8 +113,9 @@ export class AuthService {
         ).subscribe({
           next: (response: any) => {
             if (response.status) {
-              this.toastr.success('Login successful');
+              localStorage.setItem('token', response.token);
               localStorage.setItem('role', response.user.role);
+              this.toastr.success('Login successful');
               this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : (response.user.role === 'employer' ? '/dashboard/employer' : '/dashboard/admin')]);
             } else if (response.newUser) {
               this.router.navigate(['/role-select'], { state: { uid: user.uid, token: response.token } });
