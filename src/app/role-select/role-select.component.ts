@@ -38,6 +38,11 @@ export class RoleSelectComponent {
   ) {}
 
   submitRole() {
+     if (!this.token || !this.uid) {
+      this.toastr.error('Missing token or user ID');
+      this.router.navigate(['/login']);
+      return;
+    };
     this.http.post(`${this.apiService.apiUrl}/save_role.php`, { token: this.token, role: this.role }).subscribe({
       next: (response: any) => {
         if (response.status) {
@@ -45,11 +50,13 @@ export class RoleSelectComponent {
           localStorage.setItem('role', this.role);
           this.toastr.success('Role selected');
           this.router.navigate([`/dashboard/${this.role.replace('_', '')}`]);
+        } else {
+          this.toastr.error(response.msg || 'Role save failed');
         }
       },
       error: (err:any) => {
-        console.log(err);
-        this.toastr.error('Role save failed')
+        console.error('Save role error:', err);
+        this.toastr.error(err.error?.msg || 'Role save failed');
       }
     });
   }
