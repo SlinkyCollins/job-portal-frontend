@@ -38,15 +38,19 @@ export class RoleSelectComponent {
   ) {}
 
   submitRole() {
-    this.http.post(`${this.apiService.apiUrl}/save_role.php`, { token: this.token, role: this.role }, { withCredentials: true }).subscribe({
+    this.http.post(`${this.apiService.apiUrl}/save_role.php`, { token: this.token, role: this.role }).subscribe({
       next: (response: any) => {
         if (response.status) {
+          localStorage.setItem('token', response.token); // Store JWT
+          localStorage.setItem('role', this.role);
           this.toastr.success('Role selected');
           this.router.navigate([`/dashboard/${this.role.replace('_', '')}`]);
-          localStorage.setItem('role', this.role);
         }
       },
-      error: () => this.toastr.error('Role save failed')
+      error: (err:any) => {
+        console.log(err);
+        this.toastr.error('Role save failed')
+      }
     });
   }
 }
