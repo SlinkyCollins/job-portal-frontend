@@ -1,6 +1,7 @@
 // profile.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,8 +10,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
+  photoURL: string = '';
   user: any = {
-    // profileImage: 'https://mockmind-api.uifaces.co/content/human/80.jpg',
+    // profileImage: 'https://mockmind-api.uifaces.co/content/human/90.jpg',
     name: 'John Doe',
     email: 'company@gmail.com',
     website: 'http://companysite.com',
@@ -34,9 +36,10 @@ export class ProfileComponent implements OnInit {
     members: ['John Smith']
   };
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.photoURL = this.authService.getPhotoURL();
     this.profileForm = this.fb.group({
       name: [this.user.name],
       email: [this.user.email],

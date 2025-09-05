@@ -29,6 +29,7 @@ export class AuthService {
           this.toastr.success('Logged out');
           localStorage.removeItem('token');
           localStorage.removeItem('role');
+          localStorage.removeItem('photoURL'); // Clear photoURL
           this.router.navigate(['/login']);
         } else {
           this.toastr.error('Logout failed');
@@ -97,6 +98,7 @@ export class AuthService {
     this.ngZone.run(() => {
       const user = credential.user;
       if (user) {
+        localStorage.setItem('photoURL', user.photoURL || ''); // Store photoURL
         from(user.getIdToken()).pipe(
           switchMap(token => {
             return this.http.post(`${this.apiService.apiUrl}/social_login.php`, { token });
@@ -109,7 +111,7 @@ export class AuthService {
               this.toastr.success('Login successful');
               this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : (response.user.role === 'employer' ? '/dashboard/employer' : '/dashboard/admin')]);
             } else if (response.newUser) {
-              this.router.navigate(['/role-select'], { state: { uid: user.uid, token: response.token } });
+              this.router.navigate(['/role-select'], { state: { uid: user.uid, token: response.token, photoURL: user.photoURL || '' } });
             }
           },
           error: (err) => {
@@ -119,6 +121,10 @@ export class AuthService {
         });
       }
     });
+  }
+
+  getPhotoURL(): string {
+    return localStorage.getItem('photoURL') || '';
   }
 
   // Add signOut if needed

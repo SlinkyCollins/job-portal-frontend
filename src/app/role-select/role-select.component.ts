@@ -29,6 +29,7 @@ export class RoleSelectComponent {
   role: string = '';
   private token: string = history.state.token;  // From router state
   private uid: string = history.state.uid;
+  private photoURL: string = history.state.photoURL || '';
 
   constructor(
     private http: HttpClient,
@@ -48,6 +49,7 @@ export class RoleSelectComponent {
         if (response.status) {
           localStorage.setItem('token', response.token); // Store JWT
           localStorage.setItem('role', this.role);
+          localStorage.setItem('photoURL', this.photoURL); // Store photoURL
           this.toastr.success('Role selected');
           this.router.navigate([`/dashboard/${this.role.replace('_', '')}`]);
         } else {

@@ -20,6 +20,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   public showLogoutConfirm: boolean = false;
   public showDeleteModal = false; // Delete modal state
   private chart: any;
+  public photoURL: string = '';
 
   constructor(
     public router: Router,
@@ -28,13 +29,14 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit() {
-  this.authService.getSeekerData().subscribe(
-    (response: any) => {
-      if (response.status === true) {
-        this.user = response.user;
-      }
-    },
-    (err: any) => {
+    this.photoURL = this.authService.getPhotoURL();
+    this.authService.getSeekerData().subscribe(
+      (response: any) => {
+        if (response.status === true) {
+          this.user = response.user;
+        }
+      },
+      (err: any) => {
         console.error('Error fetching user data:', err.status, err.statusText, err.message);
         let errorMsg = 'An unexpected error occurred. Please log in again.';
         if (err.status === 401) {
@@ -59,11 +61,11 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
         this.router.navigate(['/login']);
         throw err; // Keep for debugging
       }
-  );
+    );
 
-  window.addEventListener('resize', this.handleWindowResize.bind(this));
-  document.addEventListener('click', this.handleDocumentClick.bind(this));
-}
+    window.addEventListener('resize', this.handleWindowResize.bind(this));
+    document.addEventListener('click', this.handleDocumentClick.bind(this));
+  }
 
   ngAfterViewInit() {
     // Initialize chart if needed

@@ -13,7 +13,7 @@
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
       <div class="user-avatar">
-        <img src="https://mockmind-api.uifaces.co/content/human/90.jpg" alt="User Avatar">
+        <img [src]="photoURL || 'https://mockmind-api.uifaces.co/content/human/90.jpg'" alt="User Avatar">
         <div class="status-indicator"></div>
       </div>
       <span class="username">{{ user.firstname || 'John Doe' }}</span>
