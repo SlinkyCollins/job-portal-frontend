@@ -97,15 +97,6 @@ export class AuthService {
     this.ngZone.run(() => {
       const user = credential.user;
       if (user) {
-        const userDoc = doc(this.firestore, `users/${user.uid}`);
-        setDoc(userDoc, {
-          uid: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          createdAt: new Date()
-        }, { merge: true }).catch(err => console.error('Firestore error:', err));
-
         from(user.getIdToken()).pipe(
           switchMap(token => {
             return this.http.post(`${this.apiService.apiUrl}/social_login.php`, { token });
