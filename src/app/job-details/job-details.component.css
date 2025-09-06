@@ -1,3 +1,50 @@
+/* Hero Section */
+.hero-section {
+  /* background: linear-gradient(135deg, #2d5a3d 0%, #1a3d2e 100%); */
+  background-color: #244034;
+  color: white;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.shape-1 {
+  position: absolute;
+  left: 37%;
+  top: 20px;
+  color: transparent;
+}
+
+.shape-2 {
+  position: absolute;
+  color: transparent;
+  bottom: 0;
+}
+
+.hero-title {
+  font-family: "EB Garamond", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-subtitle {
+  font-family: "Gordita-Regular", cursive;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Mobile-first: Styles for mobile are now the default (already present above). */
+/* Tablet and up (min-width: 768px), Desktop and up (min-width: 992px), and Large desktop (min-width: 1200px) media queries remain below. */
+
 /* Mobile-first responsive design */
 
 /* Base styles */
@@ -297,6 +344,12 @@
 
 /* Tablet styles */
 @media (min-width: 768px) {
+  .shape-1 {
+    left: 57%;
+  }
+  .hero-title {
+    font-size: 2.5rem; /* Adjusted for tablet */
+  }
   .job-title {
     font-size: 2.25rem;
   }
@@ -316,6 +369,12 @@
 
 /* Desktop styles */
 @media (min-width: 992px) {
+  .shape-1 {
+    left: 67%;
+  }
+  .hero-title {
+    font-size: 3.5rem; /* Adjusted for desktop */
+  }
   .job-title {
     font-size: 2.5rem;
   }

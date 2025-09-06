@@ -1,0 +1,484 @@
+/* Hero Section */
+.hero-section {
+  /* background: linear-gradient(135deg, #2d5a3d 0%, #1a3d2e 100%); */
+  background-color: #244034;
+  color: white;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-title {
+  font-family: "EB Garamond", serif;
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin: 3rem 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-subtitle {
+  font-family: "Gordita-Regular", cursive;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.search-form {
+  background: white;
+  border-radius: 12px;
+  padding: 8px 0 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.hr-line {
+  width: 100%;
+  margin: 0 auto;
+  color: #ccc;
+}
+
+.searchwrapper {
+  padding: 1.3rem 0 .8rem;
+}
+
+.search-form .search-label {
+  color: #8a8aa8;
+  position: absolute;
+  font-size: .9rem;
+}
+
+.label-1 {
+  top: 1rem;
+  left: 20px;
+}
+
+.label-2 {
+  top: 6.5rem;
+  left: 20px;
+}
+
+.search-input {
+  border: none;
+  padding: 15px 20px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+}
+
+.search-input:focus {
+  box-shadow: none;
+  border-color: transparent;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.shape-1 {
+  position: absolute;
+  left: 37%;
+  top: 20px;
+  color: transparent;
+}
+
+.shape-2 {
+  position: absolute;
+  color: transparent;
+  bottom: 0;
+}
+
+.btn-search {
+  background: #d2f34c;
+  padding: 15px 20px;
+  font-weight: 600;
+  color: #000;
+  transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+  color: #fff;
+  background: #00bf58;
+  transform: translateY(-1px);
+}
+
+/* Filter Sidebar */
+.filter-sidebar {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.filter-title {
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.filter-section {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.filter-section:last-child {
+  border-bottom: none;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: between;
+}
+/* Mobile-first: Styles for mobile are now the default (already present above). */
+
+/* Tablet and up (min-width: 576px) */
+@media (min-width: 576px) {
+  .shape-1 {
+    left: 57%;
+  }
+  .hero-title {
+    font-size: 2.5rem; /* Adjusted for tablet */
+  }
+
+  .search-form .row > div {
+    margin-bottom: 8px; /* Adjusted for tablet */
+  }
+
+  .search-form .row > div:last-child {
+    margin-bottom: 0; /* Adjusted for tablet */
+  }
+
+  .job-card {
+    margin-bottom: 16px; /* Adjusted for tablet */
+  }
+
+  .pagination-nav {
+    flex-direction: column;
+    gap: 16px; /* Adjusted for tablet */
+  }
+
+  .pagination-nav .d-flex {
+    flex-direction: column;
+    align-items: stretch !important;
+    text-align: center; /* Adjusted for tablet */
+  }
+}
+
+/* Desktop and up (min-width: 992px) */
+@media (min-width: 992px) {
+  .shape-1 {
+    left: 67%;
+  }
+  .hero-title {
+    font-size: 3.5rem; /* Original desktop size */
+  }
+
+  .search-form .row > div {
+    margin-bottom: 16px; /* Original desktop size */
+  }
+
+  .job-card {
+    margin-bottom: 24px; /* Original desktop size */
+  }
+
+  .pagination-nav {
+    flex-direction: row; /* Original desktop layout */
+  }
+}
+.filter-header h6 {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.filter-icon {
+  color: #28a745;
+  font-size: 12px;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.form-check-input {
+  margin-right: 8px;
+}
+
+.form-check-label {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+
+.filter-count {
+  background: #e9ecef;
+  color: #666;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Salary Range */
+.salary-range {
+  padding: 16px 0;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.range-periods {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+.form-range {
+  background: linear-gradient(
+    to right,
+    #28a745 0%,
+    #28a745 50%,
+    #e9ecef 50%,
+    #e9ecef 100%
+  );
+}
+
+.btn-reset {
+  background: #31795a;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-reset:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+/* Results Header */
+.results-header {
+  margin-bottom: 24px;
+}
+
+.results-info {
+  font-size: 14px;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.sort-controls .form-select {
+  width: auto;
+  min-width: 120px;
+  margin-left: 8px;
+}
+
+/* Active Filters */
+.active-filters .badge {
+  padding: 8px 12px;
+  font-size: 12px;
+  border: 1px solid #dee2e6;
+}
+
+.btn-close-sm {
+  font-size: 10px;
+  padding: 0;
+  margin-left: 4px;
+}
+
+/* Job Cards */
+.job-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.company-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.bookmark-btn {
+  border: 1px solid #e9ecef;
+  background: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-type-badge {
+  margin-bottom: 12px;
+}
+
+.badge-fulltime {
+  background: #e8f5e8;
+  color: #28a745;
+}
+
+.badge-parttime {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-fixed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.badge-freelance {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.job-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.job-salary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.job-location {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.btn-apply {
+  background: #31795a;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: auto;
+  transition: all 0.3s ease;
+}
+
+.btn-apply:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+/* Pagination */
+.pagination-nav {
+  border-top: 1px solid #e9ecef;
+  padding-top: 24px;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #666;
+}
+
+.pagination .page-link {
+  border: 1px solid #e9ecef;
+  color: #666;
+  padding: 8px 12px;
+  margin: 0 2px;
+  border-radius: 6px;
+}
+
+.pagination .page-item.active .page-link {
+  background: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.pagination .page-link:hover {
+  background: #f8f9fa;
+  border-color: #28a745;
+  color: #28a745;
+}
+
+/* Mobile-first: Styles for mobile are now the default (already present above). */
+/* Tablet and up (min-width: 576px) and Desktop and up (min-width: 992px) media queries remain below. */
+
+/* Modal Styles */
+.modal.show {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #e9ecef;
+  padding: 20px 24px;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 20px 24px;
+}

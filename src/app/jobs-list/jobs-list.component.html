@@ -1,32 +1,415 @@
 <app-navbar></app-navbar>
 <div class="job-listing-container">
-  <div class="container mt-5">
-    <div *ngIf="loading" class="text-center my-5">
-      <p>Loading jobs...</p>
-    </div>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <span class="lazy-img shape-1">
+      <img
+        src="/assets/img-11.svg"
+        alt="shape"
+        loading="lazy"
+        decoding="async"
+      />
+    </span>
+    <span class="lazy-img shape-2">
+      <img
+        src="/assets/img-10.svg"
+        alt="shape"
+        loading="lazy"
+        decoding="async"
+      />
+    </span>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h1 class="hero-title">Job Listing</h1>
+          <p class="hero-subtitle">
+            We delivered blazing fast & striking work solution
+          </p>
 
-    <div *ngIf="!loading && jobs.length === 0" class="text-center my-5">
-      <p>No jobs available</p>
-    </div>
-
-    <div class="row" *ngIf="!loading && jobs.length > 0">
-      <div class="col-md-6 col-xl-4 mb-4" *ngFor="let job of jobs">
-        <div class="job-card p-3 border rounded shadow-sm h-100 d-flex flex-column justify-content-between">
-          <div>
-            <h5 class="job-title mb-2">{{ job.job_title }}</h5>
-            <span class="badge bg-primary mb-2">{{ job.job_type }}</span>
-            <div class="text-muted mb-2">{{ job.location }}</div>
-            <div class="text-success fw-bold mb-3">₦{{ job.salary }}</div>
-            <!-- <p class="job-description">{{ job.job_description }}</p> -->
+          <!-- Search Form -->
+          <div class="search-form">
+            <div class="row g-0">
+              <div class="searchwrapper col-md-4">
+                <label for="location" class="search-label label-1"
+                  >Where are you looking for?</label
+                >
+                <select
+                  class="form-select search-input"
+                  id="location"
+                  [(ngModel)]="searchLocation"
+                >
+                  <option>Spain, Barcelona</option>
+                  <option>USA, New York</option>
+                  <option>UK, London</option>
+                  <option>Germany, Berlin</option>
+                </select>
+              </div>
+              <hr class="hr-line" />
+              <div class="searchwrapper col-md-4">
+                <label for="category" class="search-label label-2"
+                  >Category</label
+                >
+                <select
+                  class="form-select search-input"
+                  id="category"
+                  [(ngModel)]="searchCategory"
+                >
+                  <option>Developer</option>
+                  <option>Design</option>
+                  <option>Marketing</option>
+                  <option>Data Science</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-search w-100">SEARCH</button>
+              </div>
+            </div>
           </div>
-          <a [routerLink]="['/jobdetails', job.job_id]">
-            <button class="btn btn-outline-primary w-100 mt-3">APPLY</button>
-          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Desktop Sidebar -->
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="filter-sidebar">
+          <h5 class="filter-title">Filter By</h5>
+
+          <!-- Job Type Filter -->
+          <div class="filter-section">
+            <div class="filter-header">
+              <h6>Job Type</h6>
+              <span class="filter-icon">●</span>
+            </div>
+            <div class="filter-options">
+              <div
+                *ngFor="let jobType of filterOptions.jobTypes"
+                class="filter-option"
+              >
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'jobType-' + jobType.name"
+                    [checked]="jobType.selected"
+                    (change)="toggleJobTypeFilter(jobType.name)"
+                  />
+                  <label
+                    class="form-check-label"
+                    [for]="'jobType-' + jobType.name"
+                  >
+                    {{ jobType.name }}
+                  </label>
+                  <span class="filter-count">{{ jobType.count }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience Filter -->
+          <div class="filter-section">
+            <div class="filter-header">
+              <h6>Experience</h6>
+              <span class="filter-icon">●</span>
+            </div>
+            <div class="filter-options">
+              <div
+                *ngFor="let experience of filterOptions.experiences"
+                class="filter-option"
+              >
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'experience-' + experience.name"
+                    [checked]="experience.selected"
+                    (change)="toggleExperienceFilter(experience.name)"
+                  />
+                  <label
+                    class="form-check-label"
+                    [for]="'experience-' + experience.name"
+                  >
+                    {{ experience.name }}
+                  </label>
+                  <span class="filter-count">{{ experience.count }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Salary Range -->
+          <div class="filter-section">
+            <div class="filter-header">
+              <h6>Salary</h6>
+              <span class="filter-icon">●</span>
+            </div>
+            <div class="salary-range">
+              <div class="range-labels">
+                <span>0</span>
+                <span>3500</span>
+                <span>USD</span>
+              </div>
+              <input
+                type="range"
+                class="form-range"
+                min="0"
+                max="3500"
+                [(ngModel)]="filterOptions.salaryRange.current.min"
+              />
+              <div class="range-periods">
+                <span>Weekly</span>
+                <span>Monthly</span>
+                <span>Hourly</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category & Tags placeholders -->
+          <div class="filter-section">
+            <div class="filter-header">
+              <h6>Category</h6>
+              <span class="filter-icon">●</span>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-header">
+              <h6>Tags</h6>
+              <span class="filter-icon">●</span>
+            </div>
+          </div>
+
+          <button class="btn btn-reset w-100 mt-3" (click)="resetFilters()">
+            Reset Filter
+          </button>
+        </div>
+      </div>
+
+      <!-- Job Listings -->
+      <div class="col-lg-9">
+        <!-- Mobile Filter Button -->
+        <div class="d-lg-none mb-3">
+          <button
+            class="btn btn-outline-secondary w-100"
+            (click)="toggleFilterModal()"
+          >
+            <i class="fas fa-filter me-2"></i>Filter
+          </button>
+        </div>
+
+        <!-- Results Header -->
+        <div class="results-header">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="results-info">
+              <span class="text-muted">All {{ jobs.length }} jobs found</span>
+            </div>
+            <div class="sort-controls">
+              <span class="me-2">Sort:</span>
+              <select
+                class="form-select form-select-sm d-inline-block w-auto"
+                [(ngModel)]="sortBy"
+              >
+                <option disabled selected>Select one</option>
+                <option>Low to High</option>
+                <option>High to Low</option>
+                <option>Date Posted</option>
+                <option>Relevance</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filters -->
+        <div *ngIf="activeFilters.length > 0" class="active-filters mb-3">
+          <span
+            *ngFor="let filter of activeFilters"
+            class="badge bg-light text-dark me-2 mb-2"
+          >
+            {{ filter }}
+            <button
+              type="button"
+              class="btn-close btn-close-sm ms-1"
+              (click)="removeFilter(filter)"
+            ></button>
+          </span>
+        </div>
+
+        <!-- Job Cards -->
+        <div *ngIf="loading" class="text-center my-5">
+          <p>Loading jobs...</p>
+        </div>
+
+        <div *ngIf="!loading && jobs.length === 0" class="text-center my-5">
+          <p>No jobs available</p>
+        </div>
+
+        <div class="row" *ngIf="!loading && jobs.length > 0">
+          <div class="col-md-6 col-xl-4 mb-4" *ngFor="let job of jobs">
+            <div class="job-card">
+              <div class="job-card-header">
+                <div class="company-logo">{{ job.logo }}</div>
+                <button
+                  class="btn btn-sm btn-outline-secondary bookmark-btn"
+                  [class.active]="job.isSaved"
+                  (click)="onToggleSaveJob(job)"
+                >
+                  <i *ngIf="!job.isSaved" class="far fa-bookmark"></i>
+                  <i
+                    *ngIf="job.isSaved"
+                    class="fa-solid fa-bookmark"
+                    style="color: #31795a"
+                  ></i>
+                </button>
+              </div>
+
+              <div class="job-type-badge">
+                <span class="badge" [ngClass]="getJobTypeClass(job.job_type)">
+                  {{ job.jobType }}
+                </span>
+              </div>
+
+              <h5 class="job-title">{{ job.job_title }}</h5>
+
+              <div class="job-salary">
+                ₦{{ job.salary }}
+                <span class="text-muted">/ {{ job.salaryPeriod }}</span>
+              </div>
+
+              <div class="job-location">{{ job.location }}</div>
+
+              <a [routerLink]="['/jobdetails', job.job_id]">
+                <button class="btn btn-apply w-100 mt-3">APPLY</button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="pagination-nav mt-4" *ngIf="totalPages > 1">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="pagination-info">
+              <span class="text-muted">
+                Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+                {{
+                  Math.min(currentPage * itemsPerPage, filteredJobs.length)
+                }}
+                of {{ filteredJobs.length }}
+              </span>
+            </div>
+            <ul class="pagination mb-0">
+              <li
+                class="page-item"
+                [class.active]="currentPage === page"
+                *ngFor="let page of getPaginationArray()"
+              >
+                <button class="page-link" (click)="goToPage(page)">
+                  {{ page }}
+                </button>
+              </li>
+              <li class="page-item">
+                <button
+                  class="page-link"
+                  (click)="goToPage(currentPage + 1)"
+                  [disabled]="currentPage >= totalPages"
+                >
+                  Last <i class="fas fa-arrow-right ms-1"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Filter Modal -->
+  <div
+    class="modal"
+    [class.show]="showFilterModal"
+    [style.display]="showFilterModal ? 'block' : 'none'"
+  >
+    <div class="modal-dialog modal-fullscreen-sm-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Filter Jobs</h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="toggleFilterModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Same filter content as sidebar -->
+          <div class="filter-section">
+            <h6>Job Type</h6>
+            <div
+              *ngFor="let jobType of filterOptions.jobTypes"
+              class="filter-option"
+            >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="'mobile-jobType-' + jobType.name"
+                  [checked]="jobType.selected"
+                  (change)="toggleJobTypeFilter(jobType.name)"
+                />
+                <label
+                  class="form-check-label"
+                  [for]="'mobile-jobType-' + jobType.name"
+                >
+                  {{ jobType.name }} ({{ jobType.count }})
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h6>Experience</h6>
+            <div
+              *ngFor="let experience of filterOptions.experiences"
+              class="filter-option"
+            >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="'mobile-experience-' + experience.name"
+                  [checked]="experience.selected"
+                  (change)="toggleExperienceFilter(experience.name)"
+                />
+                <label
+                  class="form-check-label"
+                  [for]="'mobile-experience-' + experience.name"
+                >
+                  {{ experience.name }} ({{ experience.count }})
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="resetFilters()"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="toggleFilterModal()"
+          >
+            Apply Filters
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <app-cta></app-cta>
 <app-footer></app-footer>

@@ -1,50 +1,70 @@
 <app-navbar></app-navbar>
-<div class="container py-5">
-  <ng-container *ngIf="isLoading">
-    <p>Loading job details...</p>
-  </ng-container>
-
-  <ng-container *ngIf="!isLoading && errorMsg">
-    <p class="text-danger">{{ errorMsg }}</p>
-  </ng-container>
-
-  <ng-container *ngIf="!isLoading && job">
-    <h1 class="mb-2">{{ job.job_title }}</h1>
-    <p class="text-muted">{{ job.location }} | {{ job.job_type }}</p>
-    <p><strong>Salary:</strong> ₦{{ job.salary }}</p>
-    <p><strong>Deadline:</strong> {{ job.deadline }}</p>
-
-    <div class="my-4">
-      <h4>Job Description</h4>
-      <p>{{ job.job_description }}</p>
+<div class="job-listing-container">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <span class="lazy-img shape-1">
+      <img src="/assets/img-11.svg" alt="shape" loading="lazy" decoding="async">
+    </span>
+    <span class="lazy-img shape-2">
+      <img src="/assets/img-10.svg" alt="shape" loading="lazy" decoding="async">
+    </span>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h1 class="hero-title">Job Details</h1>
+          <p class="hero-subtitle">Here is the job details & requirements</p>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="my-4">
-      <h4>Qualifications</h4>
+  <div class="container py-5">
+    <ng-container *ngIf="isLoading">
+      <p>Loading job details...</p>
+    </ng-container>
 
-      <ul *ngIf="job.qualifications?.length > 0; else noQualifications">
-        <li *ngFor="let q of job.qualifications">{{ q }}</li>
-      </ul>
+    <ng-container *ngIf="!isLoading && errorMsg">
+      <p class="text-danger">{{ errorMsg }}</p>
+    </ng-container>
 
-      <ng-template #noQualifications>
-        <p class="text-muted">No qualifications listed for this job.</p>
-      </ng-template>
-    </div>
+    <ng-container *ngIf="!isLoading && job">
+      <h1 class="mb-2">{{ job.job_title }}</h1>
+      <p class="text-muted">{{ job.location }} | {{ job.job_type }}</p>
+      <p><strong>Salary:</strong> ₦{{ job.salary }}</p>
+      <p><strong>Deadline:</strong> {{ job.deadline }}</p>
+
+      <div class="my-4">
+        <h4>Job Description</h4>
+        <p>{{ job.job_description }}</p>
+      </div>
+
+      <div class="my-4">
+        <h4>Qualifications</h4>
+
+        <ul *ngIf="job.qualifications?.length > 0; else noQualifications">
+          <li *ngFor="let q of job.qualifications">{{ q }}</li>
+        </ul>
+
+        <ng-template #noQualifications>
+          <p class="text-muted">No qualifications listed for this job.</p>
+        </ng-template>
+      </div>
 
 
-    <div class="mt-5">
-      <!-- Show Apply button if role is job_seeker OR user is not logged in -->
-      <button class="btn btn-success me-2" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="hasApplied"
-        (click)="onApplyNow()">
-        {{ hasApplied ? 'Already Applied' : 'Apply Now' }}
-      </button>
+      <div class="mt-5">
+        <!-- Show Apply button if role is job_seeker OR user is not logged in -->
+        <button class="btn btn-success me-2" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="hasApplied"
+          (click)="onApplyNow()">
+          {{ hasApplied ? 'Already Applied' : 'Apply Now' }}
+        </button>
 
-      <button class="btn btn-outline-secondary" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="isSaved" (click)="onSaveJob()">{{ isSaved ? 'Saved' : 'Save Job' }}</button>
-    </div>
+        <button class="btn btn-outline-secondary" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="isSaved"
+          (click)="onSaveJob()">{{ isSaved ? 'Saved' : 'Save Job' }}</button>
+      </div>
 
 
-  </ng-container>
-</div>
+    </ng-container>
+  </div>
 
-<app-cta></app-cta>
-<app-footer></app-footer>
+  <app-cta></app-cta>
+  <app-footer></app-footer>

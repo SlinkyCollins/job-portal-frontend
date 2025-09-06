@@ -64,13 +64,6 @@
   transform: translateY(-10px) rotate(-45deg);
 }
 
-.container-fluid .navbar-brand {
-  font-family: "EB Garamond", serif;
-  font-size: 1.5rem;
-  color: #24483a;
-  font-weight: 600;
-}
-
 .fullmenu .nav-item .nav-link {
   cursor: pointer;
 }
@@ -103,6 +96,10 @@
   border: none;
   outline: none;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.brand-logo {
+  margin-left: -0.8rem;
 }
 
 .navmenu {

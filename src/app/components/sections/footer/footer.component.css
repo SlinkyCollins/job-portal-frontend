@@ -8,10 +8,8 @@
   padding: 0 0.8rem;
 }
 
-.footer-header h1 {
-  color: #24483a;
-  font-size: 2rem;
-  font-family: "EB Garamond", serif;
+.footer-header .brand-logo {
+  margin-left: -1rem;
 }
 
 .footer-header a {

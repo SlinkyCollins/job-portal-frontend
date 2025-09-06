@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { catchError, from, Observable, switchMap } from 'rxjs';
 
 @Injectable({
@@ -18,7 +17,6 @@ export class AuthService {
     public toastr: ToastrService,
     public apiService: ApiServiceService,
     private auth: Auth,  // Firebase Auth
-    private firestore: Firestore,  // For storing user data
     private ngZone: NgZone
   ) { }
 
@@ -39,6 +37,11 @@ export class AuthService {
         this.toastr.error('Logout failed');
       }
     );
+  }
+
+  isLoggedIn(): boolean {
+    // You can check for a token, role, or both
+    return !!localStorage.getItem('token') && !!localStorage.getItem('role');
   }
 
   getUserData() {
@@ -67,6 +70,10 @@ export class AuthService {
 
   addToWishlist(jobId: number) {
     return this.http.post(`${this.apiService.apiUrl}/wishlist.php`, { jobId });
+  }
+
+  removeFromWishlist(jobId: number) {
+    return this.http.post(`${this.apiService.apiUrl}/wishlist_delete.php`, { jobId });
   }
 
   signInWithGoogle(): Observable<UserCredential> {

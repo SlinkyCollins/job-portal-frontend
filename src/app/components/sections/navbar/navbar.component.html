@@ -1,8 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-transparent sticky-top">
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center w-100">
-      <!-- Brand -->
-      <a class="navbar-brand" routerLink="/">JobNet</a>
+      <!-- Brand Logo -->
+      <a class="brand-logo" routerLink="/">
+        <img src="/assets/jobnetlogo2.png" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
+      </a>
 
       <!-- Desktop Menu -->
       <ul class="fullmenu d-none d-lg-flex gap-4 mt-3">
@@ -82,8 +84,8 @@
     <!-- Mobile Menu -->
     <div id="mobileNavMenu" class="navmenu px-3 pt-4" role="navigation" [ngClass]="{ show: isMenuOpen }"
       [attr.aria-hidden]="!isMenuOpen">
-      <div class="header text-start">
-        <h2>JobNet</h2>
+      <div class="brand-logo">
+        <img src="/assets/jobnetlogo2.png" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
       </div>
       <ul class="navbar-nav text-start">
         <li class="nav-item">

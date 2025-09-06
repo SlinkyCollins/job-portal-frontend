@@ -14,10 +14,10 @@ Now it’s time to **lock in, simplify what’s left, and beast your way to MVP*
 * **Remaining Frontend Tasks:**
 
   * Dashboard UI (User dashboard) — Done
-  * Dashboard UI (Employer dashboard) — Done
+  * Dashboard UI (Employer dashboard) — 
   * Job Listings page (view all jobs) — Done
   * Job Details page (when user clicks on a job) — Done
-  * Apply to Job page/modal
+  * Apply to Job page/modal - Done
 
 #### ✅ Backend:
 
