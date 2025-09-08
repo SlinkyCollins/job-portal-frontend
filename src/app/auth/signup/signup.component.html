@@ -1,126 +1,133 @@
 <app-navbar></app-navbar>
 <div class="signupWrapper">
-  <div class="signupContainer">
-    <div class="signupHeader">
-      <h1>Register</h1>
-      <div>
-        <p>Create an account & Start posting or hiring talents</p>
+  <div class="signupHeader">
+    <h1>Register</h1>
+    <div>
+      <p>Create an account & Start posting or hiring talents</p>
+    </div>
+  </div>
+  <span class="lazy-img shape-1">
+    <img src="/assets/img-11.svg" alt="shape" loading="lazy" decoding="async" />
+  </span>
+  <span class="lazy-img shape-2">
+    <img src="/assets/img-10.svg" alt="shape" loading="lazy" decoding="async" />
+  </span>
+</div>
+<div class="signupContainer">
+  <div class="signupForm">
+    <h1 class="signupH1 text-center mb-3">Create Account</h1>
+    <form method="post" #form="ngForm" novalidate>
+      <div class="form-group">
+        <label for="fname" class="form-label">First Name</label>
+        <input id="fname" type="text" placeholder="First Name" name="fname" class="form-control" [(ngModel)]="firstname"
+          #fname="ngModel" minlength="3" required [class.is-valid]="fname.valid && fname.dirty"
+          [class.is-invalid]="fname.invalid && fname.dirty" />
+        <div *ngIf="fname.invalid && fname.dirty" class="invalid-feedback d-block">
+          <span *ngIf="fname.hasError('minlength')">The minimum character length is 3</span>
+          <span *ngIf="fname.hasError('required')">This field is required</span>
+        </div>
       </div>
-    </div>
-    <div class="signupForm">
-      <h1 class="signupH1 text-center mb-3">Create Account</h1>
-      <form method="post" #form="ngForm" novalidate>
-        <div class="form-group">
-          <label for="fname" class="form-label">First Name</label>
-          <input id="fname" type="text" placeholder="First Name" name="fname" class="form-control"
-            [(ngModel)]="firstname" #fname="ngModel" minlength="3" required
-            [class.is-valid]="fname.valid && fname.dirty" [class.is-invalid]="fname.invalid && fname.dirty" />
-          <div *ngIf="fname.invalid && fname.dirty" class="invalid-feedback d-block">
-            <span *ngIf="fname.hasError('minlength')">The minimum character length is 3</span>
-            <span *ngIf="fname.hasError('required')">This field is required</span>
-          </div>
+
+      <div class="form-group">
+        <label for="lname" class="form-label">Last Name</label>
+        <input id="lname" type="text" placeholder="Last Name" name="lname" class="form-control" [(ngModel)]="lastname"
+          #lname="ngModel" minlength="3" required [class.is-valid]="lname.valid && lname.dirty"
+          [class.is-invalid]="lname.invalid && lname.dirty" />
+        <div *ngIf="lname.invalid && lname.dirty" class="invalid-feedback d-block">
+          <span *ngIf="lname.hasError('minlength')">The minimum character length is 3</span>
+          <span *ngIf="lname.hasError('required')">This field is required</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="lname" class="form-label">Last Name</label>
-          <input id="lname" type="text" placeholder="Last Name" name="lname" class="form-control" [(ngModel)]="lastname"
-            #lname="ngModel" minlength="3" required [class.is-valid]="lname.valid && lname.dirty"
-            [class.is-invalid]="lname.invalid && lname.dirty" />
-          <div *ngIf="lname.invalid && lname.dirty" class="invalid-feedback d-block">
-            <span *ngIf="lname.hasError('minlength')">The minimum character length is 3</span>
-            <span *ngIf="lname.hasError('required')">This field is required</span>
-          </div>
+      <div class="form-group">
+        <label for="mail" class="form-label">Email</label>
+        <input id="mail" type="email" placeholder="Email" name="mail" class="form-control" [(ngModel)]="email"
+          #mail="ngModel"
+          pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+          required [class.is-valid]="mail.valid && mail.dirty" [class.is-invalid]="mail.invalid && mail.dirty" />
+        <div *ngIf="mail.invalid && mail.dirty" class="invalid-feedback d-block">
+          <span *ngIf="mail.hasError('pattern')">Please enter a valid email address</span>
+          <span *ngIf="mail.hasError('required')">This field is required</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="mail" class="form-label">Email</label>
-          <input id="mail" type="email" placeholder="Email" name="mail" class="form-control" [(ngModel)]="email"
-            #mail="ngModel"
-            pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
-            required [class.is-valid]="mail.valid && mail.dirty" [class.is-invalid]="mail.invalid && mail.dirty" />
-          <div *ngIf="mail.invalid && mail.dirty" class="invalid-feedback d-block">
-            <span *ngIf="mail.hasError('pattern')">Please enter a valid email address</span>
-            <span *ngIf="mail.hasError('required')">This field is required</span>
-          </div>
+      <div class="form-group" style="position: relative;">
+        <label for="pword" class="form-label">Password</label>
+        <input id="pword" [type]="showPassword ? 'text' : 'password'" placeholder="Password" name="pword"
+          class="form-control" [(ngModel)]="password" minlength="6" #pword="ngModel" required
+          [class.is-valid]="pword.valid && (pword.dirty || pword.touched)"
+          [class.is-invalid]="pword.invalid && (pword.dirty || pword.touched)" />
+        <i [title]="showPassword ? 'Hide Password' : 'Show Password'" class="toggle-icon fas"
+          [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'" (click)="togglePassword()"
+          style="position: absolute; right: 18px; top: 44px; cursor: pointer; font-size: 1.1rem;"></i>
+        <div *ngIf="pword.invalid && (pword.dirty || pword.touched)" class="invalid-feedback d-block">
+          <span *ngIf="pword.hasError('required')">Password is required</span>
+          <span *ngIf="pword.hasError('minlength')">Password must be at least six characters</span>
         </div>
-
-        <div class="form-group" style="position: relative;">
-          <label for="pword" class="form-label">Password</label>
-          <input id="pword" [type]="showPassword ? 'text' : 'password'" placeholder="Password" name="pword"
-            class="form-control" [(ngModel)]="password" minlength="6" #pword="ngModel" required
-            [class.is-valid]="pword.valid && (pword.dirty || pword.touched)"
-            [class.is-invalid]="pword.invalid && (pword.dirty || pword.touched)" />
-          <i [title]="showPassword ? 'Hide Password' : 'Show Password'" class="toggle-icon fas"
-            [ngClass]="showPassword ? 'fa-eye text-success' : 'fa-eye-slash'" (click)="togglePassword()"
-            style="position: absolute; right: 18px; top: 44px; cursor: pointer; font-size: 1.1rem;"></i>
-          <div *ngIf="pword.invalid && (pword.dirty || pword.touched)" class="invalid-feedback d-block">
-            <span *ngIf="pword.hasError('required')">Password is required</span>
-            <span *ngIf="pword.hasError('minlength')">Password must be at least six characters</span>
-          </div>
-          <div *ngIf="password && password.length > 0">
-            <p class="text-danger mb-1" *ngIf="password && password.length < 5">Password is weak</p>
-            <p class="text-warning mb-1" *ngIf="password && password.length >= 5 && password.length < 8">Password is
-              medium</p>
-            <p class="text-success mb-1" *ngIf="password && password.length >= 8">Password is strong</p>
-          </div>
+        <div *ngIf="password && password.length > 0">
+          <p class="text-danger mb-1" *ngIf="password && password.length < 5">Password is weak</p>
+          <p class="text-warning mb-1" *ngIf="password && password.length >= 5 && password.length < 8">Password is
+            medium</p>
+          <p class="text-success mb-1" *ngIf="password && password.length >= 8">Password is strong</p>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="jobrole" class="form-label">I am a:</label>
-          <select name="jobrole" id="jobrole" [(ngModel)]="role" #jobrole="ngModel" required class="form-select"
-            [class.is-valid]="jobrole.valid && jobrole.touched" [class.is-invalid]="jobrole.invalid && jobrole.touched">
-            <option value="" disabled selected>Select a Role</option>
-            <option value="job_seeker">Job Seeker</option>
-            <option value="employer">Employer</option>
-          </select>
-          <div *ngIf="jobrole.invalid && jobrole.touched" class="invalid-feedback d-block">
-            <span *ngIf="jobrole.hasError('required')">This field is required</span>
-          </div>
+      <div class="form-group">
+        <label for="jobrole" class="form-label">I am a:</label>
+        <select name="jobrole" id="jobrole" [(ngModel)]="role" #jobrole="ngModel" required class="form-select"
+          [class.is-valid]="jobrole.valid && jobrole.touched" [class.is-invalid]="jobrole.invalid && jobrole.touched">
+          <option value="" disabled selected>Select a Role</option>
+          <option value="job_seeker">Job Seeker</option>
+          <option value="employer">Employer</option>
+        </select>
+        <div *ngIf="jobrole.invalid && jobrole.touched" class="invalid-feedback d-block">
+          <span *ngIf="jobrole.hasError('required')">This field is required</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label class="form-check-label" for="terms">
-            <input type="checkbox" id="terms" name="terms" [(ngModel)]="termsAccepted" #terms="ngModel"
-              [class.is-invalid]="terms.invalid && terms.dirty" required class="form-check-input" />
-            By hitting the Register button, you agree to the <a href="#"
-              style="color: #31795a; text-decoration: none;">Terms conditions & Privacy Policy</a>
-          </label>
-          <div *ngIf="terms.invalid && terms.dirty" class="invalid-feedback d-block">
-            <span *ngIf="terms.hasError('required')">You must accept the terms and conditions</span>
-          </div>
+      <div class="form-group">
+        <label class="form-check-label" for="terms">
+          <input type="checkbox" id="terms" name="terms" [(ngModel)]="termsAccepted" #terms="ngModel"
+            [class.is-invalid]="terms.invalid && terms.dirty" required class="form-check-input" />
+          By hitting the Register button, you agree to the <a href="#"
+            style="color: #31795a; text-decoration: none;">Terms conditions & Privacy Policy</a>
+        </label>
+        <div *ngIf="terms.invalid && terms.dirty" class="invalid-feedback d-block">
+          <span *ngIf="terms.hasError('required')">You must accept the terms and conditions</span>
         </div>
+      </div>
 
-        <div class="form-group mt-4" style="position: relative;">
-          <input type="submit" name="submit" (click)="signup(form)" [disabled]="form.invalid || loading"
-            [value]="loading ? 'Signing Up...' : 'Register'"
-            class="btn btn-success w-100 p-3 text-uppercase fw-semibold" />
-          <div *ngIf="loading" class="spinner-border spinner-border-sm text-light"
-            style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"></div>
+      <div class="form-group mt-4" style="position: relative;">
+        <button type="submit" name="submit" class="btn btn-submit" (click)="signup(form)" [disabled]="form.invalid || loading">
+          {{ loading ? 'Signing Up...' : 'Register' }}
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+        </button>
+      </div>
+
+      <div class="or-divider">OR</div>
+
+      <div class="row mb-4">
+        <div class="col-sm-6 mb-2 mb-sm-0">
+          <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="googleLogin()"
+            [disabled]="loading">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"
+              width="20" height="20" class="me-2"> Signup with Google
+          </button>
         </div>
-
-        <div class="or-divider">OR</div>
-
-        <div class="row mb-4">
-          <div class="col-sm-6 mb-2 mb-sm-0">
-            <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="googleLogin()" [disabled]="loading">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"
-                width="20" height="20" class="me-2"> Signup with Google
-            </button>
-          </div>
-          <div class="col-sm-6">
-            <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="facebookLogin()" [disabled]="loading">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
-                alt="Facebook" width="20" height="20" class="me-2"> Signup with Facebook
-            </button>
-          </div>
+        <div class="col-sm-6">
+          <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="facebookLogin()"
+            [disabled]="loading">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
+              alt="Facebook" width="20" height="20" class="me-2"> Signup with Facebook
+          </button>
         </div>
+      </div>
 
-        <p class="text-center my-2">Already have an account? <a routerLink="/login"
-            style="cursor: pointer; text-decoration: none; color: #31795a; font-weight: 700;">Login</a>
-        </p>
-      </form>
-    </div>
+      <p class="text-center my-2">Already have an account? <a routerLink="/login"
+          style="cursor: pointer; text-decoration: none; color: #31795a; font-weight: 700;">Login</a>
+      </p>
+    </form>
   </div>
 </div>
 <app-footer></app-footer>

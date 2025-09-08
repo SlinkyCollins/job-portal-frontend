@@ -1,5 +1,57 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 
+.navbar-auth .nav-link,
+.navbar-auth .brand-logo,
+.navbar-auth .navbar-nav .nav-link {
+  color: #fff !important;
+}
+
+.navbar-auth .nav-link.active,
+.navbar-auth .nav-link:hover {
+  color: #00be57 !important;
+}
+
+.navbar-auth .container-fluid .smlogin-link {
+  color: #d2f34c;
+}
+
+.navbar-auth .container-fluid .register-link {
+  color: #000;
+  background-color: #d2f34c;
+}
+
+.navbar-auth .container-fluid .register-link:hover {
+  color: #d2f34c;
+  background-color: #244034;
+  border: 2px solid #d2f34c;
+}
+
+.navbar-auth .hamburger {
+  background-color: #d2f34c;
+}
+.navbar-auth .hamburger span {
+  background-color: #244034;
+}
+
+.navbar-auth .navmenu {
+  background-color: #244034 !important;
+}
+
+.navbar-auth .navbar-nav .nav-item .signupbtn {
+  color: #000;
+  background-color: #d2f34c;
+}
+
+.navbar-auth .navbar-nav .nav-item .signupbtn:hover {
+  color: #d2f34c;
+  background-color: #244034;
+  border: 2px solid #d2f34c;
+}
+
+.scrolled-auth {
+  background-color: #244034 !important;
+}
+
 .navbar {
   transition: background-color 0.3s ease-in-out;
   position: fixed;
@@ -10,7 +62,7 @@
   padding: 0.5rem 0.8rem;
 }
 
-.scrolled {
+.scrolled:not(.scrolled-auth) {
   background-color: #fff !important;
   animation-name: scroll;
   animation-duration: 1s;
@@ -80,6 +132,7 @@
 
 .container-fluid .smlogin-link {
   text-decoration: none;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #212529;
 }

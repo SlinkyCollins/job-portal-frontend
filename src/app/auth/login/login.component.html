@@ -42,13 +42,12 @@
     </div>
 
     <div class="form-group mt-4" style="position: relative;">
-      <button type="submit" class="btn btn-success w-100 text-uppercase fw-semibold p-3"
-        [disabled]="form.invalid || loading" [value]="loading ? 'Logging In...' : 'Login'" style="cursor: pointer"
+      <button type="submit" class="btn btn-submit"
+        [disabled]="form.invalid || loading" style="cursor: pointer"
         (click)="login()">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
         {{ loading ? 'Logging In...' : 'Login' }}
       </button>
-      <div *ngIf="loading" class="spinner-border spinner-border-sm text-light"
-        style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"></div>
     </div>
 
     <div class="or-divider">OR</div>

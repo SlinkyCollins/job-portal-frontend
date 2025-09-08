@@ -1,4 +1,19 @@
-<nav class="navbar navbar-expand-lg bg-transparent sticky-top">
+<nav class="navbar navbar-expand-lg bg-transparent sticky-top" [ngClass]="{
+  'navbar-home': isHome(),
+  'navbar-auth': isAuthPage(),
+  'navbar-default': !isHome() && !isAuthPage()
+}">
+  <!-- {{ isHome() }} {{ isAuthPage() }} -->
+  <!-- <div class="container">
+    <a routerLink="/" class="navbar-brand">JobNet</a>
+
+    Example: show button only on home
+    <button *ngIf="isHome()" class="btn btn-primary">Get Started</button>
+
+    Example: hide dashboard link on auth pages
+    <a *ngIf="!isAuthPage()" routerLink="/dashboard" class="nav-link">Dashboard</a>
+  </div> -->
+
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center w-100">
       <!-- Brand Logo -->
@@ -140,6 +155,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="goToDashboard($event)">Dashboard</a>
         </li>
       </ul>
       <ul class="navbar-nav text-center">

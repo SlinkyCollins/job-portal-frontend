@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -13,8 +14,23 @@ export class NavbarComponent {
   public isMenuOpen = false;
   public isExploreOpen: boolean = false;
   public showMegaDropdown: boolean = false;
+  public currentRoute: string = '';
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentRoute = event.urlAfterRedirects;
+      })
+  }
+
+  isAuthPage(): boolean {
+    return this.currentRoute.includes('/jobs') || this.currentRoute.includes('/signup') || this.currentRoute.includes('/jobdetails');
+  }
+
+  isHome(): boolean {
+    return this.currentRoute === '/' || this.currentRoute.startsWith('/home');
+  }
 
   goToDashboard(event: Event) {
     event.preventDefault(); // prevent normal link behavior
@@ -58,8 +74,14 @@ export class NavbarComponent {
     const navbar = document.querySelector('.navbar') as HTMLElement;
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
+      if (this.isAuthPage()) {
+        navbar.classList.add('scrolled-auth');
+      } else {
+        navbar.classList.remove('scrolled-auth');
+      }
     } else {
       navbar.classList.remove('scrolled');
+      navbar.classList.remove('scrolled-auth');
     }
   }
 }

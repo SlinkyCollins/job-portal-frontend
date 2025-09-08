@@ -2,27 +2,33 @@
   /* max-width: 1600px; */
   margin: 0 auto;
   max-width: none;
+  background-color: #244034;
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
 .signupContainer {
-  margin: 6rem 0 3rem;
   background-color: #eff6f3;
-  padding-bottom: 1rem;
+  padding: 1rem 0.5rem 1.5rem;
+  margin-bottom: 4rem;
 }
 
 .signupHeader {
   text-align: center;
-  padding: 4rem 0;
-  margin-bottom: 2rem;
+  padding: 8rem 0;
   color: #fff;
-  background-color: #244034;
 }
 
 .signupHeader h1 {
+  margin: 2rem 0;
+  font-size: 2.6rem;
+  font-weight: 600;
   font-family: "EB Garamond", serif;
 }
 
 .signupHeader p {
+  font-size: 1.2rem;
   font-family: "Gordita-Regular", cursive;
 }
 
@@ -40,22 +46,81 @@
   transition: max-width 0.2s, padding 0.2s;
 }
 
+/* Signup Button */
+.btn-submit {
+  background: #00be57;
+  border: none;
+  color: white;
+  padding: 15px 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+.btn-submit:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.shape-1 {
+  position: absolute;
+  left: 37%;
+  top: 20px;
+  color: transparent;
+}
+
+.shape-2 {
+  position: absolute;
+  color: transparent;
+  bottom: 0;
+}
+
 @media (min-width: 568px) {
-  .signupContainer{
-    margin: 6.5rem 0 3rem;
+  .shape-1 {
+    left: 57%;
   }
   .signupForm {
     max-width: 520px;
     padding: 2rem 1.5rem 1.5rem 1.5rem;
   }
+  .signupHeader h1 {
+    font-size: 3rem;
+  }
+
+  .signupHeader p {
+    font-size: 1.3rem;
+  }
 }
 
 @media (min-width: 768px) {
-   .signupContainer{
-    margin: 7rem 0 3rem;
+  .signupContainer {
+    padding: 1rem 1rem 3rem;
   }
-  .signupForm .signupH1 {
-    font-size: 3rem !important;
+  .shape-1 {
+    left: 67%;
+  }
+  .signupHeader h1 {
+    font-size: 3.2rem;
+  }
+
+  .signupHeader p {
+    font-size: 1.4rem;
   }
   .signupForm {
     max-width: 650px;
@@ -64,11 +129,14 @@
 }
 
 @media (min-width: 992px) {
-   .signupContainer{
-    margin: 8rem 0 3rem;
+  .signupContainer {
+    padding: 1rem 1rem 5rem;
   }
-  .signupForm .signupH1 {
-    font-size: 3.5rem !important;
+  .signupHeader h1 {
+    font-size: 3.8rem;
+  }
+  .signupHeader p {
+    font-size: 1.5rem;
   }
   .signupForm {
     max-width: 750px;
