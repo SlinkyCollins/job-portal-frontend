@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+// import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -7,5 +9,5 @@ export class ApiServiceService {
 
   constructor() { }
 
-  apiUrl = 'https://job-portal-backend-rua3.onrender.com';
+  apiUrl = environment.apiUrl;
 }
