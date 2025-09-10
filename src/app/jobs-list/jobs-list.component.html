@@ -3,20 +3,10 @@
   <!-- Hero Section -->
   <div class="hero-section">
     <span class="lazy-img shape-1">
-      <img
-        src="/assets/img-11.svg"
-        alt="shape"
-        loading="lazy"
-        decoding="async"
-      />
+      <img src="/assets/img-11.svg" alt="shape" loading="lazy" decoding="async" />
     </span>
     <span class="lazy-img shape-2">
-      <img
-        src="/assets/img-10.svg"
-        alt="shape"
-        loading="lazy"
-        decoding="async"
-      />
+      <img src="/assets/img-10.svg" alt="shape" loading="lazy" decoding="async" />
     </span>
     <div class="container">
       <div class="row justify-content-center">
@@ -25,35 +15,21 @@
           <p class="hero-subtitle">
             We delivered blazing fast & striking work solution
           </p>
-
           <!-- Search Form -->
           <div class="search-form">
             <div class="row g-0">
-              <div class="searchwrapper col-md-4">
-                <label for="location" class="search-label label-1"
-                  >Where are you looking for?</label
-                >
-                <select
-                  class="form-select search-input"
-                  id="location"
-                  [(ngModel)]="searchLocation"
-                >
+              <div class="col-md-4">
+                <label for="location" class="search-label">Where are you looking for?</label>
+                <select class="form-select search-input" [(ngModel)]="searchLocation">
                   <option>Spain, Barcelona</option>
                   <option>USA, New York</option>
                   <option>UK, London</option>
                   <option>Germany, Berlin</option>
                 </select>
               </div>
-              <hr class="hr-line" />
-              <div class="searchwrapper col-md-4">
-                <label for="category" class="search-label label-2"
-                  >Category</label
-                >
-                <select
-                  class="form-select search-input"
-                  id="category"
-                  [(ngModel)]="searchCategory"
-                >
+              <div class="col-md-4">
+                <label for="category" class="search-label">Category</label>
+                <select class="form-select search-input" [(ngModel)]="searchCategory">
                   <option>Developer</option>
                   <option>Design</option>
                   <option>Marketing</option>
@@ -85,22 +61,11 @@
               <span class="filter-icon">●</span>
             </div>
             <div class="filter-options">
-              <div
-                *ngFor="let jobType of filterOptions.jobTypes"
-                class="filter-option"
-              >
+              <div *ngFor="let jobType of filterOptions.jobTypes" class="filter-option">
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    [id]="'jobType-' + jobType.name"
-                    [checked]="jobType.selected"
-                    (change)="toggleJobTypeFilter(jobType.name)"
-                  />
-                  <label
-                    class="form-check-label"
-                    [for]="'jobType-' + jobType.name"
-                  >
+                  <input class="form-check-input" type="checkbox" [id]="'jobType-' + jobType.name"
+                    [checked]="jobType.selected" (change)="toggleJobTypeFilter(jobType.name)" />
+                  <label class="form-check-label" [for]="'jobType-' + jobType.name">
                     {{ jobType.name }}
                   </label>
                   <span class="filter-count">{{ jobType.count }}</span>
@@ -116,22 +81,11 @@
               <span class="filter-icon">●</span>
             </div>
             <div class="filter-options">
-              <div
-                *ngFor="let experience of filterOptions.experiences"
-                class="filter-option"
-              >
+              <div *ngFor="let experience of filterOptions.experiences" class="filter-option">
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    [id]="'experience-' + experience.name"
-                    [checked]="experience.selected"
-                    (change)="toggleExperienceFilter(experience.name)"
-                  />
-                  <label
-                    class="form-check-label"
-                    [for]="'experience-' + experience.name"
-                  >
+                  <input class="form-check-input" type="checkbox" [id]="'experience-' + experience.name"
+                    [checked]="experience.selected" (change)="toggleExperienceFilter(experience.name)" />
+                  <label class="form-check-label" [for]="'experience-' + experience.name">
                     {{ experience.name }}
                   </label>
                   <span class="filter-count">{{ experience.count }}</span>
@@ -152,13 +106,8 @@
                 <span>3500</span>
                 <span>USD</span>
               </div>
-              <input
-                type="range"
-                class="form-range"
-                min="0"
-                max="3500"
-                [(ngModel)]="filterOptions.salaryRange.current.min"
-              />
+              <input type="range" class="form-range" min="0" max="3500"
+                [(ngModel)]="filterOptions.salaryRange.current.min" />
               <div class="range-periods">
                 <span>Weekly</span>
                 <span>Monthly</span>
@@ -192,10 +141,7 @@
       <div class="col-lg-9">
         <!-- Mobile Filter Button -->
         <div class="d-lg-none mb-3">
-          <button
-            class="btn btn-outline-secondary w-100"
-            (click)="toggleFilterModal()"
-          >
+          <button class="btn btn-outline-secondary w-100" (click)="toggleFilterModal()">
             <i class="fas fa-filter me-2"></i>Filter
           </button>
         </div>
@@ -208,10 +154,7 @@
             </div>
             <div class="sort-controls">
               <span class="me-2">Sort:</span>
-              <select
-                class="form-select form-select-sm d-inline-block w-auto"
-                [(ngModel)]="sortBy"
-              >
+              <select class="form-select form-select-sm d-inline-block w-auto" [(ngModel)]="sortBy">
                 <option disabled selected>Select one</option>
                 <option>Low to High</option>
                 <option>High to Low</option>
@@ -223,17 +166,10 @@
         </div>
 
         <!-- Active Filters -->
-        <div *ngIf="activeFilters.length > 0" class="active-filters mb-3">
-          <span
-            *ngFor="let filter of activeFilters"
-            class="badge bg-light text-dark me-2 mb-2"
-          >
+        <div *ngIf="activeFilters.length > 0" class="active-filters">
+          <span *ngFor="let filter of activeFilters" class="badge">
             {{ filter }}
-            <button
-              type="button"
-              class="btn-close btn-close-sm ms-1"
-              (click)="removeFilter(filter)"
-            ></button>
+            <button type="button" class="btn-close btn-close-sm" (click)="removeFilter(filter)"></button>
           </span>
         </div>
 
@@ -251,17 +187,10 @@
             <div class="job-card">
               <div class="job-card-header">
                 <div class="company-logo">{{ job.logo }}</div>
-                <button
-                  class="btn btn-sm btn-outline-secondary bookmark-btn"
-                  [class.active]="job.isSaved"
-                  (click)="onToggleSaveJob(job)"
-                >
+                <button class="btn btn-sm btn-outline-secondary bookmark-btn" [class.active]="job.isSaved"
+                  (click)="onToggleSaveJob(job)">
                   <i *ngIf="!job.isSaved" class="far fa-bookmark"></i>
-                  <i
-                    *ngIf="job.isSaved"
-                    class="fa-solid fa-bookmark"
-                    style="color: #31795a"
-                  ></i>
+                  <i *ngIf="job.isSaved" class="fa-solid fa-bookmark" style="color: #31795a"></i>
                 </button>
               </div>
 
@@ -294,27 +223,19 @@
               <span class="text-muted">
                 Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
                 {{
-                  Math.min(currentPage * itemsPerPage, filteredJobs.length)
+                Math.min(currentPage * itemsPerPage, filteredJobs.length)
                 }}
                 of {{ filteredJobs.length }}
               </span>
             </div>
             <ul class="pagination mb-0">
-              <li
-                class="page-item"
-                [class.active]="currentPage === page"
-                *ngFor="let page of getPaginationArray()"
-              >
+              <li class="page-item" [class.active]="currentPage === page" *ngFor="let page of getPaginationArray()">
                 <button class="page-link" (click)="goToPage(page)">
                   {{ page }}
                 </button>
               </li>
               <li class="page-item">
-                <button
-                  class="page-link"
-                  (click)="goToPage(currentPage + 1)"
-                  [disabled]="currentPage >= totalPages"
-                >
+                <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages">
                   Last <i class="fas fa-arrow-right ms-1"></i>
                 </button>
               </li>
@@ -326,41 +247,22 @@
   </div>
 
   <!-- Mobile Filter Modal -->
-  <div
-    class="modal"
-    [class.show]="showFilterModal"
-    [style.display]="showFilterModal ? 'block' : 'none'"
-  >
+  <div class="modal" [class.show]="showFilterModal" [style.display]="showFilterModal ? 'block' : 'none'">
     <div class="modal-dialog modal-fullscreen-sm-down">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Filter Jobs</h5>
-          <button
-            type="button"
-            class="btn-close"
-            (click)="toggleFilterModal()"
-          ></button>
+          <button type="button" class="btn-close" (click)="toggleFilterModal()"></button>
         </div>
         <div class="modal-body">
           <!-- Same filter content as sidebar -->
           <div class="filter-section">
             <h6>Job Type</h6>
-            <div
-              *ngFor="let jobType of filterOptions.jobTypes"
-              class="filter-option"
-            >
+            <div *ngFor="let jobType of filterOptions.jobTypes" class="filter-option">
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  [id]="'mobile-jobType-' + jobType.name"
-                  [checked]="jobType.selected"
-                  (change)="toggleJobTypeFilter(jobType.name)"
-                />
-                <label
-                  class="form-check-label"
-                  [for]="'mobile-jobType-' + jobType.name"
-                >
+                <input class="form-check-input" type="checkbox" [id]="'mobile-jobType-' + jobType.name"
+                  [checked]="jobType.selected" (change)="toggleJobTypeFilter(jobType.name)" />
+                <label class="form-check-label" [for]="'mobile-jobType-' + jobType.name">
                   {{ jobType.name }} ({{ jobType.count }})
                 </label>
               </div>
@@ -369,22 +271,11 @@
 
           <div class="filter-section">
             <h6>Experience</h6>
-            <div
-              *ngFor="let experience of filterOptions.experiences"
-              class="filter-option"
-            >
+            <div *ngFor="let experience of filterOptions.experiences" class="filter-option">
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  [id]="'mobile-experience-' + experience.name"
-                  [checked]="experience.selected"
-                  (change)="toggleExperienceFilter(experience.name)"
-                />
-                <label
-                  class="form-check-label"
-                  [for]="'mobile-experience-' + experience.name"
-                >
+                <input class="form-check-input" type="checkbox" [id]="'mobile-experience-' + experience.name"
+                  [checked]="experience.selected" (change)="toggleExperienceFilter(experience.name)" />
+                <label class="form-check-label" [for]="'mobile-experience-' + experience.name">
                   {{ experience.name }} ({{ experience.count }})
                 </label>
               </div>
@@ -392,18 +283,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="resetFilters()"
-          >
+          <button type="button" class="btn btn-secondary" (click)="resetFilters()">
             Reset
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="toggleFilterModal()"
-          >
+          <button type="button" class="btn btn-primary" (click)="toggleFilterModal()">
             Apply Filters
           </button>
         </div>
