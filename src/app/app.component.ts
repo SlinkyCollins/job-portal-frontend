@@ -1,26 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import {
+  RouterOutlet,
+  Router,
+  Event,
+  NavigationStart,
+  NavigationCancel,
+  NavigationError,
+  NavigationEnd,
+} from '@angular/router';
 import { ScrolltopbtnComponent } from './components/ui/scrolltopbtn/scrolltopbtn.component';
 import { filter } from 'rxjs/operators';
 import { Auth } from '@angular/fire/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ScrolltopbtnComponent],
+  imports: [RouterOutlet, ScrolltopbtnComponent, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+  loading = false;
+  private navigationStartTime = 0;
+
   constructor(private router: Router, private auth: Auth) {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationStart) {
+        this.loading = true;
+        this.navigationStartTime = Date.now();
+      }
+
+      if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
+      ) {
+        const elapsed = Date.now() - this.navigationStartTime;
+        const minTime = 300; // ms
+        const delay = Math.max(0, minTime - elapsed);
+
+        setTimeout(() => {
+          this.loading = false;
+        }, delay);
+      }
+    });
+
     console.log('Firebase Auth:', this.auth);
   }
+
   title = 'JobPortal';
 
   ngOnInit(): void {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        // Delay ensures DOM elements are rendered before scrolling
         setTimeout(() => {
           const hash = window.location.hash;
 

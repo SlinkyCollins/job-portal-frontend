@@ -461,7 +461,7 @@ export class JobsListComponent implements OnInit {
     return this.showMoreTags ? this.allTags : this.allTags.slice(0, 12)
   }
 
-  removeFilter(filter:any){
-    console.log('filter removed');
+  removeFilter(activeFilters:any){
+    this.activeFilters = this.activeFilters.filter((filter: any) => filter !== activeFilters);
   }
 }
