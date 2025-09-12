@@ -1,38 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { CtaComponent } from '../components/sections/cta/cta.component';
-import { AuthService } from '../core/services/auth.service';
-import { NavbarComponent } from '../components/sections/navbar/navbar.component';
-import { FooterComponent } from '../components/sections/footer/footer.component';
+import { Component, OnInit } from "@angular/core"
+import { ActivatedRoute, Router, RouterLink } from "@angular/router"
+import { CommonModule } from "@angular/common"
+import { CtaComponent } from "../components/sections/cta/cta.component"
+import { AuthService } from "../core/services/auth.service"
+import { NavbarComponent } from "../components/sections/navbar/navbar.component"
+import { FooterComponent } from "../components/sections/footer/footer.component"
 
 @Component({
-  selector: 'app-job-details',
-  imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent],
-  templateUrl: './job-details.component.html',
-  styleUrls: ['./job-details.component.css'],
+  selector: "app-job-details",
+  imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent, RouterLink],
+  templateUrl: "./job-details.component.html",
+  styleUrls: ["./job-details.component.css"],
   standalone: true,
 })
 export class JobDetailsComponent implements OnInit {
-  jobId: number | null = null;
-  job: any = null;
-  isLoading: boolean = true;
-  hasApplied: boolean = false;
-  isSaved: boolean = false;
-  errorMsg: string | null = null;
-  userRole: string | null = null;
+  jobId: number | null = null
+  job: any = null
+  isLoading = true
+  hasApplied = false
+  isSaved = false
+  errorMsg: string | null = null
+  userRole: string | null = null
+  showFullDescription = false
+  relatedJobs: any[] = []
 
-  constructor(private route: ActivatedRoute, public authService: AuthService, public router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    public authService: AuthService,
+    public router: Router,
+  ) {}
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('role');
-    this.jobId = Number(this.route.snapshot.paramMap.get('id'));
+    this.userRole = localStorage.getItem("role")
+    this.jobId = Number(this.route.snapshot.paramMap.get("id"))
 
     if (this.jobId) {
-      this.fetchJobDetails(this.jobId);
+      this.fetchJobDetails(this.jobId)
+      this.fetchRelatedJobs() // Add this line
     } else {
-      this.errorMsg = 'Invalid job ID';
-      this.isLoading = false;
+      this.errorMsg = "Invalid job ID"
+      this.isLoading = false
     }
   }
 
@@ -40,71 +47,118 @@ export class JobDetailsComponent implements OnInit {
     this.authService.getJobDetails(id).subscribe({
       next: (res: any) => {
         if (res.status && res.job) {
-          this.job = res.job;
-          this.hasApplied = res.job.hasApplied || false; // ✅ No separate API call
-          this.isSaved = res.job.isSaved || false; // ✅ No separate API call
+          this.job = res.job
+          this.hasApplied = res.job.hasApplied || false // ✅ No separate API call
+          this.isSaved = res.job.isSaved || false // ✅ No separate API call
         } else {
-          this.errorMsg = res.msg || 'Job not found';
+          this.errorMsg = res.msg || "Job not found"
         }
-        this.isLoading = false;
+        this.isLoading = false
       },
       error: (err) => {
-        console.error(err);
-        this.errorMsg = 'An error occurred while fetching job details.';
-        this.isLoading = false;
+        console.error(err)
+        this.errorMsg = "An error occurred while fetching job details."
+        this.isLoading = false
       },
-    });
+    })
   }
 
   onApplyNow(): void {
-    console.log('User clicked apply for job ID:', this.jobId);
-    const userRole = localStorage.getItem('role');
+    console.log("User clicked apply for job ID:", this.jobId)
+    const userRole = localStorage.getItem("role")
 
     if (!userRole) {
-      this.authService.toastr.warning('Please log in to apply.');
-      this.router.navigate(['/login']);
-      return;
+      this.authService.toastr.warning("Please log in to apply.")
+      this.router.navigate(["/login"])
+      return
     }
 
     this.authService.applyToJob(this.jobId!).subscribe({
       next: (res: any) => {
         if (res.status) {
-          this.hasApplied = true; // ✅ Instantly disable button
-          this.authService.toastr.success(res.msg);
+          this.hasApplied = true // ✅ Instantly disable button
+          this.authService.toastr.success(res.msg)
         } else {
-          this.authService.toastr.error(res.msg);
+          this.authService.toastr.error(res.msg)
         }
       },
       error: (err) => {
-        console.error(err);
-        this.authService.toastr.error('An error occurred while applying.');
-      }
-    });
+        console.error(err)
+        this.authService.toastr.error("An error occurred while applying.")
+      },
+    })
   }
 
   onSaveJob(): void {
-    console.log('User clicked for save job ID:', this.jobId);
-    const userRole = localStorage.getItem('role');
+    console.log("User clicked for save job ID:", this.jobId)
+    const userRole = localStorage.getItem("role")
 
     if (!userRole) {
-      this.authService.toastr.warning('Please log in to save jobs.');
-      this.router.navigate(['/login']);
-      return;
+      this.authService.toastr.warning("Please log in to save jobs.")
+      this.router.navigate(["/login"])
+      return
     }
 
     this.authService.addToWishlist(this.jobId!).subscribe({
       next: (res: any) => {
         if (res.status) {
-          this.isSaved = true; // ✅ Instantly disable button
-          this.authService.toastr.success(res.msg);
+          this.isSaved = true // ✅ Instantly disable button
+          this.authService.toastr.success(res.msg)
         } else {
-          this.authService.toastr.error(res.msg);
+          this.authService.toastr.error(res.msg)
         }
       },
       error: (err) => {
-        console.error(err);
-        this.authService.toastr.error('An error occurred while saving the job.');
-      }
-    });
+        console.error(err)
+        this.authService.toastr.error("An error occurred while saving the job.")
+      },
+    })
+  }
+
+  toggleDescription(): void {
+    this.showFullDescription = !this.showFullDescription
+  }
+
+  getRelativeDate(dateString: string): string {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - date.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+    if (diffDays === 1) return "1 day ago"
+    if (diffDays < 7) return `${diffDays} days ago`
+    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
+    return `${Math.ceil(diffDays / 30)} months ago`
+  }
+
+  fetchRelatedJobs(): void {
+    // You can implement this to fetch related jobs from your API
+    // For now, using mock data
+    this.relatedJobs = [
+      {
+        job_id: 1,
+        job_title: "Data Science Expert With Algorithm",
+        company_name: "TechCorp",
+        location: "Spain, Barcelona",
+        job_type: "Fulltime",
+        salary: 5000,
+      },
+      {
+        job_id: 2,
+        job_title: "UI/UX Product Management",
+        company_name: "DesignHub",
+        location: "USA, New York",
+        job_type: "Part time",
+        salary: 3500,
+      },
+      {
+        job_id: 3,
+        job_title: "Web Developer",
+        company_name: "WebCraft",
+        location: "UK, London",
+        job_type: "Fulltime",
+        salary: 4200,
+      },
+    ]
   }
 }

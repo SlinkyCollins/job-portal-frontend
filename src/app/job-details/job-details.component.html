@@ -10,8 +10,9 @@
     </span>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-          <h1 class="hero-title">Job Details</h1>
+        <div class="col-lg-8 text-center" *ngIf="!isLoading && job">
+          <p class="post-date">{{ getRelativeDate(job.createdat) }}</p>
+          <h1 class="hero-title">{{job.job_title}}</h1>
           <p class="hero-subtitle">Here is the job details & requirements</p>
         </div>
       </div>
@@ -20,51 +21,257 @@
 
   <div class="container py-5">
     <ng-container *ngIf="isLoading">
-      <p>Loading job details...</p>
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading job details...</p>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="!isLoading && errorMsg">
-      <p class="text-danger">{{ errorMsg }}</p>
+      <div class="error-container">
+        <p class="text-danger">{{ errorMsg }}</p>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="!isLoading && job">
-      <h1 class="mb-2">{{ job.job_title }}</h1>
-      <p class="text-muted">{{ job.location }} | {{ job.job_type }}</p>
-      <p><strong>Salary:</strong> ₦{{ job.salary }}</p>
-      <p><strong>Deadline:</strong> {{ job.deadline }}</p>
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+          <div class="job-content-card">
+            
+            <!-- Overview Section -->
+            <section class="content-section">
+              <header class="section-header">
+                <div class="section-icon">
+                  <i class="fas fa-eye"></i>
+                </div>
+                <h3>Overview</h3>
+              </header>
+              <div class="section-content">
+                <p class="overview-text">
+                  We are looking for talented individuals to join our team. This position offers great opportunities 
+                  to work with cutting-edge technologies and contribute to innovative projects.
+                </p>
+                <div class="job-meta-tags">
+                  <span class="meta-tag">{{ job.location }}</span>
+                  <span class="meta-tag">{{ job.job_type }}</span>
+                  <span class="meta-tag">{{ job.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}</span>
+                </div>
+              </div>
+            </section>
 
-      <div class="my-4">
-        <h4>Job Description</h4>
-        <p>{{ job.job_description }}</p>
+            <!-- Job Description Section -->
+            <section class="content-section">
+              <header class="section-header">
+                <div class="section-icon">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Job Description</h3>
+              </header>
+              <div class="section-content">
+                <div class="description-content" [class.expanded]="showFullDescription">
+                  <p>{{ job.job_description }}</p>
+                </div>
+                <button 
+                  class="show-more-btn" 
+                  *ngIf="job.job_description && job.job_description.length > 200"
+                  (click)="toggleDescription()">
+                  {{ showFullDescription ? 'Show Less' : 'Show More' }}
+                </button>
+              </div>
+            </section>
+
+            <!-- Responsibilities Section -->
+            <section class="content-section">
+              <header class="section-header">
+                <div class="section-icon">
+                  <i class="fas fa-tasks"></i>
+                </div>
+                <h3>Responsibilities</h3>
+              </header>
+              <div class="section-content">
+                <ul class="responsibility-list">
+                  <li>Lead and manage software development projects from conception to deployment</li>
+                  <li>Collaborate with cross-functional teams to define project requirements</li>
+                  <li>Write clean, maintainable, and efficient code</li>
+                  <li>Conduct code reviews and provide constructive feedback</li>
+                  <li>Mentor junior developers and contribute to team growth</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Required Skills Section -->
+            <section class="content-section">
+              <header class="section-header">
+                <div class="section-icon">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Required Skills</h3>
+              </header>
+              <div class="section-content">
+                <ul class="skills-list" *ngIf="job.qualifications?.length > 0; else defaultSkills">
+                  <li *ngFor="let q of job.qualifications">{{ q }}</li>
+                </ul>
+                <ng-template #defaultSkills>
+                  <ul class="skills-list">
+                    <li>Bachelor's degree in Computer Science or related field</li>
+                    <li>3+ years of experience in software development</li>
+                    <li>Strong knowledge of programming languages</li>
+                    <li>Experience with modern development frameworks</li>
+                    <li>Excellent problem-solving and communication skills</li>
+                  </ul>
+                </ng-template>
+              </div>
+            </section>
+
+            <!-- Nice to Have Section -->
+            <section class="content-section">
+              <header class="section-header">
+                <div class="section-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <h3>Nice to Have</h3>
+              </header>
+              <div class="section-content">
+                <ul class="benefits-list">
+                  <li>Experience with cloud platforms (AWS, Azure, GCP)</li>
+                  <li>Knowledge of DevOps practices and tools</li>
+                  <li>Previous experience in a leadership role</li>
+                  <li>Contributions to open-source projects</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Benefits Section -->
+            <section class="content-section">
+              <header class="section-header">
+                <div class="section-icon">
+                  <i class="fas fa-gift"></i>
+                </div>
+                <h3>Benefits</h3>
+              </header>
+              <div class="section-content">
+                <ul class="benefits-list">
+                  <li>Competitive salary and performance bonuses</li>
+                  <li>Comprehensive health insurance</li>
+                  <li>Flexible working hours and remote work options</li>
+                  <li>Professional development opportunities</li>
+                  <li>Modern office environment with latest technology</li>
+                </ul>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <aside class="job-sidebar">
+            
+            <!-- Job Summary Card -->
+            <div class="sidebar-card">
+              <div class="card-header">
+                <h4>Job Summary</h4>
+              </div>
+              <div class="card-body">
+                <div class="info-item">
+                  <strong>Published:</strong>
+                  <span>{{ getRelativeDate(job.createdat) }}</span>
+                </div>
+                <div class="info-item">
+                  <strong>Location:</strong>
+                  <span>{{ job.location }}</span>
+                </div>
+                <div class="info-item">
+                  <strong>Job Type:</strong>
+                  <span>{{ job.job_type }}</span>
+                </div>
+                <div class="info-item">
+                  <strong>Salary:</strong>
+                  <span>{{ job.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}</span>
+                </div>
+                <div class="info-item">
+                  <strong>Deadline:</strong>
+                  <span>{{ job.deadline | date:'mediumDate' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Company Details Card -->
+            <div class="sidebar-card">
+              <div class="card-header">
+                <h4>Company Details</h4>
+              </div>
+              <div class="card-body">
+                <div class="company-info">
+                  <div class="company-logo">
+                    <i class="fas fa-building"></i>
+                  </div>
+                  <div class="company-details">
+                    <h5>{{ job.company_name || 'Company Name' }}</h5>
+                    <p>Leading technology company</p>
+                    <a href="#" class="company-website">Visit Website</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <button 
+                class="btn btn-apply btn-block" 
+                *ngIf="!userRole || userRole === 'job_seeker'" 
+                [disabled]="hasApplied"
+                (click)="onApplyNow()">
+                <i class="fas fa-paper-plane me-2"></i>
+                {{ hasApplied ? 'Already Applied' : 'Apply for this position' }}
+              </button>
+              
+              <button 
+                class="btn btn-save btn-block" 
+                *ngIf="!userRole || userRole === 'job_seeker'" 
+                [disabled]="isSaved"
+                (click)="onSaveJob()">
+                <i class="fas fa-bookmark me-2"></i>
+                {{ isSaved ? 'Saved' : 'Save Job' }}
+              </button>
+            </div>
+
+          </aside>
+        </div>
       </div>
-
-      <div class="my-4">
-        <h4>Qualifications</h4>
-
-        <ul *ngIf="job.qualifications?.length > 0; else noQualifications">
-          <li *ngFor="let q of job.qualifications">{{ q }}</li>
-        </ul>
-
-        <ng-template #noQualifications>
-          <p class="text-muted">No qualifications listed for this job.</p>
-        </ng-template>
-      </div>
-
-
-      <div class="mt-5">
-        <!-- Show Apply button if role is job_seeker OR user is not logged in -->
-        <button class="btn btn-success me-2" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="hasApplied"
-          (click)="onApplyNow()">
-          {{ hasApplied ? 'Already Applied' : 'Apply Now' }}
-        </button>
-
-        <button class="btn btn-outline-secondary" *ngIf="!userRole || userRole === 'job_seeker'" [disabled]="isSaved"
-          (click)="onSaveJob()">{{ isSaved ? 'Saved' : 'Save Job' }}</button>
-      </div>
-
-
     </ng-container>
   </div>
 
+  <!-- Related Jobs Section -->
+  <section class="related-jobs-section" *ngIf="!isLoading && job">
+    <div class="container">
+      <h2 class="section-title">Related Jobs</h2>
+      <div class="related-jobs-slider">
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let relatedJob of relatedJobs">
+            <div class="related-job-card">
+              <div class="job-card-header">
+                <h4 class="job-card-title">{{ relatedJob.job_title }}</h4>
+                <span class="job-type-badge">{{ relatedJob.job_type }}</span>
+              </div>
+              <div class="job-card-body">
+                <p class="company-name">{{ relatedJob.company_name }}</p>
+                <p class="job-location">{{ relatedJob.location }}</p>
+                <p class="job-salary">{{ relatedJob.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}</p>
+              </div>
+              <div class="job-card-footer">
+                <a [routerLink]="['/jobdetails', relatedJob.job_id]" class="btn btn-outline-primary btn-sm">
+                  View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <app-cta></app-cta>
   <app-footer></app-footer>
+</div>

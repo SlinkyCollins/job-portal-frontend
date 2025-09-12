@@ -51,6 +51,7 @@ export class JobsListComponent implements OnInit {
   showMoreCategories = false
   showMoreTags = false
   selectedLocation = "Spain, Barcelona"
+  userRole: string | null = null
 
   constructor(
     public authService: AuthService,
@@ -253,6 +254,7 @@ export class JobsListComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+    this.userRole = localStorage.getItem("role")
     this.applyFilters()
     this.authService.getAllJobs().subscribe({
       next: (response: any) => {

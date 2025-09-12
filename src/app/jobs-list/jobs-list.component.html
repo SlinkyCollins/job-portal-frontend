@@ -187,7 +187,8 @@
                   <span class="option-count">{{ category.count }}</span>
                 </div>
               </div>
-              <button type="button" class="show-more-btn" (click)="toggleShowMoreCategories()" *ngIf="allCategories.length > 5">
+              <button type="button" class="show-more-btn" (click)="toggleShowMoreCategories()"
+                *ngIf="allCategories.length > 5">
                 <i class="fas fa-minus me-2"></i>
                 {{ showMoreCategories ? 'Show Less' : 'Show More' }}
               </button>
@@ -259,9 +260,12 @@
         </div>
 
         <!-- Job Cards -->
-        <div *ngIf="loading" class="text-center my-5">
-          <p>Loading jobs...</p>
-        </div>
+        <ng-container *ngIf="loading">
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading jobs...</p>
+          </div>
+        </ng-container>
 
         <div *ngIf="!loading && jobs.length === 0" class="text-center my-5">
           <p>No jobs available</p>
@@ -273,7 +277,7 @@
               <div class="job-card-header">
                 <div class="company-logo">{{ job.logo }}</div>
                 <button class="btn btn-sm btn-outline-secondary bookmark-btn" [class.active]="job.isSaved"
-                  (click)="onToggleSaveJob(job)">
+                  (click)="onToggleSaveJob(job)" *ngIf="!userRole || userRole === 'job_seeker'">
                   <i *ngIf="!job.isSaved" class="far fa-bookmark"></i>
                   <i *ngIf="job.isSaved" class="fa-solid fa-bookmark" style="background-color: #31795a"></i>
                 </button>
@@ -288,14 +292,14 @@
               <h5 class="job-title">{{ job.job_title }}</h5>
 
               <div class="job-salary">
-                ₦{{ job.salary }}
+                {{ job.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}
                 <span class="text-muted">/ {{ job.salaryPeriod }}</span>
               </div>
 
               <div class="job-location">{{ job.location }}</div>
 
               <a [routerLink]="['/jobdetails', job.job_id]">
-                <button class="btn btn-apply w-100 mt-3">APPLY</button>
+                <button class="btn-apply w-100 mt-3">APPLY</button>
               </a>
             </div>
           </div>
@@ -341,7 +345,7 @@
         </div>
         <div class="modal-body">
           <!-- Same filter content as sidebar -->
-           <!-- Location Type Filter -->
+          <!-- Location Type Filter -->
           <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('location')">
               <h6>Location</h6>
@@ -473,7 +477,8 @@
                   <span class="option-count">{{ category.count }}</span>
                 </div>
               </div>
-              <button type="button" class="show-more-btn" (click)="toggleShowMoreCategories()" *ngIf="allCategories.length > 5">
+              <button type="button" class="show-more-btn" (click)="toggleShowMoreCategories()"
+                *ngIf="allCategories.length > 5">
                 <i class="fas fa-minus me-2"></i>
                 {{ showMoreCategories ? 'Show Less' : 'Show More' }}
               </button>

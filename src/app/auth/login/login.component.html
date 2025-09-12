@@ -26,9 +26,9 @@
         style="position: absolute; right: 40px; top: 56%; cursor: pointer"></i>
       <i title="Clear Password" class="clear-icon fas fa-times-circle" (click)="clearPassword()"
         *ngIf="password && password.length > 0" style="position: absolute; right: 10px; top: 56%; cursor: pointer"></i>
-      <div *ngIf="pword.invalid && (pword.dirty || pword.touched)" class="invalid-feedback d-block">
-        <span *ngIf="pword.hasError('required')">This field is required</span>
-      </div>
+    </div>
+    <div *ngIf="pword.invalid && (pword.dirty || pword.touched)" class="invalid-feedback d-block">
+      <span *ngIf="pword.hasError('required')">This field is required</span>
     </div>
 
     <div class="form-group d-flex justify-content-between align-items-center mb-2">
@@ -42,8 +42,7 @@
     </div>
 
     <div class="form-group mt-4" style="position: relative;">
-      <button type="submit" class="btn btn-submit"
-        [disabled]="form.invalid || loading" style="cursor: pointer"
+      <button type="submit" class="btn btn-submit" [disabled]="form.invalid || loading" style="cursor: pointer"
         (click)="login()">
         <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
         {{ loading ? 'Logging In...' : 'Login' }}
@@ -54,13 +53,15 @@
 
     <div class="row mb-4">
       <div class="col-sm-6 mb-2 mb-sm-0">
-        <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="googleLogin()" [disabled]="loading">
+        <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="googleLogin()"
+          [disabled]="loading">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20"
             height="20" class="me-2"> Login with Google
         </button>
       </div>
       <div class="col-sm-6">
-        <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="facebookLogin()" [disabled]="loading">
+        <button type="button" class="btn custom-social-btn w-100 p-3 fw-normal" (click)="facebookLogin()"
+          [disabled]="loading">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
             alt="Facebook" width="20" height="20" class="me-2"> Login with Facebook
