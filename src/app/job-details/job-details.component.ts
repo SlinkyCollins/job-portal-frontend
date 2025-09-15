@@ -23,6 +23,8 @@ export class JobDetailsComponent implements OnInit {
   userRole: string | null = null
   showFullDescription = false
   relatedJobs: any[] = []
+  isApplying = false
+  isSaving = false
 
   constructor(
     private route: ActivatedRoute,
@@ -73,18 +75,25 @@ export class JobDetailsComponent implements OnInit {
       return
     }
 
+    // Set loading state to true
+    this.isApplying = true
+
     this.authService.applyToJob(this.jobId!).subscribe({
       next: (res: any) => {
         if (res.status) {
-          this.hasApplied = true // ✅ Instantly disable button
+          this.hasApplied = true
           this.authService.toastr.success(res.msg)
         } else {
           this.authService.toastr.error(res.msg)
         }
+        // Set loading state to false
+        this.isApplying = false
       },
       error: (err) => {
         console.error(err)
         this.authService.toastr.error("An error occurred while applying.")
+        // Set loading state to false on error
+        this.isApplying = false
       },
     })
   }
@@ -99,18 +108,25 @@ export class JobDetailsComponent implements OnInit {
       return
     }
 
+    // Set loading state to true
+    this.isSaving = true
+
     this.authService.addToWishlist(this.jobId!).subscribe({
       next: (res: any) => {
         if (res.status) {
-          this.isSaved = true // ✅ Instantly disable button
+          this.isSaved = true
           this.authService.toastr.success(res.msg)
         } else {
           this.authService.toastr.error(res.msg)
         }
+        // Set loading state to false
+        this.isSaving = false
       },
       error: (err) => {
         console.error(err)
         this.authService.toastr.error("An error occurred while saving the job.")
+        // Set loading state to false on error
+        this.isSaving = false
       },
     })
   }

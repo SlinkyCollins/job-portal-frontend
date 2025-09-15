@@ -934,3 +934,49 @@ button:focus {
   outline: 2px solid #2d5a3d;
   outline-offset: 2px;
 }
+
+
+/* Button Loading States */
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}
+
+.btn-apply .spinner-border {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+}
+
+.btn-save .spinner-border {
+  border-color: rgba(45, 90, 61, 0.3);
+  border-top-color: #2d5a3d;
+}
+
+.btn-apply:disabled,
+.btn-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Loading animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-border {
+  animation: spin 0.75s linear infinite;
+}

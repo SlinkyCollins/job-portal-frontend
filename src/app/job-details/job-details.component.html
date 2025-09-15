@@ -55,7 +55,7 @@
                 <div class="job-meta-tags">
                   <span class="meta-tag">{{ job.location }}</span>
                   <span class="meta-tag">{{ job.job_type }}</span>
-                  <span class="meta-tag">{{ job.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}</span>
+                  <span class="meta-tag">₦{{ job.salary }}</span>
                 </div>
               </div>
             </section>
@@ -188,7 +188,7 @@
                 </div>
                 <div class="info-item">
                   <strong>Salary:</strong>
-                  <span>{{ job.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}</span>
+                  <span>₦{{ job.salary }}</span>
                 </div>
                 <div class="info-item">
                   <strong>Deadline:</strong>
@@ -221,19 +221,27 @@
               <button 
                 class="btn btn-apply btn-block" 
                 *ngIf="!userRole || userRole === 'job_seeker'" 
-                [disabled]="hasApplied"
+                [disabled]="hasApplied || isApplying"
                 (click)="onApplyNow()">
-                <i class="fas fa-paper-plane me-2"></i>
-                {{ hasApplied ? 'Already Applied' : 'Apply for this position' }}
+                <div class="btn-content">
+                  <div class="spinner-border spinner-border-sm me-2" *ngIf="isApplying"></div>
+                  <i class="fas fa-paper-plane me-2" *ngIf="!isApplying"></i>
+                  <span *ngIf="isApplying">Applying...</span>
+                  <span *ngIf="!isApplying">{{ hasApplied ? 'Already Applied' : 'Apply for this position' }}</span>
+                </div>
               </button>
               
               <button 
                 class="btn btn-save btn-block" 
                 *ngIf="!userRole || userRole === 'job_seeker'" 
-                [disabled]="isSaved"
+                [disabled]="isSaved || isSaving"
                 (click)="onSaveJob()">
-                <i class="fas fa-bookmark me-2"></i>
-                {{ isSaved ? 'Saved' : 'Save Job' }}
+                <div class="btn-content">
+                  <div class="spinner-border spinner-border-sm me-2" *ngIf="isSaving"></div>
+                  <i class="fas fa-bookmark me-2" *ngIf="!isSaving"></i>
+                  <span *ngIf="isSaving">Saving...</span>
+                  <span *ngIf="!isSaving">{{ isSaved ? 'Saved' : 'Save Job' }}</span>
+                </div>
               </button>
             </div>
 
@@ -258,7 +266,7 @@
               <div class="job-card-body">
                 <p class="company-name">{{ relatedJob.company_name }}</p>
                 <p class="job-location">{{ relatedJob.location }}</p>
-                <p class="job-salary">{{ relatedJob.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}</p>
+                <p class="job-salary">₦{{ relatedJob.salary }}</p>
               </div>
               <div class="job-card-footer">
                 <a [routerLink]="['/jobdetails', relatedJob.job_id]" class="btn btn-outline-primary btn-sm">
