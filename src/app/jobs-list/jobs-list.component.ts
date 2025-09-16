@@ -50,6 +50,7 @@ export class JobsListComponent implements OnInit {
   selectedPeriod = "weekly" // Default to weekly as shown in screenshot
   showMoreCategories = false
   showMoreTags = false
+  isSaving = false
   selectedLocation = "Spain, Barcelona"
   userRole: string | null = null
 
@@ -271,7 +272,7 @@ export class JobsListComponent implements OnInit {
       },
     })
   }
-
+  
   onToggleSaveJob(job: any) {
     if (!this.authService.isLoggedIn()) {
       this.authService.toastr.warning("Please log in to save jobs.")
@@ -279,8 +280,11 @@ export class JobsListComponent implements OnInit {
       return
     }
 
+    // Set loading state for this specific job
+    job.isSaving = true
+
     if (job.isSaved) {
-      // Call backend to unsave (when implemented)
+      // Call backend to unsave
       this.authService.removeFromWishlist(job.job_id).subscribe({
         next: (res: any) => {
           if (res.status) {
@@ -289,8 +293,12 @@ export class JobsListComponent implements OnInit {
           } else {
             this.authService.toastr.error(res.msg)
           }
+          job.isSaving = false
         },
-        error: () => this.authService.toastr.error("Error removing saved job."),
+        error: () => {
+          this.authService.toastr.error("Error removing saved job.")
+          job.isSaving = false
+        },
       })
     } else {
       this.authService.addToWishlist(job.job_id).subscribe({
@@ -301,8 +309,12 @@ export class JobsListComponent implements OnInit {
           } else {
             this.authService.toastr.error(res.msg)
           }
+          job.isSaving = false
         },
-        error: () => this.authService.toastr.error("Error saving job."),
+        error: () => {
+          this.authService.toastr.error("Error saving job.")
+          job.isSaving = false
+        },
       })
     }
   }

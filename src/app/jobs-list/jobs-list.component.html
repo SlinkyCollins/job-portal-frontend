@@ -277,9 +277,13 @@
               <div class="job-card-header">
                 <div class="company-logo">{{ job.logo }}</div>
                 <button class="btn btn-sm btn-outline-secondary bookmark-btn" [class.active]="job.isSaved"
-                  (click)="onToggleSaveJob(job)" *ngIf="!userRole || userRole === 'job_seeker'">
-                  <i *ngIf="!job.isSaved" class="far fa-bookmark"></i>
-                  <i *ngIf="job.isSaved" class="fa-solid fa-bookmark" style="background-color: #31795a"></i>
+                  [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
+                  *ngIf="!userRole || userRole === 'job_seeker'">
+                  <div class="btn-content">
+                    <div class="spinner-border spinner-border-sm" *ngIf="job.isSaving"></div>
+                    <i *ngIf="!job.isSaving && !job.isSaved" class="far fa-bookmark"></i>
+                    <i *ngIf="!job.isSaving && job.isSaved" class="fas fa-bookmark bookmark-saved"></i>
+                  </div>
                 </button>
               </div>
 
