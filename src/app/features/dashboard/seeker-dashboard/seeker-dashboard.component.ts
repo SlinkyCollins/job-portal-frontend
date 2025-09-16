@@ -58,6 +58,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
         localStorage.removeItem('role');
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
+        localStorage.removeItem('photoURL');
         this.router.navigate(['/login']);
         throw err; // Keep for debugging
       }
