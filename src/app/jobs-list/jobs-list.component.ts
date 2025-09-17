@@ -57,7 +57,7 @@ export class JobsListComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public router: Router,
-  ) {}
+  ) { }
 
   // jobs: Job[] = [
   //   {
@@ -272,7 +272,7 @@ export class JobsListComponent implements OnInit {
       },
     })
   }
-  
+
   onToggleSaveJob(job: any) {
     if (!this.authService.isLoggedIn()) {
       this.authService.toastr.warning("Please log in to save jobs.")
@@ -317,6 +317,18 @@ export class JobsListComponent implements OnInit {
         },
       })
     }
+  }
+
+  getRelativeDate(dateString: string): string {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - date.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+    if (diffDays === 1) return "1D ago"
+    if (diffDays < 7) return `${diffDays}D ago`
+    if (diffDays < 30) return `${Math.ceil(diffDays / 7)}W ago`
+    return `${Math.ceil(diffDays / 30)}M ago`
   }
 
   toggleFilterModal(): void {
@@ -473,7 +485,7 @@ export class JobsListComponent implements OnInit {
     return this.showMoreTags ? this.allTags : this.allTags.slice(0, 12)
   }
 
-  removeFilter(activeFilters:any){
+  removeFilter(activeFilters: any) {
     this.activeFilters = this.activeFilters.filter((filter: any) => filter !== activeFilters);
   }
 }

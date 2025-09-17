@@ -802,6 +802,16 @@
   gap: 4px;
 }
 
+.job-createdat {
+  color: #2b2c2f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .job-location {
   color: #6b7280;
   font-size: 0.8rem;
