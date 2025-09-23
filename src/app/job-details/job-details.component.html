@@ -11,8 +11,8 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8 text-center" *ngIf="!isLoading && job">
-          <p class="post-date">{{ getRelativeDate(job.createdat) }}</p>
-          <h1 class="hero-title">{{job.job_title}}</h1>
+          <p class="post-date">{{ getRelativeDate(job.created_at) }}</p>
+          <h1 class="hero-title">{{job.title}}</h1>
           <p class="hero-subtitle">Here is the job details & requirements</p>
         </div>
       </div>
@@ -49,13 +49,12 @@
               </header>
               <div class="section-content">
                 <p class="overview-text">
-                  We are looking for talented individuals to join our team. This position offers great opportunities 
-                  to work with cutting-edge technologies and contribute to innovative projects.
+                  {{ job.overview ? job.overview : 'No overview available for this job.' }}
                 </p>
                 <div class="job-meta-tags">
                   <span class="meta-tag">{{ job.location }}</span>
-                  <span class="meta-tag">{{ job.job_type }}</span>
-                  <span class="meta-tag">₦{{ job.salary }}</span>
+                  <span class="meta-tag">{{ job.employment_type }}</span>
+                  <span class="meta-tag">{{ job.salary_amount | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
                 </div>
               </div>
             </section>
@@ -70,11 +69,11 @@
               </header>
               <div class="section-content">
                 <div class="description-content" [class.expanded]="showFullDescription">
-                  <p>{{ job.job_description }}</p>
+                  <p>{{ job.description }}</p>
                 </div>
                 <button 
                   class="show-more-btn" 
-                  *ngIf="job.job_description && job.job_description.length > 200"
+                  *ngIf="job.description && job.description.length > 200"
                   (click)="toggleDescription()">
                   {{ showFullDescription ? 'Show Less' : 'Show More' }}
                 </button>
@@ -90,13 +89,16 @@
                 <h3>Responsibilities</h3>
               </header>
               <div class="section-content">
-                <ul class="responsibility-list">
-                  <li>Lead and manage software development projects from conception to deployment</li>
-                  <li>Collaborate with cross-functional teams to define project requirements</li>
-                  <li>Write clean, maintainable, and efficient code</li>
-                  <li>Conduct code reviews and provide constructive feedback</li>
-                  <li>Mentor junior developers and contribute to team growth</li>
-                </ul>
+                <ng-container *ngIf="job.responsibilities && job.responsibilities.length > 0; else noResponsibilities">
+                  <ul>
+                    <li *ngFor="let responsibility of job.responsibilities.split('\n')">
+                      {{ responsibility }}
+                    </li>
+                  </ul>
+                </ng-container>
+                <ng-template #noResponsibilities>
+                  No specific responsibilities listed for this job.
+                </ng-template>
               </div>
             </section>
 
@@ -109,17 +111,15 @@
                 <h3>Required Skills</h3>
               </header>
               <div class="section-content">
-                <ul class="skills-list" *ngIf="job.qualifications?.length > 0; else defaultSkills">
-                  <li *ngFor="let q of job.qualifications">{{ q }}</li>
-                </ul>
-                <ng-template #defaultSkills>
+                <ng-container *ngIf="job.requirements && job.requirements.length > 0; else defaultSkills">
                   <ul class="skills-list">
-                    <li>Bachelor's degree in Computer Science or related field</li>
-                    <li>3+ years of experience in software development</li>
-                    <li>Strong knowledge of programming languages</li>
-                    <li>Experience with modern development frameworks</li>
-                    <li>Excellent problem-solving and communication skills</li>
+                    <li *ngFor="let skill of job.requirements.split(',')">
+                      {{ skill.trim() }}
+                    </li>
                   </ul>
+                </ng-container>
+                <ng-template #defaultSkills>
+                  No specific skills listed for this job.
                 </ng-template>
               </div>
             </section>
@@ -176,7 +176,7 @@
               <div class="card-body">
                 <div class="info-item">
                   <strong>Published:</strong>
-                  <span>{{ getRelativeDate(job.createdat) }}</span>
+                  <span>{{ getRelativeDate(job.created_at) }}</span>
                 </div>
                 <div class="info-item">
                   <strong>Location:</strong>
@@ -184,15 +184,11 @@
                 </div>
                 <div class="info-item">
                   <strong>Job Type:</strong>
-                  <span>{{ job.job_type }}</span>
+                  <span>{{ job.employment_type }}</span>
                 </div>
                 <div class="info-item">
                   <strong>Salary:</strong>
-                  <span>₦{{ job.salary }}</span>
-                </div>
-                <div class="info-item">
-                  <strong>Deadline:</strong>
-                  <span>{{ job.deadline | date:'mediumDate' }}</span>
+                  <span>{{ job.salary_amount | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
                 </div>
               </div>
             </div>
