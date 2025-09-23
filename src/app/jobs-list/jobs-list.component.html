@@ -288,21 +288,21 @@
               </div>
 
               <div class="job-type-badge">
-                <span class="badge" [ngClass]="getJobTypeClass(job.job_type)">
-                  {{ job.jobType }}
+                <span class="badge" [ngClass]="getJobTypeClass(job.employment_type)">
+                  {{ job.employment_type }}
                 </span>
               </div>
 
-              <h5 class="job-title">{{ job.job_title }}</h5>
+              <h5 class="job-title">{{ job.title }}</h5>
 
               <div class="job-salary">
-                {{ job.salary | currency:'NGN':'symbol-narrow':'1.0-0' }}
-                <span class="text-muted">/ {{ job.salaryPeriod }}</span>
+                {{ job.salary_amount | currency: job.currency :'symbol-narrow':'1.0-0' }}
+                <span class="text-muted">/ {{ job.salary_duration }}</span>
               </div>
 
               <div class="job-location">{{ job.location }}</div>
 
-              <div class="job-createdat">{{ getRelativeDate(job.createdat) }}</div>
+              <div class="job-createdat">{{ getRelativeDate(job.created_at) }}</div>
 
               <a [routerLink]="['/jobdetails', job.job_id]">
                 <button class="btn-apply w-100 mt-3">APPLY</button>

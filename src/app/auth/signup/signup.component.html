@@ -89,7 +89,7 @@
         <label class="form-check-label" for="terms">
           <input type="checkbox" id="terms" name="terms" [(ngModel)]="termsAccepted" #terms="ngModel"
             [class.is-invalid]="terms.invalid && terms.dirty" required class="form-check-input" />
-          By hitting the Register button, you agree to the <a href="#"
+          By hitting the Register button, you agree to the <a href="/terms-of-service" target="_blank"
             style="color: #31795a; text-decoration: none;">Terms conditions & Privacy Policy</a>
         </label>
         <div *ngIf="terms.invalid && terms.dirty" class="invalid-feedback d-block">
