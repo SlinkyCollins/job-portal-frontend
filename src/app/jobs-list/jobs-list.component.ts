@@ -6,6 +6,8 @@ import { NavbarComponent } from "../components/sections/navbar/navbar.component"
 import { FooterComponent } from "../components/sections/footer/footer.component"
 import { FormsModule } from "@angular/forms"
 import { AuthService } from "../core/services/auth.service"
+import { HttpClient, HttpParams } from "@angular/common/http"
+import { ApiServiceService } from "../core/services/api-service.service"
 
 interface Job {
   id: number
@@ -39,6 +41,20 @@ export class JobsListComponent implements OnInit {
   Math = Math // Added to expose Math to the template
   jobs: any[] = []
   loading = true
+  isSearching = false
+  allCategories: any[] = [];
+
+  searchLocation: string = '';
+  searchCategory: number | null = null;
+  searchKeyword: string = '';
+
+  isSelectOpen1 = false;
+
+  toggleSelectOpen1() {
+    this.isSelectOpen1 = !this.isSelectOpen1;
+  }
+
+
   expandedSections = {
     location: true,
     jobType: true,
@@ -56,7 +72,9 @@ export class JobsListComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
+    public apiService: ApiServiceService,
     public router: Router,
+    public http: HttpClient,
   ) { }
 
   // jobs: Job[] = [
@@ -172,8 +190,6 @@ export class JobsListComponent implements OnInit {
   currentPage = 1
   itemsPerPage = 8
   totalPages = 1
-  searchLocation = "Spain, Barcelona"
-  searchCategory = "Developer"
 
   filterOptions: FilterOptions = {
     jobTypes: [
@@ -191,42 +207,14 @@ export class JobsListComponent implements OnInit {
     ],
     salaryRange: {
       min: 0,
-      max: 3500,
-      current: { min: 0, max: 3500 },
+      max: 50000,
+      current: { min: 0, max: 100000 },
     },
     categories: ["Developer", "Design", "Marketing", "Data Science"],
     tags: ["Java", "C++", "JavaScript", "Python", "React", "Angular"],
   }
 
   locations = ["Spain, Barcelona", "USA, New York", "UK, London", "Germany, Berlin", "France, Paris"]
-
-  allCategories = [
-    { name: "Developer", count: 6, selected: false },
-    { name: "Coder", count: 2, selected: false },
-    { name: "Finance", count: 6, selected: false },
-    { name: "Accounting", count: 4, selected: false },
-    { name: "Design", count: 2, selected: false },
-    { name: "Artist", count: 2, selected: false },
-    { name: "Application", count: 2, selected: false },
-    { name: "Marketing", count: 4, selected: false },
-    { name: "Business", count: 2, selected: false },
-    { name: "Web", count: 2, selected: false },
-    { name: "Data", count: 2, selected: false },
-    { name: "Scientist", count: 2, selected: false },
-    { name: "Designer", count: 4, selected: false },
-    { name: "UX/UI", count: 2, selected: false },
-    { name: "Manager", count: 2, selected: false },
-    { name: "Engineer", count: 2, selected: false },
-    { name: "Writer", count: 2, selected: false },
-    { name: "Content", count: 2, selected: false },
-    { name: "Graphic", count: 2, selected: false },
-    { name: "Management", count: 2, selected: false },
-    { name: "Product", count: 2, selected: false },
-    { name: "Software", count: 2, selected: false },
-    { name: "Engineering", count: 2, selected: false },
-    { name: "Illustration", count: 2, selected: false },
-    { name: "Frontend", count: 2, selected: false },
-  ]
 
   allTags = [
     { name: "java", selected: false },
@@ -255,22 +243,46 @@ export class JobsListComponent implements OnInit {
   ]
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem("role")
-    this.applyFilters()
-    this.authService.getAllJobs().subscribe({
-      next: (response: any) => {
-        if (response.status) {
-          this.jobs = response.jobs
-        } else {
-          console.warn("No jobs found")
+    this.userRole = localStorage.getItem("role");
+    this.applyFilters();
+    this.fetchJobs(); // load all jobs on page load
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.http.get<{ status: boolean, categories: any[] }>(`${this.apiService.apiUrl}/get_categories.php`)
+      .subscribe(res => {
+        if (res.status) {
+          this.allCategories = res.categories;
         }
-        this.loading = false
-      },
-      error: (err) => {
-        console.error("Error fetching jobs:", err)
-        this.loading = false
-      },
-    })
+      });
+  }
+
+  fetchJobs(params: any = {}): void {
+    this.loading = true;
+
+    this.http.get<any>(`${this.apiService.apiUrl}/jobs.php`, { params })
+      .subscribe({
+        next: (res) => {
+          this.jobs = res.jobs || [];
+          this.loading = false;
+          this.isSearching = false;
+        },
+        error: (err) => {
+          console.error("Error fetching jobs:", err)
+          this.loading = false;
+          this.isSearching = false;
+        }
+      });
+  }
+
+  onSearch(): void {
+    this.isSearching = true;
+    this.fetchJobs({
+      category: this.searchCategory,
+      location: this.searchLocation,
+      keyword: this.searchKeyword
+    });
   }
 
   onToggleSaveJob(job: any) {

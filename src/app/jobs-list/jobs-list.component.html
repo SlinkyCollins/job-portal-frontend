@@ -16,32 +16,38 @@
             We delivered blazing fast & striking work solution
           </p>
           <!-- Search Form -->
-          <div class="search-form">
-            <div class="row g-md-2">
-              <div class="col-md-4">
-                <label for="location" class="search-label">Where are you looking for?</label>
-                <select class="form-select search-input" [(ngModel)]="searchLocation">
-                  <option>Spain, Barcelona</option>
-                  <option>USA, New York</option>
-                  <option>UK, London</option>
-                  <option>Germany, Berlin</option>
-                </select>
-              </div>
-              <hr class="text-black d-xs-block d-none">
-              <div class="col-md-4">
-                <label for="category" class="search-label">Category</label>
-                <select class="form-select search-input" [(ngModel)]="searchCategory">
-                  <option>Developer</option>
-                  <option>Design</option>
-                  <option>Marketing</option>
-                  <option>Data Science</option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <button class="btn btn-search w-100">SEARCH</button>
-              </div>
+          <div class="heroSearch d-flex flex-column flex-md-row gap-md-3">
+            <div class="flex-fill customSelectWrapper" [class.open]="isSelectOpen1" (click)="toggleSelectOpen1()">
+              <label for="job_category" class="form-label">Job Categories</label>
+              <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false" [(ngModel)]="searchCategory">
+                <option value=null disabled selected>Select an option</option>
+                <option *ngFor="let cat of allCategories" [value]="cat.id">
+                  {{ cat.name }}
+                </option>
+              </select>
+              <span class="customArrow"></span>
+            </div>
+            <hr />
+            <div class="flex-fill customSelectWrapper">
+              <label for="location" class="form-label">Location</label>
+              <input id="location" type="text" class="form-control search-input" [(ngModel)]="searchLocation"
+                placeholder="e.g. Lagos, Remote" />
+            </div>
+            <hr />
+            <div class="flex-fill">
+              <label for="searchBox" class="form-label">Keywords or Title</label>
+              <input type="text" class="form-control search-input" [(ngModel)]="searchKeyword" placeholder="e.g. Design, branding" id="searchBox" />
+            </div>
+            <hr />
+            <div class="d-flex align-items-end">
+              <button class="searchBtn" (click)="onSearch()" [disabled]="isSearching">
+                <div class="spinner-border spinner-border-sm me-2" *ngIf="isSearching"></div>
+                <span *ngIf="isSearching">Searching...</span>
+                <span *ngIf="!isSearching">SEARCH</span>
+              </button>
             </div>
           </div>
+
         </div>
       </div>
     </div>

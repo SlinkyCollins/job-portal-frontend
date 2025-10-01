@@ -67,7 +67,7 @@
                 </div>
                 <h3>Job Description</h3>
               </header>
-              <div class="section-content">
+              <div class="section-content" *ngIf="job.description; else noDescription">
                 <div class="description-content" [class.expanded]="showFullDescription">
                   <p>{{ job.description }}</p>
                 </div>
@@ -78,6 +78,10 @@
                   {{ showFullDescription ? 'Show Less' : 'Show More' }}
                 </button>
               </div>
+
+              <ng-template #noDescription>
+                <p>No description available for this job.</p>
+              </ng-template>
             </section>
 
             <!-- Responsibilities Section -->
@@ -204,7 +208,7 @@
                     <i class="fas fa-building"></i>
                   </div>
                   <div class="company-details">
-                    <h5>{{ job.company_name || 'Company Name' }}</h5>
+                    <h5>{{ job.name || 'Company Name' }}</h5>
                     <p>Leading technology company</p>
                     <a href="#" class="company-website">Visit Website</a>
                   </div>
