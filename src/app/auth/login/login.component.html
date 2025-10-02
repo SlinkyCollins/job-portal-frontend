@@ -10,10 +10,10 @@
       <input id="mail" type="email" placeholder="Email" name="mail" autocomplete="username" [(ngModel)]="email"
         #mail="ngModel" class="form-control" required [class.is-valid]="mail.valid && mail.dirty"
         [class.is-invalid]="mail.invalid && mail.dirty" />
-      </div>
-      <div *ngIf="mail.invalid && mail.dirty" class="invalid-feedback d-block">
-        <span *ngIf="mail.hasError('required')">This field is required</span>
-      </div>
+    </div>
+    <div *ngIf="mail.invalid && mail.dirty" class="invalid-feedback d-block">
+      <span *ngIf="mail.hasError('required')">This field is required</span>
+    </div>
 
     <div class="form-group" style="position: relative;">
       <label for="pword" class="form-label">Password</label>
@@ -33,7 +33,7 @@
 
     <div class="form-group d-flex justify-content-between align-items-center mb-2">
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="rememberMe" />
+        <input type="checkbox" name="remember" [(ngModel)]="isRememberMe" #remember="ngModel" class="form-check-input" id="rememberMe" />
         <label class="form-check-label" for="rememberMe">Remember Me</label>
       </div>
       <div>

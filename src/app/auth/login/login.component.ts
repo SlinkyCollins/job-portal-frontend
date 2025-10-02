@@ -27,9 +27,11 @@ export class LoginComponent {
     ) { }
 
   public password: string = '';
-  public email: string = '';
+  public email: string = localStorage.getItem('user') || '';
   public showPassword: boolean = false;
   public loading: boolean = false;
+  public isRememberMe: boolean = false;
+
 
   clearPassword() {
     this.password = '';
@@ -53,6 +55,11 @@ export class LoginComponent {
           const role = response.user.role;
           localStorage.setItem('token', response.token);
           localStorage.setItem('role', response.user.role);
+          if (this.isRememberMe) {
+            localStorage.setItem('user', response.user.email);
+          } else {
+            localStorage.removeItem('user');
+          }
           this.toastr.success('Login successful');
           const routes: { [key: string]: string } = {
             admin: 'dashboard/admin',

@@ -61,26 +61,6 @@
         <div class="filter-sidebar">
           <h5 class="filter-title">Filter By</h5>
 
-          <!-- Location Filter -->
-          <div class="filter-section">
-            <div class="filter-header" (click)="toggleSection('location')">
-              <h6>Location</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.location">
-                <i class="fas fa-minus" *ngIf="expandedSections?.location"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.location"></i>
-              </span>
-            </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.location">
-              <div class="location-select">
-                <select class="form-select location-dropdown" [(ngModel)]="selectedLocation">
-                  <option *ngFor="let location of locations" [value]="location">
-                    {{ location }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-
           <!-- Job Type Filter -->
           <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('jobType')">
@@ -357,26 +337,6 @@
         </div>
         <div class="modal-body">
           <!-- Same filter content as sidebar -->
-          <!-- Location Type Filter -->
-          <div class="filter-section">
-            <div class="filter-header" (click)="toggleSection('location')">
-              <h6>Location</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.location">
-                <i class="fas fa-minus" *ngIf="expandedSections?.location"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.location"></i>
-              </span>
-            </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.location">
-              <div class="location-select">
-                <select class="form-select location-dropdown" [(ngModel)]="selectedLocation">
-                  <option *ngFor="let location of locations" [value]="location">
-                    {{ location }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-
           <!-- Job Type Filter -->
           <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('jobType')">
