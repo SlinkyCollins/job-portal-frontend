@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    console.log('Firebase Auth:', this.auth);
+    // console.log('Firebase Auth:', this.auth);
   }
 
   title = 'JobPortal';

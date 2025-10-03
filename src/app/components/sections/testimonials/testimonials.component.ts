@@ -36,7 +36,7 @@ export class TestimonialsComponent implements AfterViewInit {
       console.log('✅ Autoplay started manually');
     }
 
-    console.log('Swiper autoplay:', swiper.autoplay);
+    // console.log('Swiper autoplay:', swiper.autoplay);
 
   }
 
