@@ -79,7 +79,12 @@ export class AuthService {
   signInWithGoogle(): Observable<UserCredential> {
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new GoogleAuthProvider()))).pipe(
       catchError(err => {
-        this.toastr.error(err.code === 'auth/popup-closed-by-user' ? 'Popup closed. Try again.' : 'Google login failed');
+        if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+          this.toastr.error('Login cancelled. Try again.');
+        } else {
+          this.toastr.error('Google login failed');
+          console.warn('Google login error:', err);
+        }
         throw err;
       })
     );
@@ -89,12 +94,13 @@ export class AuthService {
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {
         if (err.code === 'auth/account-exists-with-different-credential') {
-          this.toastr.error('Account exists with different provider. Try another login method or link accounts.');
-          console.error('Facebook login error:', err);
-        } else if (err.code === 'auth/popup-closed-by-user') {
-          this.toastr.error('Popup closed. Try again.');
+          this.toastr.error('Account exists with different provider. Try another login method.');
+          console.warn('Facebook login error:', err);
+        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+          this.toastr.error('Login cancelled. Try again.');
         } else {
           this.toastr.error('Facebook login failed');
+          console.warn('Facebook login error:', err);
         }
         throw err;
       })
@@ -122,7 +128,7 @@ export class AuthService {
             }
           },
           error: (err) => {
-            console.error('Backend error:', err); // Debug
+            console.warn('Backend error:', err); // Debug
             this.toastr.error('Login failed: ' + (err.message || 'Unknown error'));
           }
         });
