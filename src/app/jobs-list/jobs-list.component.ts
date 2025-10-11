@@ -190,25 +190,39 @@ export class JobsListComponent implements OnInit {
   }
 
   applyFilters() {
-    const selectedJobTypes = this.jobTypes
-      .filter(j => j.selected)
-      .map(j => j.value);
-    const selectedExperiences = this.experienceLevels
-      .filter(e => e.selected)
-      .map(e => e.value);
+    const selectedJobTypes = this.jobTypes.filter(j => j.selected);
+    const selectedExperiences = this.experienceLevels.filter(e => e.selected);
 
-    // Build params to send to backend
     const params: any = {
       category: this.searchCategory,
-      location: this.searchLocation,
-      keyword: this.searchKeyword,
+      location: this.searchLocation.trim(),
+      keyword: this.searchKeyword.trim(),
     };
 
-    if (selectedJobTypes.length > 0) params['employment_type[]'] = selectedJobTypes;
-    if (selectedExperiences.length > 0) params['experience_level[]'] = selectedExperiences;
+    if (selectedJobTypes.length > 0) {
+      params['employment_type[]'] = selectedJobTypes.map(j => j.value);
+    }
+
+    if (selectedExperiences.length > 0) {
+      params['experience_level[]'] = selectedExperiences.map(e => e.value);
+    }
 
     this.fetchJobs(params);
+
+    this.activeFilters = [];
+
+    selectedJobTypes.forEach(j => this.activeFilters.push(j.label));
+    selectedExperiences.forEach(e => this.activeFilters.push(e.label));
+
+    if (this.searchCategory) {
+      const category = this.allCategories.find(cat => cat.id === this.searchCategory);
+      if (category) this.activeFilters.push(category.name);
+    }
+
+    if (this.searchLocation.trim()) this.activeFilters.push(this.searchLocation.trim());
+    if (this.searchKeyword.trim()) this.activeFilters.push(this.searchKeyword.trim());
   }
+
 
   toggleJobType(type: any) {
     type.selected = !type.selected;
@@ -224,8 +238,6 @@ export class JobsListComponent implements OnInit {
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
     this.searchCategory = null;
-    this.searchLocation = '';
-    this.searchKeyword = '';
     this.fetchJobs(); // reset all
   }
 
@@ -236,20 +248,6 @@ export class JobsListComponent implements OnInit {
   toggleSection(section: string): void {
     this.expandedSections[section as keyof typeof this.expandedSections] =
       !this.expandedSections[section as keyof typeof this.expandedSections];
-  }
-
-  updateActiveFilters(): void {
-    this.activeFilters = [];
-
-    // Add selected job types
-    this.jobTypes
-      .filter((jt) => jt.selected)
-      .forEach((jt) => this.activeFilters.push(jt.label));
-
-    // Add selected experiences
-    this.experienceLevels
-      .filter((exp) => exp.selected)
-      .forEach((exp) => this.activeFilters.push(exp.label));
   }
 
   removeFilter(filter: string): void {
@@ -279,17 +277,6 @@ export class JobsListComponent implements OnInit {
         return;
       }
     }
-    if (this.searchLocation === filter) {
-      this.searchLocation = '';
-      this.applyFilters();
-      return;
-    }
-    if (this.searchKeyword === filter) {
-      this.searchKeyword = '';
-      this.applyFilters();
-      return;
-    }
-    this.updateActiveFilters();
   }
 
   getJobTypeClass(jobType: string): string {
