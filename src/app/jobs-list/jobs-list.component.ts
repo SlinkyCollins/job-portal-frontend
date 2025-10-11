@@ -238,6 +238,8 @@ export class JobsListComponent implements OnInit {
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
     this.searchCategory = null;
+    // clear all active filters
+    this.activeFilters.slice().forEach(filter => this.removeFilter(filter));
     this.fetchJobs(); // reset all
   }
 
