@@ -223,15 +223,12 @@ export class JobsListComponent implements OnInit {
     if (this.searchKeyword.trim()) this.activeFilters.push(this.searchKeyword.trim());
   }
 
-
   toggleJobType(type: any) {
     type.selected = !type.selected;
-    this.applyFilters();
   }
 
   toggleExperience(exp: any) {
     exp.selected = !exp.selected;
-    this.applyFilters();
   }
 
   resetFilters() {

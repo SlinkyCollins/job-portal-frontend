@@ -555,9 +555,38 @@ hr {
   box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.3);
 }
 
+.apply-filter-btn {
+  background: #48bb78;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 1rem;
+}
+
+.apply-filter-btn:hover {
+  background: #31795a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(49, 121, 90, 0.3);
+}
+
+.apply-filter-btn:active {
+  transform: translateY(0);
+}
+
+.apply-filter-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(49, 121, 90, 0.3);
+}
+
 /* Reset Filter Button */
 .btn-reset {
-  background: #48bb78;
+  background: #7c7c7c;
   color: white;
   border: none;
   border-radius: 8px;
@@ -573,7 +602,7 @@ hr {
 }
 
 .btn-reset:hover {
-  background: #38a169;
+  background: #5a5a5a;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
 }
