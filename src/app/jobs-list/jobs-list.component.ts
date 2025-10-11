@@ -9,38 +9,6 @@ import { AuthService } from '../core/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from '../core/services/api-service.service';
 
-interface Job {
-  job_id: number;
-  title: string;
-  salary_amount: number;
-  currency: string;
-  salary_duration: string;
-  created_at: string;
-  isSaved: boolean;
-  company_id: number;
-  company: string;
-  logo: string;
-  jobType: 'Fulltime' | 'Part time' | 'Contract' | 'Remote' | 'Fixed-Price' | 'Freelance';
-  salary: number;
-  salaryPeriod: 'Monthly' | 'Weekly' | 'Hourly';
-  location: string;
-  experience: string;
-  category: string;
-  tags: string[];
-}
-
-interface FilterOptions {
-  jobTypes: { name: string; count: number; selected: boolean }[];
-  experiences: { name: string; count: number; selected: boolean }[];
-  salaryRange: {
-    min: number;
-    max: number;
-    current: { min: number; max: number };
-  };
-  categories: string[];
-  tags: string[];
-}
-
 @Component({
   selector: 'app-job-list',
   templateUrl: './jobs-list.component.html',
@@ -60,10 +28,12 @@ export class JobsListComponent implements OnInit {
   loading = true;
   isSearching = false;
   allCategories: any[] = [];
+  activeFilters: string[] = [];
   searchLocation: string = '';
   searchCategory: number | null = null;
   searchKeyword: string = '';
   isSelectOpen1 = false;
+  isSaving = false;
   expandedSections = {
     location: true,
     jobType: true,
@@ -72,88 +42,44 @@ export class JobsListComponent implements OnInit {
     category: false,
     tags: false,
   };
-  toggleSelectOpen1() {
-    this.isSelectOpen1 = !this.isSelectOpen1;
-  }
-  selectedPeriod = 'weekly'; // Default to weekly as shown in screenshot
-  showMoreCategories = false;
-  showMoreTags = false;
-  isSaving = false;
   userRole: string | null = null;
+  showFilterModal: boolean = false;
+
+  jobTypes = [
+    { label: 'Full Time', value: 'fulltime', selected: false },
+    { label: 'Part Time', value: 'parttime', selected: false },
+    { label: 'Contract', value: 'contract', selected: false },
+    { label: 'Internship', value: 'internship', selected: false },
+    { label: 'Freelance', value: 'freelance', selected: false },
+    { label: 'Fixed Price', value: 'fixedprice', selected: false },
+    { label: 'Remote', value: 'remote', selected: false }
+  ];
+
+  experienceLevels = [
+    { label: 'Fresher', value: 'Fresher', selected: false },
+    { label: 'Junior', value: 'Junior', selected: false },
+    { label: 'Intermediate', value: 'Mid', selected: false },
+    { label: 'Senior', value: 'Senior', selected: false },
+    { label: 'No Experience', value: 'No-Experience', selected: false },
+    { label: 'Internship', value: 'Internship', selected: false },
+    { label: 'Expert', value: 'Expert', selected: false }
+  ];
 
   constructor(
     public authService: AuthService,
     public apiService: ApiServiceService,
     public router: Router,
     public http: HttpClient
-  ) {}
-
-  filteredJobs: Job[] = [];
-  activeFilters: string[] = [];
-  showFilterModal = false;
-  currentPage = 1;
-  itemsPerPage = 8;
-  totalPages = 1;
-
-  filterOptions: FilterOptions = {
-    jobTypes: [
-      { name: 'Fulltime', count: 12, selected: false },
-      { name: 'Part time', count: 8, selected: false },
-      { name: 'Fixed-Price', count: 4, selected: false },
-      { name: 'Freelance', count: 4, selected: false },
-      { name: 'Contract', count: 5, selected: false },
-      { name: 'Internship', count: 7, selected: false },
-      { name: 'Remote', count: 4, selected: false },
-    ],
-    experiences: [
-      { name: 'Fresher', count: 6, selected: false },
-      { name: 'Junior', count: 6, selected: false },
-      { name: 'Intermediate', count: 4, selected: false },
-      { name: 'Senior', count: 6, selected: false },
-      { name: 'No-Experience', count: 6, selected: false },
-      { name: 'Internship', count: 6, selected: false },
-      { name: 'Expert', count: 6, selected: false },
-    ],
-    salaryRange: {
-      min: 0,
-      max: 50000,
-      current: { min: 0, max: 100000 },
-    },
-    categories: ['Developer', 'Design', 'Marketing', 'Data Science'],
-    tags: ['Java', 'C++', 'JavaScript', 'Python', 'React', 'Angular'],
-  };
-
-  allTags = [
-    { name: 'java', selected: false },
-    { name: 'developer', selected: false },
-    { name: 'finance', selected: false },
-    { name: 'accounting', selected: false },
-    { name: 'design', selected: false },
-    { name: 'seo', selected: false },
-    { name: 'javascript', selected: false },
-    { name: 'designer', selected: false },
-    { name: 'web', selected: false },
-    { name: 'frontend', selected: false },
-    { name: 'data', selected: false },
-    { name: 'analytics', selected: false },
-    { name: 'ui', selected: false },
-    { name: 'ux', selected: false },
-    { name: 'marketing', selected: false },
-    { name: 'management', selected: false },
-    { name: 'software', selected: false },
-    { name: 'engineering', selected: false },
-    { name: 'writing', selected: false },
-    { name: 'blogging', selected: false },
-    { name: 'graphic', selected: false },
-    { name: 'illustration', selected: false },
-    { name: 'product', selected: false },
-  ];
+  ) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.applyFilters();
     this.fetchJobs(); // load all jobs on page load
     this.loadCategories();
+  }
+
+  toggleSelectOpen1() {
+    this.isSelectOpen1 = !this.isSelectOpen1;
   }
 
   loadCategories() {
@@ -191,8 +117,8 @@ export class JobsListComponent implements OnInit {
     this.isSearching = true;
     this.fetchJobs({
       category: this.searchCategory,
-      location: this.searchLocation,
-      keyword: this.searchKeyword,
+      location: this.searchLocation.trim(),
+      keyword: this.searchKeyword.trim(),
     });
   }
 
@@ -258,160 +184,53 @@ export class JobsListComponent implements OnInit {
     this.showFilterModal = !this.showFilterModal;
   }
 
-  toggleJobTypeFilter(jobType: string): void {
-    const filter = this.filterOptions.jobTypes.find(
-      (jt) => jt.name === jobType
-    );
-    if (filter) {
-      filter.selected = !filter.selected;
-      this.updateActiveFilters();
-      this.applyFilters();
-    }
-  }
-
-  toggleExperienceFilter(experience: string): void {
-    const filter = this.filterOptions.experiences.find(
-      (exp) => exp.name === experience
-    );
-    if (filter) {
-      filter.selected = !filter.selected;
-      this.updateActiveFilters();
-      this.applyFilters();
-    }
-  }
-
-  toggleCategory(category: any): void {
-    category.selected = !category.selected;
-    this.updateActiveFilters();
+  toggleAndApplyFiltersModal(): void {
+    this.showFilterModal = !this.showFilterModal;
     this.applyFilters();
   }
 
-  toggleTag(tag: any): void {
-    tag.selected = !tag.selected;
-    this.updateActiveFilters();
-    this.applyFilters();
-  }
+  applyFilters() {
+    const selectedJobTypes = this.jobTypes
+      .filter(j => j.selected)
+      .map(j => j.value);
+    const selectedExperiences = this.experienceLevels
+      .filter(e => e.selected)
+      .map(e => e.value);
 
-  toggleShowMoreCategories(): void {
-    this.showMoreCategories = !this.showMoreCategories;
-  }
-
-  toggleShowMoreTags(): void {
-    this.showMoreTags = !this.showMoreTags;
-  }
-
-  updateActiveFilters(): void {
-    this.activeFilters = [];
-
-    // Add selected job types
-    this.filterOptions.jobTypes
-      .filter((jt) => jt.selected)
-      .forEach((jt) => this.activeFilters.push(jt.name));
-
-    // Add selected experiences
-    this.filterOptions.experiences
-      .filter((exp) => exp.selected)
-      .forEach((exp) => this.activeFilters.push(exp.name));
-
-    // Add selected categories
-    this.allCategories
-      .filter((cat) => cat.selected)
-      .forEach((cat) => this.activeFilters.push(cat.name));
-
-    // Add selected tags
-    this.allTags
-      .filter((tag) => tag.selected)
-      .forEach((tag) => this.activeFilters.push(tag.name));
-  }
-
-  resetFilters(): void {
-    this.filterOptions.jobTypes.forEach((jt) => (jt.selected = false));
-    this.filterOptions.experiences.forEach((exp) => (exp.selected = false));
-    this.allCategories.forEach((cat) => (cat.selected = false));
-    this.allTags.forEach((tag) => (tag.selected = false));
-    this.filterOptions.salaryRange.current = {
-      ...this.filterOptions.salaryRange,
+    // Build params to send to backend
+    const params: any = {
+      category: this.searchCategory,
+      location: this.searchLocation,
+      keyword: this.searchKeyword,
     };
-    this.activeFilters = [];
+
+    if (selectedJobTypes.length > 0) params['employment_type[]'] = selectedJobTypes;
+    if (selectedExperiences.length > 0) params['experience_level[]'] = selectedExperiences;
+
+    this.fetchJobs(params);
+  }
+
+  toggleJobType(type: any) {
+    type.selected = !type.selected;
     this.applyFilters();
   }
 
-  applyFilters(): void {
-    let filtered = [...this.jobs];
-
-    // Apply job type filters
-    const selectedJobTypes = this.filterOptions.jobTypes
-      .filter((jt) => jt.selected)
-      .map((jt) => jt.name);
-
-    if (selectedJobTypes.length > 0) {
-      filtered = filtered.filter((job) =>
-        selectedJobTypes.includes(job.jobType)
-      );
-    }
-
-    // Apply experience filters
-    const selectedExperiences = this.filterOptions.experiences
-      .filter((exp) => exp.selected)
-      .map((exp) => exp.name);
-
-    if (selectedExperiences.length > 0) {
-      filtered = filtered.filter((job) =>
-        selectedExperiences.includes(job.experience)
-      );
-    }
-
-    // Apply category filters
-    const selectedCategories = this.allCategories
-      .filter((cat) => cat.selected)
-      .map((cat) => cat.name);
-
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter((job) =>
-        selectedCategories.includes(job.category)
-      );
-    }
-
-    // Apply tag filters
-    const selectedTags = this.allTags
-      .filter((tag) => tag.selected)
-      .map((tag) => tag.name);
-
-    if (selectedTags.length > 0) {
-      filtered = filtered.filter((job) =>
-        selectedTags.some((tag) => job.tags.includes(tag))
-      );
-    }
-
-    this.filteredJobs = filtered;
-    this.totalPages = Math.ceil(this.filteredJobs.length / this.itemsPerPage);
-    this.currentPage = 1;
+  toggleExperience(exp: any) {
+    exp.selected = !exp.selected;
+    this.applyFilters();
   }
 
-  getPaginatedJobs(): Job[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredJobs.slice(startIndex, endIndex);
+  resetFilters() {
+    this.jobTypes.forEach(t => t.selected = false);
+    this.experienceLevels.forEach(e => e.selected = false);
+    this.searchCategory = null;
+    this.searchLocation = '';
+    this.searchKeyword = '';
+    this.fetchJobs(); // reset all
   }
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  getJobTypeClass(jobType: string): string {
-    const classes: { [key: string]: string } = {
-      Fulltime: 'badge-fulltime',
-      'Part time': 'badge-parttime',
-      'Fixed-Price': 'badge-fixed',
-      Freelance: 'badge-freelance',
-    };
-    return classes[jobType] || 'badge-default';
-  }
-
-  getPaginationArray(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  closeFilterModal() {
+    this.showFilterModal = false;
   }
 
   toggleSection(section: string): void {
@@ -419,24 +238,78 @@ export class JobsListComponent implements OnInit {
       !this.expandedSections[section as keyof typeof this.expandedSections];
   }
 
-  selectPeriod(period: string): void {
-    this.selectedPeriod = period;
-    // Add logic to handle period change if needed
+  updateActiveFilters(): void {
+    this.activeFilters = [];
+
+    // Add selected job types
+    this.jobTypes
+      .filter((jt) => jt.selected)
+      .forEach((jt) => this.activeFilters.push(jt.label));
+
+    // Add selected experiences
+    this.experienceLevels
+      .filter((exp) => exp.selected)
+      .forEach((exp) => this.activeFilters.push(exp.label));
   }
 
-  getVisibleCategories() {
-    return this.showMoreCategories
-      ? this.allCategories
-      : this.allCategories.slice(0, 5);
-  }
-
-  getVisibleTags() {
-    return this.showMoreTags ? this.allTags : this.allTags.slice(0, 12);
-  }
-
-  removeFilter(activeFilters: any) {
+  removeFilter(filter: string): void {
     this.activeFilters = this.activeFilters.filter(
-      (filter: any) => filter !== activeFilters
+      (f) => f !== filter
     );
+    // Check if the filter is a job type
+    const jobType = this.jobTypes.find((jt) => jt.label === filter);
+    if (jobType) {
+      jobType.selected = false;
+      this.applyFilters();
+      return;
+    }
+    // Check if the filter is an experience level
+    const experience = this.experienceLevels.find((exp) => exp.label === filter);
+    if (experience) {
+      experience.selected = false;
+      this.applyFilters();
+      return;
+    }
+    // If it's neither, it might be a category or other filter
+    if (this.searchCategory) {
+      const category = this.allCategories.find(cat => cat.id === this.searchCategory);
+      if (category && category.name === filter) {
+        this.searchCategory = null;
+        this.applyFilters();
+        return;
+      }
+    }
+    if (this.searchLocation === filter) {
+      this.searchLocation = '';
+      this.applyFilters();
+      return;
+    }
+    if (this.searchKeyword === filter) {
+      this.searchKeyword = '';
+      this.applyFilters();
+      return;
+    }
+    this.updateActiveFilters();
+  }
+
+  getJobTypeClass(jobType: string): string {
+    switch (jobType.toLowerCase()) {
+      case 'fulltime':
+        return 'full-time';
+      case 'parttime':
+        return 'part-time';
+      case 'contract':
+        return 'contract';
+      case 'internship':
+        return 'internship';
+      case 'freelance':
+        return 'freelance';
+      case 'fixedprice':
+        return 'fixed-price';
+      case 'remote':
+        return 'remote';
+      default:
+        return '';
+    }
   }
 }

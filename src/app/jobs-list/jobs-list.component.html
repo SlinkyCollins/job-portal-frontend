@@ -19,7 +19,8 @@
           <div class="heroSearch d-flex flex-column flex-md-row gap-md-3">
             <div class="flex-fill customSelectWrapper" [class.open]="isSelectOpen1" (click)="toggleSelectOpen1()">
               <label for="job_category" class="form-label">Job Categories</label>
-              <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false" [(ngModel)]="searchCategory">
+              <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false"
+                [(ngModel)]="searchCategory">
                 <option value=null disabled selected>Select an option</option>
                 <option *ngFor="let cat of allCategories" [value]="cat.id">
                   {{ cat.name }}
@@ -36,7 +37,8 @@
             <hr />
             <div class="flex-fill">
               <label for="searchBox" class="form-label">Keywords or Title</label>
-              <input type="text" class="form-control search-input" [(ngModel)]="searchKeyword" placeholder="e.g. Design, branding" id="searchBox" />
+              <input type="text" class="form-control search-input" [(ngModel)]="searchKeyword"
+                placeholder="e.g. Design, branding" id="searchBox" />
             </div>
             <hr />
             <div class="d-flex align-items-end">
@@ -72,15 +74,15 @@
             </div>
             <div class="filter-content" [class.expanded]="expandedSections?.jobType">
               <div class="filter-options">
-                <div *ngFor="let jobType of filterOptions.jobTypes" class="filter-option">
+                <div *ngFor="let jobType of jobTypes" class="filter-option">
                   <div class="checkbox-wrapper">
-                    <input type="checkbox" [id]="'jobType-' + jobType.name" class="filter-checkbox"
-                      [checked]="jobType.selected" (change)="toggleJobTypeFilter(jobType.name)" />
-                    <label [for]="'jobType-' + jobType.name" class="checkbox-label">
-                      {{ jobType.name }}
+                    <input type="checkbox" [id]="'jobType-' + jobType.label" class="filter-checkbox"
+                      [checked]="jobType.selected" (change)="toggleJobType(jobType)" />
+                    <label [for]="'jobType-' + jobType.label" class="checkbox-label">
+                      {{ jobType.label }}
                     </label>
                   </div>
-                  <span class="option-count">{{ jobType.count }}</span>
+                  <!-- <span class="option-count">{{ jobType.count }}</span> -->
                 </div>
               </div>
             </div>
@@ -97,22 +99,22 @@
             </div>
             <div class="filter-content" [class.expanded]="expandedSections?.experience">
               <div class="filter-options">
-                <div *ngFor="let experience of filterOptions.experiences" class="filter-option">
+                <div *ngFor="let experience of experienceLevels" class="filter-option">
                   <div class="checkbox-wrapper">
-                    <input type="checkbox" [id]="'experience-' + experience.name" class="filter-checkbox"
-                      [checked]="experience.selected" (change)="toggleExperienceFilter(experience.name)" />
-                    <label [for]="'experience-' + experience.name" class="checkbox-label">
-                      {{ experience.name }}
+                    <input type="checkbox" [id]="'experience-' + experience.label" class="filter-checkbox"
+                      [checked]="experience.selected" (change)="toggleExperience(experience)" />
+                    <label [for]="'experience-' + experience.label" class="checkbox-label">
+                      {{ experience.label }}
                     </label>
                   </div>
-                  <span class="option-count">{{ experience.count }}</span>
+                  <!-- <span class="option-count">{{ experience.count }}</span> -->
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Salary Filter -->
-          <div class="filter-section">
+          <!-- <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('salary')">
               <h6>Salary</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections?.salary">
@@ -149,10 +151,10 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Category Filter -->
-          <div class="filter-section">
+          <!-- <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('category')">
               <h6>Category</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections?.category">
@@ -179,10 +181,10 @@
                 {{ showMoreCategories ? 'Show Less' : 'Show More' }}
               </button>
             </div>
-          </div>
+          </div> -->
 
           <!-- Tags Filter -->
-          <div class="filter-section">
+          <!-- <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('tags')">
               <h6>Tags</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections?.tags">
@@ -202,7 +204,7 @@
                 {{ showMoreTags ? 'Show Less' : 'Show More' }}
               </button>
             </div>
-          </div>
+          </div> -->
 
           <button class="btn btn-reset w-100 mt-3" (click)="resetFilters()">
             Reset Filter
@@ -244,6 +246,7 @@
             <button type="button" class="btn-close btn-close-sm" (click)="removeFilter(filter)"></button>
           </span>
         </div>
+
 
         <!-- Job Cards -->
         <ng-container *ngIf="loading">
@@ -296,99 +299,70 @@
             </div>
           </div>
         </div>
-
-        <!-- Pagination -->
-        <nav class="pagination-nav mt-4" *ngIf="totalPages > 1">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="pagination-info">
-              <span class="text-muted">
-                Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
-                {{
-                Math.min(currentPage * itemsPerPage, filteredJobs.length)
-                }}
-                of {{ filteredJobs.length }}
-              </span>
-            </div>
-            <ul class="pagination mb-0">
-              <li class="page-item" [class.active]="currentPage === page" *ngFor="let page of getPaginationArray()">
-                <button class="page-link" (click)="goToPage(page)">
-                  {{ page }}
-                </button>
-              </li>
-              <li class="page-item">
-                <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages">
-                  Last <i class="fas fa-arrow-right ms-1"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
-        </nav>
       </div>
-    </div>
-  </div>
 
-  <!-- Mobile Filter Modal -->
-  <div class="modal" [class.show]="showFilterModal" [style.display]="showFilterModal ? 'block' : 'none'">
-    <div class="modal-dialog modal-fullscreen-sm-down">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Filter Jobs</h5>
-          <button type="button" class="btn-close" (click)="toggleFilterModal()"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Same filter content as sidebar -->
-          <!-- Job Type Filter -->
-          <div class="filter-section">
-            <div class="filter-header" (click)="toggleSection('jobType')">
-              <h6>Job Type</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.jobType">
-                <i class="fas fa-minus" *ngIf="expandedSections?.jobType"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.jobType"></i>
-              </span>
+      <!-- Mobile Filter Modal -->
+      <div class="modal" [class.show]="showFilterModal" [style.display]="showFilterModal ? 'block' : 'none'">
+        <div class="modal-dialog modal-fullscreen-sm-down">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Filter Jobs</h5>
+              <button type="button" class="btn-close" (click)="toggleFilterModal()"></button>
             </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.jobType">
-              <div class="filter-options">
-                <div *ngFor="let jobType of filterOptions.jobTypes" class="filter-option">
-                  <div class="checkbox-wrapper">
-                    <input type="checkbox" [id]="'jobType-' + jobType.name" class="filter-checkbox"
-                      [checked]="jobType.selected" (change)="toggleJobTypeFilter(jobType.name)" />
-                    <label [for]="'jobType-' + jobType.name" class="checkbox-label">
-                      {{ jobType.name }}
-                    </label>
+            <div class="modal-body">
+              <!-- Same filter content as sidebar -->
+              <!-- Job Type Filter -->
+              <div class="filter-section">
+                <div class="filter-header" (click)="toggleSection('jobType')">
+                  <h6>Job Type</h6>
+                  <span class="toggle-icon" [class.expanded]="expandedSections?.jobType">
+                    <i class="fas fa-minus" *ngIf="expandedSections?.jobType"></i>
+                    <i class="fas fa-plus" *ngIf="!expandedSections?.jobType"></i>
+                  </span>
+                </div>
+                <div class="filter-content" [class.expanded]="expandedSections?.jobType">
+                  <div class="filter-options">
+                    <div *ngFor="let jobType of jobTypes" class="filter-option">
+                      <div class="checkbox-wrapper">
+                        <input type="checkbox" [id]="'jobType-' + jobType.label" class="filter-checkbox"
+                          [checked]="jobType.selected" (change)="toggleJobType(jobType)" />
+                        <label [for]="'jobType-' + jobType.label" class="checkbox-label">
+                          {{ jobType.label }}
+                        </label>
+                      </div>
+                      <!-- <span class="option-count">{{ jobType.count }}</span> -->
+                    </div>
                   </div>
-                  <span class="option-count">{{ jobType.count }}</span>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Experience Filter -->
-          <div class="filter-section">
-            <div class="filter-header" (click)="toggleSection('experience')">
-              <h6>Experience</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.experience">
-                <i class="fas fa-minus" *ngIf="expandedSections?.experience"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.experience"></i>
-              </span>
-            </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.experience">
-              <div class="filter-options">
-                <div *ngFor="let experience of filterOptions.experiences" class="filter-option">
-                  <div class="checkbox-wrapper">
-                    <input type="checkbox" [id]="'experience-' + experience.name" class="filter-checkbox"
-                      [checked]="experience.selected" (change)="toggleExperienceFilter(experience.name)" />
-                    <label [for]="'experience-' + experience.name" class="checkbox-label">
-                      {{ experience.name }}
-                    </label>
+              <!-- Experience Filter -->
+              <div class="filter-section">
+                <div class="filter-header" (click)="toggleSection('experience')">
+                  <h6>Experience</h6>
+                  <span class="toggle-icon" [class.expanded]="expandedSections?.experience">
+                    <i class="fas fa-minus" *ngIf="expandedSections?.experience"></i>
+                    <i class="fas fa-plus" *ngIf="!expandedSections?.experience"></i>
+                  </span>
+                </div>
+                <div class="filter-content" [class.expanded]="expandedSections?.experience">
+                  <div class="filter-options">
+                    <div *ngFor="let experience of experienceLevels" class="filter-option">
+                      <div class="checkbox-wrapper">
+                        <input type="checkbox" [id]="'experience-' + experience.label" class="filter-checkbox"
+                          [checked]="experience.selected" (change)="toggleExperience(experience)" />
+                        <label [for]="'experience-' + experience.label" class="checkbox-label">
+                          {{ experience.label }}
+                        </label>
+                      </div>
+                      <!-- <span class="option-count">{{ experience.count }}</span> -->
+                    </div>
                   </div>
-                  <span class="option-count">{{ experience.count }}</span>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Salary Filter -->
-          <div class="filter-section">
+              <!-- Salary Filter -->
+              <!-- <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('salary')">
               <h6>Salary</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections?.salary">
@@ -425,10 +399,10 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Category Filter -->
-          <div class="filter-section">
+              <!-- Category Filter -->
+              <!-- <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('category')">
               <h6>Category</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections?.category">
@@ -455,10 +429,10 @@
                 {{ showMoreCategories ? 'Show Less' : 'Show More' }}
               </button>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Tags Filter -->
-          <div class="filter-section">
+              <!-- Tags Filter -->
+              <!-- <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('tags')">
               <h6>Tags</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections?.tags">
@@ -478,19 +452,19 @@
                 {{ showMoreTags ? 'Show Less' : 'Show More' }}
               </button>
             </div>
-          </div>
+          </div> -->
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="resetFilters()">
-              Reset
-            </button>
-            <button type="button" class="btn btn-primary" (click)="toggleFilterModal()">
-              Apply Filters
-            </button>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="resetFilters()">
+                  Reset
+                </button>
+                <button type="button" class="btn btn-primary" (click)="toggleAndApplyFiltersModal()">
+                  Apply Filters
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <app-cta></app-cta>
-  <app-footer></app-footer>
+      <app-cta></app-cta>
+      <app-footer></app-footer>

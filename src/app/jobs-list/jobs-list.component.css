@@ -1000,56 +1000,11 @@ hr {
   left: 100%;
 }
 
-/* Pagination - Mobile First */
-.pagination-nav {
-  border-top: 1px solid #f3f4f6;
-  padding-top: 20px;
-  margin-top: 32px;
-}
-
-.pagination-info {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #6b7280;
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.pagination {
-  gap: 2px;
-  justify-content: center;
-}
-
-.pagination .page-link {
-  border: 2px solid #e5e7eb;
-  color: #6b7280;
-  padding: 8px 12px;
-  margin: 0;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  background: white;
-  font-size: 0.8rem;
-}
-
-.pagination .page-item.active .page-link {
-  background: #31795a;
-  border-color: #31795a;
-  color: white;
-  box-shadow: 0 2px 8px rgba(49, 121, 90, 0.2);
-}
-
-.pagination .page-link:hover:not(.active) {
-  background: #f9fafb;
-  border-color: #31795a;
-  color: #31795a;
-  transform: translateY(-1px);
-}
-
 /* Modal - Mobile First */
 .modal.show {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
+  width: 100%;
 }
 
 .modal-content {
@@ -1197,22 +1152,6 @@ html {
     margin-bottom: 24px;
     padding: 20px 0;
   }
-
-  .pagination-nav {
-    padding-top: 24px;
-    margin-top: 36px;
-  }
-
-  .pagination-info {
-    font-size: 0.85rem;
-    margin-bottom: 0;
-    text-align: left;
-  }
-
-  .pagination .page-link {
-    padding: 10px 14px;
-    font-size: 0.85rem;
-  }
 }
 
 /* Desktop Styles (768px and up) */
@@ -1328,16 +1267,6 @@ html {
   .results-header {
     margin-bottom: 28px;
     padding: 22px 0;
-  }
-
-  .pagination-nav {
-    padding-top: 28px;
-    margin-top: 40px;
-  }
-
-  .pagination .page-link {
-    padding: 11px 15px;
-    font-size: 0.9rem;
   }
 }
 
@@ -1575,24 +1504,6 @@ html {
 
   .btn-close-sm {
     font-size: 10px;
-  }
-
-  .pagination-nav {
-    padding-top: 32px;
-    margin-top: 48px;
-  }
-
-  .pagination-info {
-    font-size: 0.875rem;
-  }
-
-  .pagination {
-    gap: 4px;
-  }
-
-  .pagination .page-link {
-    padding: 12px 16px;
-    font-size: 0.875rem;
   }
 
   .modal-header {
