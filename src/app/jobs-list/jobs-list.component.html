@@ -210,12 +210,12 @@
             Reset Filter
           </button>
 
-          <button class="btn apply-filter-btn w-100 mt-4" (click)="applyFilters()" [disabled]="isApplyingFilters">
-            <div class="spinner-border spinner-border-sm me-2" *ngIf="isApplyingFilters"></div>
-            <span *ngIf="isApplyingFilters">
+          <button class="btn apply-filter-btn w-100 mt-4" (click)="applyFilters()" [disabled]="applyingFilters">
+            <div class="spinner-border spinner-border-sm me-2" *ngIf="applyingFilters"></div>
+            <span *ngIf="applyingFilters">
               Applying Filters...
             </span>
-            <span *ngIf="!isApplyingFilters">Apply Filters</span>
+            <span *ngIf="!applyingFilters">Apply Filters</span>
           </button>
 
         </div>

@@ -23,13 +23,18 @@ import { ApiServiceService } from '../core/services/api-service.service';
   styleUrls: ['./jobs-list.component.css'],
 })
 export class JobsListComponent implements OnInit {
+  private readonly STORAGE_KEYS = {
+    search: 'jobSearch',
+    filters: 'activeFilters',
+    filterState: 'jobFilterState',
+  };
   Math = Math; // Added to expose Math to the template
   jobs: any[] = [];
   loading = true;
   isSearching = false;
-  isApplyingFilters = false;
+  applyingFilters = false;
   allCategories: any[] = [];
-  activeFilters: string[] = JSON.parse(localStorage.getItem('jobFilters') || '[]');
+  activeFilters: string[] = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filters) || '[]');
   searchLocation: string = '';
   searchCategory: number | null = null;
   searchKeyword: string = '';
@@ -77,7 +82,7 @@ export class JobsListComponent implements OnInit {
     this.userRole = localStorage.getItem('role');
 
     // Restore search state (category, location, keyword)
-    const savedSearch = localStorage.getItem('jobSearch');
+    const savedSearch = localStorage.getItem(this.STORAGE_KEYS.search);
     if (savedSearch) {
       const { category, location, keyword } = JSON.parse(savedSearch);
       this.searchCategory = category ?? null;
@@ -92,7 +97,7 @@ export class JobsListComponent implements OnInit {
       location: this.searchLocation,
       keyword: this.searchKeyword,
     });
-    this.restoreFilterState();
+    this.loadSavedFilters();
   }
 
   toggleSelectOpen1() {
@@ -124,14 +129,14 @@ export class JobsListComponent implements OnInit {
           clearTimeout(showSpinnerDelay);
           this.jobs = res.jobs || [];
           this.loading = false;
-          this.isApplyingFilters = false;
+          this.applyingFilters = false;
           this.isSearching = false;
         },
         error: (err) => {
           clearTimeout(showSpinnerDelay);
           console.error('Error fetching jobs:', err);
           this.loading = false;
-          this.isApplyingFilters = false;
+          this.applyingFilters = false;
           this.isSearching = false;
         },
       });
@@ -147,7 +152,7 @@ export class JobsListComponent implements OnInit {
       location: this.searchLocation.trim(),
       keyword: this.searchKeyword.trim(),
     };
-    localStorage.setItem('jobSearch', JSON.stringify(searchState));
+    localStorage.setItem(this.STORAGE_KEYS.search, JSON.stringify(searchState));
 
     // Fetch jobs from backend with current search params
     this.fetchJobs(searchState);
@@ -222,11 +227,11 @@ export class JobsListComponent implements OnInit {
   }
 
   applyFilters() {
-    this.isApplyingFilters = true;
+    this.applyingFilters = true;
     const selectedJobTypes = this.jobTypes.filter(j => j.selected);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected);
 
-    const savedSearch = JSON.parse(localStorage.getItem('jobSearch') || '{}');
+    const savedSearch = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
 
     const params: any = {
       ...savedSearch,
@@ -247,18 +252,18 @@ export class JobsListComponent implements OnInit {
     selectedJobTypes.forEach(j => this.activeFilters.push(j.label));
     selectedExperiences.forEach(e => this.activeFilters.push(e.label));
 
-    localStorage.setItem('jobFilters', JSON.stringify(this.activeFilters));
+    localStorage.setItem(this.STORAGE_KEYS.filters, JSON.stringify(this.activeFilters));
 
     const filterState = {
       jobTypes: this.jobTypes,
       experienceLevels: this.experienceLevels
     };
 
-    localStorage.setItem('jobFilterState', JSON.stringify(filterState));
+    localStorage.setItem(this.STORAGE_KEYS.filterState, JSON.stringify(filterState));
   }
 
-  restoreFilterState(): void {
-    const savedState = localStorage.getItem('jobFilterState');
+  loadSavedFilters(): void {
+    const savedState = localStorage.getItem(this.STORAGE_KEYS.filterState);
     if (savedState) {
       const filters = JSON.parse(savedState);
 
@@ -304,8 +309,8 @@ export class JobsListComponent implements OnInit {
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
     this.activeFilters = [];
-    localStorage.removeItem('jobFilters');
-    localStorage.removeItem('jobFilterState');
+    localStorage.removeItem(this.STORAGE_KEYS.filters);
+    localStorage.removeItem(this.STORAGE_KEYS.filterState);
     this.fetchJobs({
       category: this.searchCategory,
       location: this.searchLocation,
