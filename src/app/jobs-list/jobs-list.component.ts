@@ -112,18 +112,23 @@ export class JobsListComponent implements OnInit {
   }
 
   fetchJobs(params: any = {}): void {
-    this.loading = true;
+    // Start a short delay before showing the spinner
+    const showSpinnerDelay = setTimeout(() => {
+      this.loading = true;
+    }, 200); // 👈 show spinner only if it takes longer than 200ms
 
     this.http
       .get<any>(`${this.apiService.apiUrl}/jobs.php`, { params })
       .subscribe({
         next: (res) => {
+          clearTimeout(showSpinnerDelay);
           this.jobs = res.jobs || [];
           this.loading = false;
           this.isApplyingFilters = false;
           this.isSearching = false;
         },
         error: (err) => {
+          clearTimeout(showSpinnerDelay);
           console.error('Error fetching jobs:', err);
           this.loading = false;
           this.isApplyingFilters = false;
@@ -131,6 +136,7 @@ export class JobsListComponent implements OnInit {
         },
       });
   }
+
 
   onSearch(): void {
     this.isSearching = true;
