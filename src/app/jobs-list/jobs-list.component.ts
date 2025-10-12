@@ -210,8 +210,8 @@ export class JobsListComponent implements OnInit {
     this.showFilterModal = !this.showFilterModal;
   }
 
-  toggleAndApplyFiltersModal(): void {
-    this.showFilterModal = !this.showFilterModal;
+  applyFiltersAndToggleModal(): void {
+    this.toggleFilterModal();
     this.applyFilters();
   }
 
@@ -252,25 +252,36 @@ export class JobsListComponent implements OnInit {
     if (savedState) {
       const filters = JSON.parse(savedState);
 
+      let hasFilters = false;
+
       // Restore checkbox states
       if (filters.jobTypes) {
         this.jobTypes.forEach(type => {
           const saved = filters.jobTypes.find((j: any) => j.value === type.value);
-          if (saved) type.selected = saved.selected;
+          if (saved && saved.selected) {
+            type.selected = true;
+            hasFilters = true;
+          }
         });
       }
 
       if (filters.experienceLevels) {
         this.experienceLevels.forEach(exp => {
           const saved = filters.experienceLevels.find((e: any) => e.value === exp.value);
-          if (saved) exp.selected = saved.selected;
+          if (saved && saved.selected) {
+            exp.selected = true;
+            hasFilters = true;
+          }
         });
       }
 
-      // Automatically apply the filters
-      this.applyFilters();
+      // ✅ Only apply filters if something was selected
+      if (hasFilters) {
+        this.applyFilters();
+      }
     }
   }
+
 
   toggleJobType(type: any) {
     type.selected = !type.selected;
@@ -283,15 +294,19 @@ export class JobsListComponent implements OnInit {
   resetFilters() {
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
-    // clear all active filters
     this.activeFilters = [];
     localStorage.removeItem('jobFilters');
     localStorage.removeItem('jobFilterState');
-    localStorage.removeItem('jobSearch');
-    this.searchCategory = null;
-    this.searchLocation = '';
-    this.searchKeyword = '';
-    this.fetchJobs(); // reset all
+    this.fetchJobs({
+      category: this.searchCategory,
+      location: this.searchLocation,
+      keyword: this.searchKeyword,
+    });
+  }
+
+  resetFiltersAndToggleModal() {
+    this.resetFilters();
+    this.toggleFilterModal();
   }
 
   closeFilterModal() {
