@@ -67,12 +67,12 @@
           <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('jobType')">
               <h6>Job Type</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.jobType">
-                <i class="fas fa-minus" *ngIf="expandedSections?.jobType"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.jobType"></i>
+              <span class="toggle-icon" [class.expanded]="expandedSections.jobType">
+                <i class="fas fa-minus" *ngIf="expandedSections.jobType"></i>
+                <i class="fas fa-plus" *ngIf="!expandedSections.jobType"></i>
               </span>
             </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.jobType">
+            <div class="filter-content" [class.expanded]="expandedSections.jobType">
               <div class="filter-options">
                 <div *ngFor="let jobType of jobTypes" class="filter-option">
                   <div class="checkbox-wrapper">
@@ -92,12 +92,12 @@
           <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('experience')">
               <h6>Experience</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.experience">
-                <i class="fas fa-minus" *ngIf="expandedSections?.experience"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.experience"></i>
+              <span class="toggle-icon" [class.expanded]="expandedSections.experience">
+                <i class="fas fa-minus" *ngIf="expandedSections.experience"></i>
+                <i class="fas fa-plus" *ngIf="!expandedSections.experience"></i>
               </span>
             </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.experience">
+            <div class="filter-content" [class.expanded]="expandedSections.experience">
               <div class="filter-options">
                 <div *ngFor="let experience of experienceLevels" class="filter-option">
                   <div class="checkbox-wrapper">
@@ -210,10 +210,14 @@
             Reset Filter
           </button>
 
-          <button class="btn apply-filter-btn w-100 mt-4" (click)="applyFilters()">
-            Apply Filters
+          <button class="btn apply-filter-btn w-100 mt-4" (click)="applyFilters()" [disabled]="isApplyingFilters">
+            <div class="spinner-border spinner-border-sm me-2" *ngIf="isApplyingFilters"></div>
+            <span *ngIf="isApplyingFilters">
+              Applying Filters...
+            </span>
+            <span *ngIf="!isApplyingFilters">Apply Filters</span>
           </button>
-
+          
         </div>
       </div>
 
@@ -320,12 +324,12 @@
               <div class="filter-section">
                 <div class="filter-header" (click)="toggleSection('jobType')">
                   <h6>Job Type</h6>
-                  <span class="toggle-icon" [class.expanded]="expandedSections?.jobType">
-                    <i class="fas fa-minus" *ngIf="expandedSections?.jobType"></i>
-                    <i class="fas fa-plus" *ngIf="!expandedSections?.jobType"></i>
+                  <span class="toggle-icon" [class.expanded]="expandedSections.jobType">
+                    <i class="fas fa-minus" *ngIf="expandedSections.jobType"></i>
+                    <i class="fas fa-plus" *ngIf="!expandedSections.jobType"></i>
                   </span>
                 </div>
-                <div class="filter-content" [class.expanded]="expandedSections?.jobType">
+                <div class="filter-content" [class.expanded]="expandedSections.jobType">
                   <div class="filter-options">
                     <div *ngFor="let jobType of jobTypes" class="filter-option">
                       <div class="checkbox-wrapper">
@@ -345,12 +349,12 @@
               <div class="filter-section">
                 <div class="filter-header" (click)="toggleSection('experience')">
                   <h6>Experience</h6>
-                  <span class="toggle-icon" [class.expanded]="expandedSections?.experience">
-                    <i class="fas fa-minus" *ngIf="expandedSections?.experience"></i>
-                    <i class="fas fa-plus" *ngIf="!expandedSections?.experience"></i>
+                  <span class="toggle-icon" [class.expanded]="expandedSections.experience">
+                    <i class="fas fa-minus" *ngIf="expandedSections.experience"></i>
+                    <i class="fas fa-plus" *ngIf="!expandedSections.experience"></i>
                   </span>
                 </div>
-                <div class="filter-content" [class.expanded]="expandedSections?.experience">
+                <div class="filter-content" [class.expanded]="expandedSections.experience">
                   <div class="filter-options">
                     <div *ngFor="let experience of experienceLevels" class="filter-option">
                       <div class="checkbox-wrapper">
