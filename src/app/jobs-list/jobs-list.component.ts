@@ -75,8 +75,23 @@ export class JobsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.fetchJobs(); // load all jobs on page load
+
+    // Restore search state (category, location, keyword)
+    const savedSearch = localStorage.getItem('jobSearch');
+    if (savedSearch) {
+      const { category, location, keyword } = JSON.parse(savedSearch);
+      this.searchCategory = category ?? null;
+      this.searchLocation = location ?? '';
+      this.searchKeyword = keyword ?? '';
+    }
+
+    // Load categories and initial jobs
     this.loadCategories();
+    this.fetchJobs({
+      category: this.searchCategory,
+      location: this.searchLocation,
+      keyword: this.searchKeyword,
+    });
     this.restoreFilterState();
   }
 
@@ -119,12 +134,19 @@ export class JobsListComponent implements OnInit {
 
   onSearch(): void {
     this.isSearching = true;
-    this.fetchJobs({
+
+    // Save the search form values to localStorage
+    const searchState = {
       category: this.searchCategory,
       location: this.searchLocation.trim(),
       keyword: this.searchKeyword.trim(),
-    });
+    };
+    localStorage.setItem('jobSearch', JSON.stringify(searchState));
+
+    // Fetch jobs from backend with current search params
+    this.fetchJobs(searchState);
   }
+
 
   onToggleSaveJob(job: any) {
     if (!this.authService.isLoggedIn()) {
@@ -198,11 +220,7 @@ export class JobsListComponent implements OnInit {
     const selectedJobTypes = this.jobTypes.filter(j => j.selected);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected);
 
-    const params: any = {
-      category: this.searchCategory,
-      location: this.searchLocation.trim(),
-      keyword: this.searchKeyword.trim(),
-    };
+    const params: any = {};
 
     if (selectedJobTypes.length > 0) {
       params['employment_type[]'] = selectedJobTypes.map(j => j.value);
@@ -219,22 +237,11 @@ export class JobsListComponent implements OnInit {
     selectedJobTypes.forEach(j => this.activeFilters.push(j.label));
     selectedExperiences.forEach(e => this.activeFilters.push(e.label));
 
-    if (this.searchCategory) {
-      const category = this.allCategories.find(cat => cat.id === this.searchCategory);
-      if (category) this.activeFilters.push(category.name);
-    }
-
-    if (this.searchLocation.trim()) this.activeFilters.push(this.searchLocation.trim());
-    if (this.searchKeyword.trim()) this.activeFilters.push(this.searchKeyword.trim());
-
     localStorage.setItem('jobFilters', JSON.stringify(this.activeFilters));
 
     const filterState = {
       jobTypes: this.jobTypes,
-      experienceLevels: this.experienceLevels,
-      category: this.searchCategory,
-      location: this.searchLocation.trim(),
-      keyword: this.searchKeyword.trim(),
+      experienceLevels: this.experienceLevels
     };
 
     localStorage.setItem('jobFilterState', JSON.stringify(filterState));
@@ -260,11 +267,6 @@ export class JobsListComponent implements OnInit {
         });
       }
 
-      // Restore other fields
-      this.searchCategory = filters.category || null;
-      this.searchLocation = filters.location || '';
-      this.searchKeyword = filters.keyword || '';
-
       // Automatically apply the filters
       this.applyFilters();
     }
@@ -281,13 +283,14 @@ export class JobsListComponent implements OnInit {
   resetFilters() {
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
-    this.searchCategory = null;
-    this.searchLocation = '';
-    this.searchKeyword = '';
     // clear all active filters
     this.activeFilters = [];
     localStorage.removeItem('jobFilters');
     localStorage.removeItem('jobFilterState');
+    localStorage.removeItem('jobSearch');
+    this.searchCategory = null;
+    this.searchLocation = '';
+    this.searchKeyword = '';
     this.fetchJobs(); // reset all
   }
 
@@ -317,15 +320,6 @@ export class JobsListComponent implements OnInit {
       experience.selected = false;
       this.applyFilters();
       return;
-    }
-    // If it's neither, it might be a category or other filter
-    if (this.searchCategory) {
-      const category = this.allCategories.find(cat => cat.id === this.searchCategory);
-      if (category && category.name === filter) {
-        this.searchCategory = null;
-        this.applyFilters();
-        return;
-      }
     }
   }
 
