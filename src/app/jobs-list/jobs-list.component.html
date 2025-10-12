@@ -22,6 +22,7 @@
               <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false"
                 [(ngModel)]="searchCategory">
                 <option value=null disabled selected>Select an option</option>
+                <option [ngValue]="null">None</option>  <!-- 👈 allow clearing -->
                 <option *ngFor="let cat of allCategories" [value]="cat.id">
                   {{ cat.name }}
                 </option>

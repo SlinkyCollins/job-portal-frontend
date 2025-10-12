@@ -148,7 +148,7 @@ export class JobsListComponent implements OnInit {
 
     // Save the search form values to localStorage
     const searchState = {
-      category: this.searchCategory,
+      category: this.searchCategory ?? null, // 👈 store null if no category, not undefined
       location: this.searchLocation.trim(),
       keyword: this.searchKeyword.trim(),
     };
