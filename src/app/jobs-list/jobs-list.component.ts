@@ -220,7 +220,11 @@ export class JobsListComponent implements OnInit {
     const selectedJobTypes = this.jobTypes.filter(j => j.selected);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected);
 
-    const params: any = {};
+    const savedSearch = JSON.parse(localStorage.getItem('jobSearch') || '{}');
+
+    const params: any = {
+      ...savedSearch,
+    };
 
     if (selectedJobTypes.length > 0) {
       params['employment_type[]'] = selectedJobTypes.map(j => j.value);
@@ -281,7 +285,6 @@ export class JobsListComponent implements OnInit {
       }
     }
   }
-
 
   toggleJobType(type: any) {
     type.selected = !type.selected;
