@@ -21,9 +21,14 @@
               <label for="job_category" class="form-label">Job Categories</label>
               <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false"
                 [(ngModel)]="searchCategory">
-                <option value=null disabled selected>Select an option</option>
-                <option [ngValue]="null">None</option>  <!-- 👈 allow clearing -->
-                <option *ngFor="let cat of allCategories" [value]="cat.id">
+                <!-- default placeholder -->
+                <option [ngValue]="null" disabled [selected]="searchCategory === null">Select an option</option>
+
+                <!-- “Clear” option -->
+                <option [ngValue]="0">None</option>                  
+
+                <!-- categories from backend -->
+                <option *ngFor="let cat of allCategories" [ngValue]="cat.id">
                   {{ cat.name }}
                 </option>
               </select>
@@ -208,7 +213,7 @@
           </div> -->
 
           <button class="btn btn-reset w-100 mt-3" (click)="resetFilters()">
-            Reset Filter
+            Reset All Filters
           </button>
 
           <button class="btn apply-filter-btn w-100 mt-4" (click)="applyFilters()" [disabled]="applyingFilters">
@@ -466,7 +471,7 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="resetFiltersAndToggleModal()">
-                  Reset
+                  Reset All Filters
                 </button>
                 <button type="button" class="btn btn-primary" (click)="applyFiltersAndToggleModal()">
                   Apply Filters

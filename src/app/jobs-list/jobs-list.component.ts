@@ -85,7 +85,9 @@ export class JobsListComponent implements OnInit {
     const savedSearch = localStorage.getItem(this.STORAGE_KEYS.search);
     if (savedSearch) {
       const { category, location, keyword } = JSON.parse(savedSearch);
-      this.searchCategory = category ?? null;
+
+      // restore cleanly
+      this.searchCategory = category === null || category == 'null' ? null : category;
       this.searchLocation = location ?? '';
       this.searchKeyword = keyword ?? '';
     }
@@ -142,13 +144,15 @@ export class JobsListComponent implements OnInit {
       });
   }
 
-
   onSearch(): void {
     this.isSearching = true;
 
+    // Normalize the "None" option → treat 0 as null
+    const normalizedCategory = this.searchCategory === 0 ? null : this.searchCategory;
+
     // Save the search form values to localStorage
     const searchState = {
-      category: this.searchCategory ?? null, // 👈 store null if no category, not undefined
+      category: normalizedCategory,
       location: this.searchLocation.trim(),
       keyword: this.searchKeyword.trim(),
     };
@@ -305,18 +309,26 @@ export class JobsListComponent implements OnInit {
     exp.selected = !exp.selected;
   }
 
-  resetFilters() {
+  resetFilters(): void {
+    // Reset filter checkboxes
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
+
+    // Reset search fields
+    this.searchCategory = null;
+    this.searchLocation = '';
+    this.searchKeyword = '';
+
+    // Clear all saved states
     this.activeFilters = [];
     localStorage.removeItem(this.STORAGE_KEYS.filters);
     localStorage.removeItem(this.STORAGE_KEYS.filterState);
-    this.fetchJobs({
-      category: this.searchCategory,
-      location: this.searchLocation,
-      keyword: this.searchKeyword,
-    });
+    localStorage.removeItem('jobSearch');
+
+    // Fetch all jobs again
+    this.fetchJobs();
   }
+
 
   resetFiltersAndToggleModal() {
     this.resetFilters();
