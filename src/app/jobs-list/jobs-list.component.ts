@@ -80,27 +80,66 @@ export class JobsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
+    this.loadCategories();
 
-    // Restore search state (category, location, keyword)
-    const savedSearch = localStorage.getItem(this.STORAGE_KEYS.search);
-    if (savedSearch) {
-      const { category, location, keyword } = JSON.parse(savedSearch);
+    // One single restore flow
+    this.restoreSearchAndFilters();
+  }
 
-      // restore cleanly
-      this.searchCategory = category === null || category == 'null' ? null : category;
-      this.searchLocation = location ?? '';
-      this.searchKeyword = keyword ?? '';
+
+  restoreSearchAndFilters(): void {
+    const savedSearch = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
+    const savedFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filterState) || '{}');
+    const savedActiveFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filters) || '[]');
+
+    // Restore search inputs
+    this.searchCategory = savedSearch.category === null || savedSearch.category == 'null' ? null : savedSearch.category;
+    this.searchLocation = savedSearch.location ?? '';
+    this.searchKeyword = savedSearch.keyword ?? '';
+
+    let hasFilters = false;
+
+    // Restore checkbox states
+    if (savedFilters.jobTypes) {
+      this.jobTypes.forEach(type => {
+        const saved = savedFilters.jobTypes.find((j: any) => j.value === type.value);
+        if (saved && saved.selected) {
+          type.selected = true;
+          hasFilters = true;
+        }
+      });
     }
 
-    // Load categories and initial jobs
-    this.loadCategories();
-    this.fetchJobs({
-      category: this.searchCategory,
-      location: this.searchLocation,
-      keyword: this.searchKeyword,
-    });
-    this.loadSavedFilters();
+    if (savedFilters.experienceLevels) {
+      this.experienceLevels.forEach(exp => {
+        const saved = savedFilters.experienceLevels.find((e: any) => e.value === exp.value);
+        if (saved && saved.selected) {
+          exp.selected = true;
+          hasFilters = true;
+        }
+      });
+    }
+
+    // Restore active filter chips
+    this.activeFilters = savedActiveFilters;
+
+    // Merge everything into one params object
+    const params: any = { ...savedSearch };
+
+    const selectedJobTypes = this.jobTypes.filter(j => j.selected);
+    const selectedExperiences = this.experienceLevels.filter(e => e.selected);
+
+    if (selectedJobTypes.length > 0)
+      params['employment_type[]'] = selectedJobTypes.map(j => j.value);
+
+    if (selectedExperiences.length > 0)
+      params['experience_level[]'] = selectedExperiences.map(e => e.value);
+
+    // ✅ Fetch jobs with all restored filters and search
+    this.fetchJobs(params);
   }
+
+
 
   toggleSelectOpen1() {
     this.isSelectOpen1 = !this.isSelectOpen1;
@@ -264,41 +303,6 @@ export class JobsListComponent implements OnInit {
     };
 
     localStorage.setItem(this.STORAGE_KEYS.filterState, JSON.stringify(filterState));
-  }
-
-  loadSavedFilters(): void {
-    const savedState = localStorage.getItem(this.STORAGE_KEYS.filterState);
-    if (savedState) {
-      const filters = JSON.parse(savedState);
-
-      let hasFilters = false;
-
-      // Restore checkbox states
-      if (filters.jobTypes) {
-        this.jobTypes.forEach(type => {
-          const saved = filters.jobTypes.find((j: any) => j.value === type.value);
-          if (saved && saved.selected) {
-            type.selected = true;
-            hasFilters = true;
-          }
-        });
-      }
-
-      if (filters.experienceLevels) {
-        this.experienceLevels.forEach(exp => {
-          const saved = filters.experienceLevels.find((e: any) => e.value === exp.value);
-          if (saved && saved.selected) {
-            exp.selected = true;
-            hasFilters = true;
-          }
-        });
-      }
-
-      // ✅ Only apply filters if something was selected
-      if (hasFilters) {
-        this.applyFilters();
-      }
-    }
   }
 
   toggleJobType(type: any) {
