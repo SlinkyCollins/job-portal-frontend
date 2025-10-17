@@ -129,11 +129,13 @@ export class JobsListComponent implements OnInit {
     const selectedJobTypes = this.jobTypes.filter(j => j.selected);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected);
 
-    if (selectedJobTypes.length > 0)
+    if (selectedJobTypes.length > 0) {
       params['employment_type[]'] = selectedJobTypes.map(j => j.value);
+    }
 
-    if (selectedExperiences.length > 0)
+    if (selectedExperiences.length > 0) {
       params['experience_level[]'] = selectedExperiences.map(e => e.value);
+    }
 
     // ✅ Fetch jobs with all restored filters and search
     this.fetchJobs(params);
@@ -313,29 +315,32 @@ export class JobsListComponent implements OnInit {
     exp.selected = !exp.selected;
   }
 
-  resetFilters(): void {
-    // Reset filter checkboxes
+  resetFilters(clearSearch: boolean = false): void {
+    // Reset all filter checkboxes
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
 
-    // Reset search fields
-    this.searchCategory = null;
-    this.searchLocation = '';
-    this.searchKeyword = '';
-
-    // Clear all saved states
+    // Clear active filter badges
     this.activeFilters = [];
+
+    // Remove saved filter data
     localStorage.removeItem(this.STORAGE_KEYS.filters);
     localStorage.removeItem(this.STORAGE_KEYS.filterState);
-    localStorage.removeItem('jobSearch');
 
-    // Fetch all jobs again
-    this.fetchJobs();
+    // 🧠 Only clear search form if user confirms or passes true
+    if (clearSearch) {
+      this.searchCategory = null;
+      this.searchLocation = '';
+      this.searchKeyword = '';
+      localStorage.removeItem(this.STORAGE_KEYS.search);
+    }
+
+    // Fetch jobs again — respect current search values if not cleared
+    this.fetchJobs(this.buildSearchAndFilterParams());
   }
 
-
-  resetFiltersAndToggleModal() {
-    this.resetFilters();
+  resetFiltersAndToggleModal(clearSearch: boolean = false) : void {
+    this.resetFilters(clearSearch);
     this.toggleFilterModal();
   }
 
