@@ -183,13 +183,27 @@ export class JobsListComponent implements OnInit {
       });
   }
 
+  buildSearchAndFilterParams(): any {
+    const search = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
+    const selectedJobTypes = this.jobTypes.filter(j => j.selected).map(j => j.value);
+    const selectedExperiences = this.experienceLevels.filter(e => e.selected).map(e => e.value);
+
+    return {
+      category: this.searchCategory,
+      location: this.searchLocation.trim(),
+      keyword: this.searchKeyword.trim(),
+      ...(selectedJobTypes.length ? { 'employment_type[]': selectedJobTypes } : {}),
+      ...(selectedExperiences.length ? { 'experience_level[]': selectedExperiences } : {}),
+      ...search
+    };
+  }
+
   onSearch(): void {
     this.isSearching = true;
 
     // Normalize the "None" option → treat 0 as null
     const normalizedCategory = this.searchCategory === 0 ? null : this.searchCategory;
 
-    // Save the search form values to localStorage
     const searchState = {
       category: normalizedCategory,
       location: this.searchLocation.trim(),
@@ -197,9 +211,10 @@ export class JobsListComponent implements OnInit {
     };
     localStorage.setItem(this.STORAGE_KEYS.search, JSON.stringify(searchState));
 
-    // Fetch jobs from backend with current search params
-    this.fetchJobs(searchState);
+    // Fetch with both search and filters
+    this.fetchJobs(this.buildSearchAndFilterParams());
   }
+
 
 
   onToggleSaveJob(job: any) {
@@ -269,40 +284,25 @@ export class JobsListComponent implements OnInit {
     this.applyFilters();
   }
 
-  applyFilters() {
+  applyFilters(): void {
     this.applyingFilters = true;
-    const selectedJobTypes = this.jobTypes.filter(j => j.selected);
-    const selectedExperiences = this.experienceLevels.filter(e => e.selected);
 
-    const savedSearch = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
-
-    const params: any = {
-      ...savedSearch,
-    };
-
-    if (selectedJobTypes.length > 0) {
-      params['employment_type[]'] = selectedJobTypes.map(j => j.value);
-    }
-
-    if (selectedExperiences.length > 0) {
-      params['experience_level[]'] = selectedExperiences.map(e => e.value);
-    }
-
-    this.fetchJobs(params);
-
-    this.activeFilters = [];
-
-    selectedJobTypes.forEach(j => this.activeFilters.push(j.label));
-    selectedExperiences.forEach(e => this.activeFilters.push(e.label));
-
-    localStorage.setItem(this.STORAGE_KEYS.filters, JSON.stringify(this.activeFilters));
-
+    // Save filter states
     const filterState = {
       jobTypes: this.jobTypes,
       experienceLevels: this.experienceLevels
     };
-
     localStorage.setItem(this.STORAGE_KEYS.filterState, JSON.stringify(filterState));
+
+    // Active filter badges
+    this.activeFilters = [
+      ...this.jobTypes.filter(j => j.selected).map(j => j.label),
+      ...this.experienceLevels.filter(e => e.selected).map(e => e.label)
+    ];
+    localStorage.setItem(this.STORAGE_KEYS.filters, JSON.stringify(this.activeFilters));
+
+    // Fetch with both filters + search
+    this.fetchJobs(this.buildSearchAndFilterParams());
   }
 
   toggleJobType(type: any) {
