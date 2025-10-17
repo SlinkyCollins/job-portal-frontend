@@ -93,7 +93,10 @@ export class JobsListComponent implements OnInit {
     const savedActiveFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filters) || '[]');
 
     // Restore search inputs
-    this.searchCategory = savedSearch.category === null || savedSearch.category == 'null' ? null : savedSearch.category;
+    this.searchCategory =
+      !savedSearch || savedSearch.category === undefined || savedSearch.category === null || savedSearch.category === 'null'
+        ? null
+        : savedSearch.category;
     this.searchLocation = savedSearch.location ?? '';
     this.searchKeyword = savedSearch.keyword ?? '';
 
@@ -215,6 +218,13 @@ export class JobsListComponent implements OnInit {
 
     // Fetch with both search and filters
     this.fetchJobs(this.buildSearchAndFilterParams());
+
+    // ✅ Toast UX
+    this.authService.toastr.success('Search results updated 🔍', '', {
+      timeOut: 2500,
+      progressBar: true,
+      positionClass: 'toast-bottom-center'
+    });
   }
 
 
@@ -305,6 +315,13 @@ export class JobsListComponent implements OnInit {
 
     // Fetch with both filters + search
     this.fetchJobs(this.buildSearchAndFilterParams());
+
+    // ✅ Toast UX
+    this.authService.toastr.success('Filters applied successfully 🎯', '', {
+      timeOut: 2500,
+      progressBar: true,
+      positionClass: 'toast-bottom-center'
+    });
   }
 
   toggleJobType(type: any) {
@@ -337,9 +354,16 @@ export class JobsListComponent implements OnInit {
 
     // Fetch jobs again — respect current search values if not cleared
     this.fetchJobs(this.buildSearchAndFilterParams());
+
+    // ✅ Toast UX
+    this.authService.toastr.info('Filters cleared 🧹', '', {
+      timeOut: 2500,
+      progressBar: true,
+      positionClass: 'toast-bottom-center'
+    });
   }
 
-  resetFiltersAndToggleModal(clearSearch: boolean = false) : void {
+  resetFiltersAndToggleModal(clearSearch: boolean = false): void {
     this.resetFilters(clearSearch);
     this.toggleFilterModal();
   }
