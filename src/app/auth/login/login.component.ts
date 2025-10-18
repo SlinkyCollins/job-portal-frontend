@@ -30,7 +30,7 @@ export class LoginComponent {
   public email: string = localStorage.getItem('user') || '';
   public showPassword: boolean = false;
   public loading: boolean = false;
-  public isRememberMe: boolean = false;
+  public isRememberMe: boolean = true;
 
 
   clearPassword() {
