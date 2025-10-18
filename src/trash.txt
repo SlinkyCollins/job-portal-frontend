@@ -276,3 +276,38 @@ export class JobDetailsComponent {
     console.log("Save job clicked")
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// other category options
+
+  <option value="developer">Developer</option>
+          <option value="coder">Coder</option>
+          <option value="finance">Finance</option>
+          <option value="accounting">Accounting</option>
+          <option value="design">Design</option>
+          <option value="artist">Artist</option>
+          <option value="application">Application</option>
+          <option value="marketing">Marketing</option>
+          <option value="business">Business</option>
+          <option value="web">Web</option>
+          <option value="data">Data</option>
+          <option value="scientist">Scientist</option>
+          <option value="designer">Designer</option>
+          <option value="uxui">UX/UI</option>
+          <option value="manager">Manager</option>
+          <option value="engineer">Engineer</option>
+          <option value="writer">Writer</option>
+          <option value="content">Content</option>
+          <option value="graphic">Graphic</option>
+          <option value="management">Management</option>
+          <option value="product">Product</option>

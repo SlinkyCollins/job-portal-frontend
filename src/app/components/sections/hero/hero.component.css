@@ -62,6 +62,27 @@
   background-color: #244034;
 }
 
+.search-input {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  color: #333;
+  width: 100%;
+  font-size: 17px;
+  font-weight: 500;
+  font-family: "Gordita-Regular", cursive;
+}
+
+.search-input .option {
+  cursor: pointer;
+}
+
+.search-input:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: transparent;
+}
+
 .form-label {
   color: #a2a2a2;
   font-size: 14px;
@@ -215,6 +236,11 @@
     width: 90px;
     height: auto;
   }
+
+  .search-input {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -242,6 +268,12 @@
     width: 95px;
     height: auto;
   }
+
+  .search-input {
+    padding: 15px 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
 }
 
 @media (min-width: 992px) {
@@ -268,6 +300,11 @@
   .hero-icon img {
     width: 100px;
     height: auto;
+  }
+
+  .search-input {
+    padding: 15px 20px;
+    font-size: 1rem;
   }
 }
 
@@ -300,7 +337,8 @@
 
 /* Floating Animations */
 @keyframes float1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   25% {
@@ -315,7 +353,8 @@
 }
 
 @keyframes float2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   33% {
@@ -327,7 +366,8 @@
 }
 
 @keyframes float3 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   20% {
@@ -345,7 +385,8 @@
 }
 
 @keyframes float4 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   30% {

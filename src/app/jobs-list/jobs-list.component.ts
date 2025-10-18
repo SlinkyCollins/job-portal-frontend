@@ -95,6 +95,7 @@ export class JobsListComponent implements OnInit {
   }
 
   restoreSearchAndFilters(): void {
+    this.isSearching = true; // Set searching state to true to show loading indicator before jobs are fetched
     const savedSearch = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
     const savedFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filterState) || '{}');
     const savedActiveFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filters) || '[]');
