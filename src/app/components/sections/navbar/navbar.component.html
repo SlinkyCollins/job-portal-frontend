@@ -85,8 +85,8 @@
 
       <!-- Right Controls -->
       <div class="d-flex align-items-center justify-content-center gap-4">
-        <a routerLink="/login" class="smlogin-link">Login</a>
-        <a class="btn register-link d-none d-md-block" routerLink="/signup">Register</a>
+        <a routerLink="/login" class="smlogin-link" *ngIf="!isLoggedIn()">Login</a>
+        <a class="btn register-link d-none d-md-block" routerLink="/signup" *ngIf="!isLoggedIn()">Register</a>
 
         <!-- Accessible Hamburger -->
         <button class="hamburger me-1" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen" aria-label="Toggle menu"
@@ -162,7 +162,7 @@
       </ul>
       <ul class="navbar-nav text-center">
         <li class="nav-item">
-          <a class="btn signupbtn d-block d-md-none" routerLink="/signup">Register</a>
+          <a class="btn signupbtn d-block d-md-none" routerLink="/signup" *ngIf="!isLoggedIn()">Register</a>
         </li>
       </ul>
     </div>
