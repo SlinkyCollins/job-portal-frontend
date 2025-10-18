@@ -86,6 +86,13 @@ export class JobsListComponent implements OnInit {
     this.restoreSearchAndFilters();
   }
 
+  clearLocation() {
+    this.searchLocation = '';
+  }
+
+  clearKeyword() {
+    this.searchKeyword = '';
+  }
 
   restoreSearchAndFilters(): void {
     const savedSearch = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');

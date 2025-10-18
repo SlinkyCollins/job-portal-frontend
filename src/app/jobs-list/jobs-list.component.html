@@ -35,16 +35,18 @@
               <span class="customArrow"></span>
             </div>
             <hr />
-            <div class="flex-fill customSelectWrapper">
+            <div class="flex-fill position-relative">
               <label for="location" class="form-label">Location</label>
               <input id="location" type="text" class="form-control search-input" [(ngModel)]="searchLocation"
                 placeholder="e.g. Lagos, Remote" />
+              <i title="Clear Location" class="fas fa-times-circle" (click)="clearLocation()" *ngIf="searchLocation && searchLocation.length > 0" style="position: absolute; right: 10px; top: 56%; cursor: pointer; color: #7c7c7c; font-size: 1.2rem;"></i>
             </div>
             <hr />
-            <div class="flex-fill">
+            <div class="flex-fill position-relative">
               <label for="searchBox" class="form-label">Keywords or Title</label>
               <input type="text" class="form-control search-input" [(ngModel)]="searchKeyword"
                 placeholder="e.g. Design, branding" id="searchBox" />
+              <i title="Clear Keyword" class="fas fa-times-circle" (click)="clearKeyword()" *ngIf="searchKeyword && searchKeyword.length > 0" style="position: absolute; right: 10px; top: 56%; cursor: pointer; color: #7c7c7c; font-size: 1.2rem;"></i>
             </div>
             <hr />
             <div class="d-flex align-items-end">
