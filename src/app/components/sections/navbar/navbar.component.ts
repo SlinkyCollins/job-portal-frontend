@@ -24,6 +24,10 @@ export class NavbarComponent {
       })
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   isAuthPage(): boolean {
     return this.currentRoute.includes('/jobs') || this.currentRoute.includes('/signup') || this.currentRoute.includes('/jobdetails');
   }
