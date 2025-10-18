@@ -6,11 +6,6 @@
   color: #fff !important;
 }
 
-.navbar-auth .nav-link.active,
-.navbar-auth .nav-link:hover {
-  color: #00be57 !important;
-}
-
 .navbar-auth .container-fluid .smlogin-link {
   color: #d2f34c;
 }
@@ -46,6 +41,29 @@
   color: #d2f34c;
   background-color: #244034;
   border: 2px solid #d2f34c;
+}
+
+.navbar-home .nav-link.active {
+  color: #00be57 !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+}
+
+.navbar-default .nav-link.active {
+  color: #00be57 !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+}
+
+.navbar-auth .nav-link.active,
+.navbar-auth .navbar-nav .nav-link.active {
+  font-weight: bold !important;
+  color: #00be57 !important;
+  text-decoration: underline !important;
+}
+
+.navbar-auth .nav-link:hover {
+  color: #00be57 !important;
 }
 
 .scrolled-auth {

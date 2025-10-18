@@ -24,10 +24,10 @@
       <!-- Desktop Menu -->
       <ul class="fullmenu d-none d-lg-flex gap-4 mt-3">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/">Home</a>
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/jobs">Jobs</a>
+          <a class="nav-link" routerLink="/jobs" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Jobs</a>
         </li>
 
         <li class="nav-item dropdown position-relative explore-desktop">
@@ -73,10 +73,10 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/blog">Blog</a>
+          <a class="nav-link" routerLink="/blog" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contact">Contact</a>
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Contact</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" (click)="goToDashboard($event)">Dashboard</a>
@@ -85,7 +85,7 @@
 
       <!-- Right Controls -->
       <div class="d-flex align-items-center justify-content-center gap-4">
-        <a routerLink="/login" class="smlogin-link" *ngIf="!isLoggedIn()">Login</a>
+        <a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link smlogin-link" *ngIf="!isLoggedIn()">Login</a>
         <a class="btn register-link d-none d-md-block" routerLink="/signup" *ngIf="!isLoggedIn()">Register</a>
 
         <!-- Accessible Hamburger -->
@@ -104,10 +104,10 @@
       </div>
       <ul class="navbar-nav text-start">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/jobs" routerLinkActive="active">Jobs</a>
+          <a class="nav-link" routerLink="/jobs" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Jobs</a>
         </li>
         <li class="nav-item">
           <a class="nav-link d-flex justify-content-between align-items-center" (click)="toggleExploreDropdown()"
@@ -151,10 +151,10 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/blog" routerLinkActive="active">Blog</a>
+          <a class="nav-link" routerLink="/blog" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Contact</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" (click)="goToDashboard($event)">Dashboard</a>
