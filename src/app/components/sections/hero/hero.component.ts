@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiServiceService } from '../../../core/services/api-service.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { CategoryService } from '../../../core/services/category.service';
 
 @Component({
   selector: 'app-hero',
@@ -21,7 +22,13 @@ export class HeroComponent {
   searchKeyword: string = '';
   allCategories: any[] = [];
 
-  constructor(private http: HttpClient, private apiService: ApiServiceService, private router: Router, private authService: AuthService) { }
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiServiceService,
+    private router: Router,
+    private authService: AuthService,
+    private categoryService: CategoryService
+  ) { }
 
   ngOnInit() {
     this.loadCategories();
@@ -73,15 +80,9 @@ export class HeroComponent {
   }
 
   loadCategories() {
-    this.http
-      .get<{ status: boolean; categories: any[] }>(
-        `${this.apiService.apiUrl}/get_categories.php`
-      )
-      .subscribe((res) => {
-        if (res.status) {
-          this.allCategories = res.categories;
-        }
-      });
+    this.categoryService.getCategories().subscribe(cats => {
+      this.allCategories = cats;
+    });
   }
 
   onFileSelected(event: any) {

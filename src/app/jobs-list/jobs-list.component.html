@@ -17,7 +17,7 @@
           </p>
           <!-- Search Form -->
           <div class="heroSearch d-flex flex-column flex-md-row gap-md-3">
-            <div class="flex-fill customSelectWrapper" [class.open]="isSelectOpen1" (click)="toggleSelectOpen1()">
+            <div class="flex-fill customSelectWrapper" [class.open]="isSelectOpen1" (click)="toggleSelectOpen()">
               <label for="job_category" class="form-label">Job Categories</label>
               <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false"
                 [(ngModel)]="searchCategory">

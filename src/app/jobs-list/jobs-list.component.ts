@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../core/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from '../core/services/api-service.service';
+import { CategoryService } from '../core/services/category.service';
 
 @Component({
   selector: 'app-job-list',
@@ -75,7 +76,8 @@ export class JobsListComponent implements OnInit {
     public authService: AuthService,
     public apiService: ApiServiceService,
     public router: Router,
-    public http: HttpClient
+    public http: HttpClient,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -175,23 +177,16 @@ export class JobsListComponent implements OnInit {
     this.fetchJobs(params);
   }
 
-
-
-  toggleSelectOpen1() {
+  toggleSelectOpen() {
     this.isSelectOpen1 = !this.isSelectOpen1;
   }
 
   loadCategories() {
-    this.http
-      .get<{ status: boolean; categories: any[] }>(
-        `${this.apiService.apiUrl}/get_categories.php`
-      )
-      .subscribe((res) => {
-        if (res.status) {
-          this.allCategories = res.categories;
-        }
-      });
+    this.categoryService.getCategories().subscribe(cats => {
+      this.allCategories = cats;
+    });
   }
+
 
   fetchJobs(params: any = {}): void {
     // Start a short delay before showing the spinner
