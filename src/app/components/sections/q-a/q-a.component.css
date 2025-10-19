@@ -157,6 +157,8 @@
   padding: 0;
   display: inline;
   transition: color 0.2s ease;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .customer-support a:hover {

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-fancybanner',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './fancybanner.component.html',
   styleUrl: './fancybanner.component.css'
 })
