@@ -95,14 +95,37 @@ export class JobsListComponent implements OnInit {
   }
 
   restoreSearchAndFilters(): void {
-    this.isSearching = true; // Set searching state to true to show loading indicator before jobs are fetched
-    const savedSearch = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
-    const savedFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filterState) || '{}');
-    const savedActiveFilters = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.filters) || '[]');
+    const searchRaw = localStorage.getItem(this.STORAGE_KEYS.search);
+    const filterStateRaw = localStorage.getItem(this.STORAGE_KEYS.filterState);
+    const filtersRaw = localStorage.getItem(this.STORAGE_KEYS.filters);
+
+    // Parse with fallbacks and type annotations for safety
+    const savedSearch: any = JSON.parse(searchRaw || '{}');
+    const savedFilters: any = JSON.parse(filterStateRaw || '{}');
+    const savedActiveFilters: string[] = JSON.parse(filtersRaw || '[]');
+
+    // Helper function to check if there's at least one meaningful search value
+    const hasAnySearchValue = (search: any): boolean => {
+      return (
+        (search.category !== undefined && search.category !== null) ||
+        search.location !== '' ||
+        search.keyword !== ''
+      );
+    };
+
+    // Set isSearching based on whether any search value exists
+    if (hasAnySearchValue(savedSearch)) {
+      // Delay spinner for better UX if fetch is fast
+      setTimeout(() => {
+        this.isSearching = true;
+      }, 200);
+    } else {
+      this.isSearching = false;
+    }
 
     // Restore search inputs
     this.searchCategory =
-      !savedSearch || savedSearch.category === undefined || savedSearch.category === null || savedSearch.category === 'null'
+      !savedSearch || savedSearch.category === undefined || savedSearch.category === null
         ? null
         : savedSearch.category;
     this.searchLocation = savedSearch.location ?? '';
