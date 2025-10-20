@@ -1,4 +1,5 @@
-<div class="userSetup-wrapper">
+<hr *ngIf="isLoggedIn()" />
+<div class="userSetup-wrapper" *ngIf="!isLoggedIn()">
   <hr />
   <div class="userSetup-content">
     <div class="userSetup-text">
@@ -7,7 +8,7 @@
     </div>
     <div class="userSetup-btns">
       <button class="btn1" routerLink="/jobs">Looking for job?</button>
-      <button class="btn2" routerLink="/post-job">Post a job</button>
+      <button class="btn2" routerLink="/signup">Post a job</button>
     </div>
   </div>
   <hr />
