@@ -44,6 +44,35 @@ export class AuthService {
     return !!localStorage.getItem('token') && !!localStorage.getItem('role');
   }
 
+  goToDashboard(event: Event) {
+    event.preventDefault(); // prevent normal link behavior
+
+    const role = localStorage.getItem('role');
+
+    if (!role) {
+      this.toastr.error('Please log in to access your dashboard.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (role === 'job_seeker') {
+      this.router.navigate(['/dashboard/jobseeker']);
+      this.toastr.success('Welcome back to your dashboard!');
+    }
+    else if (role === 'employer') {
+      this.router.navigate(['/dashboard/employer']);
+      this.toastr.success('Welcome back to your employer dashboard!');
+    }
+    else if (role === 'admin') {
+      this.router.navigate(['/dashboard/admin']);
+      this.toastr.success('Welcome back to your admin dashboard!');
+    }
+    else {
+      this.toastr.error('Unknown role. Please log in again.');
+      this.router.navigate(['/login']);
+    }
+  }
+
   getUserRole(): string | null {
     return localStorage.getItem('role');
   }

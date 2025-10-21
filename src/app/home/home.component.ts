@@ -10,6 +10,8 @@ import { FindtalentsComponent } from "../components/sections/findtalents/findtal
 import { JobCardComponent } from "../components/sections/job-card/job-card.component";
 import { NavbarComponent } from '../components/sections/navbar/navbar.component';
 import { FooterComponent } from '../components/sections/footer/footer.component';
+import { AuthService } from '../core/services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -24,15 +26,26 @@ import { FooterComponent } from '../components/sections/footer/footer.component'
     FindtalentsComponent,
     JobCardComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  ngOnInit() {
+  constructor(private authService: AuthService) { }
 
-  };
+  goToDashboard(event: Event) {
+    this.authService.goToDashboard(event);
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  getUserRole(): string | null {
+    return this.authService.getUserRole();
+  }
 
   // public faqs = [
   //   {

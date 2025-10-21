@@ -28,6 +28,14 @@ export class JobCardComponent {
     this.fetchRecentJobs();
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  getUserRole(): string | null {
+    return this.authService.getUserRole();
+  }
+
   fetchRecentJobs(): void {
     // Logic to fetch recent jobs can be implemented here
     this.loading = true;

@@ -35,6 +35,14 @@ export class HeroComponent {
     this.restoreSearchState();
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  getUserRole(): string | null {
+    return this.authService.getUserRole();
+  }
+
   clearLocation() {
     this.searchLocation = '';
   }

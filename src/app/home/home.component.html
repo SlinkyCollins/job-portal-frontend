@@ -2,13 +2,34 @@
   <app-navbar></app-navbar>
   <app-hero></app-hero>
   <section class="body">
-    <app-category-list></app-category-list>
-    <app-fancybanner></app-fancybanner>
-    <app-job-card></app-job-card>
+    <!-- Show categories for job seekers and unauthenticated users -->
+    <app-category-list *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'"></app-category-list>
+
+    <!-- Show fancy banner for job seekers and unauthenticated users -->
+    <app-fancybanner *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'"></app-fancybanner>
+
+    <!-- Show job listings for job seekers and unauthenticated users -->
+    <app-job-card *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'"></app-job-card>
+
+    <!-- New: Quick Actions for Logged-In Users -->
+    <div class="quick-actions" *ngIf="isLoggedIn()">
+      <h2>Quick Actions</h2>
+      <button *ngIf="getUserRole() === 'employer'" routerLink="/post-job" class="btn btn-primary">Post a New Job</button>
+      <button *ngIf="getUserRole() === 'job_seeker'" routerLink="/jobs" class="btn btn-secondary">Browse All Jobs</button>
+      <button (click)="goToDashboard($event)" class="btn btn-outline">Go to Dashboard</button>
+    </div>
+
+    <!-- Show testimonials for all -->
     <app-testimonials></app-testimonials>
-    <app-findtalents></app-findtalents>
+
+    <!-- Show find talents for employers and unauthenticated users -->
+    <app-findtalents *ngIf="!isLoggedIn() || getUserRole() === 'employer'"></app-findtalents>
+
+    <!-- Show Q&A for all -->
     <app-q-a></app-q-a>
-    <app-cta></app-cta>
+
+    <!-- CTA only for unauthenticated users -->
+    <app-cta *ngIf="!isLoggedIn()"></app-cta>
   </section>
   <app-footer></app-footer>
 </div>

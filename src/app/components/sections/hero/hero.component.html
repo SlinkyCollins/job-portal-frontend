@@ -68,7 +68,7 @@
         <button class="searchBtn" (click)="onSearch()">SEARCH</button>
       </div>
     </div>
-    <div class="uploadCV mt-4">
+    <div class="uploadCV mt-4" *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'">
       <label for="cvUpload" class="btn px-2 py-2 px-sm-3 py-sm-2 rounded-3 fw-medium">
         Upload your CV
         <i class="bi bi-file-earmark-arrow-up"></i>

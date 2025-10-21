@@ -364,3 +364,11 @@ export class JobDetailsComponent {
       logo: '/assets/img-5.png'
     },
   ];
+
+
+      <!-- New: Admin Panel for Admins -->
+    <!-- <div class="admin-panel" *ngIf="isLoggedIn() && getUserRole() === 'admin'">
+      <h2>Admin Controls</h2>
+      <p>Site Stats: [Add dynamic stats here]</p>
+      <button routerLink="/admin" class="btn btn-warning">Manage Site</button>
+    </div> -->

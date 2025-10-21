@@ -37,32 +37,7 @@ export class NavbarComponent {
   }
 
   goToDashboard(event: Event) {
-    event.preventDefault(); // prevent normal link behavior
-
-    const role = localStorage.getItem('role');
-
-    if (!role) {
-      this.authService.toastr.error('Please log in to access your dashboard.');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    if (role === 'job_seeker') {
-      this.router.navigate(['/dashboard/jobseeker']);
-      this.authService.toastr.success('Welcome back to your dashboard!');
-    }
-    else if (role === 'employer') {
-      this.router.navigate(['/dashboard/employer']);
-      this.authService.toastr.success('Welcome back to your employer dashboard!');
-    }
-    else if (role === 'admin') {
-      this.router.navigate(['/dashboard/admin']);
-      this.authService.toastr.success('Welcome back to your admin dashboard!');
-    }
-    else {
-      this.authService.toastr.error('Unknown role. Please log in again.');
-      this.router.navigate(['/login']);
-    }
+    this.authService.goToDashboard(event);
   }
 
   toggleExploreDropdown() {

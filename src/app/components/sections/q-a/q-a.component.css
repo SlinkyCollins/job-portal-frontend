@@ -136,6 +136,11 @@
   transition: all 0.2s ease;
 }
 
+.hr-line {
+  width: 100%;
+  margin: 0 auto 1rem;
+}
+
 .customer-support div:hover {
   background-color: #f8f9fa;
 }

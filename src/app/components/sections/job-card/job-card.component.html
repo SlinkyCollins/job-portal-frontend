@@ -54,7 +54,7 @@
   </div>
 
 
-  <div class="job-posting">
+  <div class="job-posting" *ngIf="!isLoggedIn() || getUserRole() === 'employer'">
     <div class="job-text">Do you want to post a job for your company? We can help.</div>
     <span class="job-link"><a routerLink="/post-job">Click here</a></span>
   </div>
