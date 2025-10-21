@@ -1,63 +1,51 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ApiServiceService } from '../../../core/services/api-service.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-    selector: 'app-job-card',
-    imports: [CommonModule, RouterLink],
-    templateUrl: './job-card.component.html',
-    styleUrl: './job-card.component.css'
+  selector: 'app-job-card',
+  imports: [CommonModule, RouterLink],
+  templateUrl: './job-card.component.html',
+  styleUrl: './job-card.component.css'
 })
 export class JobCardComponent {
-  public jobs = [
-    {
-      title: 'Developer & expert in java c++',
-      type: 'Fulltime',
-      date: '18 Jul 2024',
-      company: 'Slack',
-      location: 'Spain, Barcelona',
-      tags: 'Developer,Coder',
-      logo: '/assets/img-2.png'
-    },
+  public jobs: any[] = [];
+  public loading: boolean = false;
+  public userRole: string | null = null;
 
-    {
-      title: 'Animator & expert in maya 3D',
-      type: 'Part time',
-      date: '25 Jul 2024',
-      company: 'Google',
-      location: 'USA,New York',
-      tags: 'Finance, Accounting',
-      logo: '/assets/img-6.png'
-    },
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiServiceService,
+    private authService: AuthService
+  ) { }
 
-    {
-      title: 'Marketing Specialist in SEO & SMM',
-      type: 'Part time',
-      date: '25 Jan 2024',
-      company: 'Pinterest',
-      location: 'USA, Alaska',
-      tags: 'Design,Artist',
-      logo: '/assets/img-3.png'
-    },
+  ngOnInit(): void {
+    this.userRole = this.authService.getUserRole();
+    this.fetchRecentJobs();
+  }
 
-    {
-      title: 'Developer & expert in javascript c++',
-      type: 'Fulltime',
-      date: '10 Feb 2024',
-      company: 'Instagram',
-      location: 'USA, California',
-      tags: 'Application,Marketing',
-      logo: '/assets/img-4.png'
-    },
+  fetchRecentJobs(): void {
+    // Logic to fetch recent jobs can be implemented here
+    this.loading = true;
 
-    {
-      title: 'Lead & Product Designer',
-      type: 'Fulltime',
-      date: '15 Feb 2024',
-      company: 'LinkedIn',
-      location: 'UK, London',
-      tags: 'Finance,Business',
-      logo: '/assets/img-5.png'
-    },
-  ];
+    this.http
+      .get<any>(`${this.apiService.apiUrl}/recent_jobs.php`)
+      .subscribe({
+        next: (res) => {
+          this.jobs = res.jobs || [];
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error fetching jobs:', err);
+          this.loading = false;
+        },
+      });
+  }
+
+  onToggleSaveJob(job: any) {
+    this.authService.toggleSaveJob(job);
+  }
 }

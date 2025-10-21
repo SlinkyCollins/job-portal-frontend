@@ -85,7 +85,7 @@
   background-color: #009c46;
 }
 
-.savejob-icon-wrapper {
+.bookmark-btn {
   width: 2.25rem;
   height: 2.25rem;
   display: flex;
@@ -96,18 +96,34 @@
   cursor: pointer;
   color: #c4c8c6;
   transition: background-color 0.2s ease, color 0.2s ease;
+
+  /* border: 2px solid #e5e7eb;
+  background: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #6b7280; */
 }
 
-.savejob-icon-wrapper:hover {
+.bookmark-btn:hover {
   background-color: #00be57;
   color: #e7f6ef;
+
+  /* border-color: #31795a;
+  background: #31795a;
+  color: white;
+  transform: scale(1.05); */
 }
 
-.savejob-icon-wrapper svg {
-  width: 1.125rem;
-  height: 1.125rem;
+.bookmark-btn.active {
+  border-color: #31795a;
+  background: #31795a;
+  color: white;
 }
-
 
 .job-posting {
   display: flex;
@@ -120,7 +136,7 @@
   font-size: clamp(0.95rem, 1vw, 1rem);
   font-weight: 500;
   line-height: 1.5;
-  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(.5rem, 2vw, .8rem);
+  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.5rem, 2vw, 0.8rem);
   text-align: center;
   max-width: 100%;
   margin: 3rem auto 0;
@@ -138,6 +154,13 @@
   color: #00be57;
   text-decoration: underline;
   margin-left: 0.25rem;
+}
+
+@media (min-width: 576px) {
+  .bookmark-btn {
+    width: 38px;
+    height: 38px;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -158,7 +181,7 @@
 @media (min-width: 768px) {
   .job-posting {
     max-width: 80% !important;
-    padding: .2rem 0;
+    padding: 0.2rem 0;
     margin: 3.5rem auto 0;
   }
 }
@@ -166,8 +189,14 @@
 @media (min-width: 992px) {
   .job-posting {
     max-width: 40rem !important;
-    padding: .2rem 0;
+    padding: 0.2rem 0;
     margin: 4rem auto 0;
+  }
+
+  .bookmark-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
   }
 }
 
@@ -183,8 +212,6 @@
     margin-top: 5rem;
   }
 }
-
-
 
 .explore-all .btn {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
@@ -261,5 +288,80 @@
 
   .new-jobs {
     padding: 0 6rem;
+  }
+}
+
+
+/* Enhanced Bookmark Button Styles */
+.bookmark-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.bookmark-btn .btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.bookmark-btn.loading {
+  background: #f8f9fa;
+  border-color: #31795a;
+  cursor: not-allowed;
+}
+
+.bookmark-btn.loading .spinner-border {
+  border-color: rgba(49, 121, 90, 0.3);
+  border-top-color: #31795a;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.bookmark-btn:disabled {
+  opacity: 0.7;
+  transform: none !important;
+}
+
+.bookmark-saved {
+  color: #31795a !important;
+}
+
+.bookmark-btn.active .bookmark-saved {
+  color: white !important;
+}
+
+/* Loading state background for better spinner visibility */
+.bookmark-btn.loading::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(49, 121, 90, 0.05);
+  border-radius: 6px;
+  z-index: 0;
+}
+
+.bookmark-btn .btn-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Pulse animation for loading state */
+.bookmark-btn.loading {
+  animation: pulse-bookmark 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-bookmark {
+  0% {
+    box-shadow: 0 0 0 0 rgba(49, 121, 90, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(49, 121, 90, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(49, 121, 90, 0);
   }
 }

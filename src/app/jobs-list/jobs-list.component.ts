@@ -81,7 +81,7 @@ export class JobsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('role');
+    this.userRole = this.authService.getUserRole();
     this.loadCategories();
 
     // One single restore flow
@@ -253,52 +253,8 @@ export class JobsListComponent implements OnInit {
     });
   }
 
-
-
   onToggleSaveJob(job: any) {
-    if (!this.authService.isLoggedIn()) {
-      this.authService.toastr.warning('Please log in to save jobs.');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    // Set loading state for this specific job
-    job.isSaving = true;
-
-    if (job.isSaved) {
-      // Call backend to unsave
-      this.authService.removeFromWishlist(job.job_id).subscribe({
-        next: (res: any) => {
-          if (res.status) {
-            job.isSaved = false;
-            this.authService.toastr.success('Job removed from saved jobs.');
-          } else {
-            this.authService.toastr.error(res.msg);
-          }
-          job.isSaving = false;
-        },
-        error: () => {
-          this.authService.toastr.error('Error removing saved job.');
-          job.isSaving = false;
-        },
-      });
-    } else {
-      this.authService.addToWishlist(job.job_id).subscribe({
-        next: (res: any) => {
-          if (res.status) {
-            job.isSaved = true;
-            this.authService.toastr.success('Job saved!');
-          } else {
-            this.authService.toastr.error(res.msg);
-          }
-          job.isSaving = false;
-        },
-        error: () => {
-          this.authService.toastr.error('Error saving job.');
-          job.isSaving = false;
-        },
-      });
-    }
+    this.authService.toggleSaveJob(job);
   }
 
   getRelativeDate(dateString: string): string {

@@ -44,6 +44,10 @@ export class AuthService {
     return !!localStorage.getItem('token') && !!localStorage.getItem('role');
   }
 
+  getUserRole(): string | null {
+    return localStorage.getItem('role');
+  }
+
   getUserData() {
     return this.http.get(`${this.apiService.apiUrl}/dashboard/user_data.php`);
   }
@@ -74,6 +78,52 @@ export class AuthService {
 
   removeFromWishlist(jobId: number) {
     return this.http.post(`${this.apiService.apiUrl}/wishlist_delete.php`, { jobId });
+  }
+
+  toggleSaveJob(job: any) {
+    if (!this.isLoggedIn()) {
+      this.toastr.warning('Please log in to save jobs.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Set loading state for this specific job
+    job.isSaving = true;
+
+    if (job.isSaved) {
+      // Call backend to unsave
+      this.removeFromWishlist(job.job_id).subscribe({
+        next: (res: any) => {
+          if (res.status) {
+            job.isSaved = false;
+            this.toastr.success('Job removed from saved jobs.');
+          } else {
+            this.toastr.error(res.msg);
+          }
+          job.isSaving = false;
+        },
+        error: () => {
+          this.toastr.error('Error removing saved job.');
+          job.isSaving = false;
+        },
+      });
+    } else {
+      this.addToWishlist(job.job_id).subscribe({
+        next: (res: any) => {
+          if (res.status) {
+            job.isSaved = true;
+            this.toastr.success('Job saved!');
+          } else {
+            this.toastr.error(res.msg);
+          }
+          job.isSaving = false;
+        },
+        error: () => {
+          this.toastr.error('Error saving job.');
+          job.isSaving = false;
+        },
+      });
+    }
   }
 
   signInWithGoogle(): Observable<UserCredential> {

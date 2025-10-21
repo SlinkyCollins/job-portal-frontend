@@ -11,17 +11,18 @@
       class="job-card d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center">
       <!-- LEFT + MAIN INFO -->
       <div class="d-flex gap-3 w-100 align-items-start">
-        <img [src]="job.logo" alt="Company Logo" class="job-logo" />
+        <img [src]="job.company_logo" alt="Company Logo" class="job-logo" />
 
         <div class="job-main">
           <h2 class="job-title">{{ job.title }}</h2>
 
           <div class="job-details">
-            <p class="job-type" [style.color]="job.type === 'Fulltime' ? '#00be57' : 'red'">{{ job.type }}</p>
+            <p class="job-type" [style.color]="job.employment_type === 'fulltime' ? '#00be57' : 'red'"
+              [style.text-transform]="'capitalize'">{{ job.employment_type }}</p>
             <p class="job-meta">
               <span style="color: #646765; font-weight: 400">
-                {{ job.date }} by
-              </span> {{ job.company }}
+                {{ job.created_at }} by
+              </span> {{ job.company_name }}
             </p>
           </div>
 
@@ -31,13 +32,17 @@
           </div>
 
           <div class="job-actions">
-            <div class="savejob-icon-wrapper" title="Save Job">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 21l-7-4l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-              </svg>
-            </div>
-            <button class="apply-btn">Apply</button>
+            <button class="btn btn-sm btn-outline-secondary bookmark-btn" title="Save Job" [class.active]="job.isSaved"
+              [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
+              *ngIf="!userRole || userRole === 'job_seeker'">
+              <div class="btn-content">
+                <div class="spinner-border spinner-border-sm" *ngIf="job.isSaving"></div>
+                <i *ngIf="!job.isSaving && !job.isSaved" class="far fa-bookmark"></i>
+                <i *ngIf="!job.isSaving && job.isSaved" class="fas fa-bookmark bookmark-saved"></i>
+              </div>
+            </button>
+
+            <button class="apply-btn" [routerLink]="['/jobdetails', job.job_id]">Apply</button>
           </div>
         </div>
       </div>
