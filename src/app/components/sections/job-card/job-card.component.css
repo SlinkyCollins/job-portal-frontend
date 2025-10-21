@@ -108,11 +108,9 @@
 }
 
 .bookmark-btn.loading {
+  background: #f8f9fa !important;
   border-color: #31795a;
-  background: rgba(49, 121, 90, 0.05);
   cursor: not-allowed;
-  /* Simplified loading background */
-  border-radius: 6px;
 }
 
 .bookmark-btn.loading .spinner-border {
