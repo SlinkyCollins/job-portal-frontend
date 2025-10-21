@@ -85,19 +85,11 @@
   background-color: #009c46;
 }
 
+/* Enhanced Bookmark Button Styles */
 .bookmark-btn {
-  width: 2.25rem;
-  height: 2.25rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #c4c8c6;
-  border-radius: 50%;
-  cursor: pointer;
-  color: #c4c8c6;
-  transition: background-color 0.2s ease, color 0.2s ease;
-
-  /* border: 2px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
   background: white;
   width: 36px;
   height: 36px;
@@ -106,23 +98,68 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  color: #6b7280; */
+  color: #6b7280;
 }
 
-.bookmark-btn:hover {
+.bookmark-btn .btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bookmark-btn.loading {
+  border-color: #31795a;
+  background: rgba(49, 121, 90, 0.05);
+  cursor: not-allowed;
+  /* Simplified loading background */
+  border-radius: 6px;
+}
+
+.bookmark-btn.loading .spinner-border {
+  border-color: rgba(49, 121, 90, 0.3);
+  border-top-color: #31795a;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.bookmark-btn:disabled {
+  opacity: 0.7;
+}
+
+.bookmark-saved {
+  color: #31795a;
+}
+
+.bookmark-btn.active .bookmark-saved {
+  color: white;
+}
+
+.bookmark-btn:hover:not(.loading):not(:disabled) {
   background-color: #00be57;
   color: #e7f6ef;
-
-  /* border-color: #31795a;
-  background: #31795a;
-  color: white;
-  transform: scale(1.05); */
+  border-color: #31795a;
+  transform: scale(1.05);
 }
 
 .bookmark-btn.active {
   border-color: #31795a;
   background: #31795a;
   color: white;
+}
+
+/* Simplified pulse animation (optional, remove if not needed) */
+.bookmark-btn.loading {
+  animation: pulse-bookmark 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-bookmark {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(49, 121, 90, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(49, 121, 90, 0);
+  }
 }
 
 .job-posting {
@@ -288,80 +325,5 @@
 
   .new-jobs {
     padding: 0 6rem;
-  }
-}
-
-
-/* Enhanced Bookmark Button Styles */
-.bookmark-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.bookmark-btn .btn-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.bookmark-btn.loading {
-  background: #f8f9fa;
-  border-color: #31795a;
-  cursor: not-allowed;
-}
-
-.bookmark-btn.loading .spinner-border {
-  border-color: rgba(49, 121, 90, 0.3);
-  border-top-color: #31795a;
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
-.bookmark-btn:disabled {
-  opacity: 0.7;
-  transform: none !important;
-}
-
-.bookmark-saved {
-  color: #31795a !important;
-}
-
-.bookmark-btn.active .bookmark-saved {
-  color: white !important;
-}
-
-/* Loading state background for better spinner visibility */
-.bookmark-btn.loading::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(49, 121, 90, 0.05);
-  border-radius: 6px;
-  z-index: 0;
-}
-
-.bookmark-btn .btn-content {
-  position: relative;
-  z-index: 1;
-}
-
-/* Pulse animation for loading state */
-.bookmark-btn.loading {
-  animation: pulse-bookmark 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse-bookmark {
-  0% {
-    box-shadow: 0 0 0 0 rgba(49, 121, 90, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 6px rgba(49, 121, 90, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(49, 121, 90, 0);
   }
 }
