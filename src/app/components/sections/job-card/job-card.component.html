@@ -7,42 +7,74 @@
   </div>
 
   <div class="view-jobs-wrapper">
-    <div *ngFor="let job of jobs"
-      class="job-card d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center">
-      <!-- LEFT + MAIN INFO -->
-      <div class="d-flex gap-3 w-100 align-items-start">
-        <img [src]="job.company_logo" alt="Company Logo" class="job-logo" />
+    <!-- Skeleton Loader -->
+    <div *ngIf="loading" class="skeleton-cards">
+      <div *ngFor="let i of [1,2,3,4,5]" class="job-card skeleton d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center">
+        <!-- LEFT + MAIN INFO -->
+        <div class="d-flex gap-3 w-100 align-items-start">
+          <div class="job-logo skeleton-item"></div>
 
-        <div class="job-main">
-          <h2 class="job-title">{{ job.title }}</h2>
+          <div class="job-main">
+            <div class="job-title skeleton-item"></div>
 
-          <div class="job-details">
-            <p class="job-type" [style.color]="job.employment_type === 'fulltime' ? '#00be57' : 'red'"
-              [style.text-transform]="'capitalize'">{{ job.employment_type }}</p>
-            <p class="job-meta">
-              <span style="color: #646765; font-weight: 400">
-                {{ job.created_at | relativeTime }} by
-              </span> {{ job.company_name }}
-            </p>
+            <div class="job-details">
+              <div class="job-type skeleton-item"></div>
+              <div class="job-meta skeleton-item"></div>
+            </div>
+
+            <div class="job-location-tags">
+              <div class="job-location skeleton-item"></div>
+              <div class="job-tags skeleton-item"></div>
+            </div>
+
+            <div class="job-actions">
+              <div class="bookmark-btn skeleton-item"></div>
+              <div class="apply-btn skeleton-item"></div>
+            </div>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <div class="job-location-tags">
-            <p class="job-location">{{ job.location }}</p>
-            <p class="job-tags">{{ job.tags }}</p>
-          </div>
+    <!-- Actual Jobs -->
+    <div *ngIf="!loading">
+      <div *ngFor="let job of jobs"
+        class="job-card d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center">
+        <!-- LEFT + MAIN INFO -->
+        <div class="d-flex gap-3 w-100 align-items-start">
+          <img [src]="job.company_logo" alt="Company Logo" class="job-logo" />
 
-          <div class="job-actions">
-            <button class="btn btn-sm btn-outline-secondary bookmark-btn" title="Save Job" [class.active]="job.isSaved"
-              [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
-              *ngIf="!userRole || userRole === 'job_seeker'">
-              <div class="btn-content">
-                <div class="spinner-border spinner-border-sm" *ngIf="job.isSaving"></div>
-                <i *ngIf="!job.isSaving && !job.isSaved" class="far fa-bookmark"></i>
-                <i *ngIf="!job.isSaving && job.isSaved" class="fas fa-bookmark bookmark-saved"></i>
-              </div>
-            </button>
+          <div class="job-main">
+            <h2 class="job-title">{{ job.title }}</h2>
 
-            <button class="apply-btn" [routerLink]="['/jobdetails', job.job_id]">Apply</button>
+            <div class="job-details">
+              <p class="job-type" [style.color]="job.employment_type === 'fulltime' ? '#00be57' : 'red'"
+                [style.text-transform]="'capitalize'">{{ job.employment_type }}</p>
+              <p class="job-meta">
+                <span style="color: #646765; font-weight: 400">
+                  {{ job.created_at | relativeTime }} by
+                </span> {{ job.company_name }}
+              </p>
+            </div>
+
+            <div class="job-location-tags">
+              <p class="job-location">{{ job.location }}</p>
+              <p class="job-tags">{{ job.tags }}</p>
+            </div>
+
+            <div class="job-actions">
+              <button class="btn btn-sm btn-outline-secondary bookmark-btn" title="Save Job" [class.active]="job.isSaved"
+                [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
+                *ngIf="!userRole || userRole === 'job_seeker'">
+                <div class="btn-content">
+                  <div class="spinner-border spinner-border-sm" *ngIf="job.isSaving"></div>
+                  <i *ngIf="!job.isSaving && !job.isSaved" class="far fa-bookmark"></i>
+                  <i *ngIf="!job.isSaving && job.isSaved" class="fas fa-bookmark bookmark-saved"></i>
+                </div>
+              </button>
+
+              <button class="apply-btn" [routerLink]="['/jobdetails', job.job_id]">Apply</button>
+            </div>
           </div>
         </div>
       </div>

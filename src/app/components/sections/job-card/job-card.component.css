@@ -312,16 +312,84 @@
   }
 }
 
-@media (min-width: 1400px) {
-  .new-jobs .header {
-    font-size: clamp(4rem, 3vw, 4.5rem);
-  }
+/* Skeleton Loader Styles */
+.skeleton-item {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
 
-  .job-card {
-    padding: 2.5rem;
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
   }
+  100% {
+    background-position: 200% 0;
+  }
+}
 
-  .new-jobs {
-    padding: 0 6rem;
+/* Skeleton specific heights and widths */
+.skeleton .job-logo.skeleton-item {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+}
+
+.skeleton .job-title.skeleton-item {
+  height: 1.5rem;
+  width: 70%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton .job-type.skeleton-item {
+  height: 1rem;
+  width: 40%;
+  margin-bottom: 0.25rem;
+}
+
+.skeleton .job-meta.skeleton-item {
+  height: 1rem;
+  width: 50%;
+  margin-bottom: 0.25rem;
+}
+
+.skeleton .job-location.skeleton-item {
+  height: 1rem;
+  width: 30%;
+  margin-bottom: 0.25rem;
+}
+
+.skeleton .job-tags.skeleton-item {
+  height: 1rem;
+  width: 50%;
+  margin-bottom: 1rem;
+}
+
+.skeleton .bookmark-btn.skeleton-item {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.skeleton .apply-btn.skeleton-item {
+  height: 2rem;
+  width: 80px;
+  border-radius: 1.875rem;
+}
+
+/* Responsive skeleton adjustments */
+@media (min-width: 576px) {
+  .skeleton .bookmark-btn.skeleton-item {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (min-width: 992px) {
+  .skeleton .bookmark-btn.skeleton-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
   }
 }
