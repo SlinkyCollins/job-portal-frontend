@@ -9,6 +9,7 @@ import { AuthService } from '../core/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from '../core/services/api-service.service';
 import { CategoryService } from '../core/services/category.service';
+import { RelativeTimePipe } from '../core/pipes/relative-time.pipe';
 
 @Component({
   selector: 'app-job-list',
@@ -20,6 +21,7 @@ import { CategoryService } from '../core/services/category.service';
     RouterLink,
     NavbarComponent,
     FooterComponent,
+    RelativeTimePipe
   ],
   styleUrls: ['./jobs-list.component.css'],
 })
@@ -255,18 +257,6 @@ export class JobsListComponent implements OnInit {
 
   onToggleSaveJob(job: any) {
     this.authService.toggleSaveJob(job);
-  }
-
-  getRelativeDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 1) return '1D ago';
-    if (diffDays < 7) return `${diffDays}D ago`;
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)}W ago`;
-    return `${Math.ceil(diffDays / 30)}M ago`;
   }
 
   toggleFilterModal(): void {

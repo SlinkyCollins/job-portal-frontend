@@ -5,10 +5,11 @@ import { CtaComponent } from "../components/sections/cta/cta.component"
 import { AuthService } from "../core/services/auth.service"
 import { NavbarComponent } from "../components/sections/navbar/navbar.component"
 import { FooterComponent } from "../components/sections/footer/footer.component"
+import { RelativeTimePipe } from "../core/pipes/relative-time.pipe"
 
 @Component({
   selector: "app-job-details",
-  imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent, RouterLink],
+  imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent, RouterLink, RelativeTimePipe],
   templateUrl: "./job-details.component.html",
   styleUrls: ["./job-details.component.css"],
   standalone: true,
@@ -133,18 +134,6 @@ export class JobDetailsComponent implements OnInit {
 
   toggleDescription(): void {
     this.showFullDescription = !this.showFullDescription
-  }
-
-  getRelativeDate(dateString: string): string {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - date.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 1) return "1 day ago"
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
-    return `${Math.ceil(diffDays / 30)} months ago`
   }
 
   fetchRelatedJobs(): void {

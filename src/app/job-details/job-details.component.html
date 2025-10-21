@@ -11,7 +11,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8 text-center" *ngIf="!isLoading && job">
-          <p class="post-date">{{ getRelativeDate(job.created_at) }}</p>
+          <p class="post-date">{{ job.created_at | relativeTime }}</p>
           <h1 class="hero-title">{{job.title}}</h1>
           <p class="hero-subtitle">Here is the job details & requirements</p>
         </div>
@@ -180,7 +180,7 @@
               <div class="card-body">
                 <div class="info-item">
                   <strong>Published:</strong>
-                  <span>{{ getRelativeDate(job.created_at) }}</span>
+                  <span>{{ job.created_at | relativeTime }}</span>
                 </div>
                 <div class="info-item">
                   <strong>Location:</strong>

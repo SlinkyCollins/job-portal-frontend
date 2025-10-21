@@ -4,10 +4,11 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiServiceService } from '../../../core/services/api-service.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { RelativeTimePipe } from '../../../core/pipes/relative-time.pipe';
 
 @Component({
   selector: 'app-job-card',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RelativeTimePipe],
   templateUrl: './job-card.component.html',
   styleUrl: './job-card.component.css'
 })
