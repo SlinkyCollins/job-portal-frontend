@@ -268,12 +268,30 @@
 
 
         <!-- Job Cards -->
-        <ng-container *ngIf="loading">
-          <div class="loading-container">
-            <div class="loading-spinner"></div>
-            <p>Loading jobs...</p>
+        <div class="row" *ngIf="loading">
+          <div class="col-md-6 col-xl-4 mb-4" *ngFor="let i of [1,2,3,4,5,6,7,8,9]">
+            <div class="job-card skeleton">
+              <div class="job-card-header">
+                <div class="skeleton-item" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                <div class="bookmark-btn skeleton-item"></div>
+              </div>
+
+              <div class="job-type-badge">
+                <div class="skeleton-item" style="height: 1rem; width: 60px; border-radius: 16px;"></div>
+              </div>
+
+              <div class="job-title skeleton-item" style="height: 1.5rem; width: 80%; margin-bottom: 12px;"></div>
+
+              <div class="job-salary skeleton-item" style="height: 1.2rem; width: 50%; margin-bottom: 10px;"></div>
+
+              <div class="job-location skeleton-item" style="height: 1rem; width: 40%; margin-bottom: 20px;"></div>
+
+              <div class="job-createdat skeleton-item" style="height: 1rem; width: 30%; margin-bottom: 20px;"></div>
+
+              <div class="btn-apply skeleton-item" style="height: 2.5rem; width: 100%; border-radius: 10px;"></div>
+            </div>
           </div>
-        </ng-container>
+        </div>
 
         <div *ngIf="!loading && jobs.length === 0" class="text-center my-5">
           <p>No jobs available</p>
