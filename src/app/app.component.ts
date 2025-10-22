@@ -10,7 +10,7 @@ import {
 } from '@angular/router';
 import { ScrolltopbtnComponent } from './components/ui/scrolltopbtn/scrolltopbtn.component';
 import { filter } from 'rxjs/operators';
-import { Auth } from '@angular/fire/auth';
+// import { Auth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -20,32 +20,36 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  loading = false;
+ loading = false;
   private navigationStartTime = 0;
 
-  constructor(private router: Router, private auth: Auth) {
+  constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         this.loading = true;
         this.navigationStartTime = Date.now();
       }
 
-      if (
-        event instanceof NavigationEnd ||
-        event instanceof NavigationCancel ||
-        event instanceof NavigationError
-      ) {
-        const elapsed = Date.now() - this.navigationStartTime;
-        const minTime = 300; // ms
-        const delay = Math.max(0, minTime - elapsed);
-
-        setTimeout(() => {
-          this.loading = false;
-        }, delay);
+      if (event instanceof NavigationEnd) {
+        this.handleNavigationEnd();
+      } else if (event instanceof NavigationCancel) {
+        console.warn('Navigation cancelled');
+        this.handleNavigationEnd();
+      } else if (event instanceof NavigationError) {
+        console.error('Navigation error:', event.error);
+        this.handleNavigationEnd();
       }
     });
+  }
 
-    // console.log('Firebase Auth:', this.auth);
+  private handleNavigationEnd(): void {
+    const elapsed = Date.now() - this.navigationStartTime;
+    const minTime = 300; // ms
+    const delay = Math.max(0, minTime - elapsed);
+
+    setTimeout(() => {
+      this.loading = false;
+    }, delay);
   }
 
   title = 'JobPortal';
