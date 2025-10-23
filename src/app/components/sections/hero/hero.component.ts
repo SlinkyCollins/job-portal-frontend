@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiServiceService } from '../../../core/services/api-service.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CategoryService } from '../../../core/services/category.service';
@@ -94,7 +92,14 @@ export class HeroComponent {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      // Basic validation (optional)
+      // Early auth check for better UX
+      if (!this.authService.isLoggedIn()) {
+        this.authService.toastr.error('You must be logged in to upload a CV.');
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      // Basic validation
       const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
       if (!allowedTypes.includes(file.type)) {
         this.authService.toastr.error('Please select a valid CV file (PDF or DOC).');
@@ -105,16 +110,18 @@ export class HeroComponent {
         return;
       }
 
-      this.selectedFileName = file.name;  // This updates the binding
+      this.selectedFileName = file.name;
       this.authService.toastr.info(`"${file.name}" selected ✅`);
 
       this.authService.uploadCV(file).subscribe({
         next: (response) => {
           console.log('Upload response:', response);
           this.authService.toastr.success('CV uploaded successfully!');
-          // Optional: Reset after success
-          event.target.value = '';
-          this.selectedFileName = 'No file chosen';
+          // Optional: Reset after success with a short delay
+          setTimeout(() => {
+            event.target.value = '';
+            this.selectedFileName = 'No file chosen';
+          }, 1500);
         },
         error: (err) => {
           console.error('CV upload error:', err);
@@ -122,7 +129,7 @@ export class HeroComponent {
         }
       });
     } else {
-      this.selectedFileName = 'No file chosen';  // This updates the binding
+      this.selectedFileName = 'No file chosen';
     }
   }
 }
