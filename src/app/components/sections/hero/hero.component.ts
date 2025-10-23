@@ -23,8 +23,6 @@ export class HeroComponent {
   allCategories: any[] = [];
 
   constructor(
-    private http: HttpClient,
-    private apiService: ApiServiceService,
     private router: Router,
     private authService: AuthService,
     private categoryService: CategoryService
@@ -96,11 +94,35 @@ export class HeroComponent {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedFileName = file.name;
-      document.getElementById("fileName")!.textContent = file.name;
+      // Basic validation (optional)
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!allowedTypes.includes(file.type)) {
+        this.authService.toastr.error('Please select a valid CV file (PDF or DOC).');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        this.authService.toastr.error('File size must be less than 5MB.');
+        return;
+      }
+
+      this.selectedFileName = file.name;  // This updates the binding
+      this.authService.toastr.info(`"${file.name}" selected ✅`);
+
+      this.authService.uploadCV(file).subscribe({
+        next: (response) => {
+          console.log('Upload response:', response);
+          this.authService.toastr.success('CV uploaded successfully!');
+          // Optional: Reset after success
+          event.target.value = '';
+          this.selectedFileName = 'No file chosen';
+        },
+        error: (err) => {
+          console.error('CV upload error:', err);
+          this.authService.toastr.error('CV upload failed. Please try again.');
+        }
+      });
     } else {
-      this.selectedFileName = 'No file chosen';
-      document.getElementById("fileName")!.textContent = 'No file chosen';
+      this.selectedFileName = 'No file chosen';  // This updates the binding
     }
   }
 }
