@@ -217,7 +217,7 @@ export class AuthService {
 
   uploadCV(file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('cv', file);
+    formData.append('file', file);
 
     return this.http.post(`${this.apiService.apiUrl}/upload_cv.php`, formData);
   }
