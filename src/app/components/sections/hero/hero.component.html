@@ -74,7 +74,7 @@
         <i class="bi bi-file-earmark-arrow-up"></i>
       </label>
       <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" />
-      <span class="ms-3 text-muted">{{ selectedFileName }}</span> <!-- Use binding instead of DOM manipulation -->
+      <span class="ms-3 text-muted" *ngIf="selectedFileName !== 'No file chosen'">{{ selectedFileName }}</span> <!-- Use binding instead of DOM manipulation -->
     </div>
   </div>
 </section>
