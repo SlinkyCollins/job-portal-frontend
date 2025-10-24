@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgZone, RESPONSE_INIT } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
@@ -28,6 +28,7 @@ export class AuthService {
           localStorage.removeItem('token');
           localStorage.removeItem('role');
           localStorage.removeItem('photoURL'); // Clear photoURL
+          localStorage.removeItem('user_cv'); // Clear uploaded CV
           this.router.navigate(['/login']);
         } else {
           this.toastr.error('Logout failed');
@@ -219,7 +220,10 @@ export class AuthService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`${this.apiService.apiUrl}/upload_cv.php`, formData);
+    return this.http.post(`${this.apiService.apiUrl}/upload_cv.php`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
   getPhotoURL(): string {

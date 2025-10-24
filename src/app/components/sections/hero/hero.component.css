@@ -206,6 +206,34 @@
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
+.custom-progress {
+  /* width: 200px; */ /* Replaced static width */
+  width: 100%; /* Use 100% of its flex container */
+  max-width: 200px; /* But cap it at 200px on larger screens */
+  height: 20px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.custom-progress-bar {
+  height: 100%;
+  background-color: #00be57; /* Your brand color */
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* color: white; */ /* White text on a light-grey bg is hard to read at 0% */
+  color: #333; /* Dark text is readable on both the grey bg and green bar */
+  font-size: 12px;
+  font-weight: bold;
+}
+
 /* Positioning for different screen sizes */
 @media (min-width: 576px) {
   .hero-icon-1 {

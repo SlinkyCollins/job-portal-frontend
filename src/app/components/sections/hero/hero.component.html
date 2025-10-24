@@ -28,9 +28,9 @@
       <p>Jobs & Job search. Find jobs in global. Executive jobs & work.</p>
     </div>
     <div class="heroSearch d-flex flex-column flex-md-row gap-md-3">
-      <div class="flex-fill customSelectWrapper" [class.open]="isSelectOpen1" (click)="toggleSelectOpen()">
+      <div class="flex-fill customSelectWrapper" [class.open]="isSelectOpen" (click)="toggleSelectOpen()">
         <label for="job_category" class="form-label">Job Categories</label>
-        <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen1 = false"
+        <select id="job_category" class="formSelect form-control search-input" (blur)="isSelectOpen = false"
           [(ngModel)]="searchCategory">
           <!-- default placeholder -->
           <option [ngValue]="null" disabled [selected]="searchCategory === null">Select an option</option>
@@ -68,13 +68,26 @@
         <button class="searchBtn" (click)="onSearch()">SEARCH</button>
       </div>
     </div>
-    <div class="uploadCV mt-4" *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'">
+
+    <div class="uploadCV mt-4 d-flex flex-column flex-md-row align-items-md-center"
+      *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'">
       <label for="cvUpload" class="btn px-2 py-2 px-sm-3 py-sm-2 rounded-3 fw-medium">
-        Upload your CV
+        {{ uploadedCV ? 'Replace CV' : 'Upload your CV' }}
         <i class="bi bi-file-earmark-arrow-up"></i>
       </label>
-      <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" />
-      <span class="ms-3 text-muted" *ngIf="selectedFileName !== 'No file chosen'">{{ selectedFileName }}</span> <!-- Use binding instead of DOM manipulation -->
+      <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" />
+
+      <div *ngIf="isUploading" class="custom-progress mt-2 mt-md-0 ms-md-3">
+        <div class="custom-progress-bar" [style.width.%]="uploadProgress"></div>
+        <span class="progress-text">{{ uploadProgress }}%</span>
+      </div>
+
+      <div *ngIf="uploadedCV && !isUploading" class="d-flex align-items-center mt-2 mt-md-0 ms-md-3">
+        <span class="text-success me-2">{{ selectedFileName }}</span>
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteCV()" title="Delete CV">
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </div>
     </div>
   </div>
 </section>
