@@ -43,13 +43,8 @@ export class AppComponent implements OnInit {
   }
 
   private handleNavigationEnd(): void {
-    const elapsed = Date.now() - this.navigationStartTime;
-    const minTime = 300; // ms
-    const delay = Math.max(0, minTime - elapsed);
-
-    setTimeout(() => {
-      this.loading = false;
-    }, delay);
+    // Removed delay calculation for natural loading feel
+    this.loading = false;
   }
 
   title = 'JobPortal';
