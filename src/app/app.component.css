@@ -15,7 +15,7 @@
 }
 
 .loader-logo {
-  width: 150px; /* Adjust size as needed */
+  width: 180px; /* Adjust size as needed */
   height: auto;
   animation: scalePulse 1.5s ease-in-out infinite; /* Scaling animation */
   margin-bottom: 20px; /* Space between logo and text */
@@ -23,8 +23,8 @@
 
 .loading-text {
   color: #333;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 400;
   margin: 0;
 }
 
@@ -45,9 +45,9 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .loader-logo {
-    width: 80px; /* Smaller on mobile */
+    width: 100px; /* Smaller on mobile */
   }
   .loading-text {
-    font-size: 14px;
+    font-size: 15px;
   }
 }
