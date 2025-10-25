@@ -328,7 +328,7 @@
 
               <div class="job-location">{{ job.location }}</div>
 
-              <div class="job-createdat">{{ job.created_at | relativeTime }}</div>
+              <div class="job-createdat">{{ job.published_at | relativeTime }}</div>
 
               <a [routerLink]="['/jobdetails', job.job_id]">
                 <button class="btn-apply w-100 mt-3">APPLY</button>
