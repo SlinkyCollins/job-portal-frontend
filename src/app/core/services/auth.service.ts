@@ -98,6 +98,10 @@ export class AuthService {
     return this.http.get(`${this.apiService.apiUrl}/jobdetails.php?id=${jobId}`);
   }
 
+  getSeekerProfile() {
+    return this.http.get(`${this.apiService.apiUrl}/get_seeker_profile.php`);
+  }
+
   applyToJob(jobId: number) {
     return this.http.post(`${this.apiService.apiUrl}/apply.php`, { jobId });
   }
@@ -216,14 +220,19 @@ export class AuthService {
     });
   }
 
-  uploadCV(file: File): Observable<any> {
+  uploadCV(file: File, filename: string): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('filename', filename);  // Send to backend
 
     return this.http.post(`${this.apiService.apiUrl}/upload_cv.php`, formData, {
       reportProgress: true,
       observe: 'events'
     });
+  }
+
+  deleteCV(): Observable<any> {
+    return this.http.post(`${this.apiService.apiUrl}/delete_cv.php`, {});
   }
 
   getPhotoURL(): string {

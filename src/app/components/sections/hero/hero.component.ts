@@ -21,21 +21,46 @@ export class HeroComponent implements OnInit {
   public selectedFileName: string = 'No file chosen';
   public uploadProgress: number = 0;
   public isUploading: boolean = false;
-  public uploadedCV: string = '';
+  public uploadedCV: string = ''; // Now tied to profile data
+  public profileData: any[] = [];
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.loadSeekerProfile(); // Renamed for clarity
     this.loadCategories();
     this.restoreSearchState();
-    // Restore uploaded CV from localStorage
-    this.uploadedCV = localStorage.getItem('user_cv') || '';
+  }
+
+  loadSeekerProfile() {
+    this.authService.getSeekerProfile().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.profileData = response.profile;
+          this.uploadedCV = response.profile.cv_url || '';
+          // Use cv_filename from backend instead of extracting from URL
+          this.selectedFileName = response.profile.cv_filename || 'No file chosen';
+          console.log('Profile loaded:', response);
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch profile:', err);
+        this.uploadedCV = '';
+        this.selectedFileName = 'No file chosen';
+      }
+    });
+  }
+
+  downloadCV() {
     if (this.uploadedCV) {
-      this.selectedFileName = 'CV Uploaded'; // Or fetch filename from backend
+      const link = document.createElement('a');
+      link.href = this.uploadedCV;
+      link.download = 'My_CV';
+      link.click();
     }
   }
 
@@ -117,37 +142,36 @@ export class HeroComponent implements OnInit {
       }
       this.selectedFileName = file.name;
       this.authService.toastr.info(`"${file.name}" selected ✅`);
-      this.uploadFile(file);
+      this.uploadFile(file, this.selectedFileName);
     } else {
       this.selectedFileName = 'No file chosen';
     }
   }
 
-  uploadFile(file: File) {
+  uploadFile(file: File, filename: string) {
     this.isUploading = true;
     this.uploadProgress = 0;
-    this.authService.uploadCV(file).subscribe({
+    // Pass the original filename to the service (update AuthService.uploadCV to accept it)
+    this.authService.uploadCV(file, filename).subscribe({  // Assuming you modify the service
       next: (event) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
-          // This is the real-time progress calculation
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);
         } else if (event.type === HttpEventType.Response) {
           const res = event.body;
           if (res.status) {
             this.authService.toastr.success('CV uploaded successfully ✅');
-            this.uploadedCV = res.url; // 'res.url' from your backend
-            this.selectedFileName = file.name; // Set filename on success
-            localStorage.setItem('user_cv', res.url);
+            // Refetch profile to sync uploadedCV and filename with backend
+            this.loadSeekerProfile();
           } else {
             this.authService.toastr.error(res.message);
           }
-          this.isUploading = false; // Hide progress bar
+          this.isUploading = false;
         }
       },
       error: (err) => {
         console.error('CV upload error:', err);
         this.authService.toastr.error('CV upload failed. Please try again.');
-        this.isUploading = false; // Hide progress bar on error
+        this.isUploading = false;
         this.uploadProgress = 0;
         this.selectedFileName = this.uploadedCV ? 'Your CV' : 'No file chosen';
       },
@@ -155,24 +179,20 @@ export class HeroComponent implements OnInit {
   }
 
   deleteCV() {
-    // Optional: Add a confirmation dialog
     if (!confirm('Are you sure you want to delete your CV?')) {
       return;
     }
 
-    // this.authService.deleteCV().subscribe({
-    //   next: () => {
-    //     this.authService.toastr.success('CV deleted successfully!');
-    //     this.uploadedCV = '';
-    //     this.selectedFileName = 'No file chosen';
-    //     localStorage.removeItem('user_cv');
-    //   },
-    //   error: (err) => {
-    //     console.error('Delete error:', err);
-    //     this.authService.toastr.error(
-    //       'Failed to delete CV. Please try again.'
-    //     );
-    //   },
-    // });
+    this.authService.deleteCV().subscribe({
+      next: () => {
+        this.authService.toastr.success('CV deleted successfully!');
+        // Refetch profile to sync uploadedCV with backend
+        this.loadSeekerProfile();
+      },
+      error: (err) => {
+        console.error('Delete error:', err);
+        this.authService.toastr.error('Failed to delete CV. Please try again.');
+      },
+    });
   }
 }
