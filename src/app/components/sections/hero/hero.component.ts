@@ -23,6 +23,7 @@ export class HeroComponent implements OnInit {
   public isUploading: boolean = false;
   public uploadedCV: string = ''; // Now tied to profile data
   public profileData: any[] = [];
+  public showDeleteModal: boolean = false;  // For delete confirmation modal
 
   constructor(
     private router: Router,
@@ -53,15 +54,6 @@ export class HeroComponent implements OnInit {
         this.selectedFileName = 'No file chosen';
       }
     });
-  }
-
-  downloadCV() {
-    if (this.uploadedCV) {
-      const link = document.createElement('a');
-      link.href = this.uploadedCV;
-      link.download = 'My_CV';
-      link.click();
-    }
   }
 
   isLoggedIn(): boolean {
@@ -179,20 +171,29 @@ export class HeroComponent implements OnInit {
   }
 
   deleteCV() {
-    if (!confirm('Are you sure you want to delete your CV?')) {
-      return;
-    }
+    // Remove the confirm() call; use the modal instead
+    this.openDeleteModal();
+  }
 
+  openDeleteModal() {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+  }
+
+  confirmDelete() {
     this.authService.deleteCV().subscribe({
       next: () => {
         this.authService.toastr.success('CV deleted successfully!');
-        // Refetch profile to sync uploadedCV with backend
-        this.loadSeekerProfile();
+        this.closeDeleteModal();
+        this.loadSeekerProfile();  // Refetch to hide filename and show upload button
       },
       error: (err) => {
-        console.error('Delete error:', err);
         this.authService.toastr.error('Failed to delete CV. Please try again.');
-      },
+        this.closeDeleteModal();
+      }
     });
   }
 }
