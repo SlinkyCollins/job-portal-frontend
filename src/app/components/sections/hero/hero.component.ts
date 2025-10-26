@@ -24,6 +24,8 @@ export class HeroComponent implements OnInit {
   public uploadedCV: string = ''; // Now tied to profile data
   public profileData: any[] = [];
   public showDeleteModal: boolean = false;  // For delete confirmation modal
+  public isDeleting: boolean = false;  // For delete modal loading
+  public isRefetching: boolean = false;  // For post-upload refetch
 
   constructor(
     private router: Router,
@@ -40,6 +42,8 @@ export class HeroComponent implements OnInit {
   loadSeekerProfile() {
     this.authService.getSeekerProfile().subscribe({
       next: (response: any) => {
+        this.isRefetching = false;  // Hide refetch loader
+        this.isUploading = false;  // Ensure upload state resets
         if (response.status) {
           this.profileData = response.profile;
           this.uploadedCV = response.profile.cv_url || '';
@@ -49,6 +53,8 @@ export class HeroComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.isRefetching = false; 
+        this.isUploading = false; 
         console.error('Failed to fetch profile:', err);
         this.uploadedCV = '';
         this.selectedFileName = 'No file chosen';
@@ -152,6 +158,7 @@ export class HeroComponent implements OnInit {
           const res = event.body;
           if (res.status) {
             this.authService.toastr.success('CV uploaded successfully ✅');
+            this.isRefetching = true;  // Show refetch loader
             // Refetch profile to sync uploadedCV and filename with backend
             this.loadSeekerProfile();
           } else {
@@ -184,15 +191,18 @@ export class HeroComponent implements OnInit {
   }
 
   confirmDelete() {
+    this.isDeleting = true;
     this.authService.deleteCV().subscribe({
       next: () => {
-        this.authService.toastr.success('CV deleted successfully!');
         this.closeDeleteModal();
+        this.authService.toastr.success('CV deleted successfully!');
+        this.isDeleting = false;
         this.loadSeekerProfile();  // Refetch to hide filename and show upload button
       },
       error: (err) => {
         this.authService.toastr.error('Failed to delete CV. Please try again.');
         this.closeDeleteModal();
+        this.isDeleting = false;
       }
     });
   }

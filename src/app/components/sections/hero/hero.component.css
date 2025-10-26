@@ -234,6 +234,33 @@
   font-weight: bold;
 }
 
+/* Disabled Button State */
+.uploadCV .btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.uploadCV .btn.disabled i.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Modal Button Disabled State */
+.btn-confirm:disabled, .btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-confirm:disabled i.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Filename Container */
 .filename-container {
   display: flex;

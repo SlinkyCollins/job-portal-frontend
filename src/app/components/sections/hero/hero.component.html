@@ -71,11 +71,14 @@
 
     <div class="uploadCV mt-4" *ngIf="!isLoggedIn() || getUserRole() === 'job_seeker'">
       <!-- Upload Button: Show only if no CV uploaded -->
-      <label for="cvUpload" *ngIf="!uploadedCV" class="btn px-2 py-2 px-sm-3 py-sm-2 rounded-3 fw-medium">
-        Upload your CV
-        <i class="bi bi-file-earmark-arrow-up"></i>
+      <label for="cvUpload" [class.disabled]="isUploading || isRefetching" *ngIf="!uploadedCV"
+        class="btn px-2 py-2 px-sm-3 py-sm-2 rounded-3 fw-medium">
+        {{ isUploading ? 'Uploading...' : isRefetching ? 'Processing...' : 'Upload your CV' }}
+        <i *ngIf="!isUploading && !isRefetching" class="bi bi-file-earmark-arrow-up"></i>
+        <i *ngIf="isUploading || isRefetching" class="fas fa-spinner fa-spin"></i>
       </label>
-      <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" />
+      <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx"
+        [disabled]="isUploading || isRefetching" />
 
       <!-- Progress Bar: Show during upload -->
       <div *ngIf="isUploading" class="custom-progress mt-2 mt-md-0 ms-md-3">
@@ -111,8 +114,11 @@
       <p class="modal-subtitle">This action cannot be undone.</p>
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
-      <button class="btn-confirm" (click)="confirmDelete()">Delete</button>
+      <button class="btn-cancel" (click)="closeDeleteModal()" [disabled]="isDeleting">Cancel</button>
+      <button class="btn-confirm" (click)="confirmDelete()" [disabled]="isDeleting">
+        {{ isDeleting ? 'Deleting...' : 'Delete' }}
+        <i *ngIf="isDeleting" class="fas fa-spinner fa-spin ms-2"></i>
+      </button>
     </div>
   </div>
 </div>
