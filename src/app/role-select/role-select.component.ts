@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from '../core/services/api-service.service';
-import { AuthService } from '../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

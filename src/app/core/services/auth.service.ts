@@ -11,6 +11,9 @@ import { catchError, from, Observable, switchMap } from 'rxjs';
 })
 
 export class AuthService {
+  public isGoogleLoading: boolean = false;
+  public isFacebookLoading: boolean = false;
+
   constructor(
     public http: HttpClient,
     public router: Router,
@@ -161,8 +164,10 @@ export class AuthService {
   }
 
   signInWithGoogle(): Observable<UserCredential> {
+    this.isGoogleLoading = true;  // Start loading for Google
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new GoogleAuthProvider()))).pipe(
       catchError(err => {
+        this.isGoogleLoading = false;  // Stop on error
         if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
@@ -175,8 +180,10 @@ export class AuthService {
   }
 
   signInWithFacebook(): Observable<UserCredential> {
+    this.isFacebookLoading = true;  // Start loading for Facebook
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {
+        this.isFacebookLoading = false;  // Stop on error
         if (err.code === 'auth/account-exists-with-different-credential') {
           this.toastr.error('Account exists with different provider. Try another login method.');
           console.warn('Facebook login error:', err);
@@ -192,6 +199,7 @@ export class AuthService {
   }
 
   handleSocialLogin(credential: UserCredential): void {
+    // Note: This is called after popup success, so loading is already true
     this.ngZone.run(() => {
       const user = credential.user;
       if (user) {
@@ -202,6 +210,9 @@ export class AuthService {
           })
         ).subscribe({
           next: (response: any) => {
+            // Stop loading for the specific provider
+            this.isGoogleLoading = false;
+            this.isFacebookLoading = false;
             if (response.status) {
               localStorage.setItem('token', response.token);
               localStorage.setItem('role', response.user.role);
@@ -212,10 +223,17 @@ export class AuthService {
             }
           },
           error: (err) => {
+            // Stop loading for the specific provider
+            this.isGoogleLoading = false;
+            this.isFacebookLoading = false;
             console.warn('Backend error:', err); // Debug
             this.toastr.error('Login failed: ' + (err.message || 'Unknown error'));
           }
         });
+      } else {
+        // Stop if no user
+        this.isGoogleLoading = false;  
+        this.isFacebookLoading = false;
       }
     });
   }

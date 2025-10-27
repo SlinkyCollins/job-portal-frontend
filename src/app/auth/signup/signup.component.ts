@@ -71,14 +71,11 @@ export class SignupComponent {
 
 
   googleLogin() {
-    this.loading = true;
     this.authService.signInWithGoogle().subscribe({
-    next: (credential) => {
-        this.loading = false;
+      next: (credential) => {
         this.authService.handleSocialLogin(credential);
       },
       error: (err) => {
-        this.loading = false;
         this.toastr.error('Google login failed');
         console.error(err);
       }
@@ -86,14 +83,11 @@ export class SignupComponent {
   }
 
   facebookLogin() {
-    this.loading = true;
     this.authService.signInWithFacebook().subscribe({
       next: (credential) => {
-        this.loading = false;
         this.authService.handleSocialLogin(credential);
       },
       error: (err) => {
-        this.loading = false;
         this.toastr.error('Facebook login failed');
         console.error(err);
       }
