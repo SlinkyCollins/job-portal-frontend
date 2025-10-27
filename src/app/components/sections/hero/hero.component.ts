@@ -34,7 +34,7 @@ export class HeroComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadSeekerProfile(); // Renamed for clarity
+    this.loadSeekerProfile(); // Always try to load profile; interceptor handles 401 without redirect
     this.loadCategories();
     this.restoreSearchState();
   }
