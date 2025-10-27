@@ -74,7 +74,8 @@
       <label for="cvUpload" [class.disabled]="isUploading || isRefetching" *ngIf="!uploadedCV"
         class="btn px-2 py-2 px-sm-3 py-sm-2 rounded-3 fw-medium">
         {{ isUploading ? 'Uploading...' : isRefetching ? 'Processing...' : 'Upload your CV' }}
-        <i *ngIf="!isUploading && !isRefetching" class="bi bi-file-earmark-arrow-up"></i>
+        <i *ngIf="!isUploading && !isRefetching" class="bi bi-file-earmark-arrow-up">
+        </i>
         <i *ngIf="isUploading || isRefetching" class="fas fa-spinner fa-spin"></i>
       </label>
       <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx"
@@ -88,8 +89,8 @@
 
       <!-- Filename Container: Show after upload, with cancel button -->
       <div *ngIf="uploadedCV && !isUploading" class="filename-container mt-2 mt-md-0 ms-md-3">
-        <span class="filename-text">{{ selectedFileName }}</span>
-        <button class="cancel-btn" (click)="openDeleteModal()" aria-label="Delete CV">
+        <span class="filename-text">{{ isDeleting ? 'Deleting...' : selectedFileName }}</span>
+        <button class="cancel-btn" (click)="openDeleteModal()" aria-label="Delete CV" [disabled]="isDeleting">
           <i class="fas fa-times"></i>
         </button>
       </div>

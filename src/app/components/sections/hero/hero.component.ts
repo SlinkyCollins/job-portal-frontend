@@ -40,22 +40,23 @@ export class HeroComponent implements OnInit {
   }
 
   loadSeekerProfile() {
+    this.isRefetching = true;  // Disable button during fetch
     this.authService.getSeekerProfile().subscribe({
       next: (response: any) => {
-        this.isRefetching = false;  // Hide refetch loader
-        this.isUploading = false;  // Ensure upload state resets
         if (response.status) {
           this.profileData = response.profile;
           this.uploadedCV = response.profile.cv_url || '';
           // Use cv_filename from backend instead of extracting from URL
           this.selectedFileName = response.profile.cv_filename || 'No file chosen';
-          console.log('Profile loaded:', response);
+          // console.log('Profile loaded:', response);
         }
+        this.isDeleting = false;
+        this.isRefetching = false;  // Hide refetch loader
       },
       error: (err) => {
         this.isRefetching = false; 
-        this.isUploading = false; 
-        console.error('Failed to fetch profile:', err);
+        this.isDeleting = false;
+        // console.error('Failed to fetch profile:', err);
         this.uploadedCV = '';
         this.selectedFileName = 'No file chosen';
       }
@@ -196,7 +197,6 @@ export class HeroComponent implements OnInit {
       next: () => {
         this.closeDeleteModal();
         this.authService.toastr.success('CV deleted successfully!');
-        this.isDeleting = false;
         this.loadSeekerProfile();  // Refetch to hide filename and show upload button
       },
       error: (err) => {
