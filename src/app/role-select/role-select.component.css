@@ -1,0 +1,28 @@
+.role-select-container {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+}
+
+.role-options .form-select option {
+  padding: 10px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 190, 87, 0.3);
+}
+
+@media (max-width: 576px) {
+  .card {
+    margin: 20px;
+    padding: 20px !important;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+  }
+}
