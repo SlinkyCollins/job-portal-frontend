@@ -369,6 +369,16 @@ export class JobsListComponent implements OnInit {
     }
   }
 
+  // Method to get count for experience levels
+  getExperienceCount(experience: any): number {
+    return this.jobs.filter(job => job.experience_level === experience.label).length;
+  }
+
+  // Method to get count for job types
+  getJobTypeCount(jobType: any): number {
+    return this.jobs.filter(job => job.employment_type === jobType.value).length;
+  }
+
   getJobTypeClass(jobType: string): string {
     switch (jobType.toLowerCase()) {
       case 'fulltime':

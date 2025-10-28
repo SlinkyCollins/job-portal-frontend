@@ -90,7 +90,7 @@
                       {{ jobType.label }}
                     </label>
                   </div>
-                  <span class="option-count">5</span>
+                  <span class="option-count" *ngIf="getJobTypeCount(jobType) > 0">{{ getJobTypeCount(jobType) }}</span>
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@
                       {{ experience.label }}
                     </label>
                   </div>
-                  <span class="option-count">5</span>
+                  <span class="option-count" *ngIf="getExperienceCount(experience) > 0">{{ getExperienceCount(experience) }}</span>
                 </div>
               </div>
             </div>
@@ -367,7 +367,7 @@
                           {{ jobType.label }}
                         </label>
                       </div>
-                      <span class="option-count">5</span>
+                      <span class="option-count" *ngIf="getJobTypeCount(jobType) > 0">{{ getJobTypeCount(jobType) }}</span>
                     </div>
                   </div>
                 </div>
@@ -392,7 +392,7 @@
                           {{ experience.label }}
                         </label>
                       </div>
-                      <span class="option-count">5</span>
+                      <span class="option-count" *ngIf="getExperienceCount(experience) > 0">{{ getExperienceCount(experience) }}</span>
                     </div>
                   </div>
                 </div>
