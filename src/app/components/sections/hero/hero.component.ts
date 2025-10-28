@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { HttpEventType } from '@angular/common/http';
+import { NgZone } from '@angular/core';  // Add import
 
 @Component({
   selector: 'app-hero',
@@ -30,7 +31,8 @@ export class HeroComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private ngZone: NgZone  // Inject NgZone
   ) { }
 
   ngOnInit() {
@@ -41,22 +43,26 @@ export class HeroComponent implements OnInit {
 
   loadSeekerProfile() {
     this.isRefetching = true;  // Disable button during fetch
+    console.log('Starting profile fetch...');  // Add for debugging
     this.authService.getSeekerProfile().subscribe({
       next: (response: any) => {
-        if (response.status) {
-          this.profileData = response.profile;
-          this.uploadedCV = response.profile.cv_url || '';
-          // Use cv_filename from backend instead of extracting from URL
-          this.selectedFileName = response.profile.cv_filename || 'No file chosen';
-          // console.log('Profile loaded:', response);
-        }
-        this.isDeleting = false;
-        this.isRefetching = false;  // Hide refetch loader
+        console.log('Profile fetch response:', response);  // Add for debugging
+        this.ngZone.run(() => {
+          if (response.status) {
+            this.profileData = response.profile;
+            this.uploadedCV = response.profile.cv_url || '';
+            // Use cv_filename from backend instead of extracting from URL
+            this.selectedFileName = response.profile.cv_filename || 'No file chosen';
+            console.log('Set uploadedCV to:', this.uploadedCV);  // Add for debugging
+          }
+          this.isDeleting = false;
+          this.isRefetching = false;  // Hide refetch loader
+        });
       },
       error: (err) => {
-        this.isRefetching = false; 
+        this.isRefetching = false;
         this.isDeleting = false;
-        // console.error('Failed to fetch profile:', err);
+        console.error('Failed to fetch profile:', err);
         this.uploadedCV = '';
         this.selectedFileName = 'No file chosen';
       }
@@ -159,6 +165,9 @@ export class HeroComponent implements OnInit {
           const res = event.body;
           if (res.status) {
             this.authService.toastr.success('CV uploaded successfully ✅');
+            // Fallback: Set locally if refetch fails
+            this.uploadedCV = res.url || '';
+            this.selectedFileName = file.name;
             this.isRefetching = true;  // Show refetch loader
             // Refetch profile to sync uploadedCV and filename with backend
             this.loadSeekerProfile();
