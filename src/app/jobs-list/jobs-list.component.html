@@ -39,14 +39,18 @@
               <label for="location" class="form-label">Location</label>
               <input id="location" type="text" class="form-control search-input" [(ngModel)]="searchLocation"
                 placeholder="e.g. Lagos, Remote" />
-              <i title="Clear Location" class="fas fa-times-circle" (click)="clearLocation()" *ngIf="searchLocation && searchLocation.length > 0" style="position: absolute; right: 10px; top: 56%; cursor: pointer; color: #7c7c7c; font-size: 1.2rem;"></i>
+              <i title="Clear Location" class="fas fa-times-circle" (click)="clearLocation()"
+                *ngIf="searchLocation && searchLocation.length > 0"
+                style="position: absolute; right: 10px; top: 56%; cursor: pointer; color: #7c7c7c; font-size: 1.2rem;"></i>
             </div>
             <hr />
             <div class="flex-fill position-relative">
               <label for="searchBox" class="form-label">Keywords or Title</label>
               <input type="text" class="form-control search-input" [(ngModel)]="searchKeyword"
                 placeholder="e.g. Design, branding" id="searchBox" />
-              <i title="Clear Keyword" class="fas fa-times-circle" (click)="clearKeyword()" *ngIf="searchKeyword && searchKeyword.length > 0" style="position: absolute; right: 10px; top: 56%; cursor: pointer; color: #7c7c7c; font-size: 1.2rem;"></i>
+              <i title="Clear Keyword" class="fas fa-times-circle" (click)="clearKeyword()"
+                *ngIf="searchKeyword && searchKeyword.length > 0"
+                style="position: absolute; right: 10px; top: 56%; cursor: pointer; color: #7c7c7c; font-size: 1.2rem;"></i>
             </div>
             <hr />
             <div class="d-flex align-items-end">
@@ -115,7 +119,8 @@
                       {{ experience.label }}
                     </label>
                   </div>
-                  <span class="option-count" *ngIf="getExperienceCount(experience) > 0">{{ getExperienceCount(experience) }}</span>
+                  <span class="option-count" *ngIf="getExperienceCount(experience) > 0">{{
+                    getExperienceCount(experience) }}</span>
                 </div>
               </div>
             </div>
@@ -247,12 +252,13 @@
               All<span class="text-muted"> {{ jobs.length }} </span>jobs found
             </div>
             <div class="sort-controls">
-              <label class="me-2" for="cars">Sort:</label>
-              <select id="cars" class="form-select form-select-sm d-inline-block w-auto">
-                <option value="">Low to High</option>
-                <option value="">High to Low</option>
-                <option value="" selected>Date Posted</option>
-                <option value="">Relevance</option>
+              <label class="me-2" for="sortSelect">Sort:</label>
+              <select id="sortSelect" class="form-select form-select-sm d-inline-block w-auto"
+                [(ngModel)]="selectedSort" (change)="sortJobs()">
+                <option value="datePosted">Date Posted</option>
+                <option value="salaryLowToHigh">Salary: Low to High</option>
+                <option value="salaryHighToLow">Salary: High to Low</option>
+                <option value="relevance">Relevance</option>
               </select>
             </div>
           </div>
@@ -301,7 +307,8 @@
           <div class="col-md-6 col-xl-4 mb-4" *ngFor="let job of jobs">
             <div class="job-card">
               <div class="job-card-header">
-                <img [src]="job.company_logo" alt="Company Logo" style="width: 50px; height: 50px; object-fit: cover;" />
+                <img [src]="job.company_logo" alt="Company Logo"
+                  style="width: 50px; height: 50px; object-fit: cover;" />
                 <button class="btn btn-sm btn-outline-secondary bookmark-btn" [class.active]="job.isSaved"
                   [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
                   *ngIf="!userRole || userRole === 'job_seeker'">
@@ -367,7 +374,8 @@
                           {{ jobType.label }}
                         </label>
                       </div>
-                      <span class="option-count" *ngIf="getJobTypeCount(jobType) > 0">{{ getJobTypeCount(jobType) }}</span>
+                      <span class="option-count" *ngIf="getJobTypeCount(jobType) > 0">{{ getJobTypeCount(jobType)
+                        }}</span>
                     </div>
                   </div>
                 </div>
@@ -392,7 +400,8 @@
                           {{ experience.label }}
                         </label>
                       </div>
-                      <span class="option-count" *ngIf="getExperienceCount(experience) > 0">{{ getExperienceCount(experience) }}</span>
+                      <span class="option-count" *ngIf="getExperienceCount(experience) > 0">{{
+                        getExperienceCount(experience) }}</span>
                     </div>
                   </div>
                 </div>

@@ -30,6 +30,7 @@ export class JobsListComponent implements OnInit {
     search: 'jobSearch',
     filters: 'activeFilters',
     filterState: 'jobFilterState',
+    sort: 'jobSort'
   };
   Math = Math; // Added to expose Math to the template
   jobs: any[] = [];
@@ -53,6 +54,7 @@ export class JobsListComponent implements OnInit {
   };
   userRole: string | null = null;
   showFilterModal: boolean = false;
+  selectedSort: string = 'datePosted';
 
   jobTypes = [
     { label: 'Full Time', value: 'fulltime', selected: false },
@@ -102,11 +104,15 @@ export class JobsListComponent implements OnInit {
     const searchRaw = localStorage.getItem(this.STORAGE_KEYS.search);
     const filterStateRaw = localStorage.getItem(this.STORAGE_KEYS.filterState);
     const filtersRaw = localStorage.getItem(this.STORAGE_KEYS.filters);
+    const sortRaw = localStorage.getItem(this.STORAGE_KEYS.sort);
 
     // Parse with fallbacks and type annotations for safety
     const savedSearch: any = JSON.parse(searchRaw || '{}');
     const savedFilters: any = JSON.parse(filterStateRaw || '{}');
     const savedActiveFilters: string[] = JSON.parse(filtersRaw || '[]');
+
+    // Restore sort (default to 'datePosted' if not found)
+    this.selectedSort = sortRaw || 'datePosted';
 
     // Helper function to check if there's at least one meaningful search value
     const hasAnySearchValue = (search: any): boolean => {
@@ -175,6 +181,8 @@ export class JobsListComponent implements OnInit {
       params['experience_level[]'] = selectedExperiences.map(e => e.value);
     }
 
+    params['sort'] = this.selectedSort;
+
     // ✅ Fetch jobs with all restored filters and search
     this.fetchJobs(params);
   }
@@ -225,6 +233,7 @@ export class JobsListComponent implements OnInit {
       category: this.searchCategory,
       location: this.searchLocation.trim(),
       keyword: this.searchKeyword.trim(),
+      sort: this.selectedSort,
       ...(selectedJobTypes.length ? { 'employment_type[]': selectedJobTypes } : {}),
       ...(selectedExperiences.length ? { 'experience_level[]': selectedExperiences } : {}),
       ...search
@@ -268,6 +277,21 @@ export class JobsListComponent implements OnInit {
     this.applyFilters();
   }
 
+  sortJobs() {
+    localStorage.setItem(this.STORAGE_KEYS.sort, this.selectedSort);
+
+    // Rebuild params and fetch
+    this.applyingFilters = true;
+    this.fetchJobs(this.buildSearchAndFilterParams());
+
+    // ✅ Toast UX
+    this.authService.toastr.success('Sorted successfully 📊', '', {
+      timeOut: 2500,
+      progressBar: true,
+      positionClass: 'toast-bottom-center'
+    });
+  }
+
   applyFilters(): void {
     this.applyingFilters = true;
 
@@ -285,7 +309,7 @@ export class JobsListComponent implements OnInit {
     ];
     localStorage.setItem(this.STORAGE_KEYS.filters, JSON.stringify(this.activeFilters));
 
-    // Fetch with both filters + search
+    // Fetch with both filters, search and sort
     this.fetchJobs(this.buildSearchAndFilterParams());
 
     // ✅ Toast UX
@@ -308,6 +332,10 @@ export class JobsListComponent implements OnInit {
     // Reset all filter checkboxes
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
+
+    // Reset sort to default
+    this.selectedSort = 'datePosted';
+    localStorage.setItem(this.STORAGE_KEYS.sort, this.selectedSort);
 
     // Clear active filter badges
     this.activeFilters = [];
