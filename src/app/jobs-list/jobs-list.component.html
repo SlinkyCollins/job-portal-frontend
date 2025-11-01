@@ -166,36 +166,6 @@
             </div>
           </div> -->
 
-          <!-- Category Filter -->
-          <!-- <div class="filter-section">
-            <div class="filter-header" (click)="toggleSection('category')">
-              <h6>Category</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.category">
-                <i class="fas fa-minus" *ngIf="expandedSections?.category"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.category"></i>
-              </span>
-            </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.category">
-              <div class="filter-options">
-                <div *ngFor="let category of getVisibleCategories()" class="filter-option">
-                  <div class="checkbox-wrapper">
-                    <input type="checkbox" [id]="'category-' + category.name" class="filter-checkbox"
-                      [checked]="category.selected" (change)="toggleCategory(category)" />
-                    <label [for]="'category-' + category.name" class="checkbox-label">
-                      {{ category.name }}
-                    </label>
-                  </div>
-                  <span class="option-count">{{ category.count }}</span>
-                </div>
-              </div>
-              <button type="button" class="show-more-btn" (click)="toggleShowMoreCategories()"
-                *ngIf="allCategories.length > 5">
-                <i class="fas fa-minus me-2"></i>
-                {{ showMoreCategories ? 'Show Less' : 'Show More' }}
-              </button>
-            </div>
-          </div> -->
-
           <!-- Tags Filter -->
           <div class="filter-section">
             <div class="filter-header" (click)="toggleSection('tags')">
@@ -444,36 +414,6 @@
                   </button>
                 </div>
               </div>
-            </div>
-          </div> -->
-
-              <!-- Category Filter -->
-              <!-- <div class="filter-section">
-            <div class="filter-header" (click)="toggleSection('category')">
-              <h6>Category</h6>
-              <span class="toggle-icon" [class.expanded]="expandedSections?.category">
-                <i class="fas fa-minus" *ngIf="expandedSections?.category"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.category"></i>
-              </span>
-            </div>
-            <div class="filter-content" [class.expanded]="expandedSections?.category">
-              <div class="filter-options">
-                <div *ngFor="let category of getVisibleCategories()" class="filter-option">
-                  <div class="checkbox-wrapper">
-                    <input type="checkbox" [id]="'category-' + category.name" class="filter-checkbox"
-                      [checked]="category.selected" (change)="toggleCategory(category)" />
-                    <label [for]="'category-' + category.name" class="checkbox-label">
-                      {{ category.name }}
-                    </label>
-                  </div>
-                  <span class="option-count">{{ category.count }}</span>
-                </div>
-              </div>
-              <button type="button" class="show-more-btn" (click)="toggleShowMoreCategories()"
-                *ngIf="allCategories.length > 5">
-                <i class="fas fa-minus me-2"></i>
-                {{ showMoreCategories ? 'Show Less' : 'Show More' }}
-              </button>
             </div>
           </div> -->
 
