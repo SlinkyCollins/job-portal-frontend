@@ -42,31 +42,36 @@ export class HeroComponent implements OnInit {
   }
 
   loadSeekerProfile() {
-    this.isRefetching = true;  // Disable button during fetch
-    console.log('Starting profile fetch...');  // Add for debugging
-    this.authService.getSeekerProfile().subscribe({
-      next: (response: any) => {
-        console.log('Profile fetch response:', response);  // Add for debugging
-        this.ngZone.run(() => {
-          if (response.status) {
-            this.profileData = response.profile;
-            this.uploadedCV = response.profile.cv_url || '';
-            // Use cv_filename from backend instead of extracting from URL
-            this.selectedFileName = response.profile.cv_filename || 'No file chosen';
-            console.log('Set uploadedCV to:', this.uploadedCV);  // Add for debugging
-          }
+    if (this.isLoggedIn() && this.getUserRole() === 'job_seeker') {
+      this.isRefetching = true;  // Disable button during fetch
+      console.log('Starting profile fetch...');  // Add for debugging
+      this.authService.getSeekerProfile().subscribe({
+        next: (response: any) => {
+          console.log('Profile fetch response:', response);  // Add for debugging
+          this.ngZone.run(() => {
+            if (response.status) {
+              this.profileData = response.profile;
+              this.uploadedCV = response.profile.cv_url || '';
+              // Use cv_filename from backend instead of extracting from URL
+              this.selectedFileName = response.profile.cv_filename || 'No file chosen';
+              console.log('Set uploadedCV to:', this.uploadedCV);  // Add for debugging
+            }
+            this.isDeleting = false;
+            this.isRefetching = false;  // Hide refetch loader
+          });
+        },
+        error: (err) => {
+          this.isRefetching = false;
           this.isDeleting = false;
-          this.isRefetching = false;  // Hide refetch loader
-        });
-      },
-      error: (err) => {
-        this.isRefetching = false;
-        this.isDeleting = false;
-        console.error('Failed to fetch profile:', err);
-        this.uploadedCV = '';
-        this.selectedFileName = 'No file chosen';
-      }
-    });
+          console.error('Failed to fetch profile:', err);
+          this.uploadedCV = '';
+          this.selectedFileName = 'No file chosen';
+        }
+      });
+    } else {
+      this.uploadedCV = '';
+      this.selectedFileName = 'No file chosen';
+    }
   }
 
   isLoggedIn(): boolean {
