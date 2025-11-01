@@ -42,19 +42,17 @@ export class JobsListComponent implements OnInit {
   searchLocation: string = '';
   searchCategory: number | null = null;
   searchKeyword: string = '';
-  isSelectOpen1 = false;
-  isSaving = false;
+  isSelectOpen = false;
   expandedSections = {
-    location: true,
-    jobType: true,
-    experience: true, // Default expanded to match screenshot
+    jobType: false,
+    experience: false, // Default expanded to match screenshot
     salary: true, // Default expanded to match screenshot
-    category: false,
-    tags: false,
+    tags: true,
   };
   userRole: string | null = null;
   showFilterModal: boolean = false;
   selectedSort: string = 'datePosted';
+  showMoreTags: boolean = false;
 
   jobTypes = [
     { label: 'Full Time', value: 'fulltime', selected: false },
@@ -74,6 +72,49 @@ export class JobsListComponent implements OnInit {
     { label: 'No Experience', value: 'No-Experience', selected: false },
     { label: 'Internship', value: 'Internship', selected: false },
     { label: 'Expert', value: 'Expert', selected: false }
+  ];
+
+  tags = [
+    { name: 'JavaScript', value: 'JavaScript', selected: false, count: 0 },
+    { name: 'Python', value: 'Python', selected: false, count: 0 },
+    { name: 'PHP', value: 'PHP', selected: false, count: 0 },
+    { name: 'Laravel', value: 'Laravel', selected: false, count: 0 },
+    { name: 'React', value: 'React', selected: false, count: 0 },
+    { name: 'Vue.js', value: 'Vue.js', selected: false, count: 0 },
+    { name: 'Figma', value: 'Figma', selected: false, count: 0 },
+    { name: 'UI/UX', value: 'UI/UX', selected: false, count: 0 },
+    { name: 'SEO', value: 'SEO', selected: false, count: 0 },
+    { name: 'Content Writing', value: 'Content Writing', selected: false, count: 0 },
+    { name: 'Data Analysis', value: 'Data Analysis', selected: false, count: 0 },
+    { name: 'Machine Learning', value: 'Machine Learning', selected: false, count: 0 },
+    { name: 'Excel', value: 'Excel', selected: false, count: 0 },
+    { name: 'Leadership', value: 'Leadership', selected: false, count: 0 },
+    { name: 'Communication', value: 'Communication', selected: false, count: 0 },
+    { name: 'SQL', value: 'SQL', selected: false, count: 0 },
+    { name: 'Node.js', value: 'Node.js', selected: false, count: 0 },
+    { name: 'Flutter', value: 'Flutter', selected: false, count: 0 },
+    { name: 'Dart', value: 'Dart', selected: false, count: 0 },
+    { name: 'WordPress', value: 'WordPress', selected: false, count: 0 },
+    { name: 'Fullstack', value: 'Fullstack', selected: false, count: 0 },
+    { name: 'Angular', value: 'Angular', selected: false, count: 0 },
+    { name: 'Java', value: 'Java', selected: false, count: 0 },
+    { name: 'Developer', value: 'Developer', selected: false, count: 0 },
+    { name: 'Finance', value: 'Finance', selected: false, count: 0 },
+    { name: 'Design', value: 'Design', selected: false, count: 0 },
+    { name: 'Seo', value: 'Seo', selected: false, count: 0 },
+    { name: 'Analytics', value: 'Analytics', selected: false, count: 0 },
+    { name: 'Data', value: 'Data', selected: false, count: 0 },
+    { name: 'Frontend', value: 'Frontend', selected: false, count: 0 },
+    { name: 'Other', value: 'Other', selected: false, count: 0 },
+    { name: 'Marketing', value: 'Marketing', selected: false, count: 0 },
+    { name: 'Management', value: 'Management', selected: false, count: 0 },
+    { name: 'Software', value: 'Software', selected: false, count: 0 },
+    { name: 'Engineering', value: 'Engineering', selected: false, count: 0 },
+    { name: 'Writing', value: 'Writing', selected: false, count: 0 },
+    { name: 'Blogging', value: 'Blogging', selected: false, count: 0 },
+    { name: 'Graphic', value: 'Graphic', selected: false, count: 0 },
+    { name: 'Illustration', value: 'Illustration', selected: false, count: 0 },
+    { name: 'Product', value: 'Product', selected: false, count: 0 }
   ];
 
   constructor(
@@ -164,6 +205,15 @@ export class JobsListComponent implements OnInit {
       });
     }
 
+    // Restore tags (fix: check if value is in array)
+    if (savedFilters.tags && Array.isArray(savedFilters.tags)) {
+      this.tags.forEach(tag => {
+        if (savedFilters.tags.includes(tag.value)) {  // 👈 Check if tag value is in saved array
+          tag.selected = true;
+        }
+      });
+    }
+
     // Restore active filter chips
     this.activeFilters = savedActiveFilters;
 
@@ -172,6 +222,7 @@ export class JobsListComponent implements OnInit {
 
     const selectedJobTypes = this.jobTypes.filter(j => j.selected);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected);
+    const selectedTags = this.tags.filter(tag => tag.selected);
 
     if (selectedJobTypes.length > 0) {
       params['employment_type[]'] = selectedJobTypes.map(j => j.value);
@@ -181,6 +232,10 @@ export class JobsListComponent implements OnInit {
       params['experience_level[]'] = selectedExperiences.map(e => e.value);
     }
 
+    if (selectedTags.length > 0) {
+      params['tags[]'] = selectedTags.map(t => t.value);
+    }
+
     params['sort'] = this.selectedSort;
 
     // ✅ Fetch jobs with all restored filters and search
@@ -188,7 +243,7 @@ export class JobsListComponent implements OnInit {
   }
 
   toggleSelectOpen() {
-    this.isSelectOpen1 = !this.isSelectOpen1;
+    this.isSelectOpen = !this.isSelectOpen;
   }
 
   loadCategories() {
@@ -196,7 +251,6 @@ export class JobsListComponent implements OnInit {
       this.allCategories = cats;
     });
   }
-
 
   fetchJobs(params: any = {}): void {
     // Start a short delay before showing the spinner
@@ -210,6 +264,12 @@ export class JobsListComponent implements OnInit {
         next: (res) => {
           clearTimeout(showSpinnerDelay);
           this.jobs = res.jobs || [];
+
+          // Compute and cache tag counts once
+          this.tags.forEach(tag => {
+            tag.count = this.jobs.filter(job => job.tags && job.tags.includes(tag.value)).length;
+          });
+
           this.loading = false;
           this.applyingFilters = false;
           this.isSearching = false;
@@ -228,6 +288,7 @@ export class JobsListComponent implements OnInit {
     const search = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
     const selectedJobTypes = this.jobTypes.filter(j => j.selected).map(j => j.value);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected).map(e => e.value);
+    const selectedTags = this.tags.filter(tag => tag.selected).map(tag => tag.value);
 
     return {
       category: this.searchCategory,
@@ -236,6 +297,7 @@ export class JobsListComponent implements OnInit {
       sort: this.selectedSort,
       ...(selectedJobTypes.length ? { 'employment_type[]': selectedJobTypes } : {}),
       ...(selectedExperiences.length ? { 'experience_level[]': selectedExperiences } : {}),
+      ...(selectedTags.length ? { 'tags[]': selectedTags } : {}),  // Add tags to params
       ...search
     };
   }
@@ -298,18 +360,20 @@ export class JobsListComponent implements OnInit {
     // Save filter states
     const filterState = {
       jobTypes: this.jobTypes,
-      experienceLevels: this.experienceLevels
+      experienceLevels: this.experienceLevels,
+      tags: this.tags.filter(tag => tag.selected).map(tag => tag.value)  // Save selected tag values
     };
     localStorage.setItem(this.STORAGE_KEYS.filterState, JSON.stringify(filterState));
 
     // Active filter badges
     this.activeFilters = [
       ...this.jobTypes.filter(j => j.selected).map(j => j.label),
-      ...this.experienceLevels.filter(e => e.selected).map(e => e.label)
+      ...this.experienceLevels.filter(e => e.selected).map(e => e.label),
+      ...this.tags.filter(t => t.selected).map(t => t.name),
     ];
     localStorage.setItem(this.STORAGE_KEYS.filters, JSON.stringify(this.activeFilters));
 
-    // Fetch with both filters, search and sort
+    // Fetch with filters, search and sort (backend handles tags now)
     this.fetchJobs(this.buildSearchAndFilterParams());
 
     // ✅ Toast UX
@@ -328,10 +392,15 @@ export class JobsListComponent implements OnInit {
     exp.selected = !exp.selected;
   }
 
+  toggleTag(tag: any) {
+    tag.selected = !tag.selected;
+  }
+
   resetFilters(clearSearch: boolean = false): void {
     // Reset all filter checkboxes
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
+    this.tags.forEach(tag => tag.selected = false);
 
     // Reset sort to default
     this.selectedSort = 'datePosted';
@@ -377,6 +446,11 @@ export class JobsListComponent implements OnInit {
       !this.expandedSections[section as keyof typeof this.expandedSections];
   }
 
+  // NEW: Toggle show more tags
+  toggleShowMoreTags() {
+    this.showMoreTags = !this.showMoreTags;
+  }
+
   removeFilter(filter: string): void {
     this.activeFilters = this.activeFilters.filter(
       (f) => f !== filter
@@ -395,6 +469,20 @@ export class JobsListComponent implements OnInit {
       this.applyFilters();
       return;
     }
+
+    // Check if the filter is a tag
+    const tag = this.tags.find(t => t.name === filter);
+    if (tag) {
+      tag.selected = false;
+      this.applyFilters();
+      return;
+    }
+  }
+
+  // Update getVisibleTags (show first 12, or all if showMoreTags)
+  getVisibleTags(): any[] {
+    const visible = this.showMoreTags ? this.tags : this.tags.slice(0, 12);
+    return visible.filter(tag => tag.count > 0 || tag.selected);  // Show selected even if count=0
   }
 
   // Method to get count for experience levels

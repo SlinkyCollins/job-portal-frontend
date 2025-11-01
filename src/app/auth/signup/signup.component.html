@@ -98,7 +98,7 @@
       </div>
 
       <div class="form-group mt-4" style="position: relative;">
-        <button type="submit" name="submit" class="btn btn-submit" (click)="signup(form)" [disabled]="form.invalid || loading">
+        <button type="submit" name="submit" class="btn btn-submit" (click)="signup(form)" [disabled]="form.invalid || loading || authService.isFacebookLoading || authService.isGoogleLoading">
           {{ loading ? 'Signing Up...' : 'Register' }}
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
         </button>
