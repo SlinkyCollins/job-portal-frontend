@@ -42,12 +42,15 @@ export class JobsListComponent implements OnInit {
   searchLocation: string = '';
   searchCategory: number | null = null;
   searchKeyword: string = '';
+  selectedCurrency: 'NGN' | 'USD' | 'GBP' | 'EUR' = 'NGN';  // Default to NGN
+  salaryRange = { min: 0, max: 5000000 };  // Default for NGN (5M)
+  selectedPeriod: string = 'Monthly';  // Default period
   isSelectOpen = false;
   expandedSections = {
     jobType: false,
-    experience: false, // Default expanded to match screenshot
-    salary: true, // Default expanded to match screenshot
-    tags: true,
+    experience: true, 
+    salary: true, 
+    tags: false,
   };
   userRole: string | null = null;
   showFilterModal: boolean = false;
@@ -97,24 +100,24 @@ export class JobsListComponent implements OnInit {
     { name: 'WordPress', value: 'WordPress', selected: false, count: 0 },
     { name: 'Fullstack', value: 'Fullstack', selected: false, count: 0 },
     { name: 'Angular', value: 'Angular', selected: false, count: 0 },
-    { name: 'Java', value: 'Java', selected: false, count: 0 },
-    { name: 'Developer', value: 'Developer', selected: false, count: 0 },
-    { name: 'Finance', value: 'Finance', selected: false, count: 0 },
-    { name: 'Design', value: 'Design', selected: false, count: 0 },
-    { name: 'Seo', value: 'Seo', selected: false, count: 0 },
-    { name: 'Analytics', value: 'Analytics', selected: false, count: 0 },
-    { name: 'Data', value: 'Data', selected: false, count: 0 },
-    { name: 'Frontend', value: 'Frontend', selected: false, count: 0 },
-    { name: 'Other', value: 'Other', selected: false, count: 0 },
-    { name: 'Marketing', value: 'Marketing', selected: false, count: 0 },
-    { name: 'Management', value: 'Management', selected: false, count: 0 },
-    { name: 'Software', value: 'Software', selected: false, count: 0 },
-    { name: 'Engineering', value: 'Engineering', selected: false, count: 0 },
-    { name: 'Writing', value: 'Writing', selected: false, count: 0 },
-    { name: 'Blogging', value: 'Blogging', selected: false, count: 0 },
-    { name: 'Graphic', value: 'Graphic', selected: false, count: 0 },
-    { name: 'Illustration', value: 'Illustration', selected: false, count: 0 },
-    { name: 'Product', value: 'Product', selected: false, count: 0 }
+    { name: 'Java', value: 'java', selected: false, count: 0 },
+    { name: 'Developer', value: 'developer', selected: false, count: 0 },
+    { name: 'Finance', value: 'finance', selected: false, count: 0 },
+    { name: 'Design', value: 'design', selected: false, count: 0 },
+    { name: 'Seo', value: 'seo', selected: false, count: 0 },
+    { name: 'Analytics', value: 'analytics', selected: false, count: 0 },
+    { name: 'Data', value: 'data', selected: false, count: 0 },
+    { name: 'Frontend', value: 'frontend', selected: false, count: 0 },
+    { name: 'Other', value: 'other', selected: false, count: 0 },
+    { name: 'Marketing', value: 'marketing', selected: false, count: 0 },
+    { name: 'Management', value: 'management', selected: false, count: 0 },
+    { name: 'Software', value: 'software', selected: false, count: 0 },
+    { name: 'Engineering', value: 'engineering', selected: false, count: 0 },
+    { name: 'Writing', value: 'writing', selected: false, count: 0 },
+    { name: 'Blogging', value: 'blogging', selected: false, count: 0 },
+    { name: 'Graphic', value: 'graphic', selected: false, count: 0 },
+    { name: 'Illustration', value: 'illustration', selected: false, count: 0 },
+    { name: 'Product', value: 'product', selected: false, count: 0 }
   ];
 
   constructor(
@@ -214,6 +217,20 @@ export class JobsListComponent implements OnInit {
       });
     }
 
+    // Restore Salary Filters
+    if (savedFilters.currency) {
+      this.selectedCurrency = savedFilters.currency;
+    }
+    if (savedFilters.min_salary !== undefined) {
+      this.salaryRange.min = savedFilters.min_salary;
+    }
+    if (savedFilters.max_salary !== undefined) {
+      this.salaryRange.max = savedFilters.max_salary;
+    }
+    if (savedFilters.salary_duration) {
+      this.selectedPeriod = savedFilters.salary_duration;
+    }
+
     // Restore active filter chips
     this.activeFilters = savedActiveFilters;
 
@@ -235,6 +252,11 @@ export class JobsListComponent implements OnInit {
     if (selectedTags.length > 0) {
       params['tags[]'] = selectedTags.map(t => t.value);
     }
+
+    params['currency'] = this.selectedCurrency;
+    params['min_salary'] = this.salaryRange.min;
+    params['max_salary'] = this.salaryRange.max;
+    params['salary_duration'] = this.selectedPeriod;
 
     params['sort'] = this.selectedSort;
 
@@ -298,7 +320,11 @@ export class JobsListComponent implements OnInit {
       ...(selectedJobTypes.length ? { 'employment_type[]': selectedJobTypes } : {}),
       ...(selectedExperiences.length ? { 'experience_level[]': selectedExperiences } : {}),
       ...(selectedTags.length ? { 'tags[]': selectedTags } : {}),  // Add tags to params
-      ...search
+      ...search,
+      currency: this.selectedCurrency,
+      min_salary: this.salaryRange.min,
+      max_salary: this.salaryRange.max,
+      salary_duration: this.selectedPeriod
     };
   }
 
@@ -361,7 +387,11 @@ export class JobsListComponent implements OnInit {
     const filterState = {
       jobTypes: this.jobTypes,
       experienceLevels: this.experienceLevels,
-      tags: this.tags.filter(tag => tag.selected).map(tag => tag.value)  // Save selected tag values
+      tags: this.tags.filter(tag => tag.selected).map(tag => tag.value),  // Save selected tag values
+      currency: this.selectedCurrency,
+      min_salary: this.salaryRange.min,
+      max_salary: this.salaryRange.max,
+      salary_duration: this.selectedPeriod
     };
     localStorage.setItem(this.STORAGE_KEYS.filterState, JSON.stringify(filterState));
 
@@ -412,6 +442,11 @@ export class JobsListComponent implements OnInit {
     // Remove saved filter data
     localStorage.removeItem(this.STORAGE_KEYS.filters);
     localStorage.removeItem(this.STORAGE_KEYS.filterState);
+
+    // Reset salary filters
+    this.selectedCurrency = 'NGN';
+    this.salaryRange = { min: 0, max: this.getMaxSalary() };
+    this.selectedPeriod = 'Monthly';
 
     // 🧠 Only clear search form if user confirms or passes true
     if (clearSearch) {
@@ -481,8 +516,10 @@ export class JobsListComponent implements OnInit {
 
   // Update getVisibleTags (show first 12, or all if showMoreTags)
   getVisibleTags(): any[] {
-    const visible = this.showMoreTags ? this.tags : this.tags.slice(0, 12);
-    return visible.filter(tag => tag.count > 0 || tag.selected);  // Show selected even if count=0
+    // Filter for relevant tags first (count > 0 or selected)
+    const filtered = this.tags.filter(tag => tag.count > 0 || tag.selected);
+    // Then slice if showMoreTags is false
+    return this.showMoreTags ? filtered : filtered.slice(0, 12);
   }
 
   // Method to get count for experience levels
@@ -514,5 +551,28 @@ export class JobsListComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  // Get max salary based on currency
+  getMaxSalary(): number {
+    const caps = { 'NGN': 5000000, 'USD': 50000, 'GBP': 40000, 'EUR': 45000 };
+    return caps[this.selectedCurrency] || 5000000;
+  }
+
+  // Handle currency change: Reset range and update max
+  onCurrencyChange() {
+    this.salaryRange = { min: 0, max: this.getMaxSalary() };
+  }
+
+  // Handle salary slider changes (optional: ensure min < max)
+  onSalaryChange() {
+    if (this.salaryRange.min > this.salaryRange.max) {
+      this.salaryRange.min = this.salaryRange.max;
+    }
+  }
+
+  // Update selectPeriod to work with salary
+  selectPeriod(period: string) {
+    this.selectedPeriod = period;
   }
 }
