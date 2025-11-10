@@ -46,6 +46,10 @@ hr {
   transform: translateY(-50%) rotate(-135deg);
 }
 
+.salary-filter .form-label {
+  padding: 0;
+}
+
 .form-label {
   color: #a2a2a2;
   font-size: 14px;
@@ -710,6 +714,44 @@ hr {
   outline: none;
   box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.3);
 }
+
+/* Force override ngx-slider styles with ::ng-deep and !important */
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-bar {
+  background: #e9ecef !important;  /* Track background (light gray) */
+  height: 6px !important;  /* Adjust height */
+}
+
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-selection {
+  background: #48bb78 !important;  /* Selected range color (light green) */
+}
+
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-pointer {
+  background: #48bb78 !important;  /* Thumb color (light green) */
+  border-radius: 50% !important;
+  cursor: grab !important;
+}
+
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-pointer:hover {
+  background: #31795a !important;  /* Darker on hover */
+}
+
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-pointer:active {
+  cursor: grabbing !important;
+}
+
+/* Optional: Style labels if needed */
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-floor,
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-ceil {
+  color: #4a5568 !important;  /* Label color */
+  font-size: 0.8rem !important;
+}
+
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-model-value,
+::ng-deep .custom-slider-container .ngx-slider .ngx-slider-model-high {
+  color: #31795a !important;  /* Value label color */
+  font-weight: 600 !important;
+}
+
 
 /* Results Header - Mobile First */
 .results-header {

@@ -146,27 +146,22 @@
 
                 <!-- Salary Range -->
                 <label class="form-label">Salary Range ({{ selectedCurrency }})</label>
-                <div class="range-values mb-2">
-                  <span>Min: {{ salaryRange.min | currency:selectedCurrency:'symbol-narrow':'1.0-0' }}</span>
-                  <span>Max: {{ salaryRange.max | currency:selectedCurrency:'symbol-narrow':'1.0-0' }}</span>
+
+                <!-- Dual-Thumb Slider -->
+                <div class="custom-slider-container">
+                  <ngx-slider role="slider" [(value)]="salaryRange.min" [(highValue)]="salaryRange.max"
+                    [options]="sliderOptions" (valueChange)="onSalaryChange()" (highValueChange)="onSalaryChange()">
+                  </ngx-slider>
                 </div>
-
-                <!-- Min Slider -->
-                <input type="range" class="form-range mb-2" [min]="0" [max]="getMaxSalary()"
-                  [(ngModel)]="salaryRange.min" (input)="onSalaryChange()">
-
-                <!-- Max Slider -->
-                <input type="range" class="form-range mb-3" [min]="0" [max]="getMaxSalary()"
-                  [(ngModel)]="salaryRange.max" (input)="onSalaryChange()">
 
                 <!-- Period Toggles -->
                 <div class="salary-period-toggles">
-                  <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'weekly'"
-                    (click)="selectPeriod('weekly')">Weekly</button>
-                  <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'monthly'"
-                    (click)="selectPeriod('monthly')">Monthly</button>
-                  <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'hourly'"
-                    (click)="selectPeriod('hourly')">Hourly</button>
+                  <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Weekly'"
+                    (click)="selectPeriod('Weekly')">Weekly</button>
+                  <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Monthly'"
+                    (click)="selectPeriod('Monthly')">Monthly</button>
+                  <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Hourly'"
+                    (click)="selectPeriod('Hourly')">Hourly</button>
                 </div>
               </div>
             </div>
@@ -177,22 +172,29 @@
             <div class="filter-header" (click)="toggleSection('tags')">
               <h6>Tags</h6>
               <span class="toggle-icon" [class.expanded]="expandedSections.tags">
-                <i class="fas fa-minus" *ngIf="expandedSections?.tags"></i>
-                <i class="fas fa-plus" *ngIf="!expandedSections?.tags"></i>
+                <i class="fas fa-minus" *ngIf="expandedSections.tags"></i>
+                <i class="fas fa-plus" *ngIf="!expandedSections.tags"></i>
               </span>
             </div>
             <div class="filter-content" [class.expanded]="expandedSections.tags">
-              <div class="tags-grid">
-                <button *ngFor="let tag of getVisibleTags()" type="button" class="tag-button"
-                  [class.active]="tag.selected" (click)="toggleTag(tag)">
-                  {{ tag.name }} {{ tag.count }}
+              <!-- Show tags grid and button only if there are visible tags -->
+              <div *ngIf="getVisibleTags().length > 0">
+                <div class="tags-grid">
+                  <button *ngFor="let tag of getVisibleTags()" type="button" class="tag-button"
+                    [class.active]="tag.selected" (click)="toggleTag(tag)">
+                    {{ tag.name }} {{ tag.count }}
+                  </button>
+                </div>
+                <button type="button" class="show-more-btn" (click)="toggleShowMoreTags()" *ngIf="tags.length > 12">
+                  <i class="fas fa-minus me-2" *ngIf="showMoreTags"></i>
+                  <i class="fas fa-plus me-2" *ngIf="!showMoreTags"></i>
+                  {{ showMoreTags ? 'Show Less' : 'Show More' }}
                 </button>
               </div>
-              <button type="button" class="show-more-btn" (click)="toggleShowMoreTags()" *ngIf="tags.length > 12">
-                <i class="fas fa-minus me-2" *ngIf="showMoreTags"></i>
-                <i class="fas fa-plus me-2" *ngIf="!showMoreTags"></i>
-                {{ showMoreTags ? 'Show Less' : 'Show More' }}
-              </button>
+              <!-- Show message if no tags are available -->
+              <div *ngIf="getVisibleTags().length === 0" class="no-tags-message">
+                <p>No tags available</p>
+              </div>
             </div>
           </div>
 
@@ -226,7 +228,11 @@
         <div class="results-header">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="results-info">
-              All<span class="text-muted"> {{ jobs.length }} </span>jobs found
+              <span *ngIf="!loading">
+                All <span class="text-muted">{{ jobs.length }}</span> jobs found
+              </span>
+              <div *ngIf="loading" class="skeleton-item" style="width: 120px; height: 1.2rem; border-radius: 4px;">
+              </div>
             </div>
             <div class="sort-controls">
               <label class="me-2" for="sortSelect">Sort:</label>
@@ -404,27 +410,22 @@
 
                     <!-- Salary Range -->
                     <label class="form-label">Salary Range ({{ selectedCurrency }})</label>
-                    <div class="range-values mb-2">
-                      <span>Min: {{ salaryRange.min | currency:selectedCurrency:'symbol-narrow':'1.0-0' }}</span>
-                      <span>Max: {{ salaryRange.max | currency:selectedCurrency:'symbol-narrow':'1.0-0' }}</span>
+
+                    <!-- Dual-Thumb Slider -->
+                    <div class="custom-slider-container">
+                      <ngx-slider role="slider" [(value)]="salaryRange.min" [(highValue)]="salaryRange.max"
+                        [options]="sliderOptions" (valueChange)="onSalaryChange()" (highValueChange)="onSalaryChange()">
+                      </ngx-slider>
                     </div>
-
-                    <!-- Min Slider -->
-                    <input type="range" class="form-range mb-2" [min]="0" [max]="getMaxSalary()"
-                      [(ngModel)]="salaryRange.min" (input)="onSalaryChange()">
-
-                    <!-- Max Slider -->
-                    <input type="range" class="form-range mb-3" [min]="0" [max]="getMaxSalary()"
-                      [(ngModel)]="salaryRange.max" (input)="onSalaryChange()">
 
                     <!-- Period Toggles -->
                     <div class="salary-period-toggles">
                       <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Weekly'"
-                        (click)="selectPeriod('weekly')">Weekly</button>
+                        (click)="selectPeriod('Weekly')">Weekly</button>
                       <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Monthly'"
-                        (click)="selectPeriod('monthly')">Monthly</button>
+                        (click)="selectPeriod('Monthly')">Monthly</button>
                       <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Hourly'"
-                        (click)="selectPeriod('hourly')">Hourly</button>
+                        (click)="selectPeriod('Hourly')">Hourly</button>
                     </div>
                   </div>
                 </div>

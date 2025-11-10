@@ -10,6 +10,8 @@ import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from '../core/services/api-service.service';
 import { CategoryService } from '../core/services/category.service';
 import { RelativeTimePipe } from '../core/pipes/relative-time.pipe';
+import { Options } from '@angular-slider/ngx-slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-job-list',
@@ -21,7 +23,8 @@ import { RelativeTimePipe } from '../core/pipes/relative-time.pipe';
     RouterLink,
     NavbarComponent,
     FooterComponent,
-    RelativeTimePipe
+    RelativeTimePipe,
+    NgxSliderModule
   ],
   styleUrls: ['./jobs-list.component.css'],
 })
@@ -48,9 +51,21 @@ export class JobsListComponent implements OnInit {
   isSelectOpen = false;
   expandedSections = {
     jobType: false,
-    experience: true, 
-    salary: true, 
+    experience: false,
+    salary: true,
     tags: false,
+  };
+  get sliderOptions(): Options {
+    return {
+      floor: 0,
+      ceil: this.getMaxSalary(),
+      step: 1000,
+      showTicks: false,
+      showTicksValues: false,
+      translate: (value: number): string => {
+        return `${value.toLocaleString()} ${this.selectedCurrency}`;
+      }
+    };
   };
   userRole: string | null = null;
   showFilterModal: boolean = false;
