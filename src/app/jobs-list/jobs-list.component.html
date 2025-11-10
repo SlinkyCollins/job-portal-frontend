@@ -141,21 +141,24 @@
                 <label for="salaryCurrency" class="form-label">Currency</label>
                 <select id="salaryCurrency" class="form-select mb-3" [(ngModel)]="selectedCurrency"
                   (change)="onCurrencyChange()">
+                  <option [ngValue]='null' selected>Select an option</option> <!-- Null option as default -->
                   <option *ngFor="let c of ['NGN', 'USD', 'GBP', 'EUR']" [value]="c">{{ c }}</option>
                 </select>
 
-                <!-- Salary Range -->
-                <label class="form-label">Salary Range ({{ selectedCurrency }})</label>
+                <!-- Salary Range (only show if currency is selected) -->
+                <div *ngIf="selectedCurrency !== null">
+                  <label class="form-label">Salary Range ({{ selectedCurrency }})</label>
 
-                <!-- Dual-Thumb Slider -->
-                <div class="custom-slider-container">
-                  <ngx-slider role="slider" [(value)]="salaryRange.min" [(highValue)]="salaryRange.max"
-                    [options]="sliderOptions" (valueChange)="onSalaryChange()" (highValueChange)="onSalaryChange()">
-                  </ngx-slider>
+                  <!-- Dual-Thumb Slider -->
+                  <div class="custom-slider-container">
+                    <ngx-slider role="slider" [(value)]="salaryRange.min" [(highValue)]="salaryRange.max"
+                      [options]="sliderOptions" (valueChange)="onSalaryChange()" (highValueChange)="onSalaryChange()">
+                    </ngx-slider>
+                  </div>
                 </div>
 
                 <!-- Period Toggles -->
-                <div class="salary-period-toggles">
+                <div class="salary-period-toggles" *ngIf="selectedCurrency !== null">
                   <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Weekly'"
                     (click)="selectPeriod('Weekly')">Weekly</button>
                   <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Monthly'"
@@ -248,10 +251,16 @@
         </div>
 
         <!-- Active Filters -->
-        <div *ngIf="activeFilters.length > 0" class="active-filters">
+        <div *ngIf="activeFilters.length > 0 || selectedCurrency" class="active-filters">
           <span *ngFor="let filter of activeFilters" class="badge">
             {{ filter }}
             <button type="button" class="btn-close btn-close-sm" (click)="removeFilter(filter)"></button>
+          </span>
+          <span *ngIf="showCurrencyNotice" class="filter-chip currency-chip">
+            Currency: {{ selectedCurrency }}
+            <button (click)="resetCurrencyFilter()" aria-label="Clear Currency Filter" title="Clear {{ selectedCurrency }} Filter">
+              <i class="fas fa-times"></i>
+            </button>
           </span>
         </div>
 
@@ -316,7 +325,10 @@
                 <span class="text-muted">/ {{ job.salary_duration }}</span>
               </div>
 
-              <div class="job-location">{{ job.location }}</div>
+              <div class="job-location">
+                <i class="fa-solid fa-location-dot"></i>
+                {{ job.location }}
+              </div>
 
               <div class="job-createdat">{{ job.published_at | relativeTime }}</div>
 
@@ -405,21 +417,25 @@
                     <label for="salaryCurrency" class="form-label">Currency</label>
                     <select id="salaryCurrency" class="form-select mb-3" [(ngModel)]="selectedCurrency"
                       (change)="onCurrencyChange()">
+                      <option [ngValue]='null' selected>Select an option</option> <!-- Null option as default -->
                       <option *ngFor="let c of ['NGN', 'USD', 'GBP', 'EUR']" [value]="c">{{ c }}</option>
                     </select>
 
-                    <!-- Salary Range -->
-                    <label class="form-label">Salary Range ({{ selectedCurrency }})</label>
+                    <!-- Salary Range (only show if currency is selected) -->
+                    <div *ngIf="selectedCurrency !== null">
+                      <label class="form-label">Salary Range ({{ selectedCurrency }})</label>
 
-                    <!-- Dual-Thumb Slider -->
-                    <div class="custom-slider-container">
-                      <ngx-slider role="slider" [(value)]="salaryRange.min" [(highValue)]="salaryRange.max"
-                        [options]="sliderOptions" (valueChange)="onSalaryChange()" (highValueChange)="onSalaryChange()">
-                      </ngx-slider>
+                      <!-- Dual-Thumb Slider -->
+                      <div class="custom-slider-container">
+                        <ngx-slider role="slider" [(value)]="salaryRange.min" [(highValue)]="salaryRange.max"
+                          [options]="sliderOptions" (valueChange)="onSalaryChange()"
+                          (highValueChange)="onSalaryChange()">
+                        </ngx-slider>
+                      </div>
                     </div>
 
                     <!-- Period Toggles -->
-                    <div class="salary-period-toggles">
+                    <div class="salary-period-toggles" *ngIf="selectedCurrency !== null">
                       <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Weekly'"
                         (click)="selectPeriod('Weekly')">Weekly</button>
                       <button type="button" class="period-toggle" [class.active]="selectedPeriod === 'Monthly'"

@@ -45,14 +45,15 @@ export class JobsListComponent implements OnInit {
   searchLocation: string = '';
   searchCategory: number | null = null;
   searchKeyword: string = '';
-  selectedCurrency: 'NGN' | 'USD' | 'GBP' | 'EUR' = 'NGN';  // Default to NGN
-  salaryRange = { min: 0, max: 5000000 };  // Default for NGN (5M)
-  selectedPeriod: string = 'Monthly';  // Default period
+  selectedCurrency: 'NGN' | 'USD' | 'GBP' | 'EUR' | null = null;  // Default to NGN
+  salaryRange = { min: 0, max: 0 };  // Default (Start empty)
+  selectedPeriod: string | null = null;  // Default to null
+  showCurrencyNotice: boolean = false;  // Controls when to show the currency notice
   isSelectOpen = false;
   expandedSections = {
     jobType: false,
     experience: false,
-    salary: true,
+    salary: false,
     tags: false,
   };
   get sliderOptions(): Options {
@@ -235,15 +236,25 @@ export class JobsListComponent implements OnInit {
     // Restore Salary Filters
     if (savedFilters.currency) {
       this.selectedCurrency = savedFilters.currency;
+      this.showCurrencyNotice = true;  // Show notice if currency was previously applied
+    } else {
+      this.selectedCurrency = null;  // Default to null if not saved
+      this.showCurrencyNotice = false;
     }
     if (savedFilters.min_salary !== undefined) {
       this.salaryRange.min = savedFilters.min_salary;
+    } else {
+      this.salaryRange.min = 0;
     }
     if (savedFilters.max_salary !== undefined) {
       this.salaryRange.max = savedFilters.max_salary;
+    } else {
+      this.salaryRange.max = 0;
     }
     if (savedFilters.salary_duration) {
       this.selectedPeriod = savedFilters.salary_duration;
+    } else {
+      this.selectedPeriod = null;
     }
 
     // Restore active filter chips
@@ -268,10 +279,16 @@ export class JobsListComponent implements OnInit {
       params['tags[]'] = selectedTags.map(t => t.value);
     }
 
-    params['currency'] = this.selectedCurrency;
-    params['min_salary'] = this.salaryRange.min;
-    params['max_salary'] = this.salaryRange.max;
-    params['salary_duration'] = this.selectedPeriod;
+    if (this.selectedCurrency) {
+      params.currency = this.selectedCurrency;
+      params.min_salary = this.salaryRange.min;
+      params.max_salary = this.salaryRange.max;
+    }
+
+    // Send duration only if selected
+    if (this.selectedPeriod) {
+      params.salary_duration = this.selectedPeriod;
+    }
 
     params['sort'] = this.selectedSort;
 
@@ -322,25 +339,32 @@ export class JobsListComponent implements OnInit {
   }
 
   buildSearchAndFilterParams(): any {
-    const search = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.search) || '{}');
     const selectedJobTypes = this.jobTypes.filter(j => j.selected).map(j => j.value);
     const selectedExperiences = this.experienceLevels.filter(e => e.selected).map(e => e.value);
     const selectedTags = this.tags.filter(tag => tag.selected).map(tag => tag.value);
 
-    return {
+    const params: any = {
       category: this.searchCategory,
       location: this.searchLocation.trim(),
       keyword: this.searchKeyword.trim(),
       sort: this.selectedSort,
       ...(selectedJobTypes.length ? { 'employment_type[]': selectedJobTypes } : {}),
       ...(selectedExperiences.length ? { 'experience_level[]': selectedExperiences } : {}),
-      ...(selectedTags.length ? { 'tags[]': selectedTags } : {}),  // Add tags to params
-      ...search,
-      currency: this.selectedCurrency,
-      min_salary: this.salaryRange.min,
-      max_salary: this.salaryRange.max,
-      salary_duration: this.selectedPeriod
+      ...(selectedTags.length ? { 'tags[]': selectedTags } : {}),
     };
+
+    // Only add salary params if currency is selected
+    if (this.selectedCurrency) {
+      params.currency = this.selectedCurrency;
+      params.min_salary = this.salaryRange.min;
+      params.max_salary = this.salaryRange.max;
+    }
+
+    // Send duration only if selected
+    if (this.selectedPeriod) {
+      params.salary_duration = this.selectedPeriod;
+    }
+    return params;
   }
 
   onSearch(): void {
@@ -397,6 +421,8 @@ export class JobsListComponent implements OnInit {
 
   applyFilters(): void {
     this.applyingFilters = true;
+    // Show currency notice only if currency is selected and applied
+    this.showCurrencyNotice = !!this.selectedCurrency;
 
     // Save filter states
     const filterState = {
@@ -459,9 +485,10 @@ export class JobsListComponent implements OnInit {
     localStorage.removeItem(this.STORAGE_KEYS.filterState);
 
     // Reset salary filters
-    this.selectedCurrency = 'NGN';
-    this.salaryRange = { min: 0, max: this.getMaxSalary() };
-    this.selectedPeriod = 'Monthly';
+    this.selectedCurrency = null;
+    this.salaryRange = { min: 0, max: 0 };
+    this.selectedPeriod = null;
+    this.showCurrencyNotice = false;  // Hide notice on full reset
 
     // 🧠 Only clear search form if user confirms or passes true
     if (clearSearch) {
@@ -529,6 +556,14 @@ export class JobsListComponent implements OnInit {
     }
   }
 
+  resetCurrencyFilter() {
+    this.selectedCurrency = null;
+    this.salaryRange = { min: 0, max: 0 };
+    this.selectedPeriod = null;
+    this.showCurrencyNotice = false;  // Hide the notice
+    this.applyFilters();  // Re-fetch without currency filter
+  }
+
   // Update getVisibleTags (show first 12, or all if showMoreTags)
   getVisibleTags(): any[] {
     // Filter for relevant tags first (count > 0 or selected)
@@ -570,13 +605,20 @@ export class JobsListComponent implements OnInit {
 
   // Get max salary based on currency
   getMaxSalary(): number {
+    if (!this.selectedCurrency) {
+      return 5000000;  // Default cap when no currency selected
+    }
     const caps = { 'NGN': 5000000, 'USD': 50000, 'GBP': 40000, 'EUR': 45000 };
-    return caps[this.selectedCurrency] || 5000000;
+    return caps[this.selectedCurrency] || 5000000;  // Fallback if currency not in caps
   }
 
-  // Handle currency change: Reset range and update max
+  // Handle currency change: Reset range when null and update max
   onCurrencyChange() {
-    this.salaryRange = { min: 0, max: this.getMaxSalary() };
+    if (this.selectedCurrency) {
+      this.salaryRange = { min: 0, max: this.getMaxSalary() };
+    } else {
+      this.salaryRange = { min: 0, max: 0 };  // Empty when no currency
+    }
   }
 
   // Handle salary slider changes (optional: ensure min < max)

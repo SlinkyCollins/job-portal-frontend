@@ -46,8 +46,69 @@ hr {
   transform: translateY(-50%) rotate(-135deg);
 }
 
+/* Filter Chip Styles */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.375rem;
+  background-color: #e9ecef; /* Light gray background, matching badge style */
+  color: #495057; /* Dark text */
+  border: 1px solid #dee2e6; /* Subtle border */
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.filter-chip:hover {
+  background-color: #3e9562; /* Slightly lighter on hover */
+}
+
+.filter-chip button {
+  background: none;
+  border: none;
+  outline: none;
+  color: #6c757d; /* Gray close button */
+  cursor: pointer;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.filter-chip button:hover {
+  color: #495057; /* Darker on hover */
+}
+
+/* Currency Chip Specific Style */
+.currency-chip {
+  background-color: #48bb78; /* Light green background */
+  color: white; /* White text */
+  border-color: #48bb78; /* Green border */
+}
+
+.currency-chip button {
+  color: white; /* White close button */
+}
+
+.currency-chip button:hover {
+  color: #e9ecef; /* Light gray on hover for contrast */
+}
+
 .salary-filter .form-label {
   padding: 0;
+  margin: 0 0 10px;
+}
+
+.salary-filter .form-select {
+  outline: none;
+  border: none;
 }
 
 .form-label {
@@ -1014,7 +1075,6 @@ hr {
 }
 
 .job-location::before {
-  content: "📍";
   font-size: 0.7rem;
 }
 
