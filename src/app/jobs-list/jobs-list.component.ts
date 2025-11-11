@@ -73,6 +73,12 @@ export class JobsListComponent implements OnInit {
   selectedSort: string = 'datePosted';
   showMoreTags: boolean = false;
 
+  // Pagination properties
+  currentPage: number = 1;
+  totalPages: number = 1;
+  perPage: number = 6;
+  totalJobs: number = 0;
+
   jobTypes = [
     { label: 'Full Time', value: 'fulltime', selected: false },
     { label: 'Part Time', value: 'parttime', selected: false },
@@ -150,6 +156,10 @@ export class JobsListComponent implements OnInit {
 
     // One single restore flow
     this.restoreSearchAndFilters();
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   clearLocation() {
@@ -307,6 +317,10 @@ export class JobsListComponent implements OnInit {
   }
 
   fetchJobs(params: any = {}): void {
+    // Add pagination params
+    params.page = this.currentPage;
+    params.per_page = this.perPage;
+
     // Start a short delay before showing the spinner
     const showSpinnerDelay = setTimeout(() => {
       this.loading = true;
@@ -318,6 +332,10 @@ export class JobsListComponent implements OnInit {
         next: (res) => {
           clearTimeout(showSpinnerDelay);
           this.jobs = res.jobs || [];
+
+          // Update pagination info
+          this.totalJobs = res.total || 0;
+          this.totalPages = Math.ceil(this.totalJobs / this.perPage);
 
           // Compute and cache tag counts once
           this.tags.forEach(tag => {
@@ -369,6 +387,7 @@ export class JobsListComponent implements OnInit {
 
   onSearch(): void {
     this.isSearching = true;
+    this.currentPage = 1; // Reset to first page on new search
 
     // Normalize the "None" option → treat 0 as null
     const normalizedCategory = this.searchCategory === 0 ? null : this.searchCategory;
@@ -405,6 +424,7 @@ export class JobsListComponent implements OnInit {
   }
 
   sortJobs() {
+    this.currentPage = 1; // Reset to first page on sort change
     localStorage.setItem(this.STORAGE_KEYS.sort, this.selectedSort);
 
     // Rebuild params and fetch
@@ -421,6 +441,7 @@ export class JobsListComponent implements OnInit {
 
   applyFilters(): void {
     this.applyingFilters = true;
+    this.currentPage = 1; // Reset to first page on filter change
     // Show currency notice only if currency is selected and applied
     this.showCurrencyNotice = !!this.selectedCurrency;
 
@@ -468,6 +489,7 @@ export class JobsListComponent implements OnInit {
   }
 
   resetFilters(clearSearch: boolean = false): void {
+    this.currentPage = 1; // Reset to first page on reset
     // Reset all filter checkboxes
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
@@ -631,5 +653,43 @@ export class JobsListComponent implements OnInit {
   // Update selectPeriod to work with salary
   selectPeriod(period: string) {
     this.selectedPeriod = period;
+  }
+
+  // Pagination methods
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.fetchJobs(this.buildSearchAndFilterParams());
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.fetchJobs(this.buildSearchAndFilterParams());
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.fetchJobs(this.buildSearchAndFilterParams());
+    }
+  }
+
+  getPagesArray(): number[] {
+    const pages: number[] = [];
+    const start = Math.max(1, this.currentPage - 2);
+    const end = Math.min(this.totalPages, this.currentPage + 2);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+  getShowingText(): string {
+    const start = (this.currentPage - 1) * this.perPage + 1;
+    const end = Math.min(this.currentPage * this.perPage, this.totalJobs);
+    return `Showing <strong>${start}</strong> to <strong>${end}</strong> of <strong>${this.totalJobs}</strong> jobs`;
   }
 }

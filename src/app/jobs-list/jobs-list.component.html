@@ -13,7 +13,7 @@
         <div class="col-lg-8 text-center">
           <h1 class="hero-title">Job Listing</h1>
           <p class="hero-subtitle">
-            We delivered blazing fast & striking work solution
+            We deliver blazing fast & striking work solution
           </p>
           <!-- Search Form -->
           <div class="heroSearch d-flex flex-column flex-md-row gap-md-3">
@@ -305,7 +305,7 @@
             </p>
 
             <!-- Optional Call to Action -->
-            <button class="btn btn-reset" (click)="resetFilters()">Reset Filters</button>
+            <button class="btn btn-reset" (click)="resetFilters(true)">Reset Filters</button>
           </div>
         </div>
 
@@ -350,6 +350,63 @@
                 <button class="btn-apply w-100 mt-3">APPLY</button>
               </a>
             </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <!-- Loading Skeleton (only for initial load) -->
+        <div *ngIf="loading && totalJobs === 0" class="pagination-container mt-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="pagination-info mb-3 mb-md-0">
+              <div class="skeleton-item" style="width: 150px; height: 1.2rem; border-radius: 4px;"></div>
+            </div>
+            <nav aria-label="Job listings pagination">
+              <ul class="pagination pagination-sm mb-0 d-flex">
+                <!-- Previous Button Skeleton -->
+                <li class="page-item me-1">
+                  <div class="skeleton-item page-link" style="width: 40px; height: 38px; border-radius: 4px;"></div>
+                </li>
+                <!-- Page Number Skeletons (show 3-5 placeholders) -->
+                <li *ngFor="let i of [1,2,3,4]" class="page-item me-1" [class.active]="i === 2">
+                  <div class="skeleton-item page-link" style="width: 40px; height: 38px; border-radius: 4px;"></div>
+                </li>
+                <!-- Next Button Skeleton -->
+                <li class="page-item">
+                  <div class="skeleton-item page-link" style="width: 40px; height: 38px; border-radius: 4px;"></div>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Actual Pagination (always visible after initial load, buttons disabled during loading) -->
+        <div *ngIf="totalJobs > perPage" class="pagination-container mt-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="pagination-info mb-3 mb-md-0">
+              <span class="text-muted" [innerHTML]="getShowingText()"></span>
+            </div>
+            <nav aria-label="Job listings pagination">
+              <ul class="pagination pagination-sm mb-0">
+                <!-- Previous Button -->
+                <li class="page-item" [class.disabled]="currentPage === 1 || loading">
+                  <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1 || loading"
+                    aria-label="Previous page">
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                </li>
+                <!-- Page Numbers -->
+                <li *ngFor="let page of getPagesArray()" class="page-item" [class.active]="page === currentPage">
+                  <button class="page-link" (click)="goToPage(page)" [disabled]="loading">{{ page }}</button>
+                </li>
+                <!-- Next Button -->
+                <li class="page-item" [class.disabled]="currentPage === totalPages || loading">
+                  <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages || loading"
+                    aria-label="Next page">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
@@ -507,5 +564,6 @@
           </div>
         </div>
       </div>
-      <app-cta></app-cta>
+
+      <app-cta *ngIf="!isLoggedIn()"></app-cta>
       <app-footer></app-footer>
