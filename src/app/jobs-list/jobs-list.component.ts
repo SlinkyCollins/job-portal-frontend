@@ -596,7 +596,7 @@ export class JobsListComponent implements OnInit {
 
   // Method to get count for experience levels
   getExperienceCount(experience: any): number {
-    return this.jobs.filter(job => job.experience_level === experience.label).length;
+    return this.jobs.filter(job => job.experience_level === experience.value).length;
   }
 
   // Method to get count for job types
