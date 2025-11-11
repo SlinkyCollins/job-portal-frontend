@@ -258,7 +258,8 @@
           </span>
           <span *ngIf="showCurrencyNotice" class="filter-chip currency-chip">
             Currency: {{ selectedCurrency }}
-            <button (click)="resetCurrencyFilter()" aria-label="Clear Currency Filter" title="Clear {{ selectedCurrency }} Filter">
+            <button (click)="resetCurrencyFilter()" aria-label="Clear Currency Filter"
+              title="Clear {{ selectedCurrency }} Filter">
               <i class="fas fa-times"></i>
             </button>
           </span>
@@ -291,8 +292,21 @@
           </div>
         </div>
 
-        <div *ngIf="!loading && jobs.length === 0" class="text-center my-5">
-          <p>No jobs available</p>
+        <!-- Empty State -->
+        <div *ngIf="!loading && jobs.length === 0" class="empty-state text-center my-5">
+          <div class="empty-state-content">
+            <!-- Illustration -->
+            <img src="/assets/EmptyImg.svg" alt="No jobs found illustration" class="empty-state-image mb-4" />
+
+            <!-- Message -->
+            <h4 class="empty-state-title text-muted mb-3">No Jobs Available</h4>
+            <p class="empty-state-subtitle text-secondary mb-4">
+              We couldn't find any jobs matching your criteria. Try adjusting your filters or check back later.
+            </p>
+
+            <!-- Optional Call to Action -->
+            <button class="btn btn-reset" (click)="resetFilters()">Reset Filters</button>
+          </div>
         </div>
 
         <div class="row" *ngIf="!loading && jobs.length > 0">
