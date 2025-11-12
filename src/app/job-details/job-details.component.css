@@ -203,21 +203,9 @@ img {
   background-color: #f8f9fa;
 }
 
-.btn-apply {
-  background-color: #2d5a3d;
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.btn-apply:hover {
-  background-color: #1e3a2a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(45, 90, 61, 0.3);
+.btn-block {
+  display: block;
+  width: 100%;
 }
 
 /* Sidebar */
@@ -273,6 +261,87 @@ img {
 .info-item span {
   color: #6c757d;
   text-align: right;
+}
+
+/* === SWIPER STYLES === */
+.related-jobs-swiper {
+  width: 100%;
+  display: block;
+  padding-bottom: 2rem; /* Space for nav buttons */
+}
+
+/* === RELATED JOBS HEADER === */
+.related-jobs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.related-jobs-header .section-title {
+  margin: 0;
+}
+
+/* === NAV BUTTONS (Reused from Testimonials) === */
+.swiper-nav-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: static;
+  margin: 0;
+  background-color: transparent;
+  padding: 1rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease-in-out;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #d2f34c; /* Match your theme */
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.swiper-button-prev::after {
+  background-image: url("/assets/icons/left.svg");
+}
+
+.swiper-button-next::after {
+  background-image: url("/assets/icons/right.svg");
+}
+
+/* Mobile: Hide desktop nav */
+@media (max-width: 767px) {
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+/* Desktop: Show nav */
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+  }
+  .mobile-nav {
+    display: none;
+  }
 }
 
 /* Related Jobs */
@@ -687,11 +756,6 @@ img {
   text-align: center;
 }
 
-.related-jobs-slider {
-  overflow-x: auto;
-  padding-bottom: 1rem;
-}
-
 .related-job-card {
   background: white;
   border-radius: 12px;
@@ -899,10 +963,6 @@ img {
 }
 
 /* Button utilities */
-.btn-block {
-  width: 100%;
-}
-
 .btn-outline-primary {
   color: #2d5a3d;
   border-color: #2d5a3d;

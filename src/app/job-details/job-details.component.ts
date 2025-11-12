@@ -1,20 +1,25 @@
-import { Component, OnInit } from "@angular/core"
-import { ActivatedRoute, Router, RouterLink } from "@angular/router"
-import { CommonModule } from "@angular/common"
-import { CtaComponent } from "../components/sections/cta/cta.component"
-import { AuthService } from "../core/services/auth.service"
-import { NavbarComponent } from "../components/sections/navbar/navbar.component"
-import { FooterComponent } from "../components/sections/footer/footer.component"
-import { RelativeTimePipe } from "../core/pipes/relative-time.pipe"
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { CommonModule } from "@angular/common";
+import { CtaComponent } from "../components/sections/cta/cta.component";
+import { AuthService } from "../core/services/auth.service";
+import { NavbarComponent } from "../components/sections/navbar/navbar.component";
+import { FooterComponent } from "../components/sections/footer/footer.component";
+import { RelativeTimePipe } from "../core/pipes/relative-time.pipe";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: "app-job-details",
   imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent, RouterLink, RelativeTimePipe],
   templateUrl: "./job-details.component.html",
   styleUrls: ["./job-details.component.css"],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
 })
-export class JobDetailsComponent implements OnInit {
+export class JobDetailsComponent implements OnInit, AfterViewInit {
+  @ViewChild('relatedSwiper', { static: false }) relatedSwiperEl!: ElementRef;
+
   jobId: number | null = null
   job: any = null
   isLoading = true
@@ -31,7 +36,7 @@ export class JobDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     public authService: AuthService,
     public router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem("role")
@@ -44,6 +49,10 @@ export class JobDetailsComponent implements OnInit {
       this.errorMsg = "Invalid job ID"
       this.isLoading = false
     }
+  }
+
+  ngAfterViewInit() {
+    // Swiper navigation is handled automatically via navigation-next-el and navigation-prev-el
   }
 
   fetchJobDetails(id: number): void {
@@ -163,6 +172,30 @@ export class JobDetailsComponent implements OnInit {
         location: "UK, London",
         job_type: "Fulltime",
         salary: 4200,
+      },
+      {
+        job_id: 4,
+        job_title: "Mobile App Developer",
+        company_name: "AppMakers",
+        location: "Canada, Toronto",
+        job_type: "Contract",
+        salary: 4000,
+      },
+      {
+        job_id: 5,
+        job_title: "DevOps Engineer",
+        company_name: "CloudNet",
+        location: "Germany, Berlin",
+        job_type: "Fulltime",
+        salary: 5500,
+      },
+      {
+        job_id: 6,
+        job_title: "Digital Marketing Specialist",
+        company_name: "MarketGurus",
+        location: "Australia, Sydney",
+        job_type: "Part time",
+        salary: 3000,
       },
     ]
   }

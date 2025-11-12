@@ -205,7 +205,7 @@
           <button (click)="resetFilters()" class="btn btn-reset w-100 mt-3">Reset Filters</button>
 
           <!-- Full reset button -->
-          <button (click)="resetFilters(true)" class="btn btn-reset w-100 mt-3">Reset All</button>
+          <button (click)="resetFilters(true)" class="btn btn-reset w-100 mt-3">Reset All Filters</button>
 
           <button class="btn apply-filter-btn w-100 mt-4" (click)="applyFilters()" [disabled]="applyingFilters">
             <div class="spinner-border spinner-border-sm me-2" *ngIf="applyingFilters"></div>
@@ -305,7 +305,7 @@
             </p>
 
             <!-- Optional Call to Action -->
-            <button class="btn btn-reset" (click)="resetFilters(true)">Reset Filters</button>
+            <button class="btn btn-reset" (click)="resetFilters(true)">Reset All Filters</button>
           </div>
         </div>
 
@@ -554,7 +554,7 @@
                   Reset Filters
                 </button>
                 <button type="button" class="btn btn-secondary" (click)="resetFiltersAndToggleModal(true)">
-                  Reset All
+                  Reset All Filters
                 </button>
                 <button type="button" class="btn btn-primary" (click)="applyFiltersAndToggleModal()">
                   Apply Filters

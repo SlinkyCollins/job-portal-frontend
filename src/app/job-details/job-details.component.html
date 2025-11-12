@@ -25,7 +25,7 @@
         <!-- Skeleton Main Content -->
         <div class="col-lg-8">
           <div class="job-content-card skeleton">
-            
+
             <!-- Overview Section Skeleton -->
             <section class="content-section">
               <header class="section-header">
@@ -117,7 +117,7 @@
         <!-- Skeleton Sidebar -->
         <div class="col-lg-4">
           <aside class="job-sidebar">
-            
+
             <!-- Job Summary Card Skeleton -->
             <div class="sidebar-card skeleton">
               <div class="card-header">
@@ -162,7 +162,8 @@
 
             <!-- Action Buttons Skeleton -->
             <div class="action-buttons">
-              <div class="skeleton-item" style="height: 3rem; width: 100%; border-radius: 10px; margin-bottom: 1rem;"></div>
+              <div class="skeleton-item" style="height: 3rem; width: 100%; border-radius: 10px; margin-bottom: 1rem;">
+              </div>
               <div class="skeleton-item" style="height: 3rem; width: 100%; border-radius: 10px;"></div>
             </div>
 
@@ -182,7 +183,7 @@
         <!-- Main Content -->
         <div class="col-lg-8">
           <div class="job-content-card">
-            
+
             <!-- Overview Section -->
             <section class="content-section">
               <header class="section-header">
@@ -198,7 +199,8 @@
                 <div class="job-meta-tags">
                   <span class="meta-tag">{{ job.location }}</span>
                   <span class="meta-tag">{{ job.employment_type }}</span>
-                  <span class="meta-tag">{{ job.salary_amount | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
+                  <span class="meta-tag">{{ job.salary_amount | currency: job.currency :'symbol-narrow':'1.0-0'
+                    }}</span>
                 </div>
               </div>
             </section>
@@ -215,9 +217,7 @@
                 <div class="description-content" [class.expanded]="showFullDescription">
                   <p>{{ job.description }}</p>
                 </div>
-                <button 
-                  class="show-more-btn" 
-                  *ngIf="job.description && job.description.length > 200"
+                <button class="show-more-btn" *ngIf="job.description && job.description.length > 200"
                   (click)="toggleDescription()">
                   {{ showFullDescription ? 'Show Less' : 'Show More' }}
                 </button>
@@ -315,7 +315,7 @@
         <!-- Sidebar -->
         <div class="col-lg-4">
           <aside class="job-sidebar">
-            
+
             <!-- Job Summary Card -->
             <div class="sidebar-card">
               <div class="card-header">
@@ -350,7 +350,8 @@
                 <div class="company-info">
                   <div class="company-logo">
                     <!-- <i class="fas fa-building"></i> -->
-                    <img [src]="job.logo_url" alt="Company Logo" style="width: 50px; height: 50px; object-fit: cover;" />
+                    <img [src]="job.logo_url" alt="Company Logo"
+                      style="width: 50px; height: 50px; object-fit: cover;" />
                   </div>
                   <div class="company-details">
                     <h5>{{ job.name || 'Company Name' }}</h5>
@@ -363,11 +364,8 @@
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-              <button 
-                class="btn btn-apply btn-block" 
-                *ngIf="!userRole || userRole === 'job_seeker'" 
-                [disabled]="hasApplied || isApplying"
-                (click)="onApplyNow()">
+              <button class="btn btn-apply btn-block" *ngIf="!userRole || userRole === 'job_seeker'"
+                [disabled]="hasApplied || isApplying" (click)="onApplyNow()">
                 <div class="btn-content">
                   <div class="spinner-border spinner-border-sm me-2" *ngIf="isApplying"></div>
                   <i class="fas fa-paper-plane me-2" *ngIf="!isApplying"></i>
@@ -375,12 +373,9 @@
                   <span *ngIf="!isApplying">{{ hasApplied ? 'Already Applied' : 'Apply for this position' }}</span>
                 </div>
               </button>
-              
-              <button 
-                class="btn btn-save btn-block" 
-                *ngIf="!userRole || userRole === 'job_seeker'" 
-                [disabled]="isSaved || isSaving"
-                (click)="onSaveJob()">
+
+              <button class="btn btn-save btn-block" *ngIf="!userRole || userRole === 'job_seeker'"
+                [disabled]="isSaved || isSaving" (click)="onSaveJob()">
                 <div class="btn-content">
                   <div class="spinner-border spinner-border-sm me-2" *ngIf="isSaving"></div>
                   <i class="fas fa-bookmark me-2" *ngIf="!isSaving"></i>
@@ -399,32 +394,51 @@
   <!-- Related Jobs Section -->
   <section class="related-jobs-section" *ngIf="!isLoading && job">
     <div class="container">
-      <h2 class="section-title">Related Jobs</h2>
-      <div class="related-jobs-slider">
-        <div class="row">
-          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let relatedJob of relatedJobs">
-            <div class="related-job-card">
-              <div class="job-card-header">
-                <h4 class="job-card-title">{{ relatedJob.job_title }}</h4>
-                <span class="job-type-badge">{{ relatedJob.job_type }}</span>
-              </div>
-              <div class="job-card-body">
-                <p class="company-name">{{ relatedJob.company_name }}</p>
-                <p class="job-location">{{ relatedJob.location }}</p>
-                <p class="job-salary">₦{{ relatedJob.salary }}</p>
-              </div>
-              <div class="job-card-footer">
-                <a [routerLink]="['/jobdetails', relatedJob.job_id]" class="btn btn-outline-primary btn-sm">
-                  View Details
-                </a>
-              </div>
+      <div class="related-jobs-header">
+        <h2 class="section-title">Related Jobs</h2>
+
+        <!-- DESKTOP NAV BUTTONS (768px and up) -->
+        <div class="swiper-nav-buttons desktop-nav">
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+
+      <!-- SWIPER CONTAINER -->
+      <swiper-container #relatedSwiper class="related-jobs-swiper" pagination="false"
+        navigation="true" navigation-next-el=".swiper-button-next" navigation-prev-el=".swiper-button-prev"
+        autoplay='{"delay": 3000, "disableOnInteraction": true}' breakpoints='{
+        "0": { "slidesPerView": 1, "spaceBetween": 20 },
+        "768": { "slidesPerView": 2, "spaceBetween": 20 },
+        "992": { "slidesPerView": 3, "spaceBetween": 30 }
+      }'>
+        <swiper-slide *ngFor="let relatedJob of relatedJobs">
+          <div class="related-job-card">
+            <div class="job-card-header">
+              <h4 class="job-card-title">{{ relatedJob.job_title }}</h4>
+              <span class="job-type-badge">{{ relatedJob.job_type }}</span>
+            </div>
+            <div class="job-card-body">
+              <p class="company-name">{{ relatedJob.company_name }}</p>
+              <p class="job-location">{{ relatedJob.location }}</p>
+              <p class="job-salary">₦{{ relatedJob.salary }}</p>
+            </div>
+            <div class="job-card-footer">
+              <a [routerLink]="['/jobdetails', relatedJob.job_id]" class="btn btn-outline-primary btn-sm">
+                View Details
+              </a>
             </div>
           </div>
-        </div>
+        </swiper-slide>
+      </swiper-container>
+
+      <!-- MOBILE NAV BUTTONS (below swiper on small screens) -->
+      <div class="swiper-nav-buttons mobile-nav">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
     </div>
   </section>
-
   <app-cta></app-cta>
   <app-footer></app-footer>
 </div>
