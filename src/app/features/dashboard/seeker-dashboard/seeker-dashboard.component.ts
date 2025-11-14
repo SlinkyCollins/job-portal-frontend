@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
+import { DashboardService } from '../../../core/services/dashboard.service';
 import { RouterModule } from '@angular/router';
 import { DeleteaccountComponent } from '../../../components/sections/deleteaccount/deleteaccount.component';
 
@@ -26,6 +27,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     public router: Router,
     public toastr: ToastrService,
     public authService: AuthService,
+    private dashboardService: DashboardService
   ) { }
 
   ngOnInit() {
@@ -132,12 +134,21 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   handleAccountDeletion() {
-    console.log("Account deletion confirmed!")
-    // Your deletion logic here
-    this.showDeleteModal = false // Close modal
-
-    // You can add your actual account deletion API call here
-    // this.authService.deleteAccount().subscribe(...)
+    this.dashboardService.deleteAccount().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.toastr.success('Account deleted successfully');
+          this.authService.logout();
+        } else {
+          this.toastr.error(response.message || 'Failed to delete account');
+        }
+      },
+      error: (err) => {
+        console.error('Error deleting account:', err);
+        this.toastr.error('Error deleting account');
+      }
+    });
+    this.showDeleteModal = false;
   }
 
   closeDeleteModal() {

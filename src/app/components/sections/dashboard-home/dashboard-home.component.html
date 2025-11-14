@@ -5,7 +5,7 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number">1.7k+</div>
+                <div class="stat-number coming-soon">Coming Soon</div>
                 <div class="stat-label">Total Visitor</div>
             </div>
             <div class="stat-icon user-icon">
@@ -15,7 +15,7 @@
 
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number">03</div>
+                <div class="stat-number">{{ stats.shortlisted }}</div>
                 <div class="stat-label">Shortlisted</div>
             </div>
             <div class="stat-icon bookmark-icon">
@@ -25,7 +25,7 @@
 
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number">2.1k</div>
+                <div class="stat-number coming-soon">Coming Soon</div>
                 <div class="stat-label">Views</div>
             </div>
             <div class="stat-icon eye-icon">
@@ -35,7 +35,7 @@
 
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number">07</div>
+                <div class="stat-number">{{ stats.appliedJobs }}</div>
                 <div class="stat-label">Applied Job</div>
             </div>
             <div class="stat-icon edit-icon">
@@ -53,87 +53,77 @@
             </div>
 
             <div class="chart-tabs">
-                <button class="tab-btn">1h</button>
-                <button class="tab-btn active">Day</button>
-                <button class="tab-btn">Week</button>
-                <button class="tab-btn">Month</button>
-                <button class="tab-btn">Year</button>
+                <button class="tab-btn" [class.active]="activeTab === '1h'" (click)="setActiveTab('1h')">1h</button>
+                <button class="tab-btn" [class.active]="activeTab === 'Day'" (click)="setActiveTab('Day')">Day</button>
+                <button class="tab-btn" [class.active]="activeTab === 'Week'"
+                    (click)="setActiveTab('Week')">Week</button>
+                <button class="tab-btn" [class.active]="activeTab === 'Month'"
+                    (click)="setActiveTab('Month')">Month</button>
+                <button class="tab-btn" [class.active]="activeTab === 'Year'"
+                    (click)="setActiveTab('Year')">Year</button>
             </div>
 
             <div class="chart-container">
                 <canvas id="jobViewsChart"></canvas>
-                <!-- Fallback chart representation -->
             </div>
         </div>
 
-        <!-- Recently Applied Job -->
+        <!-- Recently Applied Jobs -->
         <div class="jobs-section">
-            <h2>Recently Applied Job</h2>
+            <h2>Recently Applied Jobs</h2>
             <div class="job-list">
-                <div class="job-item">
-                    <div class="job-icon fixed-price"></div>
-                    <div class="job-info">
-                        <div class="job-title">Fixed-Price</div>
-                        <div class="job-location">Fulltime . USA, Palo Alto</div>
+                <div class="job-item" *ngFor="let application of recentApplications">
+                    <div class="job-icon">
+                        <img [src]="application.logo_url" alt="Company Logo" />
                     </div>
-                    <button class="job-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+                    <div class="job-info">
+                        <div class="job-title">{{ application.title }}</div>
+                        <div class="job-location">{{ application.employment_type | capitalizeFirst }} . {{
+                            application.location }}</div>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link job-menu" type="button" id="dropdownMenuButton{{ application.id }}"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownMenuButton' + application.id">
+                            <li><a class="dropdown-item" (click)="viewJob(application)">View Job</a></li>
+                            <li><a class="dropdown-item text-danger"
+                                    (click)="retractApplication(application)">Retract</a></li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="job-item">
-                    <div class="job-icon fulltime"></div>
-                    <div class="job-info">
-                        <div class="job-title">Fulltime</div>
-                        <div class="job-location">Fulltime . USA, New York</div>
+                <!-- Polished Empty State -->
+                <div class="no-data" *ngIf="recentApplications.length === 0">
+                    <div class="empty-state-content">
+                        <img src="/assets/EmptyImg.svg" alt="No applications illustration"
+                            class="empty-state-image mb-3" />
+                        <h5 class="empty-state-title text-muted">No Recent Applications</h5>
+                        <p class="empty-state-subtitle text-secondary">You haven't applied to any jobs recently. Start
+                            exploring opportunities!</p>
                     </div>
-                    <button class="job-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="job-item">
-                    <div class="job-icon part-time"></div>
-                    <div class="job-info">
-                        <div class="job-title">Part time</div>
-                        <div class="job-location">Fulltime . USA, San Jose</div>
-                    </div>
-                    <button class="job-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+    <!-- Simple Retract Modal -->
+    <div class="modal fade show" *ngIf="showRetractModal" style="display: block; background: rgba(0,0,0,0.5);"
+        (click)="closeRetractModal()">
+        <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Retract Application</h5>
+                    <button type="button" class="btn-close" (click)="closeRetractModal()"></button>
                 </div>
-
-                <div class="job-item">
-                    <div class="job-icon freelance"></div>
-                    <div class="job-info">
-                        <div class="job-title">Freelance</div>
-                        <div class="job-location">Fulltime . UK, Cupertino</div>
-                    </div>
-                    <button class="job-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+                <div class="modal-body">
+                    Are you sure you want to retract this application? This action cannot be undone.
                 </div>
-
-                <div class="job-item">
-                    <div class="job-icon part-time-2"></div>
-                    <div class="job-info">
-                        <div class="job-title">Part time</div>
-                        <div class="job-location">Fulltime . USA, Redmond</div>
-                    </div>
-                    <button class="job-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
-                </div>
-
-                <div class="job-item">
-                    <div class="job-icon fulltime-2"></div>
-                    <div class="job-info">
-                        <div class="job-title">Fulltime</div>
-                        <div class="job-location">Fulltime . USA, Menlo Park</div>
-                    </div>
-                    <button class="job-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeRetractModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger" (click)="confirmRetract()">Retract</button>
                 </div>
             </div>
         </div>

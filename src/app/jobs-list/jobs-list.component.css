@@ -46,6 +46,10 @@ hr {
   transform: translateY(-50%) rotate(-135deg);
 }
 
+.job-listing-container {
+  margin-bottom: 5rem;
+}
+
 /* Filter Chip Styles */
 .filter-chip {
   display: inline-flex;

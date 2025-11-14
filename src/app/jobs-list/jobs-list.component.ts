@@ -195,10 +195,7 @@ export class JobsListComponent implements OnInit {
 
     // Set isSearching based on whether any search value exists
     if (hasAnySearchValue(savedSearch)) {
-      // Delay spinner for better UX if fetch is fast
-      setTimeout(() => {
-        this.isSearching = true;
-      }, 200);
+      this.isSearching = true;
     } else {
       this.isSearching = false;
     }

@@ -35,37 +35,7 @@
 .chart-svg {
   min-width: 80px;
 }
-@media (min-width: 481px) {
-  .content-grid {
-    flex-direction: row;
-    gap: 2rem;
-  }
-  .section-header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0;
-  }
-  .chart-tabs {
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  .tab-btn {
-    padding: 0.5rem 1.2rem;
-    font-size: 1rem;
-  }
-  .chart-container {
-    min-height: 220px;
-  }
-  .chart-fallback {
-    height: 180px;
-  }
-  .chart-svg {
-    min-width: 120px;
-  }
-}
+
 .dashboard-content {
   padding: 2rem 1rem;
   width: 100%;
@@ -84,7 +54,7 @@
 .stat-card {
   background: #fff;
   border-radius: 1.25rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -94,7 +64,7 @@
 }
 
 .stat-card:hover {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 .stat-content {
@@ -107,6 +77,12 @@
   font-size: 2rem;
   font-weight: 700;
   color: #244034;
+}
+
+.stat-number.coming-soon {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #24403469;
 }
 
 .stat-label {
@@ -126,19 +102,19 @@
 }
 
 .stat-icon.user-icon {
-    background-color: #d2f34c;
+  background-color: #d2f34c;
   /* background: linear-gradient(135deg, #a4d65e, #6bbf59); */
 }
 .stat-icon.bookmark-icon {
-    background-color: #d2f34c;
+  background-color: #d2f34c;
   /* background: linear-gradient(135deg, #fbbf24, #f59e42); */
 }
 .stat-icon.eye-icon {
-    background-color: #d2f34c;
+  background-color: #d2f34c;
   /* background: linear-gradient(135deg, #3b82f6, #2563eb); */
 }
 .stat-icon.edit-icon {
-    background-color: #d2f34c;
+  background-color: #d2f34c;
   /* background: linear-gradient(135deg, #8b5cf6, #7c3aed); */
 }
 
@@ -152,7 +128,7 @@
 .jobs-section {
   background: #fff;
   border-radius: 1.25rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -245,37 +221,14 @@
   background-color: #f8fafc;
 }
 
-.job-icon {
+.job-icon img {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
-  margin-right: 16px;
+  object-fit: cover;
+  margin: 0 0 1rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 12px;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.job-icon.fixed-price {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-}
-.job-icon.fulltime {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-.job-icon.part-time {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-}
-.job-icon.freelance {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-}
-.job-icon.part-time-2 {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-}
-.job-icon.fulltime-2 {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
 
 .job-info {
@@ -286,7 +239,7 @@
 }
 
 .job-title {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #244034;
 }
@@ -296,6 +249,7 @@
   color: #6b7280;
 }
 
+/* Dropdown Menu Styles */
 .job-menu {
   background: none;
   border: none;
@@ -311,7 +265,71 @@
   background: #e5e7eb;
 }
 
+.dropdown-menu {
+  min-width: 120px;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+/* Empty State Styles */
+.empty-state-content {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.empty-state-image {
+  width: 150px;
+  height: auto;
+  opacity: 0.8;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-subtitle {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
 /* Responsive Design */
+@media (min-width: 481px) {
+  .content-grid {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  .section-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+  }
+  .chart-tabs {
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .tab-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+  }
+  .chart-container {
+    min-height: 220px;
+  }
+  .chart-fallback {
+    height: 180px;
+  }
+  .chart-svg {
+    min-width: 120px;
+  }
+}
+
 @media (min-width: 600px) {
   .stats-grid {
     flex-direction: row;
@@ -336,5 +354,9 @@
     flex-direction: row;
     align-items: center;
     padding: 1rem 1.2rem;
+  }
+
+  .job-icon img {
+    margin: 0 1.5rem 1rem 0.5rem;
   }
 }

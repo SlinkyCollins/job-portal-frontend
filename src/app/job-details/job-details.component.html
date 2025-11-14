@@ -197,7 +197,7 @@
                   {{ job.overview ? job.overview : 'No overview available for this job.' }}
                 </p>
                 <div class="job-meta-tags">
-                  <span class="meta-tag">{{ job.location }}</span>
+                  <span class="meta-tag">{{ job.job_location }}</span>
                   <span class="meta-tag">{{ job.employment_type }}</span>
                   <span class="meta-tag">{{ job.salary_amount | currency: job.currency :'symbol-narrow':'1.0-0'
                     }}</span>
@@ -328,7 +328,7 @@
                 </div>
                 <div class="info-item">
                   <strong>Location:</strong>
-                  <span>{{ job.location }}</span>
+                  <span>{{ job.job_location }}</span>
                 </div>
                 <div class="info-item">
                   <strong>Job Type:</strong>
@@ -354,7 +354,7 @@
                       style="width: 50px; height: 50px; object-fit: cover;" />
                   </div>
                   <div class="company-details">
-                    <h5>{{ job.name || 'Company Name' }}</h5>
+                    <h5>{{ job.company_name || 'Company Name' }}</h5>
                     <p>Leading technology company</p>
                     <a href="#" class="company-website">Visit Website</a>
                   </div>
@@ -365,12 +365,15 @@
             <!-- Action Buttons -->
             <div class="action-buttons">
               <button class="btn btn-apply btn-block" *ngIf="!userRole || userRole === 'job_seeker'"
-                [disabled]="hasApplied || isApplying" (click)="onApplyNow()">
+                [disabled]="hasApplied || isRetracted || isApplying" (click)="onApplyNow()">
                 <div class="btn-content">
                   <div class="spinner-border spinner-border-sm me-2" *ngIf="isApplying"></div>
-                  <i class="fas fa-paper-plane me-2" *ngIf="!isApplying"></i>
+                  <i class="fas fa-paper-plane me-2" *ngIf="!isApplying && !isRetracted"></i>
+                  <i class="fas fa-ban me-2" *ngIf="!isApplying && isRetracted"></i>
                   <span *ngIf="isApplying">Applying...</span>
-                  <span *ngIf="!isApplying">{{ hasApplied ? 'Already Applied' : 'Apply for this position' }}</span>
+                  <span *ngIf="!isApplying">
+                    {{ isRetracted ? 'Application Retracted' : hasApplied ? 'Already Applied' : 'Apply for this position' }}
+                  </span>
                 </div>
               </button>
 

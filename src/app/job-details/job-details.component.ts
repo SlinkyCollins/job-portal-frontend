@@ -20,17 +20,18 @@ import { ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 export class JobDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild('relatedSwiper', { static: false }) relatedSwiperEl!: ElementRef;
 
-  jobId: number | null = null
-  job: any = null
-  isLoading = true
-  hasApplied = false
-  isSaved = false
-  errorMsg: string | null = null
-  userRole: string | null = null
-  showFullDescription = false
-  relatedJobs: any[] = []
-  isApplying = false
-  isSaving = false
+  jobId: number | null = null;
+  job: any = null;
+  isLoading = true;
+  hasApplied = false;
+  isSaved = false;
+  errorMsg: string | null = null;
+  userRole: string | null = null;
+  showFullDescription = false;
+  relatedJobs: any[] = [];
+  isApplying = false;
+  isSaving = false;
+  isRetracted: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,8 +44,8 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     this.jobId = Number(this.route.snapshot.paramMap.get("id"))
 
     if (this.jobId) {
-      this.fetchJobDetails(this.jobId)
-      this.fetchRelatedJobs() // Add this line
+      this.fetchJobDetails(this.jobId);
+      this.fetchRelatedJobs();
     } else {
       this.errorMsg = "Invalid job ID"
       this.isLoading = false
@@ -60,8 +61,9 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if (res.status && res.job) {
           this.job = res.job
-          this.hasApplied = res.job.hasApplied || false // ✅ No separate API call
-          this.isSaved = res.job.isSaved || false // ✅ No separate API call
+          this.hasApplied = res.job.hasApplied || false
+          this.isSaved = res.job.isSaved || false
+          this.isRetracted = res.job.isRetracted || false 
         } else {
           this.errorMsg = res.msg || "Job not found"
         }
@@ -83,6 +85,11 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       this.authService.toastr.warning("Please log in to apply.")
       this.router.navigate(["/login"])
       return
+    }
+
+    if (this.isRetracted) {
+      this.authService.toastr.info('Application retracted. Contact support to re-apply.');
+      return;
     }
 
     // Set loading state to true
