@@ -5,7 +5,10 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number coming-soon">Coming Soon</div>
+                <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingTotalVisitor">Coming Soon</div>
+                <ng-template #loadingTotalVisitor>
+                    <div class="stat-number loading-placeholder"></div>
+                </ng-template>
                 <div class="stat-label">Total Visitor</div>
             </div>
             <div class="stat-icon user-icon">
@@ -15,7 +18,10 @@
 
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number">{{ stats.shortlisted }}</div>
+                <div class="stat-number" *ngIf="!isLoadingStats; else loadingShortlisted">{{ stats.shortlisted }}</div>
+                <ng-template #loadingShortlisted>
+                    <div class="stat-number loading-placeholder"></div>
+                </ng-template>
                 <div class="stat-label">Shortlisted</div>
             </div>
             <div class="stat-icon bookmark-icon">
@@ -25,7 +31,10 @@
 
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number coming-soon">Coming Soon</div>
+                <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingViews">Coming Soon</div>
+                <ng-template #loadingViews>
+                    <div class="stat-number loading-placeholder"></div>
+                </ng-template>
                 <div class="stat-label">Views</div>
             </div>
             <div class="stat-icon eye-icon">
@@ -35,7 +44,10 @@
 
         <div class="stat-card">
             <div class="stat-content">
-                <div class="stat-number">{{ stats.appliedJobs }}</div>
+                <div class="stat-number" *ngIf="!isLoadingStats; else loadingApplied">{{ stats.appliedJobs }}</div>
+                <ng-template #loadingApplied>
+                    <div class="stat-number loading-placeholder"></div>
+                </ng-template>
                 <div class="stat-label">Applied Job</div>
             </div>
             <div class="stat-icon edit-icon">
@@ -72,7 +84,50 @@
         <div class="jobs-section">
             <h2>Recently Applied Jobs</h2>
             <div class="job-list">
-                <div class="job-item" *ngFor="let application of recentApplications">
+                <!-- Skeleton Loaders -->
+                <div class="job-item skeleton" *ngIf="isLoadingApplications">
+                    <div class="job-icon skeleton-icon"></div>
+                    <div class="job-info">
+                        <div class="skeleton-text skeleton-title"></div>
+                        <div class="skeleton-text skeleton-subtitle"></div>
+                    </div>
+                    <div class="dropdown">
+                        <div class="skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="job-item skeleton" *ngIf="isLoadingApplications">
+                    <div class="job-icon skeleton-icon"></div>
+                    <div class="job-info">
+                        <div class="skeleton-text skeleton-title"></div>
+                        <div class="skeleton-text skeleton-subtitle"></div>
+                    </div>
+                    <div class="dropdown">
+                        <div class="skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="job-item skeleton" *ngIf="isLoadingApplications">
+                    <div class="job-icon skeleton-icon"></div>
+                    <div class="job-info">
+                        <div class="skeleton-text skeleton-title"></div>
+                        <div class="skeleton-text skeleton-subtitle"></div>
+                    </div>
+                    <div class="dropdown">
+                        <div class="skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="job-item skeleton" *ngIf="isLoadingApplications">
+                    <div class="job-icon skeleton-icon"></div>
+                    <div class="job-info">
+                        <div class="skeleton-text skeleton-title"></div>
+                        <div class="skeleton-text skeleton-subtitle"></div>
+                    </div>
+                    <div class="dropdown">
+                        <div class="skeleton-button"></div>
+                    </div>
+                </div>
+
+                <!-- Actual Job Items -->
+                <div class="job-item" *ngFor="let application of recentApplications; trackBy: trackByApplicationId">
                     <div class="job-icon">
                         <img [src]="application.logo_url" alt="Company Logo" />
                     </div>
@@ -83,11 +138,11 @@
                     </div>
                     <!-- Dropdown Menu -->
                     <div class="dropdown">
-                        <button class="btn btn-link job-menu" type="button" id="dropdownMenuButton{{ application.id }}"
+                        <button class="btn btn-link job-menu" type="button" id="dropdownMenuButton{{ application.application_id }}"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-h"></i>
                         </button>
-                        <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownMenuButton' + application.id">
+                        <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownMenuButton' + application.application_id">
                             <li><a class="dropdown-item" (click)="viewJob(application)">View Job</a></li>
                             <li><a class="dropdown-item text-danger"
                                     (click)="retractApplication(application)">Retract</a></li>
@@ -96,7 +151,7 @@
                 </div>
 
                 <!-- Polished Empty State -->
-                <div class="no-data" *ngIf="recentApplications.length === 0">
+                <div class="no-data" *ngIf="!isLoadingApplications && recentApplications.length === 0">
                     <div class="empty-state-content">
                         <img src="/assets/EmptyImg.svg" alt="No applications illustration"
                             class="empty-state-image mb-3" />
@@ -123,7 +178,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="closeRetractModal()">Cancel</button>
-                    <button type="button" class="btn btn-danger" (click)="confirmRetract()">Retract</button>
+                    <button type="button" class="btn btn-danger" (click)="confirmRetract()" [disabled]="isRetracting">
+                        <span *ngIf="isRetracting">
+                            <i class="fas fa-spinner fa-spin me-2"></i>Retracting...
+                        </span>
+                        <span *ngIf="!isRetracting">Retract</span>
+                    </button>
                 </div>
             </div>
         </div>

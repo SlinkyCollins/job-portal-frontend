@@ -17,6 +17,9 @@ Chart.register(...registerables);
 export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private applicationToRetract: any = null;
   showRetractModal: boolean = false;
+  isRetracting: boolean = false;
+  isLoadingStats: boolean = true;
+  isLoadingApplications: boolean = true;
   stats: any = {
     totalVisitors: 0,
     shortlisted: 0,
@@ -56,15 +59,25 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
         this.stats.shortlisted = data.shortlisted || 0;
         this.stats.appliedJobs = data.appliedJobs || 0;
         // Keep others as 0 or placeholders
+        this.isLoadingStats = false;
       },
-      error: (err) => console.error('Error loading stats:', err)
+      error: (err) => {
+        console.error('Error loading stats:', err);
+        this.isLoadingStats = false;
+      }
     });
   }
 
   loadRecentApplications() {
     this.dashboardService.getRecentApplications().subscribe({
-      next: (data) => this.recentApplications = data.recentApplications || [],
-      error: (err) => console.error('Error loading applications:', err)
+      next: (data) => {
+        this.recentApplications = data.recentApplications || [];
+        this.isLoadingApplications = false;
+      },
+      error: (err) => {
+        console.error('Error loading applications:', err);
+        this.isLoadingApplications = false;
+      }
     });
   }
 
@@ -79,18 +92,21 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
 
   confirmRetract() {
     if (!this.applicationToRetract) return;
-    this.showRetractModal = false; 
+    this.isRetracting = true;
     this.dashboardService.retractApplication(this.applicationToRetract.application_id).subscribe({
       next: () => {
         this.recentApplications = this.recentApplications.filter(app => app.application_id !== this.applicationToRetract.application_id);
         this.stats.appliedJobs--;
         this.toastr.success('Application successfully retracted.');
+        this.showRetractModal = false;
         this.applicationToRetract = null;
+        this.isRetracting = false;
       },
       error: (err) => {
         console.error('Error retracting application:', err);
         this.toastr.error('Could not retract application. Try again.');
         this.applicationToRetract = null;
+        this.isRetracting = false;
       }
     });
   }
@@ -179,5 +195,9 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
   setActiveTab(tab: string) {
     this.activeTab = tab;
     this.initializeChart();
+  }
+
+  trackByApplicationId(index: number, application: any): any {
+    return application.application_id;
   }
 }
