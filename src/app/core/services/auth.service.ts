@@ -133,14 +133,14 @@ export class AuthService {
         next: (res: any) => {
           if (res.status) {
             job.isSaved = false;
-            this.toastr.success('Job removed from saved jobs.');
+            this.toastr.success(`${job.title} removed from saved jobs.`);
           } else {
             this.toastr.error(res.msg);
           }
           job.isSaving = false;
         },
         error: () => {
-          this.toastr.error('Error removing saved job.');
+          this.toastr.error(`Error removing ${job.title} from saved jobs.`);
           job.isSaving = false;
         },
       });
@@ -149,14 +149,14 @@ export class AuthService {
         next: (res: any) => {
           if (res.status) {
             job.isSaved = true;
-            this.toastr.success('Job saved!');
+            this.toastr.success(`${job.title} saved!`);
           } else {
             this.toastr.error(res.msg);
           }
           job.isSaving = false;
         },
         error: () => {
-          this.toastr.error('Error saving job.');
+          this.toastr.error(`Error saving ${job.title}.`);
           job.isSaving = false;
         },
       });
