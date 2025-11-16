@@ -1,20 +1,9 @@
 import { CommonModule } from "@angular/common"
 import { Component, type OnInit } from "@angular/core"
 import { FormsModule } from "@angular/forms"
-
-interface SavedJob {
-  id: number
-  title: string
-  companyName: string
-  companyLogo: string
-  type: "Fulltime" | "Part time" | "Remote" | "Contract"
-  salary: number
-  salaryPeriod: "Monthly" | "Weekly" | "Hourly" | "Yearly"
-  experienceLevel: string
-  location: string
-  tags: string[]
-  timeSaved: string
-}
+import { Router } from "@angular/router"
+import { ToastrService } from "ngx-toastr"
+import { AuthService } from "../../../core/services/auth.service"
 
 interface SortOption {
   value: string
@@ -29,9 +18,10 @@ interface SortOption {
   styleUrls: ["./saved-jobs.component.css"],
 })
 export class SavedJobsComponent implements OnInit {
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
   // Page Configuration
-  pageTitle = "Saved Job"
-  sortLabel = "Short by"
+  pageTitle = "Saved Jobs"
+  sortLabel = "Sort by"
 
   // Sort Options
   sortOptions: SortOption[] = [
@@ -45,60 +35,9 @@ export class SavedJobsComponent implements OnInit {
   selectedSort = "new"
 
   // Saved Jobs Data
-  savedJobs: SavedJob[] = [
-    {
-      id: 1,
-      title: "Developer & expert in java c++",
-      companyName: "TechCorp",
-      companyLogo: "/placeholder.svg?height=50&width=50",
-      type: "Fulltime",
-      salary: 900,
-      salaryPeriod: "Monthly",
-      experienceLevel: "Fresher",
-      location: "Spain, Barcelona",
-      tags: ["Developer", "Coder"],
-      timeSaved: "2 hours ago",
-    },
-    {
-      id: 2,
-      title: "Animator & Expert in maya 3D",
-      companyName: "Creative Studio",
-      companyLogo: "/placeholder.svg?height=50&width=50",
-      type: "Part time",
-      salary: 100,
-      salaryPeriod: "Weekly",
-      experienceLevel: "Intermediate",
-      location: "USA, New York",
-      tags: ["Finance", "Accounting"],
-      timeSaved: "1 day ago",
-    },
-    {
-      id: 3,
-      title: "Marketing Specialist in SEO & SMM",
-      companyName: "Digital Agency",
-      companyLogo: "/placeholder.svg?height=50&width=50",
-      type: "Part time",
-      salary: 50,
-      salaryPeriod: "Hourly",
-      experienceLevel: "No-Experience",
-      location: "USA, Alaska",
-      tags: ["Design", "Artist"],
-      timeSaved: "3 days ago",
-    },
-    {
-      id: 4,
-      title: "Developer & Expert in javascript c+",
-      companyName: "StartupTech",
-      companyLogo: "/placeholder.svg?height=50&width=50",
-      type: "Fulltime",
-      salary: 800,
-      salaryPeriod: "Monthly",
-      experienceLevel: "Internship",
-      location: "USA, California",
-      tags: ["Application", "Marketing"],
-      timeSaved: "1 week ago",
-    },
-  ]
+  savedJobs: any[] = [];
+  isLoading = true;
+  isRemoving = false;
 
   // Pagination
   currentPage = 1
@@ -106,10 +45,41 @@ export class SavedJobsComponent implements OnInit {
   visiblePages: number[] = [1, 2, 3]
   showEllipsis = true
 
-  constructor() {}
-
   ngOnInit(): void {
-    this.updateVisiblePages()
+    this.loadSavedJobs();
+    this.updateVisiblePages();
+  }
+
+  loadSavedJobs(): void {
+    this.authService.getSavedJobs().subscribe({
+      next: (response: any) => {
+        if (response.status && response.savedJobs) {
+          this.savedJobs = response.savedJobs.map((job: any) => ({
+            id: job.saved_id,
+            job_id: job.job_id,
+            title: job.title,
+            companyName: job.company_name,
+            companyLogo: job.company_logo,
+            type: job.employment_type,
+            salary: job.salary_amount,
+            salaryPeriod: job.salary_duration,
+            experienceLevel: job.experience_level,
+            location: job.location,
+            tags: this.extractTags(job.overview || job.description),
+            timeSaved: this.formatTimeSaved(job.saved_at)
+          }));
+        } else {
+          this.savedJobs = [];
+          this.toastr.warning('No saved jobs found.');
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading saved jobs:', err);
+        this.toastr.error('Failed to load saved jobs. Please try again.');
+        this.isLoading = false;
+      }
+    });
   }
 
   // Methods
@@ -128,28 +98,78 @@ export class SavedJobsComponent implements OnInit {
     }
   }
 
-  onJobAction(action: string, job: SavedJob): void {
+  onJobAction(action: string, job: any): void {
     console.log(`${action} action for job:`, job.title)
 
     switch (action) {
       case "view":
-        // Navigate to job details
+        this.router.navigate(['/jobdetails', job.job_id]);
         break
       case "share":
-        // Open share dialog
+        this.shareJob(job);
         break
       case "apply":
-        // Navigate to application
+        this.router.navigate(['/jobdetails', job.job_id]);
         break
       case "remove":
-        // Remove from saved jobs
-        this.removeJob(job.id)
+        this.removeJob(job.id);
         break
     }
   }
 
-  removeJob(jobId: number): void {
-    this.savedJobs = this.savedJobs.filter((job) => job.id !== jobId)
+  removeJob(savedId: number): void {
+    const job = this.savedJobs.find(j => j.id === savedId);
+    if (!job || this.isRemoving) return;
+    this.isRemoving = true;
+    this.authService.removeFromWishlist(job.job_id).subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.savedJobs = this.savedJobs.filter((j) => j.id !== savedId);
+          this.toastr.success('Job removed from saved jobs.');
+        } else {
+          this.toastr.error(response.msg || 'Failed to remove job.');
+        }
+        this.isRemoving = false;
+      },
+      error: (err) => {
+        console.error('Error removing job:', err);
+        this.toastr.error('Failed to remove job. Please try again.');
+        this.isRemoving = false;
+      }
+    });
+  }
+
+  private extractTags(text: string): string[] {
+    // Simple extraction: split by commas or spaces, take first few words
+    if (!text) return [];
+    return text.split(',').slice(0, 3).map(tag => tag.trim());
+  }
+
+  private formatTimeSaved(savedAt: string): string {
+    const date = new Date(savedAt);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    return date.toLocaleDateString();
+  }
+
+  private shareJob(job: any): void {
+    if (navigator.share) {
+      navigator.share({
+        title: job.title,
+        text: `Check out this job: ${job.title} at ${job.companyName}`,
+        url: window.location.origin + '/jobdetails/' + job.job_id
+      });
+    } else {
+      // Fallback: copy to clipboard
+      const url = window.location.origin + '/jobdetails/' + job.job_id;
+      navigator.clipboard.writeText(url).then(() => {
+        this.toastr.success('Job link copied to clipboard!');
+      });
+    }
   }
 
   goToPage(page: number): void {

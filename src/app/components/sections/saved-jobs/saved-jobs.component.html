@@ -21,125 +21,55 @@
 
   <!-- Jobs List -->
   <div class="jobs-container">
-    <div class="job-card mb-3" *ngFor="let job of savedJobs; let i = index">
-      <div class="card h-100">
-        <div class="card-body">
-          <!-- Mobile Layout -->
-          <div class="d-lg-none mobile-job-layout">
-            <div class="d-flex align-items-start">
-              <!-- Company Logo -->
-              <div class="company-logo me-3">
-                <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
-              </div>
-              
-              <!-- Job Content -->
-              <div class="flex-grow-1">
-                <h5 class="job-title mb-2">{{ job.title }}</h5>
-                
-                <div class="job-type-container mb-2">
-                  <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
-                    {{ job.type }}
-                  </span>
-                </div>
-                
-                <div class="salary-info mb-2">
-                  <span class="salary">${{ job.salary }}</span>
-                  <span class="salary-period text-muted"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
-                </div>
-                
-                <div class="location mb-2">
-                  <span class="text-muted">{{ job.location }}</span>
-                </div>
-                
-                <div class="job-tags">
-                  <span *ngFor="let tag of job.tags; let last = last" class="tag">
-                    {{ tag }}<span *ngIf="!last">,</span>
-                  </span>
-                </div>
-              </div>
-              
-              <!-- Actions -->
-              <div class="dropdown mobile-dropdown" [style.z-index]="1100 + i">
-                <button class="btn action-btn" 
-                        data-bs-toggle="dropdown" 
-                        aria-expanded="false"
-                        [attr.aria-label]="'Actions for ' + job.title">
-                  <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" [style.z-index]="1200 + i">
-                  <li><a class="dropdown-item" (click)="onJobAction('view', job)">
-                    <i class="fas fa-eye me-2"></i>View Job
-                  </a></li>
-                  <li><a class="dropdown-item" (click)="onJobAction('share', job)">
-                    <i class="fas fa-share me-2"></i>Share
-                  </a></li>
-                  <li><a class="dropdown-item" (click)="onJobAction('apply', job)">
-                    <i class="fas fa-paper-plane me-2"></i>Apply Now
-                  </a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item text-danger" (click)="onJobAction('remove', job)">
-                    <i class="fas fa-trash me-2"></i>Remove
-                  </a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2 text-muted">Loading saved jobs...</p>
+    </div>
 
-          <!-- Desktop Layout -->
-          <div class="d-none d-lg-block desktop-job-layout">
-            <div class="row align-items-center">
-              <!-- Company Logo -->
-              <div class="col-auto">
-                <div class="company-logo">
+    <!-- Jobs List -->
+    <div *ngIf="!isLoading">
+      <div class="job-card mb-3" *ngFor="let job of savedJobs; let i = index">
+        <div class="card h-100">
+          <div class="card-body">
+            <!-- Mobile Layout -->
+            <div class="d-lg-none mobile-job-layout">
+              <div class="d-flex align-items-start">
+                <!-- Company Logo -->
+                <div class="company-logo me-3">
                   <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
                 </div>
-              </div>
-              
-              <!-- Job Information -->
-              <div class="col">
-                <div class="job-content">
-                  <div class="row">
-                    <!-- Job Title & Type (Desktop: Left side) -->
-                    <div class="col-12 col-lg-6">
-                      <h5 class="job-title mb-2">{{ job.title }}</h5>
-                      <div class="job-meta mb-2">
-                        <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
-                          {{ job.type }}
-                        </span>
-                        <div class="salary-info">
-                          <span class="salary">${{ job.salary }}</span>
-                          <span class="salary-period text-muted"> / {{ job.salaryPeriod }}</span>
-                          <span class="experience-level text-muted"> · {{ job.experienceLevel }}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <!-- Location & Tags (Desktop: Right side) -->
-                    <div class="col-12 col-lg-5">
-                      <div class="location-tags-section">
-                        <div class="location mb-2">
-                          <i class="fas fa-map-marker-alt text-muted me-1"></i>
-                          <span class="text-muted">{{ job.location }}</span>
-                        </div>
-                        <div class="job-tags">
-                          <span *ngFor="let tag of job.tags; let last = last" class="tag">
-                            {{ tag }}<span *ngIf="!last">,</span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                
+                <!-- Job Content -->
+                <div class="flex-grow-1">
+                  <h5 class="job-title mb-2">{{ job.title }}</h5>
+                  
+                  <div class="job-type-container mb-2">
+                    <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
+                      {{ job.type }}
+                    </span>
                   </div>
                   
-                  <!-- Time Saved (Desktop only) -->
-                  <div class="mt-2">
-                    <small class="text-muted">Saved {{ job.timeSaved }}</small>
+                  <div class="salary-info mb-2">
+                    <span class="salary">${{ job.salary }}</span>
+                    <span class="salary-period text-muted"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
+                  </div>
+                  
+                  <div class="location mb-2">
+                    <span class="text-muted">{{ job.location }}</span>
+                  </div>
+                  
+                  <div class="job-tags">
+                    <span *ngFor="let tag of job.tags; let last = last" class="tag">
+                      {{ tag }}<span *ngIf="!last">,</span>
+                    </span>
                   </div>
                 </div>
-              </div>
-              
-              <!-- Actions -->
-              <div class="col-auto">
-                <div class="dropdown desktop-dropdown" [style.z-index]="1100 + i">
+                
+                <!-- Actions -->
+                <div class="dropdown mobile-dropdown" [style.z-index]="1100 + i">
                   <button class="btn action-btn" 
                           data-bs-toggle="dropdown" 
                           aria-expanded="false"
@@ -164,6 +94,87 @@
                 </div>
               </div>
             </div>
+
+            <!-- Desktop Layout -->
+            <div class="d-none d-lg-block desktop-job-layout">
+              <div class="row align-items-center">
+                <!-- Company Logo -->
+                <div class="col-auto">
+                  <div class="company-logo">
+                    <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
+                  </div>
+                </div>
+                
+                <!-- Job Information -->
+                <div class="col">
+                  <div class="job-content">
+                    <div class="row">
+                      <!-- Job Title & Type (Desktop: Left side) -->
+                      <div class="col-12 col-lg-6">
+                        <h5 class="job-title mb-2">{{ job.title }}</h5>
+                        <div class="job-meta mb-2">
+                          <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
+                            {{ job.type }}
+                          </span>
+                          <div class="salary-info">
+                            <span class="salary">${{ job.salary }}</span>
+                            <span class="salary-period text-muted"> / {{ job.salaryPeriod }}</span>
+                            <span class="experience-level text-muted"> · {{ job.experienceLevel }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Location & Tags (Desktop: Right side) -->
+                      <div class="col-12 col-lg-5">
+                        <div class="location-tags-section">
+                          <div class="location mb-2">
+                            <i class="fas fa-map-marker-alt text-muted me-1"></i>
+                            <span class="text-muted">{{ job.location }}</span>
+                          </div>
+                          <div class="job-tags">
+                            <span *ngFor="let tag of job.tags; let last = last" class="tag">
+                              {{ tag }}<span *ngIf="!last">,</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Time Saved (Desktop only) -->
+                    <div class="mt-2">
+                      <small class="text-muted">Saved {{ job.timeSaved }}</small>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="col-auto">
+                  <div class="dropdown desktop-dropdown" [style.z-index]="1100 + i">
+                    <button class="btn action-btn" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false"
+                            [attr.aria-label]="'Actions for ' + job.title">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" [style.z-index]="1200 + i">
+                      <li><a class="dropdown-item" (click)="onJobAction('view', job)">
+                        <i class="fas fa-eye me-2"></i>View Job
+                      </a></li>
+                      <li><a class="dropdown-item" (click)="onJobAction('share', job)">
+                        <i class="fas fa-share me-2"></i>Share
+                      </a></li>
+                      <li><a class="dropdown-item" (click)="onJobAction('apply', job)">
+                        <i class="fas fa-paper-plane me-2"></i>Apply Now
+                      </a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item text-danger" (click)="onJobAction('remove', job)">
+                        <i class="fas fa-trash me-2"></i>Remove
+                      </a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -171,7 +182,7 @@
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="savedJobs.length === 0" class="empty-state text-center py-5">
+  <div *ngIf="!isLoading && savedJobs.length === 0" class="empty-state text-center py-5">
     <div class="empty-icon mb-3">
       <i class="fas fa-bookmark fa-3x text-muted"></i>
     </div>
@@ -180,7 +191,7 @@
   </div>
 
   <!-- Pagination -->
-  <nav aria-label="Saved jobs pagination" class="mt-4" *ngIf="savedJobs.length > 0">
+  <nav aria-label="Saved jobs pagination" class="mt-4" *ngIf="!isLoading && savedJobs.length > 0">
     <ul class="pagination justify-content-center">
       <li class="page-item" [class.disabled]="currentPage === 1">
         <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
