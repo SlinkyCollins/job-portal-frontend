@@ -52,6 +52,10 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   ngAfterViewInit() {
     // Swiper navigation is handled automatically via navigation-next-el and navigation-prev-el
   }
