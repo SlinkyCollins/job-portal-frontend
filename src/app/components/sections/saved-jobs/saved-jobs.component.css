@@ -3,7 +3,7 @@
 /* --- Page Background --- */
 :host {
   display: block;
-  background-color: #f0f4f7; /* Adjusted to light blue-ish-green */
+  background-color: #f0f5f3;
   min-height: 100vh;
 }
 
