@@ -43,6 +43,7 @@ export class SavedJobsComponent implements OnInit {
   savedJobs: any[] = [];
   isLoading = true;
   isRemoving = false;
+  private jobToRemove: any = null;
 
   // Pagination (now backend-driven)
   currentPage: number = 1;
@@ -134,19 +135,30 @@ export class SavedJobsComponent implements OnInit {
         this.router.navigate(['/jobdetails', job.job_id]);
         break
       case "remove":
-        this.removeJob(job.id);
+        this.jobToRemove = job;
+        // Open modal
+        const modal = new (window as any).bootstrap.Modal(document.getElementById('removeModal'));
+        modal.show();
         break
     }
   }
 
+  confirmRemove(): void {
+    if (!this.jobToRemove) return;
+    const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('removeModal'));
+    modal.hide();
+    this.removeJob(this.jobToRemove.job_id);
+    this.jobToRemove = null;
+  }
+
   removeJob(savedId: number): void {
-    const job = this.savedJobs.find(j => j.id === savedId);
+    const job = this.savedJobs.find(j => j.job_id === savedId);
     if (!job || this.isRemoving) return;
     this.isRemoving = true;
     this.authService.removeFromWishlist(job.job_id).subscribe({
       next: (response: any) => {
         if (response.status) {
-          this.savedJobs = this.savedJobs.filter((j) => j.id !== savedId);
+          this.savedJobs = this.savedJobs.filter((j) => j.job_id !== savedId);
           this.toastr.success('Job removed from saved jobs.');
         } else {
           this.toastr.error(response.msg || 'Failed to remove job.');
