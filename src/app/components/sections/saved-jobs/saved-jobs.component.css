@@ -43,7 +43,7 @@
 .jobs-container {
   position: relative;
   z-index: 1;
-  overflow: visible; 
+  overflow: visible;
   padding: 1rem 0;
 }
 .job-card {
@@ -54,13 +54,13 @@
   z-index: 10;
 }
 .job-card .card {
-  padding: .5rem;
+  padding: 0.5rem;
   position: relative;
-  overflow: visible; 
+  overflow: visible;
   background-color: #ffffff;
   border: none;
-  border-radius: 0.75rem; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.2s ease-in-out;
 }
 .job-card:hover .card {
@@ -75,9 +75,9 @@
   border: 1px solid #e9ecef;
   padding: 0.5rem 0;
   min-width: 160px;
-  z-index: 1000; 
+  z-index: 1000;
   position: absolute;
-  background-color: white; 
+  background-color: white;
 }
 .desktop-dropdown,
 .mobile-dropdown {
@@ -87,7 +87,7 @@
 .mobile-dropdown .dropdown-menu {
   position: absolute;
   top: 100%;
-  right: 0; 
+  right: 0;
   left: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border: 1px solid #e9ecef;
@@ -98,7 +98,6 @@
 }
 /* --- End Z-Index Section --- */
 
-
 /* Card Body Padding */
 .job-card .card-body {
   padding: 1.5rem;
@@ -108,14 +107,14 @@
 .company-logo {
   width: 50px;
   height: 50px;
-  border-radius: 0.5rem; 
+  border-radius: 0.5rem;
   overflow: hidden;
   background-color: #f7fafc;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-right: 1rem; 
+  margin-right: 1rem;
 }
 
 .logo-img {
@@ -177,7 +176,7 @@
 /* Original text-muted (#6c757d) fails 4.5:1 contrast. */
 /* This new color (#5a677d) passes with 5.75:1 */
 .text-muted-stronger {
-  color: #5a677d !important; 
+  color: #5a677d !important;
 }
 
 .salary-period,
@@ -212,7 +211,7 @@
   color: #adb5bd;
   padding: 0.5rem;
   border-radius: 50%;
-  width: 2.5rem;  /* 40px */
+  width: 2.5rem; /* 40px */
   height: 2.5rem; /* 40px */
   display: flex;
   align-items: center;
@@ -260,29 +259,52 @@
 }
 .page-link {
   color: #6c757d;
-  background-color: #ffffff; 
-  border: none; 
+  background-color: #ffffff;
+  border: none;
   padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem; 
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
-  margin: 0 0.25rem; 
+  margin: 0 0.25rem;
   cursor: pointer;
 }
 .page-link:hover {
-  background-color: #e9f5f0; 
+  background-color: #e9f5f0;
   color: #2d3748;
 }
 .page-item.active .page-link {
-  background-color: #198754; 
+  background-color: #198754;
   border-color: #198754;
   color: white;
   box-shadow: 0 2px 4px rgba(25, 135, 84, 0.3);
 }
 .page-item.disabled .page-link {
   color: #adb5bd;
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
+}
+
+/* Empty State Styles */
+.empty-state-content {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.empty-state-image {
+  width: 150px;
+  height: auto;
+  opacity: 0.8;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-subtitle {
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 /* Responsive Design */
@@ -301,7 +323,7 @@
 
   /* --- NEW: Mobile Touch Target Fix --- */
   .mobile-job-layout .action-btn {
-    width: 2.75rem;  /* 44px */
+    width: 2.75rem; /* 44px */
     height: 2.75rem; /* 44px */
     flex-shrink: 0; /* Prevent button from shrinking */
   }
@@ -344,11 +366,25 @@
   }
 }
 
+@media (min-width: 768px) {
+  .empty-state-image {
+    width: 250px;
+  }
+
+  .empty-state-title {
+    font-size: 1.5rem;
+  }
+
+  .empty-state-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
 /* Focus States */
 .sort-select:focus,
 .page-link:focus,
 .action-btn:focus,
 .dropdown-item:focus {
-  outline: 2px solid #198754; 
+  outline: 2px solid #198754;
   outline-offset: 2px;
 }

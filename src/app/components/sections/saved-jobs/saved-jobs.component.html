@@ -29,38 +29,38 @@
       <div class="job-card mb-3" *ngFor="let job of savedJobs; let i = index">
         <div class="card h-100">
           <div class="card-body">
-            
+
             <div class="d-lg-none mobile-job-layout">
               <div class="d-flex align-items-start mb-3">
                 <div class="company-logo me-3">
                   <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
                 </div>
-                
+
                 <div class="flex-grow-1">
                   <h5 class="job-title mb-0">{{ job.title }}</h5>
                 </div>
-                
+
                 <div class="dropdown mobile-dropdown ms-2">
-                  <button class="btn action-btn" 
-                          data-bs-toggle="dropdown" 
-                          aria-expanded="false"
-                          [attr.aria-label]="'Actions for ' + job.title">
+                  <button class="btn action-btn" data-bs-toggle="dropdown" aria-expanded="false"
+                    [attr.aria-label]="'Actions for ' + job.title">
                     <i class="fas fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" (click)="onJobAction('view', job)">
-                      <i class="fas fa-eye me-2"></i>View Job
-                    </a></li>
+                        <i class="fas fa-eye me-2"></i>View Job
+                      </a></li>
                     <li><a class="dropdown-item" (click)="onJobAction('share', job)">
-                      <i class="fas fa-share me-2"></i>Share
-                    </a></li>
+                        <i class="fas fa-share me-2"></i>Share
+                      </a></li>
                     <li><a class="dropdown-item" (click)="onJobAction('apply', job)">
-                      <i class="fas fa-paper-plane me-2"></i>Apply Now
-                    </a></li>
-                    <li><hr class="dropdown-divider"></li>
+                        <i class="fas fa-paper-plane me-2"></i>Apply Now
+                      </a></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item text-danger" (click)="onJobAction('remove', job)">
-                      <i class="fas fa-trash me-2"></i>Remove
-                    </a></li>
+                        <i class="fas fa-trash me-2"></i>Remove
+                      </a></li>
                   </ul>
                 </div>
               </div>
@@ -70,16 +70,17 @@
                   {{ job.type }}
                 </span>
               </div>
-              
+
               <div class="salary-info mb-2">
                 <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
-                <span class="salary-period text-muted-stronger"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
+                <span class="salary-period text-muted-stronger"> / {{ job.salaryPeriod }} · {{ job.experienceLevel
+                  }}</span>
               </div>
-              
+
               <div class="location mb-2">
                 <span class="text-muted-stronger">{{ job.location }}</span>
               </div>
-              
+
               <div class="job-tags">
                 <span *ngFor="let tag of job.tags; let last = last" class="tag">
                   {{ tag }}<span *ngIf="!last">,</span>
@@ -88,27 +89,28 @@
             </div>
             <div class="d-none d-lg-block desktop-job-layout">
               <div class="row align-items-center">
-                
+
                 <div class="col-auto">
                   <div class="company-logo">
                     <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
                   </div>
                 </div>
-                
+
                 <div class="col-lg-4">
                   <h5 class="job-title mb-0">{{ job.title }}</h5>
                 </div>
-                
+
                 <div class="col-lg-3">
                   <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
                     {{ job.type }}
                   </span>
                   <div class="salary-info mt-1">
                     <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
-                    <span class="salary-period text-muted-stronger"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
+                    <span class="salary-period text-muted-stronger"> / {{ job.salaryPeriod }} · {{ job.experienceLevel
+                      }}</span>
                   </div>
                 </div>
-                
+
                 <div class="col-lg-3">
                   <div class="location mb-1">
                     <i class="fas fa-map-marker-alt text-muted-stronger me-1"></i>
@@ -120,46 +122,48 @@
                     </span>
                   </div>
                 </div>
-                
-                <div class="col-auto ms-auto"> <div class="dropdown desktop-dropdown">
-                    <button class="btn action-btn" 
-                            data-bs-toggle="dropdown" 
-                            aria-expanded="false"
-                            [attr.aria-label]="'Actions for ' + job.title">
+
+                <div class="col-auto ms-auto">
+                  <div class="dropdown desktop-dropdown">
+                    <button class="btn action-btn" data-bs-toggle="dropdown" aria-expanded="false"
+                      [attr.aria-label]="'Actions for ' + job.title">
                       <i class="fas fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                       <li><a class="dropdown-item" (click)="onJobAction('view', job)">
-                        <i class="fas fa-eye me-2"></i>View Job
-                      </a></li>
+                          <i class="fas fa-eye me-2"></i>View Job
+                        </a></li>
                       <li><a class="dropdown-item" (click)="onJobAction('share', job)">
-                        <i class="fas fa-share me-2"></i>Share
-                      </a></li>
+                          <i class="fas fa-share me-2"></i>Share
+                        </a></li>
                       <li><a class="dropdown-item" (click)="onJobAction('apply', job)">
-                        <i class="fas fa-paper-plane me-2"></i>Apply Now
-                      </a></li>
-                      <li><hr class="dropdown-divider"></li>
+                          <i class="fas fa-paper-plane me-2"></i>Apply Now
+                        </a></li>
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
                       <li><a class="dropdown-item text-danger" (click)="onJobAction('remove', job)">
-                        <i class="fas fa-trash me-2"></i>Remove
-                      </a></li>
+                          <i class="fas fa-trash me-2"></i>Remove
+                        </a></li>
                     </ul>
                   </div>
                 </div>
 
               </div>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <div *ngIf="!isLoading && savedJobs.length === 0" class="empty-state text-center py-5">
-    <div class="empty-icon mb-3">
-      <i class="fas fa-bookmark fa-3x text-muted"></i>
+    <div class="empty-state-content">
+      <img src="/assets/EmptyImg.svg" alt="No saved jobs illustration" class="empty-state-image mb-3" />
+      <h4 class="empty-state-title text-muted">No Saved Jobs Yet</h4>
+      <p class="empty-state-subtitle text-secondary">Start saving jobs to keep track of opportunities you're interested
+        in.</p>
     </div>
-    <h4 class="text-muted">No Saved Jobs</h4>
-    <p class="text-muted">Jobs you save will appear here for easy access.</p>
   </div>
 
   <nav aria-label="Saved jobs pagination" class="mt-4" *ngIf="!isLoading && savedJobs.length > 0">
@@ -169,21 +173,19 @@
           <i class="fas fa-chevron-left"></i>
         </a>
       </li>
-      
-      <li *ngFor="let page of visiblePages" 
-          class="page-item" 
-          [class.active]="page === currentPage">
+
+      <li *ngFor="let page of visiblePages" class="page-item" [class.active]="page === currentPage">
         <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
       </li>
-      
+
       <li *ngIf="showEllipsis" class="page-item disabled">
         <span class="page-link">...</span>
       </li>
-      
+
       <li *ngIf="totalPages > 5" class="page-item">
         <a class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</a>
       </li>
-      
+
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
           <i class="fas fa-chevron-right"></i>
