@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms"
 import { Router } from "@angular/router"
 import { ToastrService } from "ngx-toastr"
 import { AuthService } from "../../../core/services/auth.service"
+import { RelativeTimePipe } from "../../../core/pipes/relative-time.pipe"
 
 interface SortOption {
   value: string
@@ -12,13 +13,17 @@ interface SortOption {
 
 @Component({
   selector: "app-saved-jobs",
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RelativeTimePipe
+  ],
   standalone: true,
   templateUrl: "./saved-jobs.component.html",
   styleUrls: ["./saved-jobs.component.css"],
 })
 export class SavedJobsComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) { }
   // Page Configuration
   pageTitle = "Saved Jobs"
   sortLabel = "Sort by"
@@ -30,6 +35,8 @@ export class SavedJobsComponent implements OnInit {
     { value: "salary-high", label: "Salary: High to Low" },
     { value: "salary-low", label: "Salary: Low to High" },
     { value: "company", label: "Company Name" },
+    { value: "type", label: "Job Type" },
+    { value: "category", label: "Category" }
   ]
 
   selectedSort = "new"
@@ -62,6 +69,7 @@ export class SavedJobsComponent implements OnInit {
             companyLogo: job.company_logo,
             type: job.employment_type,
             salary: job.salary_amount,
+            currency: job.currency,
             salaryPeriod: job.salary_duration,
             experienceLevel: job.experience_level,
             location: job.location,

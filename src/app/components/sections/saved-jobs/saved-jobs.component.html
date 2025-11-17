@@ -45,7 +45,7 @@
                   </div>
                   
                   <div class="salary-info mb-2">
-                    <span class="salary">${{ job.salary }}</span>
+                    <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
                     <span class="salary-period text-muted"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
                   </div>
                   
@@ -104,7 +104,7 @@
                             {{ job.type }}
                           </span>
                           <div class="salary-info">
-                            <span class="salary">${{ job.salary }}</span>
+                            <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
                             <span class="salary-period text-muted"> / {{ job.salaryPeriod }}</span>
                             <span class="experience-level text-muted"> · {{ job.experienceLevel }}</span>
                           </div>
@@ -127,7 +127,7 @@
                     </div>
                     
                     <div class="mt-2">
-                      <small class="text-muted">Saved {{ job.timeSaved }}</small>
+                      <small class="text-muted">Saved {{ job.timeSaved | relativeTime }}</small>
                     </div>
                   </div>
                 </div>
