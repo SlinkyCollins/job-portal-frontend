@@ -1,4 +1,4 @@
-<div class="container-fluid px-3 px-md-4 py-4">
+<div class="container-fluid px-3 px-md-5 py-4">
   <div class="row align-items-center mb-4">
     <div class="col-12 col-md-6">
       <h2 class="saved-jobs-title mb-3 mb-md-0">{{ pageTitle }}</h2>
@@ -29,38 +29,18 @@
       <div class="job-card mb-3" *ngFor="let job of savedJobs; let i = index">
         <div class="card h-100">
           <div class="card-body">
+            
             <div class="d-lg-none mobile-job-layout">
-              <div class="d-flex align-items-start">
+              <div class="d-flex align-items-start mb-3">
                 <div class="company-logo me-3">
                   <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
                 </div>
                 
                 <div class="flex-grow-1">
-                  <h5 class="job-title mb-2">{{ job.title }}</h5>
-                  
-                  <div class="job-type-container mb-2">
-                    <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
-                      {{ job.type }}
-                    </span>
-                  </div>
-                  
-                  <div class="salary-info mb-2">
-                    <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
-                    <span class="salary-period text-muted"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
-                  </div>
-                  
-                  <div class="location mb-2">
-                    <span class="text-muted">{{ job.location }}</span>
-                  </div>
-                  
-                  <div class="job-tags">
-                    <span *ngFor="let tag of job.tags; let last = last" class="tag">
-                      {{ tag }}<span *ngIf="!last">,</span>
-                    </span>
-                  </div>
+                  <h5 class="job-title mb-0">{{ job.title }}</h5>
                 </div>
                 
-                <div class="dropdown mobile-dropdown">
+                <div class="dropdown mobile-dropdown ms-2">
                   <button class="btn action-btn" 
                           data-bs-toggle="dropdown" 
                           aria-expanded="false"
@@ -84,56 +64,64 @@
                   </ul>
                 </div>
               </div>
-            </div>
 
+              <div class="job-type-container mb-2">
+                <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
+                  {{ job.type }}
+                </span>
+              </div>
+              
+              <div class="salary-info mb-2">
+                <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
+                <span class="salary-period text-muted-stronger"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
+              </div>
+              
+              <div class="location mb-2">
+                <span class="text-muted-stronger">{{ job.location }}</span>
+              </div>
+              
+              <div class="job-tags">
+                <span *ngFor="let tag of job.tags; let last = last" class="tag">
+                  {{ tag }}<span *ngIf="!last">,</span>
+                </span>
+              </div>
+            </div>
             <div class="d-none d-lg-block desktop-job-layout">
               <div class="row align-items-center">
+                
                 <div class="col-auto">
                   <div class="company-logo">
                     <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
                   </div>
                 </div>
                 
-                <div class="col">
-                  <div class="job-content">
-                    <div class="row">
-                      <div class="col-12 col-lg-6">
-                        <h5 class="job-title mb-2">{{ job.title }}</h5>
-                        <div class="job-meta mb-2">
-                          <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
-                            {{ job.type }}
-                          </span>
-                          <div class="salary-info">
-                            <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
-                            <span class="salary-period text-muted"> / {{ job.salaryPeriod }}</span>
-                            <span class="experience-level text-muted"> · {{ job.experienceLevel }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="col-12 col-lg-5">
-                        <div class="location-tags-section">
-                          <div class="location mb-2">
-                            <i class="fas fa-map-marker-alt text-muted me-1"></i>
-                            <span class="text-muted">{{ job.location }}</span>
-                          </div>
-                          <div class="job-tags">
-                            <span *ngFor="let tag of job.tags; let last = last" class="tag">
-                              {{ tag }}<span *ngIf="!last">,</span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="mt-2">
-                      <small class="text-muted">Saved {{ job.timeSaved | relativeTime }}</small>
-                    </div>
+                <div class="col-lg-4">
+                  <h5 class="job-title mb-0">{{ job.title }}</h5>
+                </div>
+                
+                <div class="col-lg-3">
+                  <span class="job-type" [ngClass]="getJobTypeClass(job.type)">
+                    {{ job.type }}
+                  </span>
+                  <div class="salary-info mt-1">
+                    <span class="salary">{{ job.salary | currency: job.currency :'symbol-narrow':'1.0-0' }}</span>
+                    <span class="salary-period text-muted-stronger"> / {{ job.salaryPeriod }} · {{ job.experienceLevel }}</span>
                   </div>
                 </div>
                 
-                <div class="col-auto">
-                  <div class="dropdown desktop-dropdown">
+                <div class="col-lg-3">
+                  <div class="location mb-1">
+                    <i class="fas fa-map-marker-alt text-muted-stronger me-1"></i>
+                    <span class="text-muted-stronger">{{ job.location }}</span>
+                  </div>
+                  <div class="job-tags">
+                    <span *ngFor="let tag of job.tags; let last = last" class="tag">
+                      {{ tag }}<span *ngIf="!last">, </span>
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="col-auto ms-auto"> <div class="dropdown desktop-dropdown">
                     <button class="btn action-btn" 
                             data-bs-toggle="dropdown" 
                             aria-expanded="false"
@@ -157,9 +145,10 @@
                     </ul>
                   </div>
                 </div>
+
               </div>
             </div>
-          </div>
+            </div>
         </div>
       </div>
     </div>

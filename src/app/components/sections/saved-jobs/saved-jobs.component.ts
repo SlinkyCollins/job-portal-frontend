@@ -4,7 +4,6 @@ import { FormsModule } from "@angular/forms"
 import { Router } from "@angular/router"
 import { ToastrService } from "ngx-toastr"
 import { AuthService } from "../../../core/services/auth.service"
-import { RelativeTimePipe } from "../../../core/pipes/relative-time.pipe"
 
 interface SortOption {
   value: string
@@ -15,8 +14,7 @@ interface SortOption {
   selector: "app-saved-jobs",
   imports: [
     CommonModule,
-    FormsModule,
-    RelativeTimePipe
+    FormsModule
   ],
   standalone: true,
   templateUrl: "./saved-jobs.component.html",
@@ -73,7 +71,7 @@ export class SavedJobsComponent implements OnInit {
             salaryPeriod: job.salary_duration,
             experienceLevel: job.experience_level,
             location: job.location,
-            tags: this.extractTags(job.overview || job.description),
+            tags: job.tags,
             timeSaved: this.formatTimeSaved(job.saved_at)
           }));
         } else {
@@ -93,13 +91,13 @@ export class SavedJobsComponent implements OnInit {
   // Methods
   getJobTypeClass(type: string): string {
     switch (type) {
-      case "Fulltime":
+      case "fulltime":
         return "job-type-fulltime"
-      case "Part time":
+      case "parttime":
         return "job-type-parttime"
-      case "Remote":
+      case "remote":
         return "job-type-remote"
-      case "Contract":
+      case "contract":
         return "job-type-contract"
       default:
         return "job-type-default"
@@ -145,12 +143,6 @@ export class SavedJobsComponent implements OnInit {
         this.isRemoving = false;
       }
     });
-  }
-
-  private extractTags(text: string): string[] {
-    // Simple extraction: split by commas or spaces, take first few words
-    if (!text) return [];
-    return text.split(',').slice(0, 3).map(tag => tag.trim());
   }
 
   private formatTimeSaved(savedAt: string): string {
