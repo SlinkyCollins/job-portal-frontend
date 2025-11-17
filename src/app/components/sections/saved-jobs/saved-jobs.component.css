@@ -307,6 +307,76 @@
   line-height: 1.5;
 }
 
+/* Skeleton Shimmer Loaders */
+.skeleton-container {
+  padding: 1rem 0;
+}
+
+.skeleton-card .card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.skeleton-logo,
+.skeleton-title,
+.skeleton-type,
+.skeleton-salary,
+.skeleton-location,
+.skeleton-tags,
+.skeleton-btn {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.25rem;
+}
+
+.skeleton-logo {
+  width: 50px;
+  height: 50px;
+}
+
+.skeleton-title {
+  height: 1.125rem;
+  width: 70%;
+}
+
+.skeleton-type {
+  height: 0.75rem;
+  width: 60px;
+}
+
+.skeleton-salary {
+  height: 0.875rem;
+  width: 80px;
+}
+
+.skeleton-location {
+  height: 0.875rem;
+  width: 90px;
+}
+
+.skeleton-tags {
+  height: 0.875rem;
+  width: 100px;
+}
+
+.skeleton-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 991.98px) {
   .saved-jobs-title {
