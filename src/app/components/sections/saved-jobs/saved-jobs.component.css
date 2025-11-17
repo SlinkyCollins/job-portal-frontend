@@ -30,30 +30,59 @@
   padding: 0.375rem 0.75rem;
 }
 
-/* Ensure dropdown container has proper positioning and higher z-index */
-.dropdown {
-  position: relative;
-  z-index: 100; /* Higher than Bootstrap's default modals */
-}
-
-/* Prevent card overflow from hiding dropdown */
-.job-card {
+/* --- Z-INDEX FIX START --- */
+.jobs-container {
   position: relative;
   z-index: 1;
+  overflow: visible; /* Allow dropdowns to extend beyond container */
+}
+
+.job-card {
+  position: relative;
+}
+
+.job-card:hover,
+.job-card:focus-within {
+  z-index: 10;
 }
 
 .job-card .card {
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-  background: white;
+  position: relative;
+  overflow: visible; /* Critical: Allow dropdown to extend outside card */
+}
+
+.dropdown {
   position: relative;
 }
 
-/* Job Card Styles */
-.jobs-container {
-  max-width: 100%;
+.dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e9ecef;
+  padding: 0.5rem 0;
+  min-width: 160px;
+  z-index: 1000; /* Ensures menu is above its own card's content */
+  position: absolute;
+  background-color: white; /* Ensure solid background */
+}
+
+.desktop-dropdown,
+.mobile-dropdown {
+  position: relative;
+}
+
+.desktop-dropdown .dropdown-menu,
+.mobile-dropdown .dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position below the button */
+  right: 0; /* Align to the right edge */
+  left: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e9ecef;
+  background-color: white;
+  min-width: 160px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
 }
 
 .job-card .card-body {
@@ -187,27 +216,9 @@
   background-color: #f8f9fa;
 }
 
-/* Dropdown Menu with proper z-index stacking */
-.dropdown-menu {
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e9ecef;
-  padding: 0.5rem 0;
-  min-width: 160px;
-  z-index: 120;
-  position: absolute;
-  background-color: white; /* Ensure solid background */
-}
-
-.dropdown.show {
-  z-index: 125;
-}
-
-.dropdown.show .dropdown-menu {
-  z-index: 130;
-}
-
 .dropdown-item {
+  position: relative;
+  cursor: pointer;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   transition: background-color 0.2s ease;
