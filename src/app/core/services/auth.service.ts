@@ -97,8 +97,8 @@ export class AuthService {
     return this.http.get(`${this.apiService.apiUrl}/jobs.php`);
   }
 
-  getSavedJobs() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/saved_jobs.php`);
+  getSavedJobs(params: any = {}) {
+    return this.http.get(`${this.apiService.apiUrl}/dashboard/saved_jobs.php`, { params });
   }
 
   getJobDetails(jobId: number) {

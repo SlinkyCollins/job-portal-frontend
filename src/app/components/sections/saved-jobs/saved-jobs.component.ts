@@ -37,26 +37,33 @@ export class SavedJobsComponent implements OnInit {
     { value: "category", label: "Category" }
   ]
 
-  selectedSort = "new"
+  selectedSort: string = "new";
 
   // Saved Jobs Data
   savedJobs: any[] = [];
   isLoading = true;
   isRemoving = false;
 
-  // Pagination
-  currentPage = 1
-  totalPages = 7
+  // Pagination (now backend-driven)
+  currentPage: number = 1;
+  perPage: number = 5; // Matches backend default
+  totalPages: number = 0;
+  totalJobs: number = 0;
+  showEllipsis: boolean = true
   visiblePages: number[] = [1, 2, 3]
-  showEllipsis = true
 
   ngOnInit(): void {
     this.loadSavedJobs();
-    this.updateVisiblePages();
   }
 
   loadSavedJobs(): void {
-    this.authService.getSavedJobs().subscribe({
+    this.isLoading = true;
+    const params = {
+      page: this.currentPage,
+      per_page: this.perPage,
+      sort: this.selectedSort
+    };
+    this.authService.getSavedJobs(params).subscribe({
       next: (response: any) => {
         if (response.status && response.savedJobs) {
           this.savedJobs = response.savedJobs.map((job: any) => ({
@@ -74,6 +81,10 @@ export class SavedJobsComponent implements OnInit {
             tags: job.tags,
             timeSaved: this.formatTimeSaved(job.saved_at)
           }));
+          // Update pagination from backend
+          this.totalJobs = response.pagination.total_jobs;
+          this.totalPages = response.pagination.total_pages;
+          this.updateVisiblePages();
         } else {
           this.savedJobs = [];
           this.toastr.warning('No saved jobs found.');
@@ -86,6 +97,11 @@ export class SavedJobsComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onSortChange(): void {
+    this.currentPage = 1; // Reset to first page on sort
+    this.loadSavedJobs();
   }
 
   // Methods
@@ -174,9 +190,9 @@ export class SavedJobsComponent implements OnInit {
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
-      this.currentPage = page
-      this.updateVisiblePages()
-      // Implement page change logic here
+      this.currentPage = page;
+      this.loadSavedJobs(); // Reload with new page
+      this.updateVisiblePages();
     }
   }
 
