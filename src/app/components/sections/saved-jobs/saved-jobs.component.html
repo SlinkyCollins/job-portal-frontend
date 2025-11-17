@@ -7,7 +7,7 @@
       <div class="d-flex justify-content-md-end">
         <div class="sort-container">
           <label class="sort-label me-2">{{ sortLabel }}:</label>
-          <select class="form-select sort-select" [(ngModel)]="selectedSort">
+          <select class="form-select sort-select" [(ngModel)]="selectedSort" (change)="onSortChange()">
             <option *ngFor="let option of sortOptions" [value]="option.value">
               {{ option.label }}
             </option>
