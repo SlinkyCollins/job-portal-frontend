@@ -202,7 +202,7 @@
     </div>
   </div>
 
-  <nav aria-label="Saved jobs pagination" class="mt-4" *ngIf="!isLoading && savedJobs.length > 0">
+  <nav aria-label="Saved jobs pagination" class="mt-4" *ngIf="savedJobs.length > 0">
     <ul class="pagination justify-content-center">
       <li class="page-item" [class.disabled]="currentPage === 1">
         <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
