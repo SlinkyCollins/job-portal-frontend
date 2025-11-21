@@ -30,7 +30,6 @@ export class AuthService {
           this.toastr.success('Logged out');
           localStorage.removeItem('token');
           localStorage.removeItem('role');
-          localStorage.removeItem('photoURL'); // Clear photoURL
           localStorage.removeItem('user_cv'); // Clear uploaded CV
           this.router.navigate(['/login']);
         } else {

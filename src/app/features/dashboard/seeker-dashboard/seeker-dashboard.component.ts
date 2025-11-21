@@ -31,7 +31,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit() {
-    this.photoURL = this.authService.getPhotoURL();
+    this.loadProfile();
     this.authService.getSeekerData().subscribe(
       (response: any) => {
         if (response.status === true) {
@@ -59,7 +59,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
         localStorage.removeItem('role');
         localStorage.removeItem('token');
-        localStorage.removeItem('photoURL');
         this.router.navigate(['/login']);
         throw err; // Keep for debugging
       }
@@ -67,6 +66,18 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
     window.addEventListener('resize', this.handleWindowResize.bind(this));
     document.addEventListener('click', this.handleDocumentClick.bind(this));
+  }
+
+  loadProfile(): void {
+    this.authService.getSeekerProfile().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.user = response.profile;
+          this.photoURL = this.user.profile_pic_url || '';
+        }
+      },
+      error: (err) => console.error('Failed to load profile:', err)
+    });
   }
 
   ngAfterViewInit() {

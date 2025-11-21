@@ -32,6 +32,18 @@ export class DashboardService {
     return this.http.post(`${this.apiService.apiUrl}/dashboard/update_profile.php`, profileData);
   }
 
+  // Upload profile photo
+  uploadProfilePhoto(photoData: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', photoData);
+    return this.http.post(`${this.apiService.apiUrl}/dashboard/upload_profile_photo.php`, formData);
+  }
+
+  // Delete profile photo
+  deleteProfilePhoto(): Observable<any> {
+    return this.http.post(`${this.apiService.apiUrl}/dashboard/delete_profile_photo.php`, {});
+  }
+
   // Get saved jobs
   getSavedJobs(): Observable<any> {
     return this.http.get(`${this.apiService.apiUrl}/dashboard/saved_jobs.php`);

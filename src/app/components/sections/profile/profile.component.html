@@ -1,31 +1,76 @@
 <!-- profile.component.html -->
 <div class="container py-4">
-<h5 class="card-title fw-bold">My Profile</h5>
-  <form>
+  <h5 class="card-title fw-bold">My Profile</h5>
+  <form [formGroup]="profileForm">
     <!-- Profile Card -->
     <div class="card mb-4">
       <div class="card-body">
 
         <div class="d-flex flex-column flex-md-row align-items-md-center mb-3">
-          <img [src]="photoURL || 'https://mockmind-api.uifaces.co/content/cartoon/31.jpg'" class="rounded-circle me-md-3 mb-2 mb-md-0" width="80" height="80" alt="Profile Photo">
+          <img [src]="photoURL || defaultPhotoURL" class="rounded-circle me-md-3 mb-2 mb-md-0" width="80" height="80"
+            alt="Profile Photo">
           <div>
-            <button type="button" class="btn btn-outline-success btn-sm me-2">Upload new photo</button>
-            <button type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+            <button
+              type="button"
+              class="btn btn-outline-success btn-sm me-2"
+              (click)="onUploadPhoto(fileInput)"
+              [disabled]="isUploading || isDeleting"
+            >
+              <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-1"></span>
+              Upload new photo
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm"
+              (click)="onDeletePhoto()"
+              [disabled]="isDeleting || isUploading"
+            >
+              <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-1"></span>
+              Delete
+            </button>
           </div>
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
         </div>
 
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label">Full Name*</label>
-            <input type="text" class="form-control" placeholder="John Doe">
+            <input type="text" class="form-control" placeholder="e.g., John Doe" formControlName="fullname"
+              name="fullname"
+              [class.is-valid]="profileForm.get('fullname')?.valid && profileForm.get('fullname')?.touched"
+              [class.is-invalid]="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)"
+              required>
+          </div>
+          <div
+            *ngIf="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('pattern')">Full name must include a
+              first and last name separated by a space.</span>
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('minlength')">This field must not be
+              less
+              than 2 words</span>
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('required')">This field is
+              required</span>
           </div>
           <div class="col-md-6">
             <label class="form-label">Phone Number*</label>
-            <input type="tel" class="form-control" placeholder="+234...">
+            <input type="tel" class="form-control" placeholder="+234..." formControlName="phone" name="phone"
+              [class.is-valid]="profileForm.get('phone')?.valid && profileForm.get('phone')?.touched"
+              [class.is-invalid]="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)"
+              required>
+            <div
+              *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)">
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('required')">This field is
+                required</span>
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('pattern')">Invalid phone number
+                format (e.g. +123-456-7890)</span>
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('maxlength')">Phone number cannot
+                exceed 15 characters</span>
+            </div>
           </div>
           <div class="col-12">
-            <label class="form-label">Bio*</label>
-            <textarea class="form-control" rows="3" placeholder="Write something interesting about you..."></textarea>
+            <label class="form-label">Bio</label>
+            <textarea class="form-control" rows="3" placeholder="Write something interesting about you..."
+              formControlName="bio" name="bio"></textarea>
           </div>
           <span>Brief description for your profile. URLs are hyperlinked.</span>
         </div>
@@ -33,65 +78,52 @@
     </div>
 
     <!-- Social Media -->
-    <div class="card mb-4">
+    <!-- <div class="card mb-4">
       <div class="card-body">
-        <h5 class="card-title fw-bold">Social Media</h5>
-
+        <h5 class="card-title fw-bold">Social Media <span class="badge bg-secondary">Coming Soon</span></h5>
         <div class="mb-3">
           <label class="form-label">Network 1</label>
-          <input type="url" class="form-control" placeholder="https://facebook.com/">
+          <input type="url" class="form-control" placeholder="https://facebook.com/" disabled>
         </div>
         <div class="mb-3">
           <label class="form-label">Network 2</label>
-          <input type="url" class="form-control" placeholder="https://twitter.com/">
+          <input type="url" class="form-control" placeholder="https://twitter.com/" disabled>
         </div>
-
-        <button type="button" class="btn btn-outline-secondary btn-sm">+ Add more link</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" disabled>+ Add more link</button>
       </div>
-    </div>
+    </div> -->
 
     <!-- Address & Location -->
     <div class="card mb-4">
       <div class="card-body">
         <h5 class="card-title fw-bold">Address & Location</h5>
 
-        <div class="mb-3">
-          <label class="form-label">Address*</label>
-          <input type="text" class="form-control" placeholder="Street, City, State">
-        </div>
-
         <div class="row g-3">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label class="form-label">Country*</label>
-            <select class="form-select">
-              <option selected>Nigeria</option>
-              <option>USA</option>
-            </select>
+            <ng-select [items]="countries" class="form-control" bindLabel="name" bindValue="code"
+              formControlName="country" name="country"
+              [class.is-valid]="profileForm.get('country')?.valid && profileForm.get('country')?.touched"
+              [class.is-invalid]="profileForm.get('country')?.invalid && (profileForm.get('country')?.touched || profileForm.get('country')?.dirty)"
+              required>
+            </ng-select>
           </div>
-          <div class="col-md-4">
-            <label class="form-label">City*</label>
-            <input type="text" class="form-control" placeholder="City">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Zip Code*</label>
-            <input type="text" class="form-control" placeholder="1234">
-          </div>
-        </div>
-
-        <div class="row g-3 mt-3">
-          <div class="col-md-6">
-            <label class="form-label">State*</label>
-            <input type="text" class="form-control" placeholder="State">
+          <div
+            *ngIf="profileForm.get('country')?.invalid && (profileForm.get('country')?.touched || profileForm.get('country')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('country')?.getError('required')">This field is
+              required</span>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Map Location</label>
-            <input type="text" class="form-control" placeholder="Latitude, Longitude">
+            <label class="form-label">Address*</label>
+            <input type="text" class="form-control" placeholder="Street, City, State" formControlName="address"
+              name="address" [class.is-valid]="profileForm.get('address')?.valid && profileForm.get('address')?.touched"
+              [class.is-invalid]="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)"
+              required>
           </div>
-        </div>
-
-        <div class="mt-3">
-          <div class="border rounded bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
-            <i class="fas fa-image fa-2x text-muted"></i>
+          <div
+            *ngIf="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('address')?.getError('required')">This field is
+              required</span>
           </div>
         </div>
       </div>
@@ -99,8 +131,11 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-start">
-      <button type="submit" class="btn btn-success me-2">Save</button>
-      <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+      <button type="submit" class="btn btn-success me-2" (click)="onSubmit()"
+        [disabled]="profileForm.invalid || isSaving">
+        {{ isSaving ? 'Saving...' : 'Save' }}
+      </button>
+      <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving" (click)="onReset()">Cancel</button>
     </div>
   </form>
 </div>
