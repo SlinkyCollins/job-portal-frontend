@@ -6,6 +6,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
 import { RouterModule } from '@angular/router';
 import { DeleteaccountComponent } from '../../../components/sections/deleteaccount/deleteaccount.component';
+import { ProfileService } from '../../../core/services/profile.service';
 
 @Component({
   selector: 'app-seeker-dashboard',
@@ -27,7 +28,8 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     public router: Router,
     public toastr: ToastrService,
     public authService: AuthService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit() {
@@ -66,6 +68,11 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
     window.addEventListener('resize', this.handleWindowResize.bind(this));
     document.addEventListener('click', this.handleDocumentClick.bind(this));
+
+    this.profileService.profile$.subscribe(update => {
+      this.photoURL = update.photoURL;
+      this.user.firstname = update.firstname;
+    });
   }
 
   loadProfile(): void {

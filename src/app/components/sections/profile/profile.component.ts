@@ -5,6 +5,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AuthService } from '../../../core/services/auth.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
 import { CommonModule } from '@angular/common';
+import { ProfileService } from '../../../core/services/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -275,6 +276,7 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private dashboardService: DashboardService,
+    private profileService: ProfileService,
     private cdr: ChangeDetectorRef  // Inject ChangeDetectorRef
   ) {
     // Initialize form early with defaults
@@ -329,6 +331,9 @@ export class ProfileComponent implements OnInit {
         next: (response: any) => {
           if (response.status) {
             this.photoURL = response.photoURL;  // Update from backend
+            const firstname = this.user.fullname.split(' ')[0];  // Get first part
+            // Emit to service
+            this.profileService.updateProfile(this.photoURL, firstname);
             this.authService.toastr.success('Profile photo updated successfully');
           }
           this.isUploading = false;
@@ -348,7 +353,10 @@ export class ProfileComponent implements OnInit {
       next: (response: any) => {
         if (response.status) {
           this.photoURL = '';  // Revert to default (empty, so fallback to placeholder in template)
-          // Optional: Show success toast
+          const firstname = this.user.fullname.split(' ')[0];  // Get first part
+          // Emit to service
+          this.profileService.updateProfile('', firstname);
+          this.authService.toastr.success('Profile photo deleted successfully');
         }
         this.isDeleting = false;
       },
@@ -366,6 +374,11 @@ export class ProfileComponent implements OnInit {
       this.dashboardService.updateProfile(this.profileForm.value).subscribe({
         next: (response: any) => {
           if (response.status) {
+            // Update local user data
+            this.user.fullname = this.profileForm.value.fullname;
+            const firstname = this.user.fullname.split(' ')[0];  // Get first part
+            // Emit to service
+            this.profileService.updateProfile(this.photoURL, firstname);
             this.authService.toastr.success('Profile updated successfully');
           }
           this.isSaving = false;
