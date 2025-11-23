@@ -1,7 +1,59 @@
 <!-- profile.component.html -->
 <div class="container py-4">
   <h5 class="card-title fw-bold">My Profile</h5>
-  <form [formGroup]="profileForm">
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="py-4">
+    <!-- Profile Card Skeleton -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center mb-3">
+          <div class="skeleton-circle me-md-3 mb-2 mb-md-0"></div>
+          <div>
+            <div class="skeleton-button me-2"></div>
+            <div class="skeleton-button"></div>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-12">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-textarea"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Address & Location Skeleton -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="skeleton-title mb-3"></div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Buttons Skeleton -->
+    <div class="d-flex justify-content-start">
+      <div class="skeleton-button me-2"></div>
+      <div class="skeleton-button"></div>
+    </div>
+  </div>
+
+  <form [formGroup]="profileForm" *ngIf="!isLoading">
     <!-- Profile Card -->
     <div class="card mb-4">
       <div class="card-body">
@@ -132,10 +184,10 @@
     <!-- Buttons -->
     <div class="d-flex justify-content-start">
       <button type="submit" class="btn btn-success me-2" (click)="onSubmit()"
-        [disabled]="profileForm.invalid || isSaving">
+        [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
         {{ isSaving ? 'Saving...' : 'Save' }}
       </button>
-      <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving" (click)="onReset()">Cancel</button>
+      <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving || !profileForm.dirty" (click)="onReset()">Cancel</button>
     </div>
   </form>
 </div>

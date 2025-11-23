@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
   isSaving: boolean = false;
   isUploading: boolean = false;
   isDeleting: boolean = false;
+  isLoading: boolean = true;
   countries = [
     { name: 'Afghanistan', code: 'AF' },
     { name: 'Åland Islands', code: 'AX' },
@@ -291,6 +292,7 @@ export class ProfileComponent implements OnInit {
   }
 
   loadProfile(): void {
+    this.isLoading = true;
     this.authService.getSeekerProfile().subscribe({
       next: (response: any) => {
         if (response.status) {
@@ -306,8 +308,12 @@ export class ProfileComponent implements OnInit {
           });
           this.cdr.detectChanges();  // Force change detection
         }
+        this.isLoading = false;
       },
-      error: (err) => console.error('Failed to load profile:', err)
+      error: (err) => {
+        console.error('Failed to load profile:', err);
+        this.isLoading = false;
+      }
     });
   }
 
