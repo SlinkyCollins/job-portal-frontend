@@ -5,6 +5,25 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
+export const API = {
+  LOGIN: 'auth/login',
+  LOGOUT: 'auth/logout',
+  APPLY: 'jobs/apply',
+  USERDATA: 'dashboard/user_data',
+  SEEKERDATA: 'dashboard/seeker_dashboard',
+  EMPLOYERDATA: 'dashboard/employer_dashboard',
+  ADMINDATA: 'dashboard/admin_dashboard',
+  ALLJOBS: 'jobs/all_jobs',
+  SAVEDJOBS: 'dashboard/saved_jobs',
+  JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
+  SEEKERPROFILE: 'seekers/profile',
+  WISHLIST: 'jobs/wishlist',
+  WISHLIST_DELETE: 'jobs/wishlist_delete',
+  UPLOAD_CV: 'seekers/upload_cv',
+  DELETE_CV: 'seekers/delete_cv',
+  SOCIAL_LOGIN: 'auth/social_login'
+};
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +42,12 @@ export class AuthService {
     private ngZone: NgZone
   ) { }
 
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
   logout() {
-    this.http.post(`${this.apiService.apiUrl}/logout.php`, {}).subscribe(
+    this.http.post(this.fullUrl(API.LOGOUT), {}).subscribe(
       (response: any) => {
         if (response.status) {
           this.toastr.success('Logged out');
@@ -81,43 +104,43 @@ export class AuthService {
   }
 
   getUserData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/user_data.php`);
+    return this.http.get(this.fullUrl(API.USERDATA));
   }
 
   getSeekerData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_dashboard.php`);
+    return this.http.get(this.fullUrl(API.SEEKERDATA));
   }
 
   getEmployerData() {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/employer_dashboard.php`);
+    return this.http.get(this.fullUrl(API.EMPLOYERDATA));
   }
 
   getAllJobs() {
-    return this.http.get(`${this.apiService.apiUrl}/jobs.php`);
+    return this.http.get(this.fullUrl(API.ALLJOBS));
   }
 
   getSavedJobs(params: any = {}) {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/saved_jobs.php`, { params });
+    return this.http.get(this.fullUrl(API.SAVEDJOBS), { params });
   }
 
   getJobDetails(jobId: number) {
-    return this.http.get(`${this.apiService.apiUrl}/jobdetails.php?id=${jobId}`);
+    return this.http.get(this.fullUrl(API.JOBDETAILS(jobId)));
   }
 
   getSeekerProfile() {
-    return this.http.get(`${this.apiService.apiUrl}/get_seeker_profile.php`);
+    return this.http.get(this.fullUrl(API.SEEKERPROFILE));
   }
 
   applyToJob(jobId: number) {
-    return this.http.post(`${this.apiService.apiUrl}/apply.php`, { jobId });
+    return this.http.post(this.fullUrl(API.APPLY), { jobId });
   }
 
   addToWishlist(jobId: number) {
-    return this.http.post(`${this.apiService.apiUrl}/wishlist.php`, { jobId });
+    return this.http.post(this.fullUrl(API.WISHLIST), { jobId });
   }
 
   removeFromWishlist(jobId: number) {
-    return this.http.post(`${this.apiService.apiUrl}/wishlist_delete.php`, { jobId });
+    return this.http.post(this.fullUrl(API.WISHLIST_DELETE), { jobId });
   }
 
   toggleSaveJob(job: any) {
@@ -206,10 +229,9 @@ export class AuthService {
     this.ngZone.run(() => {
       const user = credential.user;
       if (user) {
-        localStorage.setItem('photoURL', user.photoURL || ''); // Store photoURL
         from(user.getIdToken()).pipe(
           switchMap(token => {
-            return this.http.post(`${this.apiService.apiUrl}/social_login.php`, { token });
+            return this.http.post(this.fullUrl(API.SOCIAL_LOGIN), { token, photoURL: user.photoURL || '' });
           })
         ).subscribe({
           next: (response: any) => {
@@ -235,7 +257,7 @@ export class AuthService {
         });
       } else {
         // Stop if no user
-        this.isGoogleLoading = false;  
+        this.isGoogleLoading = false;
         this.isFacebookLoading = false;
       }
     });
@@ -246,18 +268,14 @@ export class AuthService {
     formData.append('file', file);
     formData.append('filename', filename);  // Send to backend
 
-    return this.http.post(`${this.apiService.apiUrl}/upload_cv.php`, formData, {
+    return this.http.post(this.fullUrl(API.UPLOAD_CV), formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
   deleteCV(): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/delete_cv.php`, {});
-  }
-
-  getPhotoURL(): string {
-    return localStorage.getItem('photoURL') || '';
+    return this.http.post(this.fullUrl(API.DELETE_CV), {});
   }
 
   // Add signOut if needed

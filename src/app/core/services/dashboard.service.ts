@@ -2,6 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from './api-service.service';
 import { Observable } from 'rxjs';
+export const API = {
+  SEEKER_STATS: 'dashboard/seeker_stats',
+  RECENT_APPLICATIONS: 'dashboard/recent_applications',
+  RETRACT_APPLICATION: 'dashboard/retract_application',
+  UPDATE_PROFILE: 'dashboard/update_profile',
+  UPLOAD_PROFILE_PHOTO: 'dashboard/upload_profile_photo',
+  DELETE_PROFILE_PHOTO: 'dashboard/delete_profile_photo',
+  SAVED_JOBS: 'dashboard/saved_jobs',
+  JOB_ALERTS: 'dashboard/job_alerts',
+  CREATE_JOB_ALERT: 'dashboard/create_job_alert',
+  DELETE_JOB_ALERT: 'dashboard/delete_job_alert',
+  CHANGE_PASSWORD: 'dashboard/change_password',
+  DELETE_ACCOUNT: 'dashboard/delete_account'
+};
 
 @Injectable({
   providedIn: 'root'
@@ -13,64 +27,68 @@ export class DashboardService {
     private apiService: ApiServiceService
   ) { }
 
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
   // Get dashboard stats for job seeker
   getSeekerStats(): Observable<any> {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/seeker_stats.php`);
+    return this.http.get(this.fullUrl(API.SEEKER_STATS));
   }
 
   // Get recent applications for job seeker
   getRecentApplications(): Observable<any> {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/recent_applications.php`);
+    return this.http.get(this.fullUrl(API.RECENT_APPLICATIONS));
   }
 
   retractApplication(applicationId: number): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/retract_application.php`, { applicationId });
+    return this.http.post(this.fullUrl(API.RETRACT_APPLICATION), { applicationId });
   }
 
   // Update user profile
   updateProfile(profileData: any): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/update_profile.php`, profileData);
+    return this.http.post(this.fullUrl(API.UPDATE_PROFILE), profileData);
   }
 
   // Upload profile photo
   uploadProfilePhoto(photoData: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', photoData);
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/upload_profile_photo.php`, formData);
+    return this.http.post(this.fullUrl(API.UPLOAD_PROFILE_PHOTO), formData);
   }
 
   // Delete profile photo
   deleteProfilePhoto(): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/delete_profile_photo.php`, {});
+    return this.http.post(this.fullUrl(API.DELETE_PROFILE_PHOTO), {});
   }
 
   // Get saved jobs
   getSavedJobs(): Observable<any> {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/saved_jobs.php`);
+    return this.http.get(this.fullUrl(API.SAVED_JOBS));
   }
 
   // Get job alerts
   getJobAlerts(): Observable<any> {
-    return this.http.get(`${this.apiService.apiUrl}/dashboard/job_alerts.php`);
+    return this.http.get(this.fullUrl(API.JOB_ALERTS));
   }
 
   // Create job alert
   createJobAlert(alertData: any): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/create_job_alert.php`, alertData);
+    return this.http.post(this.fullUrl(API.CREATE_JOB_ALERT), alertData);
   }
 
   // Delete job alert
   deleteJobAlert(alertId: number): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/delete_job_alert.php`, { alertId });
+    return this.http.post(this.fullUrl(API.DELETE_JOB_ALERT), { alertId });
   }
 
   // Change password
   changePassword(passwordData: any): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/change_password.php`, passwordData);
+    return this.http.post(this.fullUrl(API.CHANGE_PASSWORD), passwordData);
   }
 
   // Delete account
   deleteAccount(): Observable<any> {
-    return this.http.post(`${this.apiService.apiUrl}/dashboard/delete_account.php`, {});
+    return this.http.post(this.fullUrl(API.DELETE_ACCOUNT), {});
   }
 }

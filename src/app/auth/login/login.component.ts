@@ -8,6 +8,9 @@ import { AuthService } from '../../core/services/auth.service';
 import { ApiServiceService } from '../../core/services/api-service.service';
 import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
 import { FooterComponent } from '../../components/sections/footer/footer.component';
+export const API = {
+  LOGIN: 'auth/login'
+};
 
 
 @Component({
@@ -32,6 +35,10 @@ export class LoginComponent {
   public loading: boolean = false;
   public isRememberMe: boolean = true;
 
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
 
   clearPassword() {
     this.password = '';
@@ -48,7 +55,7 @@ export class LoginComponent {
       pword: this.password
     }
 
-    this.http.post(`${this.apiService.apiUrl}/login.php`, credentials).subscribe(
+    this.http.post(this.fullUrl(API.LOGIN), credentials).subscribe(
       (response: any) => {
         this.loading = false;
         if (response.status) {
@@ -73,7 +80,7 @@ export class LoginComponent {
         if (error.status === 401) {
           this.toastr.error('Incorrect email or password');
         } else if (error.status === 404) {
-          this.toastr.error('User not found, please try signing up');
+          this.toastr.error('Incorrect email or password');
         } else {
           console.log(error.msg);
           this.toastr.error('Login failed. Please try again.');

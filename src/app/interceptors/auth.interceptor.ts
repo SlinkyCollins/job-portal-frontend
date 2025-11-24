@@ -6,6 +6,10 @@ import { catchError, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const token = localStorage.getItem('token');
   const router = inject(Router);
+  const API = {
+    SEEKER_PROFILE: 'seekers/profile',
+    EMPLOYER_PROFILE: 'employers/profile'
+  };
 
   // Clone the request and add the Authorization header if a token exists
   if (token) {
@@ -21,7 +25,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     catchError((error: any) => {
       if (error.status === 401) {
         // Skip auto-redirect for non-critical endpoints (e.g., profile fetches for guests)
-        const skipRedirectUrls = ['get_seeker_profile.php', 'get_employer_profile.php'];
+        const skipRedirectUrls = [API.SEEKER_PROFILE, API.EMPLOYER_PROFILE];
         const shouldSkip = skipRedirectUrls.some(url => req.url.includes(url));
         
         if (!shouldSkip) {

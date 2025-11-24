@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from '../core/services/api-service.service';
 import { CommonModule } from '@angular/common';
+export const API = {
+  SAVE_ROLE: 'auth/save_role'
+};
 
 @Component({
   selector: 'app-role-select',
@@ -27,6 +30,10 @@ export class RoleSelectComponent {
     private toastr: ToastrService
   ) { }
 
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
   submitRole() {
     if (!this.token || !this.uid) {
       this.toastr.error('Missing token or user ID');
@@ -35,13 +42,12 @@ export class RoleSelectComponent {
     };
     if (this.role) {
       this.isSubmitting = true;
-      this.http.post(`${this.apiService.apiUrl}/save_role.php`, { token: this.token, role: this.role }).subscribe({
+      this.http.post(this.fullUrl(API.SAVE_ROLE), { token: this.token, role: this.role, photoURL: this.photoURL }).subscribe({
         next: (response: any) => {
           if (response.status) {
             this.isSubmitting = false;
-            localStorage.setItem('token', response.token); // Store JWT
+            localStorage.setItem('token', response.token);
             localStorage.setItem('role', this.role);
-            localStorage.setItem('photoURL', this.photoURL); // Store photoURL
             this.toastr.success('Role selected');
             this.router.navigate([`/dashboard/${this.role.replace('_', '')}`]);
           } else {

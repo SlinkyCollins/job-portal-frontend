@@ -12,6 +12,9 @@ import { CategoryService } from '../core/services/category.service';
 import { RelativeTimePipe } from '../core/pipes/relative-time.pipe';
 import { Options } from '@angular-slider/ngx-slider';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+export const API = {
+  ALL_JOBS: 'jobs/all_jobs'
+}
 
 @Component({
   selector: 'app-job-list',
@@ -156,6 +159,10 @@ export class JobsListComponent implements OnInit {
 
     // One single restore flow
     this.restoreSearchAndFilters();
+  }
+
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
   }
 
   isLoggedIn(): boolean {
@@ -324,7 +331,7 @@ export class JobsListComponent implements OnInit {
     }, 200); // 👈 show spinner only if it takes longer than 200ms
 
     this.http
-      .get<any>(`${this.apiService.apiUrl}/jobs.php`, { params })
+      .get<any>(this.fullUrl(API.ALL_JOBS), { params })
       .subscribe({
         next: (res) => {
           clearTimeout(showSpinnerDelay);

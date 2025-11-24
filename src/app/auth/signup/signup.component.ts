@@ -8,6 +8,9 @@ import { ApiServiceService } from '../../core/services/api-service.service';
 import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
 import { FooterComponent } from '../../components/sections/footer/footer.component';
 import { AuthService } from '../../core/services/auth.service';
+export const API = {
+  SIGNUP: 'auth/signup'
+}
 
 @Component({
   selector: 'app-signup',
@@ -34,6 +37,10 @@ export class SignupComponent {
   public loading: boolean = false;
   public termsAccepted: boolean = false;
 
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
 
   signup(form: NgForm) {
     this.loading = true;
@@ -45,7 +52,7 @@ export class SignupComponent {
       role: this.role,
       terms: this.termsAccepted
     }
-    this.http.post(`${this.apiService.apiUrl}/signup.php`, userObj, { withCredentials: true }).subscribe((response: any) => {
+    this.http.post(this.fullUrl(API.SIGNUP), userObj, { withCredentials: true }).subscribe((response: any) => {
       this.loading = false;
       if (response.status) {
         this.toastr.success('Signed up successfully');

@@ -5,6 +5,9 @@ import { RouterLink } from '@angular/router';
 import { ApiServiceService } from '../../../core/services/api-service.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { RelativeTimePipe } from '../../../core/pipes/relative-time.pipe';
+export const API = {
+  RECENT_JOBS: 'jobs/recent_jobs'
+}
 
 @Component({
   selector: 'app-job-card',
@@ -36,12 +39,16 @@ export class JobCardComponent {
     return this.authService.getUserRole();
   }
 
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
   fetchRecentJobs(): void {
     // Logic to fetch recent jobs can be implemented here
     this.loading = true;
 
     this.http
-      .get<any>(`${this.apiService.apiUrl}/recent_jobs.php`)
+      .get<any>(this.fullUrl(API.RECENT_JOBS))
       .subscribe({
         next: (res) => {
           this.jobs = res.jobs || [];

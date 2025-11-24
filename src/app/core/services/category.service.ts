@@ -3,12 +3,18 @@ import { Injectable } from '@angular/core';
 import { ApiServiceService } from './api-service.service';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
+export const API = {
+  GET_CATEGORIES: 'jobs/categories'
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
   private categoriesCache: any[] | null = null;
+  fullUrl(endpoint: string) {
+    return `${this.apiService.apiUrl}/${endpoint}`;
+  }
 
   constructor(private http: HttpClient, private apiService: ApiServiceService) {}
 
@@ -19,7 +25,7 @@ export class CategoryService {
     }
 
     return this.http.get<{ status: boolean; categories: any[] }>(
-      `${this.apiService.apiUrl}/get_categories.php`
+      this.fullUrl(API.GET_CATEGORIES)
     ).pipe(
       tap((res) => {
         if (res.status) {
