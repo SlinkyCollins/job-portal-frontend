@@ -3,9 +3,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential, signInWithRedirect, linkWithCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
-import { linkWithCredential } from 'firebase/auth';
 export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
@@ -228,7 +227,6 @@ export class AuthService {
                 switchMap((linkedCredential) => {
                   // After linking, proceed with the linked credential (treat as successful login)
                   this.toastr.success('Accounts linked successfully. You can now log in with Facebook.');
-                  // Optionally, call handleSocialLogin here or return the credential for the caller to handle
                   this.handleSocialLogin(linkedCredential);  // Assuming you want to proceed with login
                   return [linkedCredential];  // Return as observable
                 }),
@@ -240,7 +238,11 @@ export class AuthService {
               );
             }),
             catchError(googleErr => {
-              this.toastr.error('Google sign-in failed during linking. Please try again.');
+              if (googleErr.code === 'auth/popup-blocked') {
+                this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
+              } else {
+                this.toastr.error('Google sign-in failed during linking. Please try again.');
+              }
               console.error('Google sign-in error:', googleErr);
               throw googleErr;
             })
