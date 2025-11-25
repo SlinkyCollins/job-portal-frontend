@@ -56,7 +56,6 @@ export class AppComponent implements OnInit {
   title = 'JobPortal';
 
   ngOnInit(): void {
-    this.authService.handleRedirectResult();  // Handle redirect after linking
     // Check initial status
     if (this.isOnline) {
       console.log("Initial status: Online");

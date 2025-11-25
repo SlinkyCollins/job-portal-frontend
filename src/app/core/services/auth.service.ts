@@ -3,7 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential, signInWithRedirect, linkWithCredential, getRedirectResult } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
 export const API = {
   LOGIN: 'auth/login',
@@ -211,35 +211,8 @@ export class AuthService {
       catchError(err => {
         this.isFacebookLoading = false;  // Stop on error
         if (err.code === 'auth/account-exists-with-different-credential') {
-          // Get the email address and the new credential that failed
-          const email = err.customData.email;
-          const failedCredential = err.credential;
-          localStorage.setItem('failedCredential', JSON.stringify(failedCredential));
-
-          // Check if failedCredential exists
-          if (!failedCredential) {
-            this.toastr.error('Unable to retrieve login credentials. Please try again.');
-            throw err;
-          }
-
-          // Prompt the user to sign in with the existing provider (assuming Google) using redirect
-          const googleProvider = new GoogleAuthProvider();
-          googleProvider.setCustomParameters({ login_hint: email });
-
-          // Use redirect instead of popup to avoid blocking
-          return from(this.ngZone.run(() => signInWithRedirect(this.auth, googleProvider))).pipe(
-            // Note: signInWithRedirect doesn't return immediately; handle result in app init
-            // For now, assume the redirect completes and handle in getRedirectResult
-            switchMap(() => {
-              // This won't execute immediately; redirect happens
-              return [];  // Placeholder
-            }),
-            catchError(redirectErr => {
-              this.toastr.error('Redirect sign-in failed. Please try again.');
-              console.error('Redirect error:', redirectErr);
-              throw redirectErr;
-            })
-          );
+          // Show user-friendly message instead of attempting linking
+          this.toastr.warning('An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.');
         } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
@@ -249,29 +222,6 @@ export class AuthService {
         throw err;
       })
     );
-  }
-
-  // Add this to handle redirect results (call in app.component.ts on init)
-  handleRedirectResult(): void {
-    getRedirectResult(this.auth).then((result) => {
-      if (result) {
-        const googleCredential = result;
-        // Now link the Facebook credential (you'll need to store failedCredential somewhere, e.g., localStorage)
-        const failedCredential = JSON.parse(localStorage.getItem('failedCredential') || 'null');
-        if (failedCredential) {
-          linkWithCredential(googleCredential.user, failedCredential).then((linkedCredential) => {
-            this.toastr.success('Accounts linked successfully. You can now log in with Facebook.');
-            this.handleSocialLogin(linkedCredential);
-            localStorage.removeItem('failedCredential');
-          }).catch(linkErr => {
-            this.toastr.error('Failed to link accounts. Please try again.');
-            console.error('Linking error:', linkErr);
-          });
-        }
-      }
-    }).catch((err) => {
-      console.error('Redirect result error:', err);
-    });
   }
 
   handleSocialLogin(credential: UserCredential): void {
