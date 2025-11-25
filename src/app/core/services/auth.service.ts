@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
+import { linkWithCredential } from 'firebase/auth';
 export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
@@ -211,8 +212,39 @@ export class AuthService {
       catchError(err => {
         this.isFacebookLoading = false;  // Stop on error
         if (err.code === 'auth/account-exists-with-different-credential') {
-          this.toastr.error('Account exists with different provider. Try another login method.');
-          console.warn('Facebook login error:', err);
+          // Get the email address and the new credential that failed
+          const email = err.customData.email;
+          const failedCredential = err.credential;
+
+          // Prompt the user to sign in with the existing provider (assuming Google)
+          const googleProvider = new GoogleAuthProvider();
+          googleProvider.setCustomParameters({ login_hint: email });
+
+          return from(signInWithPopup(this.auth, googleProvider)).pipe(
+            switchMap((googleCredential) => {
+              // Link the Facebook credential to the Google account
+              console.log('Linking Facebook credential to Google account for:', googleCredential.user.email);
+              return from(linkWithCredential(googleCredential.user, failedCredential)).pipe(
+                switchMap((linkedCredential) => {
+                  // After linking, proceed with the linked credential (treat as successful login)
+                  this.toastr.success('Accounts linked successfully. You can now log in with Facebook.');
+                  // Optionally, call handleSocialLogin here or return the credential for the caller to handle
+                  this.handleSocialLogin(linkedCredential);  // Assuming you want to proceed with login
+                  return [linkedCredential];  // Return as observable
+                }),
+                catchError(linkErr => {
+                  this.toastr.error('Failed to link accounts. Please try again.');
+                  console.error('Linking error:', linkErr);
+                  throw linkErr;
+                })
+              );
+            }),
+            catchError(googleErr => {
+              this.toastr.error('Google sign-in failed during linking. Please try again.');
+              console.error('Google sign-in error:', googleErr);
+              throw googleErr;
+            })
+          );
         } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
