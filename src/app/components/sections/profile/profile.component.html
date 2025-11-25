@@ -62,23 +62,23 @@
           <img [src]="photoURL || defaultPhotoURL" class="rounded-circle me-md-3 mb-2 mb-md-0" width="80" height="80"
             alt="Profile Photo">
           <div>
-            <button
-              type="button"
-              class="btn btn-outline-success btn-sm me-2"
-              (click)="onUploadPhoto(fileInput)"
-              [disabled]="isUploading || isDeleting"
-            >
+            <button type="button" class="btn btn-outline-success btn-sm me-2" (click)="onUploadPhoto(fileInput)"
+              [disabled]="isUploading || isDeleting">
               <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-1"></span>
               Upload new photo
             </button>
-            <button
-              type="button"
-              class="btn btn-outline-danger btn-sm"
-              (click)="onDeletePhoto()"
-              [disabled]="isDeleting || isUploading"
-            >
+            <button type="button" class="btn btn-outline-danger btn-sm me-2" (click)="onDeletePhoto()"
+              [disabled]="isDeleting || isUploading">
               <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-1"></span>
               Delete
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="linkFacebook()"
+              [disabled]="isLinkingFacebook">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
+                alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
+              <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
+              Link Facebook Account
             </button>
           </div>
           <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
@@ -127,6 +127,19 @@
           <span>Brief description for your profile. URLs are hyperlinked.</span>
         </div>
       </div>
+    </div>
+
+    <!-- Linked Providers Section -->
+    <div class="mb-3">
+      <h6 class="fw-bold">Linked Accounts</h6>
+      <div *ngIf="linkedProviders.length > 0; else noProviders">
+        <span *ngFor="let provider of linkedProviders" class="badge bg-secondary me-2">
+          {{ getProviderDisplayName(provider) }}
+        </span>
+      </div>
+      <ng-template #noProviders>
+        <p class="text-muted">No linked accounts.</p>
+      </ng-template>
     </div>
 
     <!-- Social Media -->
@@ -187,7 +200,8 @@
         [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
         {{ isSaving ? 'Saving...' : 'Save' }}
       </button>
-      <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving || !profileForm.dirty" (click)="onReset()">Cancel</button>
+      <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving || !profileForm.dirty"
+        (click)="onReset()">Cancel</button>
     </div>
   </form>
 </div>

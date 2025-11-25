@@ -1,11 +1,12 @@
 // profile.component.ts
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AuthService } from '../../../core/services/auth.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../../core/services/profile.service';
+import { Auth, FacebookAuthProvider, linkWithPopup, getAdditionalUserInfo, User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-profile',
@@ -22,10 +23,12 @@ export class ProfileComponent implements OnInit {
   photoURL: string = '';
   defaultPhotoURL: string = 'https://mockmind-api.uifaces.co/content/abstract/49.jpg';
   user: any = {};
+  linkedProviders: string[] = [];
   isSaving: boolean = false;
   isUploading: boolean = false;
   isDeleting: boolean = false;
   isLoading: boolean = true;
+  isLinkingFacebook: boolean = false;
   countries = [
     { name: 'Afghanistan', code: 'AF' },
     { name: 'Åland Islands', code: 'AX' },
@@ -277,7 +280,9 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private dashboardService: DashboardService,
     private profileService: ProfileService,
-    private cdr: ChangeDetectorRef  // Inject ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private auth: Auth,
+    private ngZone: NgZone
   ) {
     // Initialize form early with defaults
     this.profileForm = this.fb.group({
@@ -291,6 +296,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+    this.loadLinkedProviders();
   }
 
   loadProfile(): void {
@@ -371,7 +377,12 @@ export class ProfileComponent implements OnInit {
     if (this.profileForm.valid) {
       this.isSaving = true;
 
-      this.dashboardService.updateProfile(this.profileForm.value).subscribe({
+      const formData = {
+        ...this.profileForm.value,
+        linked_providers: JSON.stringify(this.linkedProviders)
+      };
+
+      this.dashboardService.updateProfile(formData).subscribe({
         next: (response: any) => {
           if (response.status) {
             // Update local user data
@@ -400,5 +411,54 @@ export class ProfileComponent implements OnInit {
       address: this.user.address || '',
       country: this.user.country || ''
     });
+  }
+
+  getProviderDisplayName(providerId: string): string {
+    const names: { [key: string]: string } = {
+      'google.com': 'Google',
+      'facebook.com': 'Facebook',
+      // Add more if you expand providers
+    };
+    return names[providerId] || providerId;  // Fallback to ID if unknown
+  }
+
+  loadLinkedProviders(): void {
+    if (this.auth.currentUser) {
+      this.auth.currentUser.providerData.forEach(provider => {
+        this.linkedProviders.push(provider.providerId);
+      });
+    }
+  }
+
+  linkFacebook(): void {
+    if (!this.auth.currentUser) {
+      this.authService.toastr.error('Please log in with Google first.');
+      return;
+    }
+
+    this.isLinkingFacebook = true;
+    const provider = new FacebookAuthProvider();
+
+    this.ngZone.run(() =>
+      linkWithPopup(this.auth.currentUser!, provider)
+        .then((result) => {
+          this.isLinkingFacebook = false;
+          console.log(result);
+          this.authService.toastr.success('Facebook account linked successfully!');
+          // Update linked providers
+          this.loadLinkedProviders();  // Refresh the list
+          // Optionally, refresh profile or update UI
+        }).catch((error) => {
+          this.isLinkingFacebook = false;
+          if (error.code === 'auth/credential-already-in-use') {
+            this.authService.toastr.error('This Facebook account is already linked to another user.');
+          } else if (error.code === 'auth/popup-blocked') {
+            this.authService.toastr.error('Popup blocked. Please allow popups and try again.');
+          } else {
+            this.authService.toastr.error('Failed to link Facebook account.');
+            console.error('Linking error:', error);
+          }
+        })
+    );
   }
 }
