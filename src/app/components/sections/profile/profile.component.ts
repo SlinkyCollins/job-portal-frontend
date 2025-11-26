@@ -471,6 +471,8 @@ export class ProfileComponent implements OnInit {
       linkWithPopup(this.auth.currentUser!, provider)
         .then(async (result) => {
           await this.auth.currentUser?.reload();
+          // Update local linkedProviders from Firebase after reload
+          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
           this.isLinkingGoogle = false;
           this.authService.toastr.success('Google account linked successfully!');
           this.checkSocialLinked();
@@ -493,6 +495,8 @@ export class ProfileComponent implements OnInit {
       linkWithPopup(this.auth.currentUser!, provider)
         .then(async (result) => {
           await this.auth.currentUser?.reload();  // Refresh user data
+          // Update local linkedProviders from Firebase after reload
+          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
           console.log('Linked providers after reload:', this.auth.currentUser?.providerData);
           this.isLinkingFacebook = false;
           this.authService.toastr.success('Facebook account linked successfully!');
