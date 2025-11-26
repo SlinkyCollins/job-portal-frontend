@@ -206,6 +206,11 @@ export class AuthService {
   }
 
   signInWithFacebook(): Observable<UserCredential> {
+    if (this.isLoggedIn()) {
+      this.toastr.warning('Please log out before using Facebook login.');
+      this.isFacebookLoading = false;
+      throw new Error('User already logged in');
+    }
     this.isFacebookLoading = true;  // Start loading for Facebook
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {

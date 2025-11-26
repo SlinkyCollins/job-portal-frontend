@@ -441,13 +441,12 @@ export class ProfileComponent implements OnInit {
 
     this.ngZone.run(() =>
       linkWithPopup(this.auth.currentUser!, provider)
-        .then((result) => {
+        .then(async (result) => {
+          await this.auth.currentUser?.reload();  // Refresh user data
+          console.log('Linked providers after reload:', this.auth.currentUser?.providerData);
           this.isLinkingFacebook = false;
-          console.log(result);
           this.authService.toastr.success('Facebook account linked successfully!');
-          // Update linked providers
-          this.loadLinkedProviders();  // Refresh the list
-          // Optionally, refresh profile or update UI
+          this.loadLinkedProviders();
         }).catch((error) => {
           this.isLinkingFacebook = false;
           if (error.code === 'auth/credential-already-in-use') {
