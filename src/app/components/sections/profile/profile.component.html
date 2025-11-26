@@ -144,7 +144,7 @@
     </div>
 
     <!-- Linked Providers Section -->
-    <div class="mb-3" *ngIf="showLinkGoogle || showLinkFacebook" >
+    <div class="mb-3" *ngIf="linkedProviders.length > 0">
       <h6 class="fw-bold">Linked Accounts</h6>
       <div *ngIf="linkedProviders.length > 0; else noProviders">
         <span *ngFor="let provider of linkedProviders" class="badge bg-light me-2"
