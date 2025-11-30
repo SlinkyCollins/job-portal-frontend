@@ -3,8 +3,9 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential, signInWithRedirect } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
@@ -13,6 +14,7 @@ export const API = {
   SEEKERDATA: 'dashboard/seeker_dashboard',
   EMPLOYERDATA: 'dashboard/employer_dashboard',
   ADMINDATA: 'dashboard/admin_dashboard',
+  UPDATEPROFILE: 'dashboard/update_profile',
   ALLJOBS: 'jobs/all_jobs',
   SAVEDJOBS: 'dashboard/saved_jobs',
   JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
@@ -32,6 +34,7 @@ export const API = {
 export class AuthService {
   public isGoogleLoading: boolean = false;
   public isFacebookLoading: boolean = false;
+  globalLoading$ = new BehaviorSubject<boolean>(false);  // New global loading state
 
   constructor(
     public http: HttpClient,
@@ -208,17 +211,17 @@ export class AuthService {
   signInWithFacebook(): Observable<UserCredential> {
     if (this.isLoggedIn()) {
       this.toastr.warning('Please log out before using Facebook login.');
-      this.isFacebookLoading = false;
       throw new Error('User already logged in');
     }
-    this.isFacebookLoading = true;  // Start loading for Facebook
-    return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
+    this.isFacebookLoading = true;
+    this.globalLoading$.next(true);  // Set global loading
+    // Just trigger redirect; result handled in app.component.ts
+    return from(this.ngZone.run(() => signInWithRedirect(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {
-        this.isFacebookLoading = false;  // Stop on error
-        if (err.code === 'auth/account-exists-with-different-credential') {
-          // Show user-friendly message instead of attempting linking
-          this.toastr.warning('An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.');
-        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        this.isFacebookLoading = false;
+        this.globalLoading$.next(false);  // Reset on error
+        // Handle pre-redirect errors only
+        if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
           this.toastr.error('Facebook login failed');
@@ -227,6 +230,12 @@ export class AuthService {
         throw err;
       })
     );
+  }
+
+  // Add this method to update linked_providers in DB
+  updateLinkedProviders(providers: string[]): Observable<any> {
+    const data = { linked_providers: JSON.stringify(providers) };
+    return this.http.post(this.fullUrl(API.UPDATEPROFILE), data);
   }
 
   handleSocialLogin(credential: UserCredential): void {
@@ -241,8 +250,13 @@ export class AuthService {
         ).subscribe({
           next: (response: any) => {
             // Stop loading for the specific provider
-            this.isGoogleLoading = false;
-            this.isFacebookLoading = false;
+            const providerId = credential.user.providerData[0]?.providerId;  // Get the provider ID
+            if (providerId === 'google.com') {
+              this.isGoogleLoading = false;
+            } else if (providerId === 'facebook.com') {
+              this.isFacebookLoading = false;
+            }
+            this.globalLoading$.next(false);  // Reset global loading on success
             if (response.status) {
               localStorage.setItem('token', response.token);
               localStorage.setItem('role', response.user.role);
@@ -253,9 +267,14 @@ export class AuthService {
             }
           },
           error: (err) => {
+            this.globalLoading$.next(false);  // Reset global loading on error
             // Stop loading for the specific provider
-            this.isGoogleLoading = false;
-            this.isFacebookLoading = false;
+            const providerId = credential.user.providerData[0]?.providerId;  // Get the provider ID
+            if (providerId === 'google.com') {
+              this.isGoogleLoading = false;
+            } else if (providerId === 'facebook.com') {
+              this.isFacebookLoading = false;
+            }
             console.warn('Backend error:', err); // Debug
             this.toastr.error('Login failed: ' + (err.message || 'Unknown error'));
           }

@@ -11,8 +11,10 @@ import {
 } from '@angular/router';
 import { ScrolltopbtnComponent } from './components/ui/scrolltopbtn/scrolltopbtn.component';
 import { filter } from 'rxjs/operators';
-// import { Auth } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
+import { getRedirectResult } from '@angular/fire/auth';
+import { ProfileRefreshService } from './core/services/profile-refresh.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +30,9 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private auth: Auth,
+    private profileRefreshService: ProfileRefreshService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
@@ -56,6 +60,9 @@ export class AppComponent implements OnInit {
   title = 'JobPortal';
 
   ngOnInit(): void {
+    this.authService.globalLoading$.subscribe(isLoading => {
+      this.loading = isLoading;  // Use existing loading property
+    });
     // Check initial status
     if (this.isOnline) {
       console.log("Initial status: Online");
@@ -63,7 +70,59 @@ export class AppComponent implements OnInit {
       console.log("Initial status: Offline");
       this.showOfflineToast();
     }
-    
+
+    // Handle Firebase redirect results
+    getRedirectResult(this.auth)
+      .then((result) => {
+        if (result) {
+          const user = result.user;
+          console.log('Redirect result:', result);
+          // Check if this was a linking attempt
+          if (localStorage.getItem('linkingFacebook') === 'true') {
+            localStorage.removeItem('linkingFacebook');
+            // Get updated providers from Firebase
+            const updatedProviders = user.providerData.map(p => p.providerId);
+            // Update DB directly
+            this.authService.updateLinkedProviders(updatedProviders).subscribe({
+              next: () => {
+                this.authService.globalLoading$.next(false);  // Reset on success
+                this.authService.toastr.success('Facebook account linked successfully!');
+                this.profileRefreshService.triggerRefresh();  // Refresh profile
+                this.profileRefreshService.triggerResetLinking();  // Reset linking state
+                this.router.navigate(['/dashboard/jobseeker']);
+              },
+              error: () => {
+                this.authService.globalLoading$.next(false);  // Reset on error
+                this.authService.toastr.error('Failed to update linked providers.');
+                this.profileRefreshService.triggerResetLinking();  // Reset on DB error
+              }
+            });
+          } else {
+            // Handle login success
+            this.authService.handleSocialLogin(result);
+          }
+        }
+      }).catch((error) => {
+        // Handle redirect errors
+        if (localStorage.getItem('linkingFacebook') === 'true') {
+          localStorage.removeItem('linkingFacebook');
+          if (error.code === 'auth/user-cancelled' || error.code === 'auth/cancelled-popup-request') {
+            this.authService.toastr.warning('Facebook linking was cancelled.');
+          } else {
+            this.authService.toastr.error('Facebook linking failed.');
+          }
+        } else {
+          if (error.code === 'auth/user-cancelled' || error.code === 'auth/cancelled-popup-request') {
+            this.authService.toastr.warning('Facebook login was cancelled.');
+          } else {
+            this.authService.toastr.error('Facebook login failed.');
+          }
+        }
+        console.error('Redirect error:', error);
+        this.profileRefreshService.triggerResetLinking();
+        this.authService.globalLoading$.next(false);  // Reset global loading
+      });
+
     // Add event listeners
     window.addEventListener('online', this.handleOnline.bind(this));
     window.addEventListener('offline', this.handleOffline.bind(this));
