@@ -192,6 +192,10 @@ export class AuthService {
   }
 
   signInWithGoogle(): Observable<UserCredential> {
+    if (this.isLoggedIn()) {
+      this.toastr.warning('Please log out before using Google login.');
+      throw new Error('User already logged in');
+    }
     this.isGoogleLoading = true;  // Start loading for Google
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new GoogleAuthProvider()))).pipe(
       catchError(err => {
@@ -208,6 +212,12 @@ export class AuthService {
   }
 
   signInWithFacebook(): Observable<UserCredential> {
+    // Detect mobile devices
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      this.toastr.warning('Facebook login is not supported on mobile devices. Please use Google or email/password.');
+      throw new Error('Facebook login disabled on mobile');
+    }
     if (this.isLoggedIn()) {
       this.toastr.warning('Please log out before using Facebook login.');
       throw new Error('User already logged in');

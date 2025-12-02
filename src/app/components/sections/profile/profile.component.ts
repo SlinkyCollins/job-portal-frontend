@@ -487,6 +487,12 @@ export class ProfileComponent implements OnInit {
   }
 
   linkFacebook(): void {
+    // Detect mobile devices
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      this.authService.toastr.warning('Facebook linking is not supported on mobile devices. Please use a desktop browser.');
+      return;
+    }
     if (!this.auth.currentUser) {
       this.authService.toastr.error('Please log in first.');
       return;
