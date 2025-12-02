@@ -302,10 +302,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.profileRefreshService.refresh$.subscribe(() => this.loadProfile());
-    this.profileRefreshService.resetLinking$.subscribe(() => {
-      this.isLinkingFacebook = false;  // Reset linking state
-    });
+    this.loadProfile();
     this.checkSocialLinked();
   }
 
@@ -329,10 +326,13 @@ export class ProfileComponent implements OnInit {
           this.cdr.detectChanges();  // Force change detection
         }
         this.isLoading = false;
+        this.cdr.detectChanges();  // Ensure UI updates
       },
       error: (err) => {
-        console.error('Failed to load profile:', err);
+        console.error('loadProfile: Error, err:', err);
         this.isLoading = false;
+        this.cdr.detectChanges();  // Ensure UI updates
+        this.authService.toastr.error('Failed to load profile. Please refresh.');
       }
     });
   }
@@ -443,7 +443,6 @@ export class ProfileComponent implements OnInit {
     this.dashboardService.updateProfile(data).subscribe({
       next: (response: any) => {
         if (response.status) {
-          console.log('Linked providers saved to DB');
           this.authService.toastr.success('Linked providers updated successfully');
         }
       },

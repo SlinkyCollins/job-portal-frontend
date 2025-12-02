@@ -63,20 +63,13 @@ export class AppComponent implements OnInit {
     this.authService.globalLoading$.subscribe(isLoading => {
       this.loading = isLoading;  // Use existing loading property
     });
-    // Check initial status
-    if (this.isOnline) {
-      console.log("Initial status: Online");
-    } else {
-      console.log("Initial status: Offline");
-      this.showOfflineToast();
-    }
 
     // Handle Firebase redirect results
     getRedirectResult(this.auth)
       .then((result) => {
         if (result) {
           const user = result.user;
-          console.log('Redirect result:', result);
+          console.log('getRedirectResult fired:', result);
           // Check if this was a linking attempt
           if (localStorage.getItem('linkingFacebook') === 'true') {
             localStorage.removeItem('linkingFacebook');
@@ -99,10 +92,12 @@ export class AppComponent implements OnInit {
             });
           } else {
             // Handle login success
+            console.log('Handling login from redirect');  // Add logging
             this.authService.handleSocialLogin(result);
           }
         }
       }).catch((error) => {
+        console.error('Redirect error:', error);  // Enhanced logging
         // Handle redirect errors
         if (localStorage.getItem('linkingFacebook') === 'true') {
           localStorage.removeItem('linkingFacebook');
@@ -122,6 +117,14 @@ export class AppComponent implements OnInit {
         this.profileRefreshService.triggerResetLinking();
         this.authService.globalLoading$.next(false);  // Reset global loading
       });
+
+    // Check initial status
+    if (this.isOnline) {
+      console.log("Initial status: Online");
+    } else {
+      console.log("Initial status: Offline");
+      this.showOfflineToast();
+    }
 
     // Add event listeners
     window.addEventListener('online', this.handleOnline.bind(this));
