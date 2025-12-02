@@ -3,7 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential, signInWithRedirect } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 export const API = {
@@ -34,7 +34,6 @@ export const API = {
 export class AuthService {
   public isGoogleLoading: boolean = false;
   public isFacebookLoading: boolean = false;
-  globalLoading$ = new BehaviorSubject<boolean>(false);  // New global loading state
 
   constructor(
     public http: HttpClient,
@@ -214,28 +213,25 @@ export class AuthService {
       throw new Error('User already logged in');
     }
     this.isFacebookLoading = true;
-    this.globalLoading$.next(true);  // Set global loading
-    // Just trigger redirect; result handled in app.component.ts
-    return from(this.ngZone.run(() => signInWithRedirect(this.auth, new FacebookAuthProvider()))).pipe(
+    console.log('Attempting Facebook login with popup');  // Add logging
+    return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {
         this.isFacebookLoading = false;
-        this.globalLoading$.next(false);  // Reset on error
-        // Handle pre-redirect errors only
-        if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        console.error('Facebook popup error:', err);  // Enhanced logging
+        this.toastr.error(err);
+        this.toastr.error('Facebook login failed: ' + (err.message || 'Unknown error'));
+        if (err.code === 'auth/popup-blocked') {
+          this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
+        } else if (err.code === 'auth/account-exists-with-different-credential') {
+          this.toastr.warning('An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.');
+        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
-          this.toastr.error('Facebook login failed');
-          console.warn('Facebook login error:', err);
+          this.toastr.error('Facebook login failed. Please check your connection.');
         }
         throw err;
       })
     );
-  }
-
-  // Add this method to update linked_providers in DB
-  updateLinkedProviders(providers: string[]): Observable<any> {
-    const data = { linked_providers: JSON.stringify(providers) };
-    return this.http.post(this.fullUrl(API.UPDATEPROFILE), data);
   }
 
   handleSocialLogin(credential: UserCredential): void {
@@ -256,7 +252,6 @@ export class AuthService {
             } else if (providerId === 'facebook.com') {
               this.isFacebookLoading = false;
             }
-            this.globalLoading$.next(false);  // Reset global loading on success
             if (response.status) {
               localStorage.setItem('token', response.token);
               localStorage.setItem('role', response.user.role);
@@ -267,7 +262,6 @@ export class AuthService {
             }
           },
           error: (err) => {
-            this.globalLoading$.next(false);  // Reset global loading on error
             // Stop loading for the specific provider
             const providerId = credential.user.providerData[0]?.providerId;  // Get the provider ID
             if (providerId === 'google.com') {

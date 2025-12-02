@@ -7,7 +7,6 @@ import { DashboardService } from '../../../core/services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../../core/services/profile.service';
 import { Auth, FacebookAuthProvider, linkWithPopup, GoogleAuthProvider, linkWithRedirect } from '@angular/fire/auth';
-import { ProfileRefreshService } from '../../../core/services/profile-refresh.service';
 
 @Component({
   selector: 'app-profile',
@@ -288,8 +287,7 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private cdr: ChangeDetectorRef,
     private auth: Auth,
-    private ngZone: NgZone,
-    private profileRefreshService: ProfileRefreshService
+    private ngZone: NgZone
   ) {
     // Initialize form early with defaults
     this.profileForm = this.fb.group({
@@ -495,9 +493,22 @@ export class ProfileComponent implements OnInit {
     }
     this.isLinkingFacebook = true;
     const provider = new FacebookAuthProvider();
-    // Set flag for linking mode
-    localStorage.setItem('linkingFacebook', 'true');
-    // Trigger redirect; result handled in app.component.ts
-    this.ngZone.run(() => linkWithRedirect(this.auth.currentUser!, provider));
+    this.ngZone.run(() =>
+      linkWithPopup(this.auth.currentUser!, provider)
+        .then(async (result) => {
+          await this.auth.currentUser?.reload();  // Refresh user data
+          // Update local linkedProviders from Firebase after reload
+          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
+          console.log('Linked providers after reload:', this.auth.currentUser?.providerData);
+          this.isLinkingFacebook = false;
+          this.authService.toastr.success('Facebook account linked successfully!');
+          this.checkSocialLinked();
+          // Save to DB immediately
+          this.saveLinkedProviders();
+        }).catch((error) => {
+          this.isLinkingFacebook = false;
+          this.handleLinkError(error);
+        })
+    );
   }
 }
