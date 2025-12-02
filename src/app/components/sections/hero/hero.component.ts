@@ -161,8 +161,7 @@ export class HeroComponent implements OnInit {
   uploadFile(file: File, filename: string) {
     this.isUploading = true;
     this.uploadProgress = 0;
-    // Pass the original filename to the service (update AuthService.uploadCV to accept it)
-    this.authService.uploadCV(file, filename).subscribe({  // Assuming you modify the service
+    this.authService.uploadCV(file, filename).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);

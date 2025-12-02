@@ -2,20 +2,39 @@
 <div class="container py-4">
     <h5 class="card-title fw-bold">My Resume</h5>
     <form>
-        <!-- Resume Title -->
+        <!-- Resume Attachment -->
         <div class="card mb-4">
             <div class="card-body">
                 <h6 class="fw-bold">Resume Attachment</h6>
                 <div class="row g-3 align-items-center">
                     <div class="col-md-6">
                         <label class="form-label">CV Attachment*</label>
-                        <div>
-                            <input type="file" class="form-control" accept=".pdf,.doc,.docx">
+                        <div *ngIf="!uploadedCV">
+                            <label for="cvUpload" class="btn btn-outline-primary w-100" [class.disabled]="isUploading">
+                                {{ isUploading ? 'Uploading...' : 'Upload CV' }}
+                                <i *ngIf="!isUploading" class="bi bi-file-earmark-arrow-up ms-2"></i>
+                                <i *ngIf="isUploading" class="fas fa-spinner fa-spin ms-2"></i>
+                            </label>
+                            <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx"
+                                [disabled]="isUploading || isDeleting">
                             <small class="form-text text-muted">Upload your CV in PDF or Word format.</small>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-outline-primary w-100">Upload CV</button>
+                    <div class="col-md-6">
+                        <!-- Progress Bar -->
+                        <div *ngIf="isUploading" class="mt-2">
+                            <div class="progress">
+                                <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+                            </div>
+                            <small>{{ uploadProgress }}% uploaded</small>
+                        </div>
+                        <!-- Uploaded CV Display -->
+                        <div *ngIf="uploadedCV && !isUploading" class="mt-2">
+                            <span class="badge bg-success">{{ selectedFileName }}</span>
+                            <button type="button" class="btn btn-sm btn-outline-danger ms-2" [disabled]="isDeleting" (click)="openDeleteModal()">
+                                {{ isDeleting ? 'Deleting...' : 'Delete' }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,7 +52,7 @@
                 </div>
                 <span>Brief description for your resume. URLs are hyperlinked.</span>
 
-               <!-- Add intro Video Section -->
+                <!-- Add intro Video Section -->
                 <div class="mb-3 mt-3">
                     <label class="form-label">Intro Video</label>
                     <input type="file" class="form-control" accept="video/*">
@@ -112,8 +131,8 @@
             </div>
         </div>
 
-        <!-- Portfolio -->
-        <div class="card mb-4">
+        <!-- Portfolio (DEFERRED AFTER MVP) -->
+        <!-- <div class="card mb-4">
             <div class="card-body">
                 <h6 class="fw-bold">Portfolio</h6>
 
@@ -135,7 +154,7 @@
 
                 <button type="button" class="btn btn-outline-secondary btn-sm mt-3">+ Add More</button>
             </div>
-        </div>
+        </div> -->
 
         <!-- Buttons -->
         <div class="d-flex justify-content-start">
@@ -143,4 +162,30 @@
             <button type="reset" class="btn btn-outline-secondary">Cancel</button>
         </div>
     </form>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" [class.active]="showDeleteModal" (click)="closeDeleteModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirm Delete</h3>
+      <button class="modal-close-btn" (click)="closeDeleteModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="delete-icon">
+        <i class="fas fa-trash"></i>
+      </div>
+      <p>Are you sure you want to delete your CV?</p>
+      <p class="modal-subtitle">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeDeleteModal()" [disabled]="isDeleting">Cancel</button>
+      <button class="btn-confirm" (click)="confirmDelete()" [disabled]="isDeleting">
+        {{ isDeleting ? 'Deleting...' : 'Delete' }}
+        <i *ngIf="isDeleting" class="fas fa-spinner fa-spin ms-2"></i>
+      </button>
+    </div>
+  </div>
 </div>

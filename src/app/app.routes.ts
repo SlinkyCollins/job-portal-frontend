@@ -47,7 +47,7 @@ export const routes: Routes = [
             { path: '', component: DashboardHomeComponent, title: 'Dashboard Home | JobNet' },
             { path: 'profile', component: ProfileComponent, title: 'Profile | JobNet' },
             { path: 'resume', component: ResumeComponent, title: 'Resume | JobNet' },
-            { path: 'job-alert', component: JobalertsComponent, title: 'Job Alerts | JobNet' },
+            // { path: 'job-alert', component: JobalertsComponent, title: 'Job Alerts | JobNet' }, DEFERRED AFTER MVP
             { path: 'saved-jobs', component: SavedJobsComponent, title: 'Saved Jobs | JobNet' },
             { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet' },
             { path: 'delete-account', component: DeleteaccountComponent, title: 'Delete Account | JobNet' },

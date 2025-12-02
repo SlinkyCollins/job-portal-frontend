@@ -228,8 +228,6 @@ export class AuthService {
       catchError(err => {
         this.isFacebookLoading = false;
         console.error('Facebook popup error:', err);  // Enhanced logging
-        this.toastr.error(err);
-        this.toastr.error('Facebook login failed: ' + (err.message || 'Unknown error'));
         if (err.code === 'auth/popup-blocked') {
           this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
         } else if (err.code === 'auth/account-exists-with-different-credential') {
