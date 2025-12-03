@@ -1,13 +1,19 @@
-// resume.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { HttpEventType } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+// Custom validator for FormArray (requires at least one item)
+export function atLeastOneValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const array = control as FormArray;
+    return array.length > 0 ? null : { atLeastOne: true };
+  };
+}
 
 @Component({
   selector: 'app-resume',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './resume.component.html',
   styleUrls: ['./resume.component.css']
 })
@@ -19,20 +25,19 @@ export class ResumeComponent implements OnInit {
   isDeleting: boolean = false;
   uploadedCV: string = '';
   showDeleteModal: boolean = false;
+  isSaving: boolean = false;
+  originalData: any = {};  // Store last saved data
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService) {
+    this.resumeForm = this.fb.group({
+      overview: ['', [Validators.required, Validators.maxLength(500)]],
+      education: this.fb.array([], atLeastOneValidator()),
+      skills: this.fb.array([], atLeastOneValidator()),
+      experience: ['', [Validators.required, Validators.maxLength(1000)]]
+    });
+  }
 
   ngOnInit(): void {
-    this.resumeForm = this.fb.group({
-      title: ['', Validators.required],
-      category: [''],
-      overview: [''],
-      photo: [''],
-      education: this.fb.array([this.createEducation()]),
-      skills: this.fb.array([]),
-      newSkill: [''],
-      portfolio: this.fb.array([])
-    });
     this.loadProfile();
   }
 
@@ -42,6 +47,15 @@ export class ResumeComponent implements OnInit {
         if (response.status) {
           this.uploadedCV = response.profile.cv_url || '';
           this.selectedFileName = response.profile.cv_filename || 'No file chosen';
+          // Store original data
+          this.originalData = {
+            overview: response.profile.overview || '',
+            experience: response.profile.experience || '',
+            education: response.profile.education ? JSON.parse(response.profile.education) : [],
+            skills: response.profile.resume_skills ? JSON.parse(response.profile.resume_skills) : []
+          };
+          // Populate form with original data
+          this.populateForm(this.originalData);
         }
       },
       error: (err) => console.error('Failed to load profile:', err)
@@ -133,7 +147,17 @@ export class ResumeComponent implements OnInit {
   }
 
   addEducation(): void {
-    this.education.push(this.createEducation());
+    this.education.push(this.fb.group({
+      school: [''],
+      field: [''],
+      startYear: [''],
+      endYear: [''],
+      description: ['']
+    }));
+  }
+
+  removeEducation(index: number): void {
+    this.education.removeAt(index);
   }
 
   get skills(): FormArray {
@@ -141,16 +165,89 @@ export class ResumeComponent implements OnInit {
   }
 
   addSkill(): void {
-    const newSkill = this.resumeForm.get('newSkill')?.value;
+    const newSkill = (document.getElementById('newSkill') as HTMLInputElement).value.trim();
     if (newSkill) {
       this.skills.push(this.fb.control(newSkill));
-      this.resumeForm.get('newSkill')?.reset();
+      this.skills.markAsDirty();
+      this.resumeForm.markAsDirty();
+      (document.getElementById('newSkill') as HTMLInputElement).value = '';
     }
+  }
+
+  removeSkill(index: number): void {
+    this.skills.removeAt(index);
+    this.skills.markAsDirty();
+    this.resumeForm.markAsDirty();
   }
 
   onSubmit(): void {
     if (this.resumeForm.valid) {
-      console.log(this.resumeForm.value);
+      this.isSaving = true;
+      const formData = {
+        overview: this.resumeForm.value.overview,
+        education: JSON.stringify(this.resumeForm.value.education),
+        resume_skills: JSON.stringify(this.resumeForm.value.skills),
+        experience: this.resumeForm.value.experience
+      };
+      this.authService.updateResume(formData).subscribe({
+        next: (response: any) => {
+          if (response.status) {
+            this.authService.toastr.success('Resume saved successfully!');
+            // Update originalData to current saved data
+            this.originalData = {
+              overview: this.resumeForm.value.overview,
+              experience: this.resumeForm.value.experience,
+              education: [...this.resumeForm.value.education],
+              skills: [...this.resumeForm.value.skills]
+            };
+            this.resumeForm.markAsPristine();  // Reset dirty state
+          } else {
+            this.authService.toastr.error(response.message || 'Save failed.');
+          }
+          this.isSaving = false;
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.authService.toastr.error('Failed to save resume.');
+          this.isSaving = false;
+        }
+      });
+    } else {
+      this.resumeForm.markAllAsTouched();
+      this.authService.toastr.error('Please fill all required fields.');
     }
+  }
+
+  populateForm(data: any) {
+    console.log('Populating form with:', data);  // Debug log
+    this.resumeForm.patchValue({
+      overview: data.overview,
+      experience: data.experience
+    });
+    // Clear and repopulate education
+    while (this.education.length) {
+      this.education.removeAt(0);
+    }
+    data.education.forEach((edu: any) => {
+      this.education.push(this.fb.group({
+        school: [edu.school || ''],
+        field: [edu.field || ''],
+        startYear: [edu.startYear || ''],
+        endYear: [edu.endYear || ''],
+        description: [edu.description || '']
+      }));
+    });
+    // Clear and repopulate skills
+    while (this.skills.length) {
+      this.skills.removeAt(0);
+    }
+    data.skills.forEach((skill: string) => {
+      this.skills.push(this.fb.control(skill));
+    });
+  }
+
+  onReset(): void {
+    console.log('Resetting to original data:', this.originalData);  // Debug log
+    this.populateForm(this.originalData);
   }
 }

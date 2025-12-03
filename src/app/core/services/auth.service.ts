@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
 export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
@@ -15,6 +14,7 @@ export const API = {
   EMPLOYERDATA: 'dashboard/employer_dashboard',
   ADMINDATA: 'dashboard/admin_dashboard',
   UPDATEPROFILE: 'dashboard/update_profile',
+  UPDATERESUME: 'dashboard/update_resume',
   ALLJOBS: 'jobs/all_jobs',
   SAVEDJOBS: 'dashboard/saved_jobs',
   JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
@@ -302,6 +302,10 @@ export class AuthService {
 
   deleteCV(): Observable<any> {
     return this.http.post(this.fullUrl(API.DELETE_CV), {});
+  }
+
+  updateResume(data: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATERESUME), data);
   }
 
   // Add signOut if needed

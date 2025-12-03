@@ -1,7 +1,6 @@
-<!-- resume.component.html -->
 <div class="container py-4">
     <h5 class="card-title fw-bold">My Resume</h5>
-    <form>
+    <form [formGroup]="resumeForm">
         <!-- Resume Attachment -->
         <div class="card mb-4">
             <div class="card-body">
@@ -15,8 +14,8 @@
                                 <i *ngIf="!isUploading" class="bi bi-file-earmark-arrow-up ms-2"></i>
                                 <i *ngIf="isUploading" class="fas fa-spinner fa-spin ms-2"></i>
                             </label>
-                            <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx"
-                                [disabled]="isUploading || isDeleting">
+                            <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)"
+                                accept=".pdf,.doc,.docx" [disabled]="isUploading || isDeleting">
                             <small class="form-text text-muted">Upload your CV in PDF or Word format.</small>
                         </div>
                     </div>
@@ -31,7 +30,8 @@
                         <!-- Uploaded CV Display -->
                         <div *ngIf="uploadedCV && !isUploading" class="mt-2">
                             <span class="badge bg-success">{{ selectedFileName }}</span>
-                            <button type="button" class="btn btn-sm btn-outline-danger ms-2" [disabled]="isDeleting" (click)="openDeleteModal()">
+                            <button type="button" class="btn btn-sm btn-outline-danger ms-2" [disabled]="isDeleting"
+                                (click)="openDeleteModal()">
                                 {{ isDeleting ? 'Deleting...' : 'Delete' }}
                             </button>
                         </div>
@@ -46,18 +46,23 @@
                 <h6 class="fw-bold">Intro & Overview</h6>
 
                 <div class="mb-3">
-                    <label class="form-label">Overview</label>
-                    <textarea class="form-control" rows="3"
-                        placeholder="Tell us about your experience and background"></textarea>
+                    <label class="form-label">Overview*</label>
+                    <textarea class="form-control" rows="3" formControlName="overview"
+                        placeholder="Tell us about your experience and background"
+                        [class.is-valid]="resumeForm.get('overview')?.valid && resumeForm.get('overview')?.touched"
+                        [class.is-invalid]="resumeForm.get('overview')?.invalid && (resumeForm.get('overview')?.touched || resumeForm.get('overview')?.dirty)"
+                        required></textarea>
+                </div>
+                <div
+                    *ngIf="resumeForm.get('overview')?.invalid && (resumeForm.get('overview')?.touched || resumeForm.get('overview')?.dirty)">
+                    <span class="text-danger" *ngIf="resumeForm.get('overview')?.getError('maxlength')">This field must
+                        not be
+                        more
+                        than 500 characters</span>
+                    <span class="text-danger" *ngIf="resumeForm.get('overview')?.getError('required')">This field is
+                        required</span>
                 </div>
                 <span>Brief description for your resume. URLs are hyperlinked.</span>
-
-                <!-- Add intro Video Section -->
-                <div class="mb-3 mt-3">
-                    <label class="form-label">Intro Video</label>
-                    <input type="file" class="form-control" accept="video/*">
-                    <small class="form-text text-muted">Upload a short introduction video (max 2 minutes).</small>
-                </div>
             </div>
         </div>
 
@@ -66,33 +71,48 @@
             <div class="card-body">
                 <h6 class="fw-bold">Education</h6>
 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">School Name</label>
-                        <input type="text" class="form-control" placeholder="University of Lagos">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Field of Study</label>
-                        <input type="text" class="form-control" placeholder="Computer Engineering">
-                    </div>
+                <div formArrayName="education">
+                    <div *ngFor="let edu of education.controls; let i = index" [formGroupName]="i"
+                        class="mb-3 border p-3 rounded">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">School Name</label>
+                                <input type="text" class="form-control" formControlName="school"
+                                    placeholder="University of Lagos">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Field of Study</label>
+                                <input type="text" class="form-control" formControlName="field"
+                                    placeholder="Computer Engineering">
+                            </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Start Year</label>
-                        <input type="text" class="form-control" placeholder="2018">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">End Year</label>
-                        <input type="text" class="form-control" placeholder="2023">
-                    </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Start Year</label>
+                                <input type="text" class="form-control" formControlName="startYear" placeholder="2018">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">End Year</label>
+                                <input type="text" class="form-control" formControlName="endYear" placeholder="2023">
+                            </div>
 
-                    <div class="col-12">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="2"
-                            placeholder="Write what you studied, projects etc..."></textarea>
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" rows="2" formControlName="description"
+                                    placeholder="Write what you studied, projects etc..."></textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger mt-2"
+                            (click)="removeEducation(i)">Remove</button>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-outline-secondary btn-sm mt-3">+ Add Education</button>
+                <!-- Error message for at least one education -->
+                <div *ngIf="education.hasError('atLeastOne') && (education.touched || education.dirty)">
+                    <span class="text-danger">At least one education entry is required.</span>
+                </div>
+
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-3" (click)="addEducation()">+ Add
+                    Education</button>
             </div>
         </div>
 
@@ -102,32 +122,48 @@
                 <h6 class="fw-bold">Skills & Experience</h6>
 
                 <div class="mb-3">
-                    <label class="form-label">Category</label>
-                    <select class="form-select">
-                        <option>Frontend</option>
-                        <option>Backend</option>
-                        <option>Full Stack</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
                     <label class="form-label">Skills</label>
                     <div class="d-flex flex-wrap gap-2">
-                        <span class="badge bg-light border text-dark">HTML</span>
-                        <span class="badge bg-light border text-dark">CSS</span>
-                        <span class="badge bg-light border text-dark">Angular</span>
-                        <span class="badge bg-light border text-dark">React</span>
-                        <span class="badge bg-light border text-dark">Vue</span>
-                        <span class="badge bg-light border text-dark">Node.js</span>
+                        <span *ngFor="let skill of skills.controls; let i = index"
+                            class="badge bg-light border text-dark">
+                            {{ skill.value }} <i class="fas fa-times ms-1" (click)="removeSkill(i)" style="cursor: pointer;"></i>
+                        </span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Add New Skill</label>
-                    <input type="text" class="form-control" placeholder="e.g. TypeScript">
+                    <input type="text" id="newSkill" class="form-control" placeholder="e.g. TypeScript"
+                        [class.is-valid]="resumeForm.get('skills')?.valid && resumeForm.get('skills')?.touched"
+                        [class.is-invalid]="resumeForm.get('skills')?.invalid && (resumeForm.get('skills')?.touched || resumeForm.get('skills')?.dirty)">
+                    <div
+                        *ngIf="resumeForm.get('skills')?.invalid && (resumeForm.get('skills')?.touched || resumeForm.get('skills')?.dirty)">
+                        <span class="text-danger" *ngIf="resumeForm.get('skills')?.hasError('atLeastOne')">At least one
+                            skill is required.</span>
+                    </div>
                 </div>
 
-                <button type="button" class="btn btn-outline-secondary btn-sm">+ Add Skill</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="addSkill()">+ Add Skill</button>
+
+                <div class="mb-3 mt-3">
+                    <label class="form-label">Experience</label>
+                    <textarea class="form-control" rows="3" formControlName="experience"
+                        placeholder="Describe your work experience..."
+                        [class.is-valid]="resumeForm.get('experience')?.valid && resumeForm.get('experience')?.touched"
+                        [class.is-invalid]="resumeForm.get('experience')?.invalid && (resumeForm.get('experience')?.touched || resumeForm.get('experience')?.dirty)"
+                        required></textarea>
+                    <div
+                        *ngIf="resumeForm.get('experience')?.invalid && (resumeForm.get('experience')?.touched || resumeForm.get('experience')?.dirty)">
+                        <span class="text-danger" *ngIf="resumeForm.get('experience')?.getError('maxlength')">This field
+                            must
+                            not be
+                            more
+                            than 1000 characters</span>
+                        <span class="text-danger" *ngIf="resumeForm.get('experience')?.getError('required')">This field
+                            is
+                            required</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -158,34 +194,37 @@
 
         <!-- Buttons -->
         <div class="d-flex justify-content-start">
-            <button type="submit" class="btn btn-success me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+            <button type="submit" class="btn btn-success me-2"
+                [disabled]="isSaving || !resumeForm.dirty" (click)="onSubmit()">{{ isSaving ?
+                'Saving...' : 'Save' }}</button>
+            <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving || !resumeForm.dirty"
+                (click)="onReset()">Cancel</button>
         </div>
     </form>
 </div>
 
 <!-- Delete Confirmation Modal -->
 <div class="modal-overlay" [class.active]="showDeleteModal" (click)="closeDeleteModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Confirm Delete</h3>
-      <button class="modal-close-btn" (click)="closeDeleteModal()">
-        <i class="fas fa-times"></i>
-      </button>
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Confirm Delete</h3>
+            <button class="modal-close-btn" (click)="closeDeleteModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="delete-icon">
+                <i class="fas fa-trash"></i>
+            </div>
+            <p>Are you sure you want to delete your CV?</p>
+            <p class="modal-subtitle">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeDeleteModal()" [disabled]="isDeleting">Cancel</button>
+            <button class="btn-confirm" (click)="confirmDelete()" [disabled]="isDeleting">
+                {{ isDeleting ? 'Deleting...' : 'Delete' }}
+                <i *ngIf="isDeleting" class="fas fa-spinner fa-spin ms-2"></i>
+            </button>
+        </div>
     </div>
-    <div class="modal-body">
-      <div class="delete-icon">
-        <i class="fas fa-trash"></i>
-      </div>
-      <p>Are you sure you want to delete your CV?</p>
-      <p class="modal-subtitle">This action cannot be undone.</p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" (click)="closeDeleteModal()" [disabled]="isDeleting">Cancel</button>
-      <button class="btn-confirm" (click)="confirmDelete()" [disabled]="isDeleting">
-        {{ isDeleting ? 'Deleting...' : 'Delete' }}
-        <i *ngIf="isDeleting" class="fas fa-spinner fa-spin ms-2"></i>
-      </button>
-    </div>
-  </div>
 </div>
