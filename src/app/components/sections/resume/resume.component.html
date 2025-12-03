@@ -1,6 +1,70 @@
 <div class="container py-4">
     <h5 class="card-title fw-bold">My Resume</h5>
-    <form [formGroup]="resumeForm">
+
+    <!-- Skeleton Loading States -->
+    <div *ngIf="isLoading">
+        <!-- CV Skeleton -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="skeleton-title col-4 mb-3"></div>
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-6">
+                        <div class="skeleton-label col-6 mb-2"></div>
+                        <div class="skeleton-input col-8"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="skeleton-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Skeleton -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="skeleton-title col-3 mb-3"></div>
+                <div class="skeleton-label col-12 mb-2"></div>
+                <div class="skeleton-textarea col-10"></div>
+            </div>
+        </div>
+
+        <!-- Education Skeleton -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="skeleton-title col-3 mb-3"></div>
+                <div class="mb-3 border p-3 rounded">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="skeleton-label col-8 mb-2"></div>
+                            <div class="skeleton-input col-6"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="skeleton-label col-8 mb-2"></div>
+                            <div class="skeleton-input col-6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills & Experience Skeleton -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="skeleton-title col-4 mb-3"></div>
+                <div class="mb-3">
+                    <div class="skeleton-label col-3 mb-2"></div>
+                    <div class="d-flex gap-2">
+                        <div class="skeleton-button col-2"></div>
+                        <div class="skeleton-button col-3"></div>
+                    </div>
+                </div>
+                <div class="skeleton-input col-12 mb-2"></div>
+                <div class="skeleton-textarea col-8"></div>
+            </div>
+        </div>
+    </div>
+
+    <form [formGroup]="resumeForm" *ngIf="!isLoading">
         <!-- Resume Attachment -->
         <div class="card mb-4">
             <div class="card-body">

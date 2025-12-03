@@ -27,6 +27,7 @@ export class ResumeComponent implements OnInit {
   showDeleteModal: boolean = false;
   isSaving: boolean = false;
   originalData: any = {};  // Store last saved data
+  isLoading: boolean = true;
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.resumeForm = this.fb.group({
@@ -44,7 +45,7 @@ export class ResumeComponent implements OnInit {
   loadProfile() {
     this.authService.getSeekerProfile().subscribe({
       next: (response: any) => {
-        if (response.status) {
+        if (response.status) {  
           this.uploadedCV = response.profile.cv_url || '';
           this.selectedFileName = response.profile.cv_filename || 'No file chosen';
           // Store original data
@@ -56,9 +57,13 @@ export class ResumeComponent implements OnInit {
           };
           // Populate form with original data
           this.populateForm(this.originalData);
+          this.isLoading = false;  // Set loading to false after data loads
         }
       },
-      error: (err) => console.error('Failed to load profile:', err)
+      error: (err) => {
+        console.error('Failed to load profile:', err);
+        this.isLoading = false;  // Set loading to false even if there is an error
+      }
     });
   }
 
