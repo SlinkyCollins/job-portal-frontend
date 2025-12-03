@@ -2,63 +2,259 @@
 
 /* General layout */
 .container {
-  max-width: 1800px;
+  max-width: 1600px;
   margin: auto;
 }
 
 .card {
-  border-radius: 10px;
-  border: 1px solid #dee2e6;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 1.5rem !important;
+  background: #fff;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card-body {
+  padding: 2rem;
 }
 
 .card-title {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 700;
   color: #244034;
-  margin: 0 0 1.5rem;
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
 }
 
-/* Resume Selector Section */
-.resume-selector select.form-select,
-.resume-selector input.form-control {
-  font-size: 0.9rem;
-}
-
-/* Skill tag display */
-.skill-tags {
+/* Section Headings */
+h6.fw-bold {
+  color: #244034;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f0f0f0;
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem;
 }
 
-.skill-tag {
-  background-color: #e9f5ec;
-  color: #28a745;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  display: inline-flex;
-  align-items: center;
+/* Form Controls */
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: #fcfcfc;
+  color: #333;
 }
 
-.skill-tag i {
-  margin-left: 6px;
+.form-control:focus {
+  border-color: #00be57;
+  box-shadow: 0 0 0 4px rgba(0, 190, 87, 0.1);
+  background-color: #fff;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-text {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.btn-success {
+  background-color: #00be57;
+  border-color: #00be57;
+  box-shadow: 0 4px 12px rgba(0, 190, 87, 0.2);
+}
+
+.btn-success:hover {
+  background-color: #00a34b;
+  border-color: #00a34b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(0, 190, 87, 0.3);
+}
+
+.btn-outline-secondary {
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f8fafc;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.btn-outline-primary {
+  color: #00be57;
+  border-color: #00be57;
+}
+
+.btn-outline-primary:hover {
+  background-color: #00be57;
+  color: #fff;
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Education Items */
+.education-item {
+  background-color: #fff;
+  border: 1px solid #f1f5f9;
+  border-left: 4px solid #00be57;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.education-item:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  transform: translateX(4px);
+}
+
+/* Skills */
+.skill-badge {
+  background-color: #e9f5ec;
+  color: #1e7e34;
+  border: 1px solid #c3e6cb;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.skill-badge:hover {
+  background-color: #d4edda;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(30, 126, 52, 0.15);
+}
+
+.skill-badge i {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s;
+  font-size: 0.8em;
+}
+
+.skill-badge i:hover {
+  opacity: 1;
+  color: #dc3545;
+}
+
+/* Progress Bar */
+.progress {
+  height: 10px;
+  border-radius: 5px;
+  background-color: #edf2f7;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.progress-bar {
+  background-color: #00be57;
+  background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+  background-size: 1rem 1rem;
+}
+
+/* Resume Attachment Custom Styles */
+.uploaded-file-item {
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #4a5568;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-close-custom {
+  background: none;
+  border: none;
+  color: #244034;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.6;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close-custom:hover {
+  opacity: 1;
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+.btn-upload-custom {
+  background-color: #e9f5ec;
+  color: #1e7e34;
+  border: 1px solid #c3e6cb;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
 }
 
-/* Portfolio preview */
-.portfolio-preview {
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #ccc;
-  max-height: 140px;
-  object-fit: cover;
+.btn-upload-custom:hover {
+  background-color: #d4edda;
+  color: #155724;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-upload-custom.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Mobile adjustments */
 @media (max-width: 576px) {
   .card-body {
-    padding: 1rem;
+    padding: 1.5rem;
   }
   .btn {
     width: 100%;
@@ -66,7 +262,10 @@
   }
   .skill-tags {
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.5rem;
+  }
+  .card-title {
+    font-size: 1.75rem;
   }
 }
 

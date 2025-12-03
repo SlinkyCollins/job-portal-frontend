@@ -68,37 +68,40 @@
         <!-- Resume Attachment -->
         <div class="card mb-4">
             <div class="card-body">
-                <h6 class="fw-bold">Resume Attachment</h6>
-                <div class="row g-3 align-items-center">
-                    <div class="col-md-6">
-                        <label class="form-label">CV Attachment*</label>
-                        <div *ngIf="!uploadedCV">
-                            <label for="cvUpload" class="btn btn-outline-primary w-100" [class.disabled]="isUploading">
-                                {{ isUploading ? 'Uploading...' : 'Upload CV' }}
-                                <i *ngIf="!isUploading" class="bi bi-file-earmark-arrow-up ms-2"></i>
-                                <i *ngIf="isUploading" class="fas fa-spinner fa-spin ms-2"></i>
-                            </label>
-                            <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)"
-                                accept=".pdf,.doc,.docx" [disabled]="isUploading || isDeleting">
-                            <small class="form-text text-muted">Upload your CV in PDF or Word format.</small>
-                        </div>
+                <h6 class="fw-bold"><i class="bi bi-paperclip me-2"></i> Resume Attachment</h6>
+                
+                <div class="mb-3">
+                    <label class="form-label">CV Attachment*</label>
+
+                    <!-- Uploaded File Display -->
+                    <div *ngIf="uploadedCV && !isUploading" class="uploaded-file-item mb-3">
+                        <span class="file-name">{{ selectedFileName }}</span>
+                        <button type="button" class="btn-close-custom" [disabled]="isDeleting" (click)="openDeleteModal()" title="Delete CV">
+                            <i *ngIf="!isDeleting" class="fas fa-times"></i>
+                            <i *ngIf="isDeleting" class="fas fa-spinner fa-spin"></i>
+                        </button>
                     </div>
-                    <div class="col-md-6">
-                        <!-- Progress Bar -->
-                        <div *ngIf="isUploading" class="mt-2">
-                            <div class="progress">
-                                <div class="progress-bar" [style.width.%]="uploadProgress"></div>
-                            </div>
-                            <small>{{ uploadProgress }}% uploaded</small>
+
+                    <!-- Upload Button -->
+                    <div *ngIf="!uploadedCV">
+                        <div class="d-flex align-items-center gap-3">
+                            <label for="cvUpload" class="btn btn-upload-custom" [class.disabled]="isUploading">
+                                <i *ngIf="isUploading" class="fas fa-spinner fa-spin me-2"></i>
+                                <span *ngIf="!isUploading">+ Upload CV</span>
+                                <span *ngIf="isUploading">Uploading...</span>
+                            </label>
+                            <span class="text-muted small">Upload file .pdf, .doc, .docx</span>
                         </div>
-                        <!-- Uploaded CV Display -->
-                        <div *ngIf="uploadedCV && !isUploading" class="mt-2">
-                            <span class="badge bg-success">{{ selectedFileName }}</span>
-                            <button type="button" class="btn btn-sm btn-outline-danger ms-2" [disabled]="isDeleting"
-                                (click)="openDeleteModal()">
-                                {{ isDeleting ? 'Deleting...' : 'Delete' }}
-                            </button>
+                        <input type="file" id="cvUpload" hidden (change)="onFileSelected($event)"
+                            accept=".pdf,.doc,.docx" [disabled]="isUploading || isDeleting">
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div *ngIf="isUploading" class="mt-3">
+                        <div class="progress">
+                            <div class="progress-bar" [style.width.%]="uploadProgress"></div>
                         </div>
+                        <small class="text-muted mt-1 d-block">{{ uploadProgress }}% uploaded</small>
                     </div>
                 </div>
             </div>
@@ -107,12 +110,12 @@
         <!-- Intro & Overview -->
         <div class="card mb-4">
             <div class="card-body">
-                <h6 class="fw-bold">Intro & Overview</h6>
+                <h6 class="fw-bold"><i class="bi bi-person-lines-fill me-2"></i> Intro & Overview</h6>
 
                 <div class="mb-3">
                     <label class="form-label">Overview*</label>
                     <textarea class="form-control" rows="3" formControlName="overview"
-                        placeholder="Tell us about your experience and background"
+                        placeholder="Write something interesting about you and your background...."
                         [class.is-valid]="resumeForm.get('overview')?.valid && resumeForm.get('overview')?.touched"
                         [class.is-invalid]="resumeForm.get('overview')?.invalid && (resumeForm.get('overview')?.touched || resumeForm.get('overview')?.dirty)"
                         required></textarea>
@@ -133,11 +136,11 @@
         <!-- Education -->
         <div class="card mb-4">
             <div class="card-body">
-                <h6 class="fw-bold">Education</h6>
+                <h6 class="fw-bold"><i class="bi bi-mortarboard-fill me-2"></i> Education</h6>
 
                 <div formArrayName="education">
                     <div *ngFor="let edu of education.controls; let i = index" [formGroupName]="i"
-                        class="mb-3 border p-3 rounded">
+                        class="education-item">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">School Name</label>
@@ -183,13 +186,13 @@
         <!-- Skills & Experience -->
         <div class="card mb-4">
             <div class="card-body">
-                <h6 class="fw-bold">Skills & Experience</h6>
+                <h6 class="fw-bold"><i class="bi bi-tools me-2"></i> Skills & Experience</h6>
 
                 <div class="mb-3">
                     <label class="form-label">Skills</label>
                     <div class="d-flex flex-wrap gap-2">
                         <span *ngFor="let skill of skills.controls; let i = index"
-                            class="badge bg-light border text-dark">
+                            class="skill-badge">
                             {{ skill.value }} <i class="fas fa-times ms-1" (click)="removeSkill(i)" style="cursor: pointer;"></i>
                         </span>
                     </div>
