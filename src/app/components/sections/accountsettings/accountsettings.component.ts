@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common"
 import { Component, type OnInit } from "@angular/core"
-import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule, type AbstractControl } from "@angular/forms"
+import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule, type AbstractControl, ValidationErrors } from "@angular/forms"
 import { AuthService } from "../../../core/services/auth.service"
 import { ProfileService } from "../../../core/services/profile.service"
 
@@ -26,9 +26,24 @@ export class AccountsettingsComponent implements OnInit {
   isPasswordSaving = false
   isSocialLogin = false
 
+  isVerifyingOldPassword: boolean = false;
+  oldPasswordVerified: boolean = false;
+
   user: any = {};
 
   constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) { }
+
+  // Custom validator for new password not same as old
+  newPasswordNotOldValidator(control: AbstractControl): ValidationErrors | null {
+    const oldPassword = control.get('oldPassword');
+    const newPassword = control.get('newPassword');
+    // Only check if both have values and are the same
+    if (oldPassword && newPassword && oldPassword.value && newPassword.value && oldPassword.value === newPassword.value) {
+      newPassword.setErrors({ sameAsOld: true })
+      return { sameAsOld: true };
+    }
+    return null;
+  }
 
   ngOnInit(): void {
     this.initializeForms();
@@ -51,7 +66,7 @@ export class AccountsettingsComponent implements OnInit {
         newPassword: ["", [Validators.required, Validators.minLength(8)]],
         confirmPassword: ["", [Validators.required]],
       },
-      { validators: this.passwordMatchValidator },
+      { validators: [this.passwordMatchValidator, this.newPasswordNotOldValidator] }
     )
   }
 
@@ -98,21 +113,28 @@ export class AccountsettingsComponent implements OnInit {
     });
   }
 
-  // Custom validator for password confirmation
-  private passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const newPassword = control.get("newPassword")
-    const confirmPassword = control.get("confirmPassword")
-
-    if (!newPassword || !confirmPassword) {
-      return null
-    }
-
-    if (newPassword.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true })
-      return { passwordMismatch: true }
-    }
-
-    return null
+  // Method to verify old password
+  verifyOldPassword(): void {
+    const oldPassword = this.passwordForm.get('oldPassword')?.value;
+    if (!oldPassword) return;
+    this.isVerifyingOldPassword = true;
+    this.authService.verifyOldPassword(oldPassword).subscribe({
+      next: (response) => {
+        if (response.status) {
+          this.oldPasswordVerified = true;
+          this.authService.toastr.success('Old password verified!');
+        } else {
+          this.oldPasswordVerified = false;
+          this.authService.toastr.error('Old password is incorrect.');
+        }
+        this.isVerifyingOldPassword = false;
+      },
+      error: () => {
+        this.oldPasswordVerified = false;
+        this.authService.toastr.error('Verification failed.');
+        this.isVerifyingOldPassword = false;
+      }
+    });
   }
 
   toggleOldPassword(): void {
@@ -136,7 +158,7 @@ export class AccountsettingsComponent implements OnInit {
       // (though backend ignores it for social users, it's good practice to send complete data)
       const formData = this.profileForm.getRawValue();
       this.authService.updateAccountSettings(formData).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           console.log("Profile updated:", response)
           this.user = this.profileForm.value;
           // Update ProfileService with current photoURL and new firstname
@@ -167,17 +189,48 @@ export class AccountsettingsComponent implements OnInit {
     this.profileForm.markAsPristine();
   }
 
-  onChangePassword(): void {
-    if (this.passwordForm.valid) {
-      this.isPasswordSaving = true
+  // Custom validator for password confirmation
+  private passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const newPassword = control.get("newPassword")
+    const confirmPassword = control.get("confirmPassword")
 
-      // Simulate API call
-      setTimeout(() => {
-        console.log("Password changed")
-        this.isPasswordSaving = false
-        this.passwordForm.reset()
-        // Add success notification here
-      }, 2000)
+    if (!newPassword || !confirmPassword) {
+      return null
+    }
+
+    if (newPassword.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true })
+      return { passwordMismatch: true }
+    }
+
+    return null
+  }
+
+  onChangePassword(): void {
+    if (!this.oldPasswordVerified) {
+      this.authService.toastr.warning('Please verify your old password first.');
+      return;
+    }
+    if (this.passwordForm.valid) {
+      this.isPasswordSaving = true;
+      const { oldPassword, newPassword } = this.passwordForm.value;
+      this.authService.changePassword(oldPassword, newPassword).subscribe({
+        next: (response: any) => {
+          if (response.status) {
+            this.authService.toastr.success('Password updated successfully!');
+            this.passwordForm.reset();
+            this.oldPasswordVerified = false;  // Reset verification only on success for next change
+          } else {
+            this.authService.toastr.error(response.message || 'Failed to update password. Please check your inputs.');
+          }
+          this.isPasswordSaving = false;
+        },
+        error: (err) => {
+          console.error('Password update error:', err);  // Detailed logging for dev
+          this.authService.toastr.error('An error occurred while updating password. Please try again later.');
+          this.isPasswordSaving = false;
+        }
+      });
     } else {
       this.markFormGroupTouched(this.passwordForm)
     }

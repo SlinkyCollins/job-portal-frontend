@@ -9,6 +9,8 @@ export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
   APPLY: 'jobs/apply',
+  CHANGEPASSWORD: 'dashboard/change_password',
+  VERIFYOLDPASSWORD: 'dashboard/verify_old_password',
   USERDATA: 'dashboard/user_data',
   SEEKERDATA: 'dashboard/seeker_dashboard',
   EMPLOYERDATA: 'dashboard/employer_dashboard',
@@ -18,7 +20,7 @@ export const API = {
   ALLJOBS: 'jobs/all_jobs',
   SAVEDJOBS: 'dashboard/saved_jobs',
   JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
-  SEEKERPROFILE: 'seekers/profile', 
+  SEEKERPROFILE: 'seekers/profile',
   WISHLIST: 'jobs/wishlist',
   WISHLIST_DELETE: 'jobs/wishlist_delete',
   UPLOAD_CV: 'seekers/upload_cv',
@@ -147,6 +149,17 @@ export class AuthService {
 
   removeFromWishlist(jobId: number) {
     return this.http.post(this.fullUrl(API.WISHLIST_DELETE), { jobId });
+  }
+
+  verifyOldPassword(oldPassword: string): Observable<any> {
+    return this.http.post(this.fullUrl(API.VERIFYOLDPASSWORD), { oldPassword });
+  }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.http.post(this.fullUrl(API.CHANGEPASSWORD), {
+      oldPassword,
+      newPassword
+    });
   }
 
   toggleSaveJob(job: any) {

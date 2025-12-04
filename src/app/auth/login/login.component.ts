@@ -49,6 +49,10 @@ export class LoginComponent {
   }
 
   login() {
+    if (this.authService.isLoggedIn()) {
+      this.toastr.warning('You are already logged in. Please log out before logging in again.');
+      throw new Error('User already logged in');
+    }
     this.loading = true;
     let credentials = {
       mail: this.email,

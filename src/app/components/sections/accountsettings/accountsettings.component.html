@@ -117,6 +117,13 @@
                   <i [class]="showOldPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                 </button>
               </div>
+              <button *ngIf="!oldPasswordVerified" type="button" class="btn btn-save mt-4" (click)="verifyOldPassword()"
+                [disabled]="!passwordForm.get('oldPassword')?.value || isVerifyingOldPassword">
+                {{ isVerifyingOldPassword ? 'Verifying...' : 'Verify Old Password' }}
+              </button>
+              <div *ngIf="!oldPasswordVerified && passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched" class="text-danger mt-1">
+                Please verify your old password.
+              </div>
               <div *ngIf="passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched"
                 class="invalid-feedback d-block">
                 Current password is required
@@ -125,7 +132,7 @@
           </div>
 
           <!-- New Password -->
-          <div class="row mb-3">
+          <div class="row mb-3" *ngIf="oldPasswordVerified">
             <div class="col-12">
               <label for="newPassword" class="form-label">New Password*</label>
               <div class="password-input-container">
@@ -142,11 +149,14 @@
                 <span *ngIf="passwordForm.get('newPassword')?.errors?.['minlength']">Password must be at least 8
                   characters</span>
               </div>
+              <div *ngIf="passwordForm.get('newPassword')?.errors?.['sameAsOld']" class="invalid-feedback d-block">
+                New password cannot be the same as old password.
+              </div>
             </div>
           </div>
 
           <!-- Confirm Password -->
-          <div class="row mb-4">
+          <div class="row mb-4" *ngIf="oldPasswordVerified">
             <div class="col-12">
               <label for="confirmPassword" class="form-label">Confirm Password*</label>
               <div class="password-input-container">
@@ -168,11 +178,11 @@
           </div>
 
           <!-- Action Button -->
-          <div class="row">
+          <div class="row" *ngIf="oldPasswordVerified">
             <div class="col-12">
               <button type="submit" class="btn btn-save" [disabled]="passwordForm.invalid || isPasswordSaving">
                 <span *ngIf="isPasswordSaving" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                {{ isPasswordSaving ? 'Updating...' : 'Save & Updated' }}
+                {{ isPasswordSaving ? 'Updating...' : 'Save & Update' }}
               </button>
             </div>
           </div>
