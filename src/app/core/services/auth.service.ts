@@ -13,12 +13,12 @@ export const API = {
   SEEKERDATA: 'dashboard/seeker_dashboard',
   EMPLOYERDATA: 'dashboard/employer_dashboard',
   ADMINDATA: 'dashboard/admin_dashboard',
-  UPDATEPROFILE: 'dashboard/update_profile',
+  UPDATEACCOUNT: 'dashboard/update_account',
   UPDATERESUME: 'dashboard/update_resume',
   ALLJOBS: 'jobs/all_jobs',
   SAVEDJOBS: 'dashboard/saved_jobs',
   JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
-  SEEKERPROFILE: 'seekers/profile',
+  SEEKERPROFILE: 'seekers/profile', 
   WISHLIST: 'jobs/wishlist',
   WISHLIST_DELETE: 'jobs/wishlist_delete',
   UPLOAD_CV: 'seekers/upload_cv',
@@ -131,6 +131,10 @@ export class AuthService {
 
   getSeekerProfile() {
     return this.http.get(this.fullUrl(API.SEEKERPROFILE));
+  }
+
+  updateAccountSettings(data: any) {
+    return this.http.post(this.fullUrl(API.UPDATEACCOUNT), data);
   }
 
   applyToJob(jobId: number) {

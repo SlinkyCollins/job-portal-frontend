@@ -10,242 +10,173 @@
   <div class="row mb-5">
     <div class="col-12">
       <div class="settings-card">
-        <div class="card-header">
-          <h4 class="section-title">Edit & Update</h4>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
-            <!-- Name Fields Row -->
-            <div class="row mb-3">
-              <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="firstName" class="form-label">First Name</label>
-                <input
-                  type="text"
-                  class="form-control custom-input"
-                  id="firstName"
-                  formControlName="firstName"
-                  placeholder="John Doe"
-                >
-                <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" 
-                     class="invalid-feedback d-block">
-                  First name is required
-                </div>
-              </div>
-              <div class="col-12 col-md-6">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input
-                  type="text"
-                  class="form-control custom-input"
-                  id="lastName"
-                  formControlName="lastName"
-                  placeholder="Kabir"
-                >
-                <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" 
-                     class="invalid-feedback d-block">
-                  Last name is required
-                </div>
-              </div>
-            </div>
+        <h4 class="section-title mb-4">Edit & Update</h4>
 
-            <!-- Email Field -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control custom-input"
-                  id="email"
-                  formControlName="email"
-                  placeholder="johndoe@example.com"
-                >
-                <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" 
-                     class="invalid-feedback d-block">
-                  <span *ngIf="profileForm.get('email')?.errors?.['required']">Email is required</span>
-                  <span *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email</span>
-                </div>
+        <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+          <!-- Name Fields Row -->
+          <div class="row mb-3">
+            <div class="col-12 col-md-6 mb-3 mb-md-0">
+              <label for="firstName" class="form-label">First Name</label>
+              <input type="text" class="form-control custom-input" id="firstName" formControlName="firstName"
+                placeholder="John Doe">
+              <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched"
+                class="invalid-feedback d-block">
+                First name is required
               </div>
+              <div class="invalid-feedback d-block" *ngIf="profileForm.get('firstName')?.getError('minlength')">This
+                field must not
+                be
+                less
+                than 2 words</div>
             </div>
+            <div class="col-12 col-md-6">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input type="text" class="form-control custom-input" id="lastName" formControlName="lastName"
+                placeholder="Kabir">
+              <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched"
+                class="invalid-feedback d-block">
+                Last name is required
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="profileForm.get('lastName')?.getError('minlength')">This
+                field must not
+                be
+                less
+                than 2 words</div>
+            </div>
+          </div>
 
-            <!-- Phone Number Field -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label for="phoneNumber" class="form-label">Phone Number</label>
-                <input
-                  type="tel"
-                  class="form-control custom-input"
-                  id="phoneNumber"
-                  formControlName="phoneNumber"
-                  placeholder="+910 321 889 021"
-                >
-                <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" 
-                     class="invalid-feedback d-block">
-                  Phone number is required
-                </div>
+          <!-- Email Field -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control custom-input" id="email" formControlName="email"
+                placeholder="johndoe@example.com" [disabled]="isSocialLogin">
+              <!-- Helper text for social users -->
+              <div *ngIf="isSocialLogin" class="form-text text-muted">
+                <i class="fas fa-info-circle me-1"></i> Email cannot be changed for social login accounts.
               </div>
-            </div>
 
-            <!-- Password Field -->
-            <div class="row mb-4">
-              <div class="col-12">
-                <label for="currentPassword" class="form-label">Password</label>
-                <div class="password-input-container">
-                  <input
-                    [type]="showCurrentPassword ? 'text' : 'password'"
-                    class="form-control custom-input"
-                    id="currentPassword"
-                    formControlName="currentPassword"
-                    placeholder="••••••••"
-                  >
-                  <button
-                    type="button"
-                    class="password-toggle-btn"
-                    (click)="toggleCurrentPassword()"
-                    [attr.aria-label]="showCurrentPassword ? 'Hide password' : 'Show password'"
-                  >
-                    <i [class]="showCurrentPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </button>
-                </div>
+              <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                class="invalid-feedback d-block">
+                <span *ngIf="profileForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email</span>
               </div>
             </div>
+          </div>
 
-            <!-- Action Buttons -->
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex gap-3 flex-wrap">
-                  <button
-                    type="submit"
-                    class="btn btn-save"
-                    [disabled]="profileForm.invalid || isProfileSaving"
-                  >
-                    <span *ngIf="isProfileSaving" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                    {{ isProfileSaving ? 'Saving...' : 'Save' }}
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-cancel"
-                    (click)="onCancelProfile()"
-                  >
-                    Cancel
-                  </button>
-                </div>
+          <!-- Phone Number Field -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control custom-input" id="phoneNumber" formControlName="phoneNumber"
+                placeholder="+910 321 889 021">
+              <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched"
+                class="invalid-feedback d-block">
+                Phone number is required
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex align-items-center gap-3">
+                <button type="submit" class="btn btn-save"
+                  [disabled]="profileForm.invalid || isProfileSaving || !profileForm.dirty">
+                  <span *ngIf="isProfileSaving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  {{ isProfileSaving ? 'Saving...' : 'Save' }}
+                </button>
+                <button type="button" class="btn btn-cancel" [disabled]="isProfileSaving || !profileForm.dirty"
+                  (click)="onCancelProfile()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- Change Password Section -->
-  <div class="row">
+  <div class="row" *ngIf="!isSocialLogin">
     <div class="col-12">
+      <h2 class="page-title">Change Password</h2>
       <div class="settings-card">
-        <div class="card-header">
-          <h4 class="section-title">Change Password</h4>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
-            <!-- Old Password -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label for="oldPassword" class="form-label">Old Password*</label>
-                <div class="password-input-container">
-                  <input
-                    [type]="showOldPassword ? 'text' : 'password'"
-                    class="form-control custom-input"
-                    id="oldPassword"
-                    formControlName="oldPassword"
-                    placeholder="Enter your current password"
-                  >
-                  <button
-                    type="button"
-                    class="password-toggle-btn"
-                    (click)="toggleOldPassword()"
-                    [attr.aria-label]="showOldPassword ? 'Hide password' : 'Show password'"
-                  >
-                    <i [class]="showOldPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </button>
-                </div>
-                <div *ngIf="passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched" 
-                     class="invalid-feedback d-block">
-                  Current password is required
-                </div>
-              </div>
-            </div>
 
-            <!-- New Password -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label for="newPassword" class="form-label">New Password*</label>
-                <div class="password-input-container">
-                  <input
-                    [type]="showNewPassword ? 'text' : 'password'"
-                    class="form-control custom-input"
-                    id="newPassword"
-                    formControlName="newPassword"
-                    placeholder="Enter your new password"
-                  >
-                  <button
-                    type="button"
-                    class="password-toggle-btn"
-                    (click)="toggleNewPassword()"
-                    [attr.aria-label]="showNewPassword ? 'Hide password' : 'Show password'"
-                  >
-                    <i [class]="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </button>
-                </div>
-                <div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched" 
-                     class="invalid-feedback d-block">
-                  <span *ngIf="passwordForm.get('newPassword')?.errors?.['required']">New password is required</span>
-                  <span *ngIf="passwordForm.get('newPassword')?.errors?.['minlength']">Password must be at least 8 characters</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="row mb-4">
-              <div class="col-12">
-                <label for="confirmPassword" class="form-label">Confirm Password*</label>
-                <div class="password-input-container">
-                  <input
-                    [type]="showConfirmPassword ? 'text' : 'password'"
-                    class="form-control custom-input"
-                    id="confirmPassword"
-                    formControlName="confirmPassword"
-                    placeholder="Confirm your new password"
-                  >
-                  <button
-                    type="button"
-                    class="password-toggle-btn"
-                    (click)="toggleConfirmPassword()"
-                    [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
-                  >
-                    <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </button>
-                </div>
-                <div *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched" 
-                     class="invalid-feedback d-block">
-                  <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
-                  <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['passwordMismatch']">Passwords do not match</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Action Button -->
-            <div class="row">
-              <div class="col-12">
-                <button
-                  type="submit"
-                  class="btn btn-save"
-                  [disabled]="passwordForm.invalid || isPasswordSaving"
-                >
-                  <span *ngIf="isPasswordSaving" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                  {{ isPasswordSaving ? 'Updating...' : 'Save & Updated' }}
+        <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+          <!-- Old Password -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="oldPassword" class="form-label">Old Password*</label>
+              <div class="password-input-container">
+                <input [type]="showOldPassword ? 'text' : 'password'" class="form-control custom-input" id="oldPassword"
+                  formControlName="oldPassword" placeholder="">
+                <button type="button" class="password-toggle-btn" (click)="toggleOldPassword()"
+                  [attr.aria-label]="showOldPassword ? 'Hide password' : 'Show password'">
+                  <i [class]="showOldPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                 </button>
               </div>
+              <div *ngIf="passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched"
+                class="invalid-feedback d-block">
+                Current password is required
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          <!-- New Password -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="newPassword" class="form-label">New Password*</label>
+              <div class="password-input-container">
+                <input [type]="showNewPassword ? 'text' : 'password'" class="form-control custom-input" id="newPassword"
+                  formControlName="newPassword" placeholder="">
+                <button type="button" class="password-toggle-btn" (click)="toggleNewPassword()"
+                  [attr.aria-label]="showNewPassword ? 'Hide password' : 'Show password'">
+                  <i [class]="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched"
+                class="invalid-feedback d-block">
+                <span *ngIf="passwordForm.get('newPassword')?.errors?.['required']">New password is required</span>
+                <span *ngIf="passwordForm.get('newPassword')?.errors?.['minlength']">Password must be at least 8
+                  characters</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <label for="confirmPassword" class="form-label">Confirm Password*</label>
+              <div class="password-input-container">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control custom-input"
+                  id="confirmPassword" formControlName="confirmPassword" placeholder="">
+                <button type="button" class="password-toggle-btn" (click)="toggleConfirmPassword()"
+                  [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
+                  <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <div *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched"
+                class="invalid-feedback d-block">
+                <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['required']">Please confirm your
+                  password</span>
+                <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['passwordMismatch']">Passwords do not
+                  match</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-save" [disabled]="passwordForm.invalid || isPasswordSaving">
+                <span *ngIf="isPasswordSaving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ isPasswordSaving ? 'Updating...' : 'Save & Updated' }}
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
