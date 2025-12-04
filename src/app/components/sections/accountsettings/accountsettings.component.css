@@ -238,3 +238,45 @@
   background: rgba(255, 255, 255, 0.8);
   z-index: 1;
 }
+
+/* Skeleton Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  background: #f6f7f8;
+  background-image: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 1rem;
+  border-radius: 4px;
+}
+
+.skeleton-input {
+  height: 46px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.skeleton-btn {
+  height: 46px;
+  width: 120px;
+  border-radius: 8px;
+}

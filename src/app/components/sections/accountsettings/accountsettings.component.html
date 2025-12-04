@@ -9,7 +9,50 @@
   <!-- Edit & Update Section -->
   <div class="row mb-5">
     <div class="col-12">
-      <div class="settings-card">
+      <!-- Skeleton Loader -->
+      <div class="settings-card" *ngIf="isLoading">
+        <div class="skeleton skeleton-text mb-4" style="width: 150px; height: 28px;"></div>
+        
+        <!-- Name Fields Skeleton -->
+        <div class="row mb-3">
+          <div class="col-12 col-md-6 mb-3 mb-md-0">
+            <div class="skeleton skeleton-text mb-2" style="width: 80px;"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="skeleton skeleton-text mb-2" style="width: 80px;"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+        </div>
+
+        <!-- Email Field Skeleton -->
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="skeleton skeleton-text mb-2" style="width: 60px;"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+        </div>
+
+        <!-- Phone Number Field Skeleton -->
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="skeleton skeleton-text mb-2" style="width: 100px;"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons Skeleton -->
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex align-items-center gap-3">
+              <div class="skeleton skeleton-btn"></div>
+              <div class="skeleton skeleton-btn" style="width: 80px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card" *ngIf="!isLoading">
         <h4 class="section-title mb-4">Edit & Update</h4>
 
         <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
@@ -99,7 +142,7 @@
   </div>
 
   <!-- Change Password Section -->
-  <div class="row" *ngIf="!isSocialLogin">
+  <div class="row" *ngIf="!isLoading && !isSocialLogin">
     <div class="col-12">
       <h2 class="page-title">Change Password</h2>
       <div class="settings-card">
