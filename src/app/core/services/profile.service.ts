@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ProfileService {
-  private profileSubject = new BehaviorSubject<{ photoURL: string; firstname: string }>({ photoURL: '', firstname: '' });
+  public profileSubject = new BehaviorSubject<{ photoURL: string; firstname: string }>({ photoURL: '', firstname: '' });
   profile$ = this.profileSubject.asObservable();
 
   updateProfile(photoURL: string, firstname: string) {

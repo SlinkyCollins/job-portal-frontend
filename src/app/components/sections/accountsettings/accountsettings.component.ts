@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common"
 import { Component, type OnInit } from "@angular/core"
 import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule, type AbstractControl } from "@angular/forms"
 import { AuthService } from "../../../core/services/auth.service"
+import { ProfileService } from "../../../core/services/profile.service"
 
 @Component({
   selector: "app-accountsettings",
@@ -27,7 +28,7 @@ export class AccountsettingsComponent implements OnInit {
 
   user: any = {};
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.initializeForms();
@@ -85,6 +86,8 @@ export class AccountsettingsComponent implements OnInit {
             email: this.user.email || '',
             phoneNumber: this.user.phone || ''
           });
+          // Initialize ProfileService with loaded data to prevent empty photoURL
+          this.profileService.updateProfile(this.user.profile_pic_url || '', this.user.firstname || '');
         }
         this.isLoading = false;
       },
@@ -136,6 +139,9 @@ export class AccountsettingsComponent implements OnInit {
         next: (response) => {
           console.log("Profile updated:", response)
           this.user = this.profileForm.value;
+          // Update ProfileService with current photoURL and new firstname
+          const currentProfile = this.profileService.profileSubject.getValue();
+          this.profileService.updateProfile(currentProfile.photoURL, this.user.firstName);
           this.profileForm.markAsPristine();
           this.isProfileSaving = false
           this.authService.toastr.success('Profile updated successfully!')

@@ -45,7 +45,7 @@ export class ResumeComponent implements OnInit {
   loadProfile() {
     this.authService.getSeekerProfile().subscribe({
       next: (response: any) => {
-        if (response.status) {  
+        if (response.status) {
           this.uploadedCV = response.profile.cv_url || '';
           this.selectedFileName = response.profile.cv_filename || 'No file chosen';
           // Store original data
@@ -159,10 +159,14 @@ export class ResumeComponent implements OnInit {
       endYear: [''],
       description: ['']
     }));
+    this.education.markAsDirty();
+    this.resumeForm.markAsDirty();
   }
 
   removeEducation(index: number): void {
     this.education.removeAt(index);
+    this.education.markAsDirty();
+    this.resumeForm.markAsDirty();
   }
 
   get skills(): FormArray {
