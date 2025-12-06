@@ -393,7 +393,15 @@ export class ProfileComponent implements OnInit {
             const firstname = this.user.fullname.split(' ')[0];  // Get first part
             // Emit to service
             this.profileService.updateProfile(this.photoURL, firstname);
+
+            // Merge the form values into the existing user object to get the latest state
+            const updatedProfile = { ...this.user, ...this.profileForm.value };
+
+            // Trigger recalculation
+            this.profileService.updateCompletionScore(updatedProfile);
+
             this.authService.toastr.success('Profile updated successfully');
+
             // Mark form as pristine after successful save
             this.profileForm.markAsPristine();
           }

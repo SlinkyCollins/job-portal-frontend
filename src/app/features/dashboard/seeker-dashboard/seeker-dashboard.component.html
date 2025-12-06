@@ -73,16 +73,20 @@
         <span>Delete Account</span>
       </a>
     </nav>
+    
     <!-- Profile Progress -->
     <div class="profile-progress">
       <div class="progress-info">
-        <span class="progress-percentage">87%</span>
+        <!-- Dynamic Percentage -->
+        <span class="progress-percentage">{{ completionPercentage }}%</span>
         <span class="progress-label">Profile Complete</span>
       </div>
       <div class="progress-bar">
-        <div class="progress-fill" style="width: 87%"></div>
+        <!-- Dynamic Width -->
+        <div class="progress-fill" [style.width.%]="completionPercentage"></div>
       </div>
     </div>
+
     <!-- Logout Button -->
     <button class="logout-btn" (click)="showLogoutModal($event)">
       <i class="fas fa-sign-out-alt"></i>

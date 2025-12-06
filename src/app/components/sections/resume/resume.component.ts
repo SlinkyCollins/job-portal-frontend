@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule, Abs
 import { AuthService } from '../../../core/services/auth.service';
 import { HttpEventType } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { ProfileService } from '../../../core/services/profile.service';
 // Custom validator for FormArray (requires at least one item)
 export function atLeastOneValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -29,7 +30,7 @@ export class ResumeComponent implements OnInit {
   originalData: any = {};  // Store last saved data
   isLoading: boolean = true;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) {
     this.resumeForm = this.fb.group({
       overview: ['', [Validators.required, Validators.maxLength(500)]],
       education: this.fb.array([], atLeastOneValidator()),
@@ -57,6 +58,7 @@ export class ResumeComponent implements OnInit {
           };
           // Populate form with original data
           this.populateForm(this.originalData);
+          this.profileService.updateCompletionScore(response.profile);
           this.isLoading = false;  // Set loading to false after data loads
         }
       },
@@ -210,6 +212,9 @@ export class ResumeComponent implements OnInit {
               skills: [...this.resumeForm.value.skills]
             };
             this.resumeForm.markAsPristine();  // Reset dirty state
+            // Just reload. It fetches the full combined profile (User + Resume)
+            // and updates the score accurately.
+            this.loadProfile();
           } else {
             this.authService.toastr.error(response.message || 'Save failed.');
           }

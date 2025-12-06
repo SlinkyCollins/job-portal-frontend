@@ -20,9 +20,10 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   public sidebarOpen: boolean = false;
   public userDropdownOpen: boolean = false;
   public showLogoutConfirm: boolean = false;
-  public showDeleteModal = false; // Delete modal state
+  public showDeleteModal: boolean = false;
   private chart: any;
   public photoURL: string = '';
+  public completionPercentage: number = 0;
 
   constructor(
     public router: Router,
@@ -33,7 +34,20 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit() {
+    // 1. Subscribe to Profile Updates (Photo/Name)
+    this.profileService.profile$.subscribe(update => {
+      this.photoURL = update.photoURL;
+      this.user.firstname = update.firstname;
+    });
+
+    // 2. NEW: Subscribe to Completion Percentage Updates
+    this.profileService.completion$.subscribe(percentage => {
+      this.completionPercentage = percentage;
+    });
+
+    // 3. Load Initial Data
     this.loadProfile();
+
     this.authService.getSeekerData().subscribe(
       (response: any) => {
         if (response.status === true) {
@@ -68,11 +82,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
     window.addEventListener('resize', this.handleWindowResize.bind(this));
     document.addEventListener('click', this.handleDocumentClick.bind(this));
-
-    this.profileService.profile$.subscribe(update => {
-      this.photoURL = update.photoURL;
-      this.user.firstname = update.firstname;
-    });
   }
 
   loadProfile(): void {
@@ -81,6 +90,9 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
         if (response.status) {
           this.user = response.profile;
           this.photoURL = this.user.profile_pic_url || '';
+
+          // Initialize the service with the data we just fetched
+          this.profileService.updateCompletionScore(this.user);
         }
       },
       error: (err) => console.error('Failed to load profile:', err)
