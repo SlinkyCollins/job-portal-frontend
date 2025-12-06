@@ -29,6 +29,7 @@ export class ResumeComponent implements OnInit {
   isSaving: boolean = false;
   originalData: any = {};  // Store last saved data
   isLoading: boolean = true;
+  completionPercentage: number = 0;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) {
     this.resumeForm = this.fb.group({
@@ -41,6 +42,9 @@ export class ResumeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+    this.profileService.completion$.subscribe(percentage => {
+      this.completionPercentage = percentage;
+    });
   }
 
   loadProfile() {

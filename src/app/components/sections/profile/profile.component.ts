@@ -33,6 +33,7 @@ export class ProfileComponent implements OnInit {
   isLinkingGoogle: boolean = false;
   isFacebookLinked: boolean = false;
   isLinkingFacebook: boolean = false;
+  completionPercentage: number = 0;
   countries = [
     { name: 'Afghanistan', code: 'AF' },
     { name: 'Åland Islands', code: 'AX' },
@@ -301,6 +302,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.loadProfile();
     this.checkSocialLinked();
+    this.profileService.completion$.subscribe(percentage => {
+      this.completionPercentage = percentage;
+    });
   }
 
   loadProfile(): void {
