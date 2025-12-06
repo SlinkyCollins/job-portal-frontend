@@ -73,7 +73,7 @@
         <span>Delete Account</span>
       </a>
     </nav>
-    
+
     <!-- Profile Progress -->
     <div class="profile-progress">
       <div class="progress-info">
@@ -114,6 +114,15 @@
       </div>
     </header>
     <!-- This is where your routed content will appear -->
+    
+    <!-- Low Completion Notification -->
+    <div *ngIf="completionPercentage < 80 && completionPercentage > 0" class="alert alert-warning m-3 d-flex align-items-center shadow-sm" role="alert" style="border-left: 5px solid #ffc107;">
+      <i class="fas fa-info-circle me-3 fa-lg text-warning"></i>
+      <div>
+        <strong>Profile Incomplete:</strong> Your profile is {{completionPercentage}}% complete. Reach 80% or more to improve your job application visibility!
+      </div>
+    </div>
+
     <router-outlet></router-outlet>
   </main>
   <!-- Mobile Overlay -->
@@ -145,6 +154,19 @@
         <button class="btn-cancel" (click)="hideLogoutModal()">Cancel</button>
         <button class="btn-confirm" (click)="confirmLogout()">Logout</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Completion Success Modal -->
+  <div class="modal-overlay" [class.active]="showCompletionSuccessModal" (click)="closeSuccessModal()">
+    <div class="modal-content text-center p-4" (click)="$event.stopPropagation()" style="max-width: 400px;">
+      <div class="mb-3 text-success">
+        <i class="fas fa-check-circle fa-4x"></i>
+      </div>
+      <h3 class="mb-2">Congratulations!</h3>
+      <p class="lead mb-3">Your profile is 100% complete.</p>
+      <p class="text-muted mb-4">You are now ready to confidently start applying for jobs with a standout profile.</p>
+      <button class="btn btn-success w-100 py-2" (click)="closeSuccessModal()">Start Applying</button>
     </div>
   </div>
 </div>

@@ -24,6 +24,8 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   private chart: any;
   public photoURL: string = '';
   public completionPercentage: number = 0;
+  public showCompletionSuccessModal: boolean = false;
+  private isFirstLoad: boolean = true;
 
   constructor(
     public router: Router,
@@ -42,6 +44,16 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
     // 2. NEW: Subscribe to Completion Percentage Updates
     this.profileService.completion$.subscribe(percentage => {
+      if (this.isFirstLoad) {
+        if (percentage > 0) {
+          this.isFirstLoad = false;
+        }
+      } else {
+        // Trigger modal only when reaching 100% from a lower value
+        if (this.completionPercentage < 100 && percentage === 100) {
+          this.showCompletionSuccessModal = true;
+        }
+      }
       this.completionPercentage = percentage;
     });
 
@@ -206,6 +218,10 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   confirmLogout() {
     this.hideLogoutModal();
     this.logOut();
+  }
+
+  closeSuccessModal() {
+    this.showCompletionSuccessModal = false;
   }
 
   logOut() {
