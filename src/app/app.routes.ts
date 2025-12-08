@@ -14,7 +14,6 @@ import { ResumeComponent } from './components/sections/resume/resume.component';
 import { JobalertsComponent } from './components/sections/jobalerts/jobalerts.component';
 import { SavedJobsComponent } from './components/sections/saved-jobs/saved-jobs.component';
 import { AccountsettingsComponent } from './components/sections/accountsettings/accountsettings.component';
-import { DeleteaccountComponent } from './components/sections/deleteaccount/deleteaccount.component';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
@@ -49,8 +48,7 @@ export const routes: Routes = [
             { path: 'resume', component: ResumeComponent, title: 'Resume | JobNet' },
             // { path: 'job-alert', component: JobalertsComponent, title: 'Job Alerts | JobNet' }, DEFERRED AFTER MVP
             { path: 'saved-jobs', component: SavedJobsComponent, title: 'Saved Jobs | JobNet' },
-            { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet' },
-            { path: 'delete-account', component: DeleteaccountComponent, title: 'Delete Account | JobNet' },
+            { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet' }
         ],
         canActivate: [jobSeekerGuardGuard]
     },

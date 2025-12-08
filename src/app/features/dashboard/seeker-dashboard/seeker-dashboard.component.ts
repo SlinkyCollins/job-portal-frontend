@@ -5,12 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
 import { RouterModule } from '@angular/router';
-import { DeleteaccountComponent } from '../../../components/sections/deleteaccount/deleteaccount.component';
 import { ProfileService } from '../../../core/services/profile.service';
 
 @Component({
   selector: 'app-seeker-dashboard',
-  imports: [CommonModule, RouterLink, RouterModule, DeleteaccountComponent, RouterLink],
+  imports: [CommonModule, RouterLink, RouterModule, RouterLink],
   templateUrl: './seeker-dashboard.component.html',
   styleUrl: './seeker-dashboard.component.css'
 })
@@ -20,7 +19,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   public sidebarOpen: boolean = false;
   public userDropdownOpen: boolean = false;
   public showLogoutConfirm: boolean = false;
-  public showDeleteModal: boolean = false;
   private chart: any;
   public photoURL: string = '';
   public completionPercentage: number = 0;
@@ -167,35 +165,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     if (window.innerWidth <= 1024) {
       this.closeSidebar();
     }
-  }
-
-  // Delete Account Modal Methods
-  openDeleteModal() {
-    this.showDeleteModal = true
-    console.log("Delete modal opened") // For debugging
-  }
-
-  handleAccountDeletion() {
-    this.dashboardService.deleteAccount().subscribe({
-      next: (response: any) => {
-        if (response.status) {
-          this.toastr.success('Account deleted successfully');
-          this.authService.logout();
-        } else {
-          this.toastr.error(response.message || 'Failed to delete account');
-        }
-      },
-      error: (err) => {
-        console.error('Error deleting account:', err);
-        this.toastr.error('Error deleting account');
-      }
-    });
-    this.showDeleteModal = false;
-  }
-
-  closeDeleteModal() {
-    this.showDeleteModal = false
-    console.log("Delete modal closed") // For debugging
   }
 
   showLogoutModal(event?: Event) {

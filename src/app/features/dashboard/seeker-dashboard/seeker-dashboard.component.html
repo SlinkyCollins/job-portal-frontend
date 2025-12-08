@@ -67,11 +67,6 @@
         <i class="fas fa-cog"></i>
         <span>Account Settings</span>
       </a>
-      <!-- CHANGED: Remove routerLink and routerLinkActive, add click handler -->
-      <a href="#" class="nav-item" (click)="openDeleteModal(); onNavItemClick(); $event.preventDefault()">
-        <i class="fas fa-trash"></i>
-        <span>Delete Account</span>
-      </a>
     </nav>
 
     <!-- Profile Progress -->
@@ -127,12 +122,6 @@
   </main>
   <!-- Mobile Overlay -->
   <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
-
-  <!-- Delete Account Modal -->
-  <app-delete-account [showModal]="showDeleteModal" (confirmed)="handleAccountDeletion()"
-    (cancelled)="closeDeleteModal()">
-    >
-  </app-delete-account>
 
   <!-- Logout Confirmation Modal -->
   <div class="modal-overlay" [class.active]="showLogoutConfirm" (click)="hideLogoutModal()">

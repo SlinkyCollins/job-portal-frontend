@@ -12,7 +12,7 @@
       <!-- Skeleton Loader -->
       <div class="settings-card" *ngIf="isLoading">
         <div class="skeleton skeleton-text mb-4" style="width: 150px; height: 28px;"></div>
-        
+
         <!-- Name Fields Skeleton -->
         <div class="row mb-3">
           <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -164,7 +164,9 @@
                 [disabled]="!passwordForm.get('oldPassword')?.value || isVerifyingOldPassword">
                 {{ isVerifyingOldPassword ? 'Verifying...' : 'Verify Old Password' }}
               </button>
-              <div *ngIf="!oldPasswordVerified && passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched" class="text-danger mt-1">
+              <div
+                *ngIf="!oldPasswordVerified && passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched"
+                class="text-danger mt-1">
                 Please verify your old password.
               </div>
               <div *ngIf="passwordForm.get('oldPassword')?.invalid && passwordForm.get('oldPassword')?.touched"
@@ -230,6 +232,56 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Danger Zone Section -->
+  <div class="row mt-5" *ngIf="!isLoading">
+    <div class="col-12">
+      <div class="settings-card border-danger" style="border-left: 5px solid #dc3545;">
+        <h4 class="section-title text-danger mb-3">Danger Zone</h4>
+        <p class="text-muted mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+        <button id="deleteAccountBtn" class="btn btn-outline-danger" (click)="openDeleteModal()">
+          <i class="fas fa-trash me-2"></i>Delete Account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Account Modal -->
+  <div class="modal-overlay" [class.active]="showDeleteModal" (click)="closeDeleteModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="text-danger">Delete Account</h3>
+        <button class="modal-close-btn" (click)="closeDeleteModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning d-flex align-items-start mb-3">
+          <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+          <div>
+            <strong>Warning:</strong> This action is permanent and cannot be undone. All your data, including profile information, resume, and job applications, will be permanently deleted.
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="deleteConfirmation" class="form-label">To confirm, type "DELETE" below:</label>
+          <input type="text" class="form-control" id="deleteConfirmation" 
+            [value]="deleteConfirmationText" 
+            (input)="onDeleteInputChange($event)"
+            placeholder="DELETE">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
+        <button class="btn btn-danger" 
+          [disabled]="deleteConfirmationText !== 'DELETE' || isDeletingAccount"
+          (click)="handleAccountDeletion()">
+          <span *ngIf="isDeletingAccount" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ isDeletingAccount ? 'Deleting...' : 'Delete Account' }}
+        </button>
       </div>
     </div>
   </div>

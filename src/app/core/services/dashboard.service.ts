@@ -10,10 +10,6 @@ export const API = {
   UPLOAD_PROFILE_PHOTO: 'dashboard/upload_profile_photo',
   DELETE_PROFILE_PHOTO: 'dashboard/delete_profile_photo',
   SAVED_JOBS: 'dashboard/saved_jobs',
-  JOB_ALERTS: 'dashboard/job_alerts',
-  CREATE_JOB_ALERT: 'dashboard/create_job_alert',
-  DELETE_JOB_ALERT: 'dashboard/delete_job_alert',
-  CHANGE_PASSWORD: 'dashboard/change_password',
   DELETE_ACCOUNT: 'dashboard/delete_account'
 };
 
@@ -67,28 +63,9 @@ export class DashboardService {
     return this.http.get(this.fullUrl(API.SAVED_JOBS));
   }
 
-  // Get job alerts
-  getJobAlerts(): Observable<any> {
-    return this.http.get(this.fullUrl(API.JOB_ALERTS));
-  }
-
-  // Create job alert
-  createJobAlert(alertData: any): Observable<any> {
-    return this.http.post(this.fullUrl(API.CREATE_JOB_ALERT), alertData);
-  }
-
-  // Delete job alert
-  deleteJobAlert(alertId: number): Observable<any> {
-    return this.http.post(this.fullUrl(API.DELETE_JOB_ALERT), { alertId });
-  }
-
-  // Change password
-  changePassword(passwordData: any): Observable<any> {
-    return this.http.post(this.fullUrl(API.CHANGE_PASSWORD), passwordData);
-  }
-
   // Delete account
-  deleteAccount(): Observable<any> {
-    return this.http.post(this.fullUrl(API.DELETE_ACCOUNT), {});
+  deleteAccount(param: any): Observable<any> {
+    // You must send the body matching the PHP expectation
+    return this.http.post(this.fullUrl(API.DELETE_ACCOUNT), param);
   }
 }

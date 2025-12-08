@@ -3,6 +3,8 @@ import { Component, type OnInit } from "@angular/core"
 import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule, type AbstractControl, ValidationErrors } from "@angular/forms"
 import { AuthService } from "../../../core/services/auth.service"
 import { ProfileService } from "../../../core/services/profile.service"
+import { DashboardService } from "../../../core/services/dashboard.service"
+import { ToastrService } from "ngx-toastr"
 
 @Component({
   selector: "app-accountsettings",
@@ -28,10 +30,19 @@ export class AccountsettingsComponent implements OnInit {
 
   isVerifyingOldPassword: boolean = false;
   oldPasswordVerified: boolean = false;
+  public showDeleteModal: boolean = false;
+  public deleteConfirmationText: string = '';
+  public isDeletingAccount: boolean = false;
 
   user: any = {};
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private profileService: ProfileService,
+    private dashboardService: DashboardService,
+    private toastr: ToastrService
+  ) { }
 
   // Custom validator for new password not same as old
   newPasswordNotOldValidator(control: AbstractControl): ValidationErrors | null {
@@ -242,6 +253,52 @@ export class AccountsettingsComponent implements OnInit {
       const control = formGroup.get(key)
       control?.markAsTouched()
     })
+  }
+
+  // Delete Account Modal Methods
+  openDeleteModal() {
+    this.showDeleteModal = true;
+    this.deleteConfirmationText = ''; // Reset input
+  }
+
+  handleAccountDeletion() {
+    if (this.deleteConfirmationText !== 'DELETE') {
+      return;
+    }
+
+    this.isDeletingAccount = true;
+
+    const param = { confirmation: this.deleteConfirmationText };
+
+    // The service call now sends the payload implicitly required by PHP backend
+    this.dashboardService.deleteAccount(param).subscribe({
+      next: (response: any) => {
+        // Now compatible: PHP returns { status: true }
+        if (response.status) {
+          console.log(response);
+          this.toastr.success('Account deleted successfully');
+          this.showDeleteModal = false;
+          this.authService.logout();
+        } else {
+          this.toastr.error(response.message || 'Failed to delete account');
+          this.isDeletingAccount = false;
+        }
+      },
+      error: (err) => {
+        console.error('Error deleting account:', err);
+        this.toastr.error('Error deleting account');
+        this.isDeletingAccount = false;
+      }
+    });
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.deleteConfirmationText = '';
+  }
+
+  onDeleteInputChange(event: Event) {
+    this.deleteConfirmationText = (event.target as HTMLInputElement).value;
   }
 }
 
