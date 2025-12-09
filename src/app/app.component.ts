@@ -9,9 +9,9 @@ import {
   NavigationError,
   NavigationEnd,
 } from '@angular/router';
-import { ScrolltopbtnComponent } from './components/ui/scrolltopbtn/scrolltopbtn.component';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { ScrolltopbtnComponent } from './shared/ui/scrolltopbtn/scrolltopbtn.component';
 
 @Component({
   selector: 'app-root',

@@ -5,9 +5,9 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from '../../core/services/api-service.service';
-import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
-import { FooterComponent } from '../../components/sections/footer/footer.component';
 import { AuthService } from '../../core/services/auth.service';
+import { NavbarComponent } from '../../shared/sections/navbar/navbar.component';
+import { FooterComponent } from '../../shared/sections/footer/footer.component';
 export const API = {
   SIGNUP: 'auth/signup'
 }

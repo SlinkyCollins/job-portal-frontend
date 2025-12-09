@@ -6,8 +6,8 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/services/auth.service';
 import { ApiServiceService } from '../../core/services/api-service.service';
-import { NavbarComponent } from '../../components/sections/navbar/navbar.component';
-import { FooterComponent } from '../../components/sections/footer/footer.component';
+import { NavbarComponent } from '../../shared/sections/navbar/navbar.component';
+import { FooterComponent } from '../../shared/sections/footer/footer.component';
 export const API = {
   LOGIN: 'auth/login'
 };
