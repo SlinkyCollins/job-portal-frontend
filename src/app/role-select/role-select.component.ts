@@ -18,6 +18,7 @@ export const API = {
 })
 export class RoleSelectComponent {
   role: string = '';
+  termsAccepted: boolean = false;
   isSubmitting: boolean = false;
   private token: string = history.state.token;  // From router state
   private uid: string = history.state.uid;
@@ -37,12 +38,23 @@ export class RoleSelectComponent {
   submitRole() {
     if (!this.token || !this.uid) {
       this.toastr.error('Missing token or user ID');
-      this.router.navigate(['/login']);
+      this.router.navigate(['/signup']);
       return;
     };
+
+    if (!this.termsAccepted) {
+      this.toastr.error('You must accept the Terms and Conditions');
+      return;
+    }
+
     if (this.role) {
       this.isSubmitting = true;
-      this.http.post(this.fullUrl(API.SAVE_ROLE), { token: this.token, role: this.role, photoURL: this.photoURL }).subscribe({
+      this.http.post(this.fullUrl(API.SAVE_ROLE), { 
+        token: this.token, 
+        role: this.role, 
+        photoURL: this.photoURL,
+        termsAccepted: this.termsAccepted 
+      }).subscribe({
         next: (response: any) => {
           if (response.status) {
             this.isSubmitting = false;

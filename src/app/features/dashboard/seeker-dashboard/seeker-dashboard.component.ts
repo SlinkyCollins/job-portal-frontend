@@ -58,6 +58,29 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
     // 3. Load Initial Data
     this.loadProfile();
 
+    // 4. Fetch Seeker Data
+    this.getSeekerData();
+
+    window.addEventListener('resize', this.handleWindowResize.bind(this));
+    document.addEventListener('click', this.handleDocumentClick.bind(this));
+  }
+
+  loadProfile(): void {
+    this.authService.getSeekerProfile().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.user = response.profile;
+          this.photoURL = this.user.profile_pic_url || '';
+
+          // Initialize the service with the data we just fetched
+          this.profileService.updateCompletionScore(this.user);
+        }
+      },
+      error: (err) => console.error('Failed to load profile:', err)
+    });
+  }
+
+  getSeekerData() {
     this.authService.getSeekerData().subscribe(
       (response: any) => {
         if (response.status === true) {
@@ -89,24 +112,6 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
         throw err; // Keep for debugging
       }
     );
-
-    window.addEventListener('resize', this.handleWindowResize.bind(this));
-    document.addEventListener('click', this.handleDocumentClick.bind(this));
-  }
-
-  loadProfile(): void {
-    this.authService.getSeekerProfile().subscribe({
-      next: (response: any) => {
-        if (response.status) {
-          this.user = response.profile;
-          this.photoURL = this.user.profile_pic_url || '';
-
-          // Initialize the service with the data we just fetched
-          this.profileService.updateCompletionScore(this.user);
-        }
-      },
-      error: (err) => console.error('Failed to load profile:', err)
-    });
   }
 
   ngAfterViewInit() {
