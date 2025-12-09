@@ -22,6 +22,7 @@ import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component'
 import { TermsComponent } from './terms/terms.component';
 import { CookiepolicyComponent } from './cookiepolicy/cookiepolicy.component';
 import { RoleSelectComponent } from './role-select/role-select.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 
 
@@ -30,6 +31,7 @@ export const routes: Routes = [
     { path: 'home', redirectTo: '', pathMatch: 'full' },
     { path: 'signup', component: SignupComponent, title: 'Register | JobNet' },
     { path: 'login', component: LoginComponent, title: 'Login | JobNet' },
+    { path: 'forgot-password', component: ForgotPasswordComponent, title: 'Forgot Password | JobNet' },
     { path: 'privacy-policy', component: PrivacypolicyComponent, title: 'Privacy Policy | JobNet' },
     { path: 'terms-of-service', component: TermsComponent, title: 'Terms of Service | JobNet' },
     { path: 'cookie-policy', component: CookiepolicyComponent, title: 'Cookie Policy | JobNet' },
