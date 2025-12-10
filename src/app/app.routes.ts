@@ -9,7 +9,6 @@ import { HomeComponent } from './features/home/home.component';
 import { RoleSelectComponent } from './auth/role-select/role-select.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { SeekerDashboardComponent } from './features/dashboard/seeker/seeker-dashboard.component';
-import { JobWishlistComponent } from './features/dashboard/seeker/components/job-wishlist/job-wishlist.component';
 import { ProfileComponent } from './features/dashboard/seeker/components/profile/profile.component';
 import { ResumeComponent } from './features/dashboard/seeker/components/resume/resume.component';
 import { SavedJobsComponent } from './features/dashboard/seeker/components/saved-jobs/saved-jobs.component';
@@ -36,7 +35,6 @@ export const routes: Routes = [
     { path: 'jobs', component: JobsListComponent, title: 'Jobs | JobNet' },
     { path: 'jobdetails/:id', component: JobDetailsComponent, title: 'Job Details | JobNet' },
     { path: 'contact', component: ContactComponent, title: 'Contact | JobNet' },
-    { path: 'jobwishlist', component: JobWishlistComponent, title: 'Job Wishlist | JobNet' },
     { path: 'role-select', component: RoleSelectComponent, title: 'Role Select | JobNet' },
     {
         path: 'dashboard/jobseeker',
