@@ -5,6 +5,7 @@ import { Chart, registerables } from 'chart.js';
 import { Router } from '@angular/router';
 import { CapitalizeFirstPipe } from '../../../../../core/pipes/capitalize-first.pipe';
 import { ToastrService } from 'ngx-toastr';
+import { STATUS_COLORS } from '../../../../../core/constants/status-colors';
 
 Chart.register(...registerables);
 
@@ -30,12 +31,20 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
   profileViewsData: any = {};
   chart: Chart | null = null;
   activeTab: string = 'Day';
+  
+  // Expose constants to template
+  statusColors = STATUS_COLORS;
 
   constructor(
     private dashboardService: DashboardService,
     private toastr: ToastrService,
     private router: Router
   ) { }
+
+  getStatusColor(status: string): string {
+    const normalizedStatus = status.toUpperCase();
+    return (this.statusColors as any)[normalizedStatus] || '#757575';
+  }
 
   ngOnInit() {
     this.loadStats();
