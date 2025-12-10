@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from './api-service.service';
 import { Observable } from 'rxjs';
 export const API = {
-  SEEKER_STATS: 'dashboard/seeker_stats',
-  RECENT_APPLICATIONS: 'dashboard/recent_applications',
-  RETRACT_APPLICATION: 'dashboard/retract_application',
-  UPDATE_PROFILE: 'dashboard/update_profile',
-  UPLOAD_PROFILE_PHOTO: 'dashboard/upload_profile_photo',
-  DELETE_PROFILE_PHOTO: 'dashboard/delete_profile_photo',
-  SAVED_JOBS: 'dashboard/saved_jobs',
-  DELETE_ACCOUNT: 'dashboard/delete_account'
+  SEEKER_STATS: 'dashboard/seeker/seeker_stats',
+  RECENT_APPLICATIONS: 'dashboard/seeker/recent_applications',
+  RETRACT_APPLICATION: 'dashboard/seeker/retract_application',
+  SAVED_JOBS: 'dashboard/seeker/saved_jobs',
+  UPDATE_PROFILE: 'dashboard/shared/update_profile',
+  UPLOAD_PROFILE_PHOTO: 'dashboard/shared/upload_profile_photo',
+  DELETE_PROFILE_PHOTO: 'dashboard/shared/delete_profile_photo',
+  DELETE_ACCOUNT: 'dashboard/shared/delete_account'
 };
 
 @Injectable({
