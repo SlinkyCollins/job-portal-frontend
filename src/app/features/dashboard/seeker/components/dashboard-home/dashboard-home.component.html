@@ -140,8 +140,13 @@
                     </div>
                     <div class="job-info">
                         <div class="job-title">{{ application.title }}</div>
-                        <div class="job-location">{{ application.employment_type | capitalizeFirst }} . {{
-                            application.location }} . Applied {{ application.applied_at | relativeTime }}</div>
+                        <div class="job-location">
+                            <span>{{ application.employment_type | capitalizeFirst }}</span>
+                            <span class="separator">.</span>
+                            <span>{{ application.location }}</span>
+                            <span class="separator">.</span>
+                            <span class="text-muted">Applied {{ application.applied_at | relativeTime }}</span>
+                        </div>
                     </div>
                     <div class="mt-3 mt-md-0 me-lg-2 status-badge"
                         [style.background-color]="getStatusColor(application.status) + '20'"
