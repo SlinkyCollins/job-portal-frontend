@@ -6,12 +6,13 @@ import { Router, RouterLink } from '@angular/router';
 import { CapitalizeFirstPipe } from '../../../../../core/pipes/capitalize-first.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { STATUS_COLORS } from '../../../../../core/constants/status-colors';
+import { RelativeTimePipe } from '../../../../../core/pipes/relative-time.pipe';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [CommonModule, CapitalizeFirstPipe, RouterLink],
+  imports: [CommonModule, CapitalizeFirstPipe, RouterLink, RelativeTimePipe],
   templateUrl: './dashboard-home.component.html',
   styleUrl: './dashboard-home.component.css'
 })

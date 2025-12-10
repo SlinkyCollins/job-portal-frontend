@@ -21,7 +21,7 @@ export class AppliedJobsComponent implements OnInit {
   
   // Pagination
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 5;
   totalItems: number = 0;
   
   private applicationToRetract: any = null;
