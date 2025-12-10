@@ -82,7 +82,12 @@
 
         <!-- Recently Applied Jobs -->
         <div class="jobs-section">
-            <h2>Recently Applied Jobs</h2>
+            <div class="section-header">
+                <h2>Recently Applied Jobs</h2>
+                <a routerLink="/dashboard/jobseeker/applied-jobs" class="btn btn-link text-decoration-none p-0" style="color: #244034; font-weight: 600; font-size: 0.9rem;">
+                    View All <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
             <div class="job-list">
                 <!-- Skeleton Loaders -->
                 <div class="job-item skeleton" *ngIf="isLoadingApplications">

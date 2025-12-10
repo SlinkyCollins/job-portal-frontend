@@ -13,6 +13,7 @@ import { JobWishlistComponent } from './features/dashboard/seeker/components/job
 import { ProfileComponent } from './features/dashboard/seeker/components/profile/profile.component';
 import { ResumeComponent } from './features/dashboard/seeker/components/resume/resume.component';
 import { SavedJobsComponent } from './features/dashboard/seeker/components/saved-jobs/saved-jobs.component';
+import { AppliedJobsComponent } from './features/dashboard/seeker/components/applied-jobs/applied-jobs.component';
 import { AccountsettingsComponent } from './features/dashboard/shared/components/accountsettings/accountsettings.component';
 import { DashboardHomeComponent } from './features/dashboard/seeker/components/dashboard-home/dashboard-home.component';
 import { PrivacypolicyComponent } from './features/general/privacypolicy/privacypolicy.component';
@@ -22,8 +23,6 @@ import { JobsListComponent } from './features/jobs/jobs-list/jobs-list.component
 import { JobDetailsComponent } from './features/jobs/job-details/job-details.component';
 import { ContactComponent } from './features/general/contact/contact.component';
 import { ErrorpageComponent } from './features/general/errorpage/errorpage.component';
-
-
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, title: 'JobNet' },
@@ -47,7 +46,7 @@ export const routes: Routes = [
             { path: '', component: DashboardHomeComponent, title: 'Dashboard Home | JobNet' },
             { path: 'profile', component: ProfileComponent, title: 'Profile | JobNet' },
             { path: 'resume', component: ResumeComponent, title: 'Resume | JobNet' },
-            // { path: 'job-alert', component: JobalertsComponent, title: 'Job Alerts | JobNet' }, DEFERRED AFTER MVP
+            { path: 'applied-jobs', component: AppliedJobsComponent, title: 'Applied Jobs | JobNet' },
             { path: 'saved-jobs', component: SavedJobsComponent, title: 'Saved Jobs | JobNet' },
             { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet' }
         ],

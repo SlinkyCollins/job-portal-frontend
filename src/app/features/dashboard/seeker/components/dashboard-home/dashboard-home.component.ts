@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { Chart, registerables } from 'chart.js';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CapitalizeFirstPipe } from '../../../../../core/pipes/capitalize-first.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { STATUS_COLORS } from '../../../../../core/constants/status-colors';
@@ -11,7 +11,7 @@ Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [CommonModule, CapitalizeFirstPipe],
+  imports: [CommonModule, CapitalizeFirstPipe, RouterLink],
   templateUrl: './dashboard-home.component.html',
   styleUrl: './dashboard-home.component.css'
 })

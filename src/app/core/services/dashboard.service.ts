@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export const API = {
   SEEKER_STATS: 'dashboard/seeker/seeker_stats',
   RECENT_APPLICATIONS: 'dashboard/seeker/recent_applications',
+  ALL_APPLICATIONS: 'dashboard/seeker/all_applications',
   RETRACT_APPLICATION: 'dashboard/seeker/retract_application',
   SAVED_JOBS: 'dashboard/seeker/saved_jobs',
   UPDATE_PROFILE: 'dashboard/shared/update_profile',
@@ -35,6 +36,11 @@ export class DashboardService {
   // Get recent applications for job seeker
   getRecentApplications(): Observable<any> {
     return this.http.get(this.fullUrl(API.RECENT_APPLICATIONS));
+  }
+
+  // Get all applications for job seeker
+  getAllApplications(): Observable<any> {
+    return this.http.get(this.fullUrl(API.ALL_APPLICATIONS));
   }
 
   retractApplication(applicationId: number): Observable<any> {
