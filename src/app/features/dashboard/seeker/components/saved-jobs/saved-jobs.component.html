@@ -3,7 +3,7 @@
     <div class="col-12 col-md-6">
       <h2 class="saved-jobs-title mb-3 mb-md-0">{{ pageTitle }}</h2>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6" *ngIf="!isLoading && savedJobs.length > 0">
       <div class="d-flex justify-content-md-end">
         <div class="sort-container">
           <label class="sort-label me-2">{{ sortLabel }}:</label>
