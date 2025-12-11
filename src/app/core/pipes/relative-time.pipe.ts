@@ -1,8 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-// Import the environment file to check if we are in prod or local mode
-// import { environment } from '../../../environments/environment';
-import { environment } from '../../../environments/environment.prod';
-
 
 @Pipe({
   name: 'relativeTime',
@@ -13,32 +9,18 @@ export class RelativeTimePipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return '';
 
-    let date: Date;
-
-    // CHECK ENVIRONMENT HERE
-    if (environment.production) {
-      // --- PRODUCTION (Render/UTC) ---
-      // Parse manually as UTC
-      const parts = value.split(/[- :]/).map(Number);
-      date = new Date(Date.UTC(
-        parts[0],      // Year
-        parts[1] - 1,  // Month
-        parts[2],      // Day
-        parts[3] || 0, // Hour
-        parts[4] || 0, // Minute
-        parts[5] || 0  // Second
-      ));
-    } else {
-      // --- LOCAL (XAMPP/Local Time) ---
-      // Let the browser parse it as local time
-      // (This works because your local DB and local Browser are in the same timezone)
-      date = new Date(value);
-    }
+    // THE "EXHAUSTED" FIX:
+    // 1. Replace space with 'T' to make it ISO-8601 compatible (fixes Safari/iOS bugs)
+    // 2. Do NOT add 'Z'. Do NOT use Date.UTC.
+    // 3. This forces the browser to treat the DB time as "Local Time".
+    // Result: DB (20:19) vs Now (21:37) = ~78 mins.
+    const dateStr = value.replace(' ', 'T'); 
+    const date = new Date(dateStr);
 
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
 
-    // Handle future dates (or slight clock skew)
+    // If the math is slightly negative (clock skew), just say "Just now"
     if (diffMs < 0) return 'Just now';
 
     const diffMins = Math.floor(diffMs / (1000 * 60));
