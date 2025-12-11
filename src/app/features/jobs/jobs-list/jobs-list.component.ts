@@ -36,7 +36,8 @@ export class JobsListComponent implements OnInit {
     search: 'jobSearch',
     filters: 'activeFilters',
     filterState: 'jobFilterState',
-    sort: 'jobSort'
+    sort: 'jobSort',
+    page: 'jobPage'
   };
   Math = Math; // Added to expose Math to the template
   jobs: any[] = [];
@@ -182,6 +183,7 @@ export class JobsListComponent implements OnInit {
     const filterStateRaw = localStorage.getItem(this.STORAGE_KEYS.filterState);
     const filtersRaw = localStorage.getItem(this.STORAGE_KEYS.filters);
     const sortRaw = localStorage.getItem(this.STORAGE_KEYS.sort);
+    const pageRaw = localStorage.getItem(this.STORAGE_KEYS.page);
 
     // Parse with fallbacks and type annotations for safety
     const savedSearch: any = JSON.parse(searchRaw || '{}');
@@ -190,6 +192,9 @@ export class JobsListComponent implements OnInit {
 
     // Restore sort (default to 'datePosted' if not found)
     this.selectedSort = sortRaw || 'datePosted';
+
+    // Restore Page (Default to 1 if not found)
+    this.currentPage = pageRaw ? parseInt(pageRaw, 10) : 1;
 
     // Helper function to check if there's at least one meaningful search value
     const hasAnySearchValue = (search: any): boolean => {
@@ -325,6 +330,9 @@ export class JobsListComponent implements OnInit {
     params.page = this.currentPage;
     params.per_page = this.perPage;
 
+    // SAVE CURRENT PAGE TO STORAGE
+    localStorage.setItem(this.STORAGE_KEYS.page, this.currentPage.toString());
+
     // Start a short delay before showing the spinner
     const showSpinnerDelay = setTimeout(() => {
       this.loading = true;
@@ -392,6 +400,7 @@ export class JobsListComponent implements OnInit {
   onSearch(): void {
     this.isSearching = true;
     this.currentPage = 1; // Reset to first page on new search
+    localStorage.setItem(this.STORAGE_KEYS.page, '1'); // <--- Reset storage to 1
 
     // Normalize the "None" option → treat 0 as null
     const normalizedCategory = this.searchCategory === 0 ? null : this.searchCategory;
@@ -446,6 +455,7 @@ export class JobsListComponent implements OnInit {
   applyFilters(): void {
     this.applyingFilters = true;
     this.currentPage = 1; // Reset to first page on filter change
+    localStorage.setItem(this.STORAGE_KEYS.page, '1'); // <--- Reset storage to 1
     // Show currency notice only if currency is selected and applied
     this.showCurrencyNotice = !!this.selectedCurrency;
 
@@ -494,6 +504,7 @@ export class JobsListComponent implements OnInit {
 
   resetFilters(clearSearch: boolean = false): void {
     this.currentPage = 1; // Reset to first page on reset
+    localStorage.setItem(this.STORAGE_KEYS.page, '1'); // <--- Reset storage to 1
     // Reset all filter checkboxes
     this.jobTypes.forEach(t => t.selected = false);
     this.experienceLevels.forEach(e => e.selected = false);
