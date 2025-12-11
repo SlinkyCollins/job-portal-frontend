@@ -30,6 +30,7 @@ export class ResumeComponent implements OnInit {
   originalData: any = {};  // Store last saved data
   isLoading: boolean = true;
   completionPercentage: number = 0;
+  isAlertDismissed: boolean = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) {
     this.resumeForm = this.fb.group({
@@ -41,10 +42,15 @@ export class ResumeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isAlertDismissed = false;
     this.loadProfile();
     this.profileService.completion$.subscribe(percentage => {
       this.completionPercentage = percentage;
     });
+  }
+
+  dismissAlert(): void {
+    this.isAlertDismissed = true;
   }
 
   loadProfile() {

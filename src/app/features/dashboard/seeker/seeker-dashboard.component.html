@@ -109,13 +109,20 @@
       </div>
     </header>
     <!-- This is where your routed content will appear -->
-    
+
     <!-- Low Completion Notification -->
-    <div *ngIf="completionPercentage < 80 && completionPercentage > 0" class="alert alert-warning m-3 p-lg-2 d-flex align-items-center shadow-sm" role="alert" style="border-left: 5px solid #ffc107;">
+    <div *ngIf="completionPercentage < 80 && completionPercentage > 0 && !isAlertDismissed"
+      class="alert alert-warning alert-dismissible fade show m-3 p-2 p-lg-3 d-flex align-items-center shadow-sm"
+      role="alert" style="border-left: 5px solid #ffc107;">
+
       <i class="fas fa-info-circle me-3 fa-lg text-warning"></i>
-      <div>
-        <strong>Profile Incomplete:</strong> Your profile is {{completionPercentage}}% complete. Reach 80% or more to improve your job application visibility!
+
+      <div class="flex-grow-1">
+        <strong>Profile Incomplete:</strong> Your profile is {{completionPercentage}}% complete. Reach 80% or more to
+        improve your job application visibility!
       </div>
+
+      <button type="button" class="btn-close" aria-label="Close" (click)="dismissAlert()"></button>
     </div>
 
     <router-outlet></router-outlet>

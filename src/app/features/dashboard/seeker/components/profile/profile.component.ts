@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
   isFacebookLinked: boolean = false;
   isLinkingFacebook: boolean = false;
   completionPercentage: number = 0;
+  isAlertDismissed: boolean = false;
   countries = [
     { name: 'Afghanistan', code: 'AF' },
     { name: 'Åland Islands', code: 'AX' },
@@ -300,11 +301,16 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isAlertDismissed = false;
     this.loadProfile();
     this.checkSocialLinked();
     this.profileService.completion$.subscribe(percentage => {
       this.completionPercentage = percentage;
     });
+  }
+
+  dismissAlert(): void {
+    this.isAlertDismissed = true;
   }
 
   loadProfile(): void {

@@ -85,6 +85,7 @@
             <div class="section-header">
                 <h2>Recently Applied Jobs</h2>
                 <a routerLink="/dashboard/jobseeker/applied-jobs"
+                    *ngIf="recentApplications.length > 0 && !isLoadingApplications"
                     class="btn btn-link text-decoration-none p-0 d-none d-lg-block"
                     style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                     View All <i class="fas fa-arrow-right ms-1"></i>
@@ -170,7 +171,7 @@
                 </div>
 
                 <div style="text-align: center;" class="d-block d-lg-none">
-                    <a routerLink="/dashboard/jobseeker/applied-jobs" class="btn btn-link text-decoration-none p-0"
+                    <a routerLink="/dashboard/jobseeker/applied-jobs" *ngIf="recentApplications.length > 0 && !isLoadingApplications" class="btn btn-link text-decoration-none p-0"
                         style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                         View All <i class="fas fa-arrow-right ms-1"></i>
                     </a>

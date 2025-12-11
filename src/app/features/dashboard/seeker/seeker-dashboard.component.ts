@@ -24,6 +24,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   public completionPercentage: number = 0;
   public showCompletionSuccessModal: boolean = false;
   private isFirstLoad: boolean = true;
+  public isAlertDismissed = false;
 
   constructor(
     public router: Router,
@@ -34,6 +35,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit() {
+    this.isAlertDismissed = false;
     // 1. Subscribe to Profile Updates (Photo/Name)
     this.profileService.profile$.subscribe(update => {
       this.photoURL = update.photoURL;
@@ -63,6 +65,10 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
     window.addEventListener('resize', this.handleWindowResize.bind(this));
     document.addEventListener('click', this.handleDocumentClick.bind(this));
+  }
+
+  dismissAlert() {
+    this.isAlertDismissed = true;
   }
 
   loadProfile(): void {
