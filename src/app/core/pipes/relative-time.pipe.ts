@@ -1,4 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+import { environment } from '../../../environments/environment';
 
 @Pipe({
   name: 'relativeTime',
@@ -9,34 +11,32 @@ export class RelativeTimePipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return '';
 
-    // THE "EXHAUSTED" FIX:
-    // 1. Replace space with 'T' to make it ISO-8601 compatible (fixes Safari/iOS bugs)
-    // 2. Do NOT add 'Z'. Do NOT use Date.UTC.
-    // 3. This forces the browser to treat the DB time as "Local Time".
-    // Result: DB (20:19) vs Now (21:37) = ~78 mins.
-    const dateStr = value.replace(' ', 'T'); 
-    const date = new Date(dateStr);
+    try {
+      // 1. Standardize SQL timestamp to ISO format (replace space with T)
+      // Input: "2025-12-11 20:43:59" -> Output: "2025-12-11T20:43:59"
+      let isoString = value.replace(' ', 'T');
 
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
+      // 2. Handle Environment Differences
+      if (environment.production) {
+        // PRODUCTION (Render): Server sends UTC.
+        // We MUST append 'Z' so date-fns knows this is UTC.
+        if (!isoString.endsWith('Z')) {
+          isoString += 'Z';
+        }
+      } 
+      // LOCAL (XAMPP): Server sends Local Time.
+      // We leave it without 'Z'. parseISO treats strings without 'Z' as Local Time.
 
-    // If the math is slightly negative (clock skew), just say "Just now"
-    if (diffMs < 0) return 'Just now';
+      // 3. Parse and Format
+      const date = parseISO(isoString);
+      
+      // 4. Calculate distance
+      // addSuffix: true adds "ago" or "in" automatically
+      return formatDistanceToNow(date, { addSuffix: true });
 
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffWeeks = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7));
-    const diffMonths = Math.floor(diffDays / 30);
-
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
-    if (diffMonths < 12) return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
-
-    const diffYears = Math.floor(diffDays / 365);
-    return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+    } catch (error) {
+      console.error('Date parsing error:', error);
+      return value; // Fallback to original string if it fails
+    }
   }
 }
