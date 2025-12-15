@@ -22,7 +22,6 @@ export class EmployerDashboardComponent {
   public photoURL: string = '';
   public completionPercentage: number = 0;
   public showCompletionSuccessModal: boolean = false;
-  private isFirstLoad: boolean = true;
   public companyId: number | null = null;
   public isAlertDismissed = false;
 
@@ -45,21 +44,6 @@ export class EmployerDashboardComponent {
   dismissAlert() {
     this.isAlertDismissed = true;
   }
-
-  // loadProfile(): void {
-  //   this.authService.getSeekerProfile().subscribe({
-  //     next: (response: any) => {
-  //       if (response.status) {
-  //         this.user = response.profile;
-  //         this.photoURL = this.user.profile_pic_url || '';
-
-  //         // Initialize the service with the data we just fetched
-  //         this.profileService.updateCompletionScore(this.user);
-  //       }
-  //     },
-  //     error: (err) => console.error('Failed to load profile:', err)
-  //   });
-  // }
 
   getEmployerData(): void {
       this.authService.getEmployerData().subscribe((response: any) => {

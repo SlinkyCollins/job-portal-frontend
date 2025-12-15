@@ -7,7 +7,7 @@
       <i class="fas fa-times"></i>
     </button>
     <!-- Brand Logo -->
-    <a class="brand-logo" routerLink="/dashboard/jobseeker">
+    <a class="brand-logo" routerLink="/dashboard/employer">
       <img src="/assets/jobnetlogo2.png" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
     </a>
     <!-- User Profile -->
@@ -26,9 +26,13 @@
     </div>
     <!-- User Dropdown Menu -->
     <div class="user-dropdown" [class.open]="userDropdownOpen">
-      <a routerLink="profile" class="dropdown-item">
-        <i class="fas fa-user-circle"></i>
-        <span>View Profile</span>
+      <a routerLink="profile" class="dropdown-item"> 
+        <i class="fas fa-user"></i>
+        <span>My Profile</span>
+      </a>
+      <a routerLink="company-profile" class="dropdown-item">
+        <i class="fas fa-building"></i>
+        <span>Company Profile</span>
       </a>
       <a routerLink="account-settings" class="dropdown-item">
         <i class="fas fa-cog"></i>
@@ -52,48 +56,58 @@
         <i class="fas fa-th-large"></i>
         <span>Dashboard</span>
       </a>
-      <a routerLink="/dashboard/employer/profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
-        <i class="fas fa-user"></i>
-        <span>My Profile</span>
-      </a>
-      <a routerLink="/dashboard/employer/my-jobs" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
-        <i class="fas fa-briefcase"></i>
-        <span>My Jobs</span>
-      </a>
-      <a routerLink="/dashboard/employer/applications" routerLinkActive="active" class="nav-item"
-        (click)="onNavItemClick()">
-        <i class="fas fa-file-alt"></i>
-        <span>Applications</span>
-      </a>
-      <a routerLink="/dashboard/employer/post-job" routerLinkActive="active" class="nav-item"
-        (click)="onNavItemClick()">
-        <i class="fas fa-plus-circle"></i>
-        <span>Post a Job</span>
-      </a>
+
+      <!-- 1. Company Profile (The Entity) -->
       <a routerLink="/dashboard/employer/company-profile" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
         <i class="fas fa-building"></i>
         <span>Company Profile</span>
       </a>
+
+      <!-- 2. Post Job (The Action) -->
+      <a routerLink="/dashboard/employer/post-job" routerLinkActive="active" class="nav-item"
+        (click)="onNavItemClick()">
+        <i class="fas fa-plus-circle"></i>
+        <span>Post a Job</span>
+      </a>
+
+      <!-- 3. My Jobs (The Management) -->
+      <a routerLink="/dashboard/employer/my-jobs" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
+        <i class="fas fa-briefcase"></i>
+        <span>My Jobs</span>
+      </a>
+
+      <!-- 4. RESTORED: Applications (The Inbox) -->
+      <a routerLink="/dashboard/employer/applications" routerLinkActive="active" class="nav-item"
+        (click)="onNavItemClick()">
+        <i class="fas fa-users"></i> <!-- Changed icon to Users/Candidates -->
+        <span>Applications</span>
+      </a>
+
+      <!-- 5. RESTORED: User Profile (The Person) -->
+      <!-- Renamed to "My Profile" to distinguish from Company -->
+      <a routerLink="/dashboard/employer/profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
+        <i class="fas fa-user-tie"></i> <!-- Changed icon to User Tie (Professional) -->
+        <span>My Profile</span>
+      </a>
+
       <a routerLink="/dashboard/employer/account-settings" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
         <i class="fas fa-cog"></i>
-        <span>Account Settings</span>
+        <span>Settings</span>
       </a>
     </nav>
 
     <!-- Profile Progress -->
-    <div class="profile-progress">
+    <!-- <div class="profile-progress">
       <div class="progress-info">
-        <!-- Dynamic Percentage -->
         <span class="progress-percentage">{{ completionPercentage }}%</span>
         <span class="progress-label">Profile Complete</span>
       </div>
       <div class="progress-bar">
-        <!-- Dynamic Width -->
         <div class="progress-fill" [style.width.%]="completionPercentage"></div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Logout Button -->
     <button class="logout-btn" (click)="showLogoutModal($event)">
@@ -124,7 +138,7 @@
     <!-- This is where your routed content will appear -->
 
     <!-- Low Completion Notification -->
-    <div *ngIf="completionPercentage < 80 && completionPercentage > 0 && !isAlertDismissed"
+    <!-- <div *ngIf="completionPercentage < 80 && completionPercentage > 0 && !isAlertDismissed"
       class="alert alert-warning alert-dismissible fade show m-3 p-2 p-lg-3 d-flex align-items-center shadow-sm"
       role="alert" style="border-left: 5px solid #ffc107;">
 
@@ -136,7 +150,7 @@
       </div>
 
       <button type="button" class="btn-close" aria-label="Close" (click)="dismissAlert()"></button>
-    </div>
+    </div> -->
 
     <router-outlet></router-outlet>
   </main>
@@ -167,7 +181,7 @@
   </div>
 
   <!-- Completion Success Modal -->
-  <div class="modal-overlay" [class.active]="showCompletionSuccessModal" (click)="closeSuccessModal()">
+  <!-- <div class="modal-overlay" [class.active]="showCompletionSuccessModal" (click)="closeSuccessModal()">
     <div class="modal-content text-center p-4" (click)="$event.stopPropagation()" style="max-width: 400px;">
       <div class="mb-3 text-success">
         <i class="fas fa-check-circle fa-4x"></i>
@@ -177,5 +191,5 @@
       <p class="text-muted mb-4">You are now ready to confidently start applying for jobs with a standout profile.</p>
       <button class="btn btn-success w-100 py-2" routerLink="/jobs">Start Applying</button>
     </div>
-  </div>
+  </div> -->
 </div>
