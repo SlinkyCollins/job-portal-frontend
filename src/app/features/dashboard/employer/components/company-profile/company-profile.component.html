@@ -5,7 +5,24 @@
   </div>
 
   <div class="profile-content">
-    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+    <!-- Loading Skeleton -->
+    <div *ngIf="isLoading" class="skeleton-loader">
+      <div class="skeleton-logo-section">
+        <div class="skeleton-circle"></div>
+        <div class="skeleton-lines">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line medium"></div>
+        </div>
+      </div>
+      <div class="skeleton-grid">
+        <div class="skeleton-input"></div>
+        <div class="skeleton-input"></div>
+        <div class="skeleton-input full"></div>
+        <div class="skeleton-textarea"></div>
+      </div>
+    </div>
+
+    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
       
       <!-- Logo Upload Section -->
       <div class="logo-section">
