@@ -1,0 +1,73 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>Company Profile</h2>
+    <p class="text-muted">Manage your company information and branding.</p>
+  </div>
+
+  <div class="profile-content">
+    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Logo Upload Section -->
+      <div class="logo-section">
+        <div class="logo-preview">
+          <img [src]="logoPreview || 'assets/icons/building.svg'" alt="Company Logo">
+        </div>
+        <div class="logo-actions">
+          <label for="logo-upload" class="btn-upload">
+            <i class="fas fa-camera"></i> Upload Logo
+          </label>
+          <input type="file" id="logo-upload" (change)="onFileSelected($event)" accept="image/png, image/jpeg, image/jpg" hidden>
+          <p class="help-text">Recommended: 400x400px, Max 2MB (PNG, JPG)</p>
+        </div>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="form-grid">
+        <!-- Company Name -->
+        <div class="form-group">
+          <label for="name">Company Name <span class="required">*</span></label>
+          <input type="text" id="name" formControlName="name" class="form-control" placeholder="e.g. Tech Solutions Inc.">
+          <div *ngIf="companyForm.get('name')?.touched && companyForm.get('name')?.invalid" class="error-msg">
+            Company name is required.
+          </div>
+        </div>
+
+        <!-- Website -->
+        <div class="form-group">
+          <label for="website">Website</label>
+          <input type="url" id="website" formControlName="website" class="form-control" placeholder="https://example.com">
+          <div *ngIf="companyForm.get('website')?.touched && companyForm.get('website')?.invalid" class="error-msg">
+            Please enter a valid URL.
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group full-width">
+          <label for="location">Headquarters Location <span class="required">*</span></label>
+          <input type="text" id="location" formControlName="location" class="form-control" placeholder="e.g. San Francisco, CA">
+          <div *ngIf="companyForm.get('location')?.touched && companyForm.get('location')?.invalid" class="error-msg">
+            Location is required.
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group full-width">
+          <label for="description">About Company <span class="required">*</span></label>
+          <textarea id="description" formControlName="description" rows="6" class="form-control" placeholder="Tell us about your company, culture, and what you do..."></textarea>
+          <div *ngIf="companyForm.get('description')?.touched && companyForm.get('description')?.invalid" class="error-msg">
+            Description is required (min 50 characters).
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="submit" class="btn-save" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Save Changes</span>
+          <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

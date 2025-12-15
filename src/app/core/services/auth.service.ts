@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
 import { catchError, from, Observable, switchMap } from 'rxjs';
+import { Location } from '@angular/common';
 export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
@@ -42,12 +43,60 @@ export class AuthService {
     public router: Router,
     public toastr: ToastrService,
     public apiService: ApiServiceService,
-    private auth: Auth,  // Firebase Auth
-    private ngZone: NgZone
+    private auth: Auth,
+    private ngZone: NgZone,
+    private location: Location
   ) { }
+
+  getUserName(): string {
+    const token = localStorage.getItem('token');
+    if (!token) return '';
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.first_name || '';
+  }
+
+  getUserId(): number | null {
+    const token = localStorage.getItem('token');  
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.user_id || null;
+  }
 
   fullUrl(endpoint: string) {
     return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      // Fallback: Redirect based on their ACTUAL role
+      const role = this.getUserRole();
+      if (role === 'job_seeker') {
+        this.router.navigate(['/dashboard/jobseeker']);
+      } else if (role === 'employer') {
+        this.router.navigate(['/dashboard/employer']);
+      } else if (role === 'admin') {
+        this.router.navigate(['/admin/dashboard']);
+      } else {
+        this.router.navigate(['/']); // Home if no role
+      }
+    }
+  }
+
+  // Helper to redirect unauthorized users to their correct home
+  redirectBasedOnRole(role: string) {
+    this.toastr.warning('You do not have permission to view that page.', 'Access Denied');
+
+    if (role === 'job_seeker') {
+      this.router.navigate(['/dashboard/jobseeker']);
+    } else if (role === 'employer') {
+      this.router.navigate(['/dashboard/employer']);
+    } else if (role === 'admin') {
+      this.router.navigate(['/admin/dashboard']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   logout() {

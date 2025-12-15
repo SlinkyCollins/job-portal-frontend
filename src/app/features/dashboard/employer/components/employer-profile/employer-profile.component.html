@@ -1,0 +1,229 @@
+<!-- profile.component.html -->
+<div class="container py-4">
+  <h5 class="card-title fw-bold">My Profile</h5>
+
+  <!-- Profile Completion Guide -->
+  <div *ngIf="completionPercentage < 100 && !isAlertDismissed"
+    class="alert alert-info alert-dismissible fade show d-flex align-items-center mb-4 shadow-sm" role="alert"
+    style="border-left: 5px solid #0dcaf0;">
+
+    <i class="fas fa-lightbulb me-3 fa-lg text-info"></i>
+
+    <div class="flex-grow-1">
+      <strong>Tip:</strong> Complete all fields (including Bio, Address, and Profile Picture) to reach 100% profile
+      completion.
+    </div>
+
+    <button type="button" class="btn-close" aria-label="Close" (click)="dismissAlert()"></button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="py-4">
+    <!-- Profile Card Skeleton -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center mb-3">
+          <div class="skeleton-circle me-md-3 mb-2 mb-md-0"></div>
+          <div>
+            <div class="skeleton-button me-2"></div>
+            <div class="skeleton-button"></div>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-12">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-textarea"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Address & Location Skeleton -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="skeleton-title mb-3"></div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2"></div>
+            <div class="skeleton-input"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Buttons Skeleton -->
+    <div class="d-flex justify-content-start">
+      <div class="skeleton-button me-2"></div>
+      <div class="skeleton-button"></div>
+    </div>
+  </div>
+
+  <form [formGroup]="profileForm" *ngIf="!isLoading">
+    <!-- Profile Card -->
+    <div class="card mb-4">
+      <div class="card-body">
+
+        <div class="d-flex flex-column flex-md-row align-items-md-center mb-3">
+          <img [src]="photoURL || defaultPhotoURL" class="rounded-circle me-md-3 mb-2 mb-md-0" width="80" height="80"
+            alt="Profile Photo">
+          <div>
+            <button type="button" class="btn btn-outline-success btn-sm me-2" (click)="onUploadPhoto(fileInput)"
+              [disabled]="isUploading || isDeleting">
+              <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-1"></span>
+              Upload new photo
+            </button>
+            <button type="button" class="btn btn-outline-danger btn-sm me-2" (click)="onDeletePhoto()"
+              [disabled]="isDeleting || isUploading">
+              <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-1"></span>
+              Delete
+            </button>
+            <button type="button" *ngIf="showLinkFacebook" class="btn btn-outline-secondary btn-sm me-2"
+              (click)="linkFacebook()" [disabled]="isLinkingFacebook || isFacebookLinked">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
+                alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
+              <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
+              {{ isLinkingFacebook ? 'Linking...' : (isFacebookLinked ? 'Facebook Linked' : 'Link Facebook Account') }}
+            </button>
+            <button type="button" *ngIf="showLinkGoogle" class="btn btn-outline-secondary btn-sm" (click)="linkGoogle()"
+              [disabled]="isLinkingGoogle || isGoogleLinked">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"
+                width="20" height="20" class="me-2" *ngIf="!isLinkingGoogle">
+              <span *ngIf="isLinkingGoogle" class="spinner-border spinner-border-sm me-1"></span>
+              {{ isLinkingGoogle ? 'Linking...' : (isGoogleLinked ? 'Google Linked' : 'Link Google Account') }}
+            </button>
+          </div>
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name*</label>
+            <input type="text" class="form-control" placeholder="e.g., John Doe" formControlName="fullname"
+              name="fullname"
+              [class.is-valid]="profileForm.get('fullname')?.valid && profileForm.get('fullname')?.touched"
+              [class.is-invalid]="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)"
+              required>
+          </div>
+          <div
+            *ngIf="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('pattern')">Full name must include a
+              first and last name separated by a space.</span>
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('minlength')">This field must not be
+              less
+              than 2 words</span>
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('required')">This field is
+              required</span>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone Number*</label>
+            <input type="tel" class="form-control" placeholder="+234..." formControlName="phone" name="phone"
+              [class.is-valid]="profileForm.get('phone')?.valid && profileForm.get('phone')?.touched"
+              [class.is-invalid]="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)"
+              required>
+            <div
+              *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)">
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('required')">This field is
+                required</span>
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('pattern')">Invalid phone number
+                format (e.g. +123-456-7890)</span>
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('maxlength')">Phone number cannot
+                exceed 15 characters</span>
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Bio</label>
+            <textarea class="form-control" rows="3" placeholder="Write something interesting about you..."
+              formControlName="bio" name="bio"></textarea>
+          </div>
+          <span>Brief description for your profile. URLs are hyperlinked.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linked Providers Section -->
+    <div class="mb-3" *ngIf="linkedProviders.length > 0">
+      <h6 class="fw-bold">Linked Accounts</h6>
+      <div *ngIf="linkedProviders.length > 0; else noProviders">
+        <span *ngFor="let provider of linkedProviders" class="badge bg-light me-2"
+          [innerHTML]="getProviderDisplayName(provider)">
+        </span>
+      </div>
+      <ng-template #noProviders>
+        <p class="text-muted">No linked accounts.</p>
+      </ng-template>
+    </div>
+
+    <!-- Social Media -->
+    <!-- <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">Social Media <span class="badge bg-secondary">Coming Soon</span></h5>
+        <div class="mb-3">
+          <label class="form-label">Network 1</label>
+          <input type="url" class="form-control" placeholder="https://facebook.com/" disabled>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Network 2</label>
+          <input type="url" class="form-control" placeholder="https://twitter.com/" disabled>
+        </div>
+        <button type="button" class="btn btn-outline-secondary btn-sm" disabled>+ Add more link</button>
+      </div>
+    </div> -->
+
+    <!-- Address & Location -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">Address & Location</h5>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Country*</label>
+            <ng-select [items]="countries" class="form-control" bindLabel="name" bindValue="code"
+              formControlName="country" name="country"
+              [class.is-valid]="profileForm.get('country')?.valid && profileForm.get('country')?.touched"
+              [class.is-invalid]="profileForm.get('country')?.invalid && (profileForm.get('country')?.touched || profileForm.get('country')?.dirty)"
+              required>
+            </ng-select>
+          </div>
+          <div
+            *ngIf="profileForm.get('country')?.invalid && (profileForm.get('country')?.touched || profileForm.get('country')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('country')?.getError('required')">This field is
+              required</span>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Address*</label>
+            <input type="text" class="form-control" placeholder="Street, City, State" formControlName="address"
+              name="address" [class.is-valid]="profileForm.get('address')?.valid && profileForm.get('address')?.touched"
+              [class.is-invalid]="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)"
+              required>
+          </div>
+          <div
+            *ngIf="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('address')?.getError('required')">This field is
+              required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-start">
+      <button type="submit" class="btn btn-success me-2" (click)="onSubmit()"
+        [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
+        {{ isSaving ? 'Saving...' : 'Save' }}
+      </button>
+      <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving || !profileForm.dirty"
+        (click)="onReset()">Cancel</button>
+    </div>
+  </form>
+</div>

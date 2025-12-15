@@ -1,27 +1,44 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export const jobSeekerGuardGuard: CanActivateFn = (route, state) => {
-  let role = localStorage.getItem('role'); // Check for user invite (user role)
-  let router = inject(Router);
-  let authService = inject(AuthService);
+  const router = inject(Router);
+  const authService = inject(AuthService);
+  
+  const localRole = localStorage.getItem('role'); // Check for user invite (user role)
+
+  if (localRole) {
+    if (localRole === 'job_seeker') {
+      return true; // ✅ Allowed (If you have the invite, go right in!)
+    } else {
+      authService.redirectBasedOnRole(localRole);
+      return false;
+    }
+  }
 
   // If no invite, call parents (backend) to check if the user have invite for the party (dashboard)
-  if (!role) {
-    return authService.getUserData().pipe(
-      tap((response: any) => {
-        if (response?.status && response.user.role === 'job_seeker') {
-          localStorage.setItem('role', response.user.role);  // Write role on party list
+  return authService.getUserData().pipe(
+    map((response: any) => {
+      if (response?.status && response.user.role) {
+        const userRole = response.user.role;
+        localStorage.setItem('role', userRole); // Write role on party list
+
+        if (userRole === 'job_seeker') {
+          return true; // ✅ Allowed
         } else {
-          router.navigate(['/login']);  // Send home
+          authService.redirectBasedOnRole(userRole);
+          return false;
         }
-      }),
-      tap({
-        error: () => router.navigate(['/login'])  // Error? Send home
-      })
-    );
-  }
-  return true; // If you have the invite, go right in!
+      }
+      router.navigate(['/login']);  // Send home
+      return false;
+    }),
+    catchError(() => {
+      router.navigate(['/login']);  // Error? Send home
+      return of(false);
+    })
+  );
 };
