@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
-import { catchError, from, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, from, Observable, switchMap, tap } from 'rxjs';
 import { Location } from '@angular/common';
 export const API = {
   LOGIN: 'auth/login',
@@ -48,15 +48,12 @@ export class AuthService {
     private location: Location
   ) { }
 
-  getUserName(): string {
-    const token = localStorage.getItem('token');
-    if (!token) return '';
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.first_name || '';
-  }
+  // 1. Create a BehaviorSubject to hold the user state
+  private currentUserSubject = new BehaviorSubject<any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
   getUserId(): number | null {
-    const token = localStorage.getItem('token');  
+    const token = localStorage.getItem('token');
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.user_id || null;
@@ -164,8 +161,22 @@ export class AuthService {
     return this.http.get(this.fullUrl(API.SEEKERDATA));
   }
 
-  getEmployerData() {
-    return this.http.get(this.fullUrl(API.EMPLOYERDATA));
+  // 2. Update getEmployerData to TAP into the response and save it
+  getEmployerData(): Observable<any> {
+    const userId = this.getUserId();
+    return this.http.get<any>(`${this.fullUrl(API.EMPLOYERDATA)}?user_id=${userId}`).pipe(
+      tap(response => {
+        if (response.status && response.user) {
+          // Save the user data to our state
+          this.currentUserSubject.next(response.user);
+        }
+      })
+    );
+  }
+
+  // Helper to get current value without subscribing (optional)
+  getCurrentUserValue() {
+    return this.currentUserSubject.value;
   }
 
   getAllJobs() {

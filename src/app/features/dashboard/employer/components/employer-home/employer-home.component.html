@@ -13,7 +13,7 @@
     <div *ngIf="!isLoading && !hasCompany" class="onboarding-container fade-in">
         <div class="welcome-card text-center p-5 shadow-sm bg-white rounded">
             <img src="assets/Onboarding-bro.svg" alt="Setup Company" class="onboarding-image mb-4">
-            <h2 class="mb-3">Welcome, Alicia!</h2>
+            <h2 class="mb-3">Welcome, {{ user.firstname }}!</h2>
             <p class="text-muted mb-4" style="max-width: 500px; margin: 0 auto;">
                 To start posting jobs and finding talent, you first need to set up your company profile.
                 It only takes a minute!
@@ -28,7 +28,7 @@
     <div *ngIf="!isLoading && hasCompany" class="stats-container fade-in">
         <div class="section-header">
             <h2>Dashboard Overview</h2>
-            <p class="text-muted">Welcome back, {{ userFirstName }}</p>
+            <p class="text-muted">Welcome back, {{ user.firstname }}</p>
         </div>
 
         <!-- We will build the stats grid here later -->

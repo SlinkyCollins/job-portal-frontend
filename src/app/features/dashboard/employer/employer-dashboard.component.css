@@ -599,6 +599,26 @@ body {
   transform: translateY(-1px);
 }
 
+.role-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  margin: 0 16px 0 0;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* EMPLOYER THEME */
+.role-badge.employer {
+  background-color: #e2e8f0; 
+  color: #244034;          
+  border: 1px solid #e2e8f0;
+}
+
 /* Responsive Design */
 @media (min-width: 1025px) {
   .header-actions {

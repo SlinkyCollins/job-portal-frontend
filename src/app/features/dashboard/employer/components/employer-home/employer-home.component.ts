@@ -16,7 +16,7 @@ import { AuthService } from '../../../../../core/services/auth.service';
   styleUrl: './employer-home.component.css'
 })
 export class EmployerHomeComponent {
-  isLoading: boolean = false;
+  isLoading = true; // Start loading
   public user: any = '';
   public companyId: number | null = null;
   public hasCompany: boolean = false;
@@ -53,8 +53,25 @@ export class EmployerHomeComponent {
   }
 
   ngOnInit() {
-    this.loadStats();
-    this.loadRecentApplications();
+    // SUBSCRIBE to the state instead of calling API
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.userFirstName = user.firstname;
+        this.companyId = user.company_id;
+        
+        // Logic to switch views
+        if (this.companyId) {
+          this.hasCompany = true;
+          this.loadStats(); // Load stats only if company exists
+          this.loadRecentApplications();
+        } else {
+          this.hasCompany = false;
+        }
+        
+        this.isLoading = false; // Data received, stop loading
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -67,43 +84,6 @@ export class EmployerHomeComponent {
       this.chart.destroy();
     }
   }
-
-  getEmployerData(): void {
-    this.authService.getEmployerData().subscribe((response: any) => {
-      if (response.status) {
-        this.user = response.user;
-        this.companyId = this.user.company_id;
-
-        if (!this.companyId) {
-          this.toastr.info('Please complete your company profile to start posting jobs.', 'Welcome!');
-        }
-      }
-    }, (err: any) => {
-      console.error('Error fetching user data:', err.status, err.message);
-      let errorMsg = 'An unexpected error occurred. Please log in again.';
-      if (err.status === 401) {
-        errorMsg = 'Your token has expired. Please log in again.';
-        this.toastr.warning(errorMsg, 'Token Timeout');
-      } else if (err.status === 403) {
-        errorMsg = 'You do not have permission to access this page.';
-        this.toastr.error(errorMsg, 'Access Denied');
-        this.authService.goBack();
-      } else if (err.status === 404) {
-        errorMsg = 'We could not find your user data. Please contact support.';
-        this.toastr.info(errorMsg, 'User Not Found');
-      } else if (err.status === 500) {
-        errorMsg = 'Something went wrong on our end. Please try again later.';
-        this.toastr.error(errorMsg, 'Server Error');
-      } else {
-        this.toastr.error(errorMsg, 'Error');
-      }
-
-      localStorage.removeItem('role');
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      this.router.navigate(['/login']);
-    })
-  };
 
   loadStats() {
     this.dashboardService.getSeekerStats().subscribe({
