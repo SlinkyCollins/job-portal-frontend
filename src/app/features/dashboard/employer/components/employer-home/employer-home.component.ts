@@ -21,18 +21,15 @@ export class EmployerHomeComponent {
   public companyId: number | null = null;
   public hasCompany: boolean = false;
   public userFirstName: string = '';
-  private applicationToRetract: any = null;
-  showRetractModal: boolean = false;
-  isRetracting: boolean = false;
   isLoadingStats: boolean = true;
-  isLoadingApplications: boolean = true;
+  isLoadingJobs: boolean = true;
   stats: any = {
     totalVisitors: 0,
     shortlisted: 0,
     views: 0,
-    appliedJobs: 0
+    postedJobs: 0
   };
-  recentApplications: any[] = [];
+  recentJobs: any[] = [];
   profileViewsData: any = {};
   chart: Chart | null = null;
   activeTab: string = 'Day';
@@ -64,7 +61,7 @@ export class EmployerHomeComponent {
         if (this.companyId) {
           this.hasCompany = true;
           this.loadStats(); // Load stats only if company exists
-          this.loadRecentApplications();
+          this.loadRecentJobs();
         } else {
           this.hasCompany = false;
         }
@@ -86,11 +83,12 @@ export class EmployerHomeComponent {
   }
 
   loadStats() {
-    this.dashboardService.getSeekerStats().subscribe({
+    this.dashboardService.getEmployerStats().subscribe({
       next: (data) => {
         this.stats.shortlisted = data.shortlisted || 0;
-        this.stats.appliedJobs = data.appliedJobs || 0;
-        // Keep others as 0 or placeholders
+        this.stats.postedJobs = data.postedJobs || 0;
+        this.stats.views = data.views || 0;
+        this.stats.totalVisitors = data.totalVisitors || 0;
         this.isLoadingStats = false;
       },
       error: (err) => {
@@ -100,52 +98,28 @@ export class EmployerHomeComponent {
     });
   }
 
-  loadRecentApplications() {
-    this.dashboardService.getRecentApplications().subscribe({
+  loadRecentJobs() {
+    // TODO: Implement getRecentPostedJobs in DashboardService
+    // For now, we'll simulate an empty list or mock data
+    this.isLoadingJobs = false;
+    this.recentJobs = []; 
+    
+    /* 
+    this.dashboardService.getRecentPostedJobs().subscribe({
       next: (data) => {
-        this.recentApplications = data.recentApplications || [];
-        this.isLoadingApplications = false;
+        this.recentJobs = data.recentJobs || [];
+        this.isLoadingJobs = false;
       },
       error: (err) => {
-        console.error('Error loading applications:', err);
-        this.isLoadingApplications = false;
+        console.error('Error loading jobs:', err);
+        this.isLoadingJobs = false;
       }
     });
+    */
   }
 
-  viewJob(application: any) {
-    this.router.navigate(['/jobdetails', application.job_id]);
-  }
-
-  retractApplication(application: any) {
-    this.applicationToRetract = application;
-    this.showRetractModal = true;
-  }
-
-  confirmRetract() {
-    if (!this.applicationToRetract) return;
-    this.isRetracting = true;
-    this.dashboardService.retractApplication(this.applicationToRetract.application_id).subscribe({
-      next: () => {
-        this.recentApplications = this.recentApplications.filter(app => app.application_id !== this.applicationToRetract.application_id);
-        this.stats.appliedJobs--;
-        this.toastr.success('Application successfully retracted.');
-        this.showRetractModal = false;
-        this.applicationToRetract = null;
-        this.isRetracting = false;
-      },
-      error: (err) => {
-        console.error('Error retracting application:', err);
-        this.toastr.error('Could not retract application. Try again.');
-        this.applicationToRetract = null;
-        this.isRetracting = false;
-      }
-    });
-  }
-
-  closeRetractModal() {
-    this.showRetractModal = false;
-    this.applicationToRetract = null;
+  viewJob(job: any) {
+    this.router.navigate(['/jobdetails', job.job_id]);
   }
 
   initializeChart() {
@@ -229,8 +203,8 @@ export class EmployerHomeComponent {
     this.initializeChart();
   }
 
-  trackByApplicationId(index: number, application: any): any {
-    return application.application_id;
+  trackByJobId(index: number, job: any): any {
+    return job.job_id;
   }
 }
 

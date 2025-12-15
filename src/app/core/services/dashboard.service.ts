@@ -52,6 +52,8 @@ export class DashboardService {
     return this.http.post(this.fullUrl(API.RETRACT_APPLICATION), { applicationId });
   }
 
+
+  
   // Employer Methods
   getEmployerStats(): Observable<any> {
     return this.http.get(this.fullUrl(API.EMPLOYER_STATS));

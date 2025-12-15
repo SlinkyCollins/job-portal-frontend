@@ -52,13 +52,6 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  getUserId(): number | null {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.user_id || null;
-  }
-
   fullUrl(endpoint: string) {
     return `${this.apiService.apiUrl}/${endpoint}`;
   }
@@ -163,8 +156,7 @@ export class AuthService {
 
   // 2. Update getEmployerData to TAP into the response and save it
   getEmployerData(): Observable<any> {
-    const userId = this.getUserId();
-    return this.http.get<any>(`${this.fullUrl(API.EMPLOYERDATA)}?user_id=${userId}`).pipe(
+    return this.http.get<any>(this.fullUrl(API.EMPLOYERDATA)).pipe(
       tap(response => {
         if (response.status && response.user) {
           // Save the user data to our state

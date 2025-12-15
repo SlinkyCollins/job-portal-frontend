@@ -1,6 +1,6 @@
 <!-- Dashboard Content -->
 <div class="dashboard-content">
-    <h1 class="page-title">Dashboard</h1>
+    <!-- <h1 class="page-title">Dashboard</h1> -->
 
     <!-- LOADING STATE -->
     <div *ngIf="isLoading" class="text-center py-5">
@@ -31,201 +31,197 @@
             <p class="text-muted">Welcome back, {{ user.firstname }}</p>
         </div>
 
-        <!-- We will build the stats grid here later -->
-        <div class="alert alert-success">
-            Company Profile Active! Stats coming soon...
-        </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <div *ngIf="!isLoading && hasCompany" class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-content">
-                <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingTotalVisitor">Coming Soon</div>
-                <ng-template #loadingTotalVisitor>
-                    <div class="stat-number loading-placeholder"></div>
-                </ng-template>
-                <div class="stat-label">Total Visitor</div>
-            </div>
-            <div class="stat-icon user-icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-content">
-                <div class="stat-number" *ngIf="!isLoadingStats; else loadingShortlisted">{{ stats.shortlisted }}</div>
-                <ng-template #loadingShortlisted>
-                    <div class="stat-number loading-placeholder"></div>
-                </ng-template>
-                <div class="stat-label">Jobs Shortlisted</div>
-            </div>
-            <div class="stat-icon bookmark-icon">
-                <i class="fas fa-bookmark"></i>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-content">
-                <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingViews">Coming Soon</div>
-                <ng-template #loadingViews>
-                    <div class="stat-number loading-placeholder"></div>
-                </ng-template>
-                <div class="stat-label">Views</div>
-            </div>
-            <div class="stat-icon eye-icon">
-                <i class="fas fa-eye"></i>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-content">
-                <div class="stat-number" *ngIf="!isLoadingStats; else loadingApplied">{{ stats.appliedJobs }}</div>
-                <ng-template #loadingApplied>
-                    <div class="stat-number loading-placeholder"></div>
-                </ng-template>
-                <div class="stat-label">Posted Jobs</div>
-            </div>
-            <div class="stat-icon edit-icon">
-                <i class="fas fa-edit"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- Content Grid -->
-    <div *ngIf="!isLoading && hasCompany" class="content-grid">
-        <!-- Profile Views Chart -->
-        <div class="chart-section">
-            <div class="section-header">
-                <h2>Jobs Views</h2>
-            </div>
-
-            <div class="chart-tabs">
-                <button class="tab-btn" [class.active]="activeTab === '1h'" (click)="setActiveTab('1h')">1h</button>
-                <button class="tab-btn" [class.active]="activeTab === 'Day'" (click)="setActiveTab('Day')">Day</button>
-                <button class="tab-btn" [class.active]="activeTab === 'Week'"
-                    (click)="setActiveTab('Week')">Week</button>
-                <button class="tab-btn" [class.active]="activeTab === 'Month'"
-                    (click)="setActiveTab('Month')">Month</button>
-                <button class="tab-btn" [class.active]="activeTab === 'Year'"
-                    (click)="setActiveTab('Year')">Year</button>
-            </div>
-
-            <div class="chart-container">
-                <canvas id="jobViewsChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Recently Applied Jobs -->
-        <div class="jobs-section">
-            <div class="section-header">
-                <h2>Recently Posted Jobs</h2>
-                <a routerLink="/dashboard/jobseeker/applied-jobs"
-                    *ngIf="recentApplications.length > 0 && !isLoadingApplications"
-                    class="btn btn-link text-decoration-none p-0 d-none d-lg-block"
-                    style="color: #244034; font-weight: 600; font-size: 0.9rem;">
-                    View All <i class="fas fa-arrow-right ms-1"></i>
-                </a>
-            </div>
-            <div class="job-list">
-                <!-- Skeleton Loaders -->
-                <div class="job-item skeleton" *ngIf="isLoadingApplications">
-                    <div class="job-icon skeleton-icon"></div>
-                    <div class="job-info">
-                        <div class="skeleton-text skeleton-title"></div>
-                        <div class="skeleton-text skeleton-subtitle"></div>
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingTotalVisitor">Coming Soon
                     </div>
-                    <div class="dropdown">
-                        <div class="skeleton-button"></div>
-                    </div>
+                    <ng-template #loadingTotalVisitor>
+                        <div class="stat-number loading-placeholder"></div>
+                    </ng-template>
+                    <div class="stat-label">Total Visitor</div>
                 </div>
-                <div class="job-item skeleton" *ngIf="isLoadingApplications">
-                    <div class="job-icon skeleton-icon"></div>
-                    <div class="job-info">
-                        <div class="skeleton-text skeleton-title"></div>
-                        <div class="skeleton-text skeleton-subtitle"></div>
-                    </div>
-                    <div class="dropdown">
-                        <div class="skeleton-button"></div>
-                    </div>
+                <div class="stat-icon user-icon">
+                    <i class="fas fa-user"></i>
                 </div>
-                <div class="job-item skeleton" *ngIf="isLoadingApplications">
-                    <div class="job-icon skeleton-icon"></div>
-                    <div class="job-info">
-                        <div class="skeleton-text skeleton-title"></div>
-                        <div class="skeleton-text skeleton-subtitle"></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingShortlisted">{{ stats.shortlisted }}
                     </div>
-                    <div class="dropdown">
-                        <div class="skeleton-button"></div>
-                    </div>
+                    <ng-template #loadingShortlisted>
+                        <div class="stat-number loading-placeholder"></div>
+                    </ng-template>
+                    <div class="stat-label">Jobs Shortlisted</div>
                 </div>
-                <div class="job-item skeleton" *ngIf="isLoadingApplications">
-                    <div class="job-icon skeleton-icon"></div>
-                    <div class="job-info">
-                        <div class="skeleton-text skeleton-title"></div>
-                        <div class="skeleton-text skeleton-subtitle"></div>
-                    </div>
-                    <div class="dropdown">
-                        <div class="skeleton-button"></div>
-                    </div>
+                <div class="stat-icon bookmark-icon">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingViews">Coming Soon</div>
+                    <ng-template #loadingViews>
+                        <div class="stat-number loading-placeholder"></div>
+                    </ng-template>
+                    <div class="stat-label">Views</div>
+                </div>
+                <div class="stat-icon eye-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingPosted">{{ stats.postedJobs }}</div>
+                    <ng-template #loadingPosted>
+                        <div class="stat-number loading-placeholder"></div>
+                    </ng-template>
+                    <div class="stat-label">Posted Jobs</div>
+                </div>
+                <div class="stat-icon edit-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Profile Views Chart -->
+            <div class="chart-section">
+                <div class="section-header">
+                    <h2>Jobs Views</h2>
                 </div>
 
-                <!-- Actual Job Items -->
-                <div class="job-item" *ngFor="let application of recentApplications; trackBy: trackByApplicationId">
-                    <div class="job-icon">
-                        <img [src]="application.logo_url" alt="Company Logo" />
-                    </div>
-                    <div class="job-info">
-                        <div class="job-title">{{ application.title }}</div>
-                        <div class="job-location">
-                            <span>{{ application.employment_type | capitalizeFirst }}</span>
-                            <span class="separator">.</span>
-                            <span>{{ application.location }}</span>
-                            <span class="separator">.</span>
-                            <span class="text-muted">Applied {{ application.applied_at | relativeTime }}</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 mt-md-0 me-lg-2 status-badge"
-                        [style.background-color]="getStatusColor(application.status) + '20'"
-                        [style.color]="getStatusColor(application.status)">
-                        {{ application.status | capitalizeFirst }}
-                    </div>
-                    <!-- Dropdown Menu -->
-                    <div class="dropdown">
-                        <button class="btn btn-link job-menu" type="button"
-                            id="dropdownMenuButton{{ application.application_id }}" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </button>
-                        <ul class="dropdown-menu"
-                            [attr.aria-labelledby]="'dropdownMenuButton' + application.application_id">
-                            <li><a class="dropdown-item" (click)="viewJob(application)">View Job</a></li>
-                            <li><a class="dropdown-item text-danger"
-                                    (click)="retractApplication(application)">Retract</a></li>
-                        </ul>
-                    </div>
+                <div class="chart-tabs">
+                    <button class="tab-btn" [class.active]="activeTab === '1h'" (click)="setActiveTab('1h')">1h</button>
+                    <button class="tab-btn" [class.active]="activeTab === 'Day'"
+                        (click)="setActiveTab('Day')">Day</button>
+                    <button class="tab-btn" [class.active]="activeTab === 'Week'"
+                        (click)="setActiveTab('Week')">Week</button>
+                    <button class="tab-btn" [class.active]="activeTab === 'Month'"
+                        (click)="setActiveTab('Month')">Month</button>
+                    <button class="tab-btn" [class.active]="activeTab === 'Year'"
+                        (click)="setActiveTab('Year')">Year</button>
                 </div>
 
-                <div style="text-align: center;" class="d-block d-lg-none">
-                    <a routerLink="/dashboard/jobseeker/applied-jobs"
-                        *ngIf="recentApplications.length > 0 && !isLoadingApplications"
-                        class="btn btn-link text-decoration-none p-0"
+                <div class="chart-container">
+                    <canvas id="jobViewsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recently Posted Jobs -->
+            <div class="jobs-section">
+                <div class="section-header">
+                    <h2>Recently Posted Jobs</h2>
+                    <a routerLink="/dashboard/employer/my-jobs"
+                        *ngIf="recentJobs.length > 0 && !isLoadingJobs"
+                        class="btn btn-link text-decoration-none p-0 d-none d-lg-block"
                         style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                         View All <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
+                <div class="job-list">
+                    <!-- Skeleton Loaders -->
+                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
+                        <div class="job-icon skeleton-icon"></div>
+                        <div class="job-info">
+                            <div class="skeleton-text skeleton-title"></div>
+                            <div class="skeleton-text skeleton-subtitle"></div>
+                        </div>
+                        <div class="dropdown">
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
+                        <div class="job-icon skeleton-icon"></div>
+                        <div class="job-info">
+                            <div class="skeleton-text skeleton-title"></div>
+                            <div class="skeleton-text skeleton-subtitle"></div>
+                        </div>
+                        <div class="dropdown">
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
+                        <div class="job-icon skeleton-icon"></div>
+                        <div class="job-info">
+                            <div class="skeleton-text skeleton-title"></div>
+                            <div class="skeleton-text skeleton-subtitle"></div>
+                        </div>
+                        <div class="dropdown">
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
+                        <div class="job-icon skeleton-icon"></div>
+                        <div class="job-info">
+                            <div class="skeleton-text skeleton-title"></div>
+                            <div class="skeleton-text skeleton-subtitle"></div>
+                        </div>
+                        <div class="dropdown">
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
 
-                <!-- Polished Empty State -->
-                <div class="no-data" *ngIf="!isLoadingApplications && recentApplications.length === 0">
-                    <div class="empty-state-content">
-                        <img src="/assets/EmptyImg.svg" alt="No applications illustration"
-                            class="empty-state-image mb-3" />
-                        <h5 class="empty-state-title text-muted">No Recent Applications</h5>
-                        <p class="empty-state-subtitle text-secondary">You haven't applied to any jobs recently. Start
-                            exploring opportunities!</p>
+                    <!-- Actual Job Items -->
+                    <div class="job-item" *ngFor="let job of recentJobs; trackBy: trackByJobId">
+                        <div class="job-icon">
+                            <img [src]="job.logo_url || 'assets/icons/building.svg'" alt="Company Logo" />
+                        </div>
+                        <div class="job-info">
+                            <div class="job-title">{{ job.title }}</div>
+                            <div class="job-location">
+                                <span>{{ job.employment_type | capitalizeFirst }}</span>
+                                <span class="separator">.</span>
+                                <span>{{ job.location }}</span>
+                                <span class="separator">.</span>
+                                <span class="text-muted">Posted {{ job.created_at | relativeTime }}</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 mt-md-0 me-lg-2 status-badge"
+                            [style.background-color]="getStatusColor(job.status) + '20'"
+                            [style.color]="getStatusColor(job.status)">
+                            {{ job.status | capitalizeFirst }}
+                        </div>
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown">
+                            <button class="btn btn-link job-menu" type="button"
+                                id="dropdownMenuButton{{ job.job_id }}" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                            <ul class="dropdown-menu"
+                                [attr.aria-labelledby]="'dropdownMenuButton' + job.job_id">
+                                <li><a class="dropdown-item" (click)="viewJob(job)">View Job</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;" class="d-block d-lg-none">
+                        <a routerLink="/dashboard/employer/my-jobs"
+                            *ngIf="recentJobs.length > 0 && !isLoadingJobs"
+                            class="btn btn-link text-decoration-none p-0"
+                            style="color: #244034; font-weight: 600; font-size: 0.9rem;">
+                            View All <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- Polished Empty State -->
+                    <div class="no-data" *ngIf="!isLoadingJobs && recentJobs.length === 0">
+                        <div class="empty-state-content">
+                            <img src="/assets/EmptyImg.svg" alt="No posts illustration"
+                                class="empty-state-image mb-3" />
+                            <h5 class="empty-state-title text-muted">No Recent Posts</h5>
+                            <p class="empty-state-subtitle text-secondary">You haven't posted any jobs yet. Start posting to attract candidates.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

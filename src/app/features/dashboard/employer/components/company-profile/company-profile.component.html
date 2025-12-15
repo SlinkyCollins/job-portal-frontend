@@ -62,7 +62,7 @@
 
       <!-- Actions -->
       <div class="form-actions">
-        <button type="submit" class="btn-save" [disabled]="isLoading">
+        <button type="submit" class="btn-save" [disabled]="isLoading || companyForm.invalid">
           <span *ngIf="!isLoading">Save Changes</span>
           <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
         </button>
