@@ -1,0 +1,60 @@
+<div class="container py-4" style="max-width: 700px;">
+  <h5 class="card-title fw-bold mb-4">My Personal Profile</h5>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <form [formGroup]="profileForm" *ngIf="!isLoading" (ngSubmit)="onSubmit()">
+    
+    <!-- Profile Card -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-4">
+
+        <!-- Photo (Visual only for MVP, logic is complex so we skip upload for now to save time) -->
+        <div class="d-flex align-items-center mb-4">
+          <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold" 
+               style="width: 80px; height: 80px; font-size: 2rem;">
+            {{ getInitials() }}
+          </div>
+          <div class="ms-3">
+            <h5 class="mb-0 fw-bold">Personal Details</h5>
+            <p class="text-muted small mb-0">Manage your login details</p>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <!-- First Name -->
+          <div class="col-md-6">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" formControlName="firstname">
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" formControlName="lastname">
+          </div>
+
+          <!-- Email (Read Only for safety in MVP) -->
+          <div class="col-12">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control bg-light" formControlName="email" readonly>
+            <div class="form-text">To change your email, please contact support.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-start">
+      <button type="submit" class="btn btn-primary px-4" 
+        [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
+        <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </form>
+</div>

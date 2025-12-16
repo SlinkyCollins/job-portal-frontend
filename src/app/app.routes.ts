@@ -3,8 +3,6 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
 import { jobSeekerGuardGuard } from './core/guards/job-seeker-guard.guard';
 import { employerGuardGuard } from './core/guards/employer-guard.guard';
-import { EmployerDashboardComponent } from './features/dashboard/employer-dashboard/employer-dashboard.component';
-import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
 import { HomeComponent } from './features/home/home.component';
 import { RoleSelectComponent } from './auth/role-select/role-select.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
@@ -22,6 +20,14 @@ import { JobsListComponent } from './features/jobs/jobs-list/jobs-list.component
 import { JobDetailsComponent } from './features/jobs/job-details/job-details.component';
 import { ContactComponent } from './features/general/contact/contact.component';
 import { ErrorpageComponent } from './features/general/errorpage/errorpage.component';
+import { EmployerDashboardComponent } from './features/dashboard/employer/employer-dashboard.component';
+import { AdminDashboardComponent } from './features/dashboard/admin/admin-dashboard.component';
+import { EmployerHomeComponent } from './features/dashboard/employer/components/employer-home/employer-home.component';
+import { CompanyProfileComponent } from './features/dashboard/employer/components/company-profile/company-profile.component';
+import { PostJobComponent } from './features/dashboard/employer/components/post-job/post-job.component';
+import { MyJobsComponent } from './features/dashboard/employer/components/my-jobs/my-jobs.component';
+import { EmployerProfileComponent } from './features/dashboard/employer/components/employer-profile/employer-profile.component';
+import { ApplicationsComponent } from './features/dashboard/employer/components/applications/applications.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, title: 'JobNet' },
@@ -50,7 +56,22 @@ export const routes: Routes = [
         ],
         canActivate: [jobSeekerGuardGuard]
     },
-    { path: 'dashboard/employer', component: EmployerDashboardComponent, title: 'Employer Dashboard | JobNet', canActivate: [employerGuardGuard] },
+    {
+        path: 'dashboard/employer',
+        component: EmployerDashboardComponent,
+        title: 'Employer Dashboard | JobNet',
+        children: [
+            { path: '', component: EmployerHomeComponent, title: 'Dashboard Home | JobNet'  },
+            { path: 'profile', component: EmployerProfileComponent, title: 'Profile | JobNet' },
+            { path: 'company-profile', component: CompanyProfileComponent, title: 'Company Profile | JobNet'  },
+            { path: 'applications', component: ApplicationsComponent, title: 'Applications | JobNet'  },
+            { path: 'post-job', component: PostJobComponent, title: 'Submit Job | JobNet'  },
+            { path: 'edit-job/:id', component: PostJobComponent, title: 'Edit Job | JobNet'  },
+            { path: 'my-jobs', component: MyJobsComponent, title: 'My Jobs | JobNet'  },
+            { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet'  },
+        ],
+        canActivate: [employerGuardGuard]
+    },
     { path: 'admin/dashboard', component: AdminDashboardComponent, title: 'Admin Dashboard | JobNet' },
     { path: '**', component: ErrorpageComponent, title: '404 Not Found | JobNet' },
 ];

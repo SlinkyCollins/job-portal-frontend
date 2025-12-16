@@ -11,7 +11,19 @@ export const API = {
   UPDATE_PROFILE: 'dashboard/shared/update_profile',
   UPLOAD_PROFILE_PHOTO: 'dashboard/shared/upload_profile_photo',
   DELETE_PROFILE_PHOTO: 'dashboard/shared/delete_profile_photo',
-  DELETE_ACCOUNT: 'dashboard/shared/delete_account'
+  DELETE_ACCOUNT: 'dashboard/shared/delete_account',
+
+  // Employer Endpoints
+  GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
+  POST_JOB: 'dashboard/employer/post_job',
+  GET_EMPLOYER_JOBS: 'dashboard/employer/get_employer_jobs',
+  GET_COMPANY_PROFILE: 'dashboard/employer/get_company_profile',
+  SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile',
+  DELETE_JOB: 'dashboard/employer/delete_job',
+  GET_JOB_DETAILS: 'dashboard/employer/get_job_details',
+  UPDATE_JOB: 'dashboard/employer/update_job',
+  GET_APPLICATIONS: 'dashboard/employer/get_applications',
+  UPDATE_APPLICATION_STATUS: 'dashboard/employer/update_application_status'
 };
 
 @Injectable({
@@ -45,6 +57,52 @@ export class DashboardService {
 
   retractApplication(applicationId: number): Observable<any> {
     return this.http.post(this.fullUrl(API.RETRACT_APPLICATION), { applicationId });
+  }
+
+
+
+  // Employer Methods
+  getEmployerDashboardData(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_DASHBOARD_DATA));
+  }
+
+  postJob(jobData: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.POST_JOB), jobData);
+  }
+
+  getEmployerJobs(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_EMPLOYER_JOBS));
+  }
+
+  deleteJob(jobId: number): Observable<any> {
+    return this.http.post(this.fullUrl(API.DELETE_JOB), { job_id: jobId });
+  }
+
+  getJobDetails(jobId: number): Observable<any> {
+    return this.http.get(`${this.fullUrl(API.GET_JOB_DETAILS)}?job_id=${jobId}`);
+  }
+
+  updateJob(jobData: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATE_JOB), jobData);
+  }
+
+  getCompanyProfile(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_COMPANY_PROFILE));
+  }
+
+  saveCompanyProfile(data: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.SAVE_COMPANY_PROFILE), data);
+  }
+
+  getApplications(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_APPLICATIONS));
+  }
+
+  updateApplicationStatus(appId: number, status: string): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATE_APPLICATION_STATUS), {
+      application_id: appId,
+      status: status
+    });
   }
 
   // Update user profile

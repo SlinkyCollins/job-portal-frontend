@@ -10,8 +10,7 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: #f8fafc;
   color: #334155;
 }
@@ -430,7 +429,7 @@ body {
   border-radius: 50%;
 }
 
-.search-job-btn {
+.post-job-btn {
   background-color: #244034;
   color: #ffffff;
   border: none;
@@ -441,7 +440,7 @@ body {
   transition: all 0.2s ease;
 }
 
-.search-job-btn:hover {
+.post-job-btn:hover {
   background-color: #d2f34c;
   color: #000;
   transform: translateY(-1px);
@@ -613,10 +612,10 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* SEEKER THEME */
-.role-badge.seeker {
-  background-color: #e2e8f0;
-  color: #244034;
+/* EMPLOYER THEME */
+.role-badge.employer {
+  background-color: #e2e8f0; 
+  color: #244034;          
   border: 1px solid #e2e8f0;
 }
 
@@ -666,4 +665,4 @@ body {
   .mobile-overlay {
     display: block;
   }
-}
+}   

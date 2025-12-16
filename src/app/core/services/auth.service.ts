@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
-import { catchError, from, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, from, Observable, switchMap, tap } from 'rxjs';
+import { Location } from '@angular/common';
 export const API = {
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
@@ -42,12 +43,50 @@ export class AuthService {
     public router: Router,
     public toastr: ToastrService,
     public apiService: ApiServiceService,
-    private auth: Auth,  // Firebase Auth
-    private ngZone: NgZone
+    private auth: Auth,
+    private ngZone: NgZone,
+    private location: Location
   ) { }
+
+  // 1. Create a BehaviorSubject to hold the user state
+  private currentUserSubject = new BehaviorSubject<any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
   fullUrl(endpoint: string) {
     return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      // Fallback: Redirect based on their ACTUAL role
+      const role = this.getUserRole();
+      if (role === 'job_seeker') {
+        this.router.navigate(['/dashboard/jobseeker']);
+      } else if (role === 'employer') {
+        this.router.navigate(['/dashboard/employer']);
+      } else if (role === 'admin') {
+        this.router.navigate(['/admin/dashboard']);
+      } else {
+        this.router.navigate(['/']); // Home if no role
+      }
+    }
+  }
+
+  // Helper to redirect unauthorized users to their correct home
+  redirectBasedOnRole(role: string) {
+    this.toastr.warning('You do not have permission to view that page.', 'Access Denied');
+
+    if (role === 'job_seeker') {
+      this.router.navigate(['/dashboard/jobseeker']);
+    } else if (role === 'employer') {
+      this.router.navigate(['/dashboard/employer']);
+    } else if (role === 'admin') {
+      this.router.navigate(['/admin/dashboard']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   logout() {
@@ -115,8 +154,21 @@ export class AuthService {
     return this.http.get(this.fullUrl(API.SEEKERDATA));
   }
 
-  getEmployerData() {
-    return this.http.get(this.fullUrl(API.EMPLOYERDATA));
+  // 2. Update getEmployerData to TAP into the response and save it
+  getEmployerData(): Observable<any> {
+    return this.http.get<any>(this.fullUrl(API.EMPLOYERDATA)).pipe(
+      tap(response => {
+        if (response.status && response.user) {
+          // Save the user data to our state
+          this.currentUserSubject.next(response.user);
+        }
+      })
+    );
+  }
+
+  // Helper to get current value without subscribing (optional)
+  getCurrentUserValue() {
+    return this.currentUserSubject.value;
   }
 
   getAllJobs() {

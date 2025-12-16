@@ -1,0 +1,40 @@
+.my-jobs-container {
+  padding-bottom: 3rem;
+}
+
+.table th {
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.table td {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  vertical-align: middle;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.5em 0.8em;
+}
+
+/* Custom Badge Colors */
+.bg-success-subtle { background-color: #dcfce7 !important; }
+.text-success { color: #166534 !important; }
+
+.bg-secondary-subtle { background-color: #f3f4f6 !important; }
+.text-secondary { color: #4b5563 !important; }
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

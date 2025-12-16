@@ -1,0 +1,260 @@
+<div class="post-job-container fade-in">
+
+    <!-- Header -->
+    <div class="page-header mb-4">
+        <div>
+            <h1 class="h3 mb-1">{{ isEditMode ? 'Edit Job' : 'Post a New Job' }}</h1>
+            <p class="text-muted">{{ isEditMode ? 'Update your job details' : 'Find the best talent for your company' }}
+            </p>
+        </div>
+        <button type="button" class="btn btn-outline-secondary" routerLink="/dashboard/employer/my-jobs">
+            Cancel
+        </button>
+    </div>
+
+    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+
+        <!-- SECTION 1: BASIC INFORMATION -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-primary"><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <!-- Job Title -->
+                    <div class="col-md-12">
+                        <label class="form-label required">Job Title</label>
+                        <input type="text" class="form-control" formControlName="title"
+                            placeholder="e.g. Senior Frontend Developer">
+                        <div *ngIf="jobForm.get('title')?.touched && jobForm.get('title')?.invalid"
+                            class="text-danger small mt-1">
+                            Title is required (min 5 chars).
+                        </div>
+                    </div>
+
+                    <!-- Status (Only in Edit Mode) -->
+                    <div class="col-md-6" *ngIf="isEditMode">
+                        <label class="form-label">Job Status</label>
+                        <select class="form-select" formControlName="status">
+                            <option value="active">Active</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-6">
+                        <label class="form-label required">Category</label>
+                        <select class="form-select" formControlName="category_id" [compareWith]="compareFn">
+                            <!-- 1. Bind null to the default option -->
+                            <option [ngValue]="null" disabled>Select Category</option>
+
+                            <!-- 2. Use [ngValue] to keep the ID as a Number -->
+                            <option *ngFor="let cat of categories" [ngValue]="cat.id">
+                                {{ cat.name }}
+                            </option>
+                        </select>
+
+                        <div *ngIf="jobForm.get('category_id')?.touched && jobForm.get('category_id')?.invalid"
+                            class="text-danger small mt-1">
+                            Category is required.
+                        </div>
+                    </div>
+
+                    <!-- Employment Type -->
+                    <div class="col-md-6">
+                        <label class="form-label required">Employment Type</label>
+                        <select class="form-select" formControlName="employment_type">
+                            <option *ngFor="let type of employmentTypes" [value]="type">{{ type | uppercase }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="col-md-12">
+                        <label class="form-label required">Location</label>
+                        <input type="text" class="form-control" formControlName="location"
+                            placeholder="e.g. Lagos, Nigeria or Remote">
+                        <div *ngIf="jobForm.get('location')?.touched && jobForm.get('location')?.invalid"
+                            class="text-danger small mt-1">
+                            Location is required.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: JOB DESCRIPTION -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-primary"><i class="fas fa-align-left me-2"></i>Job Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <!-- Overview -->
+                    <div class="col-12">
+                        <label class="form-label required">Job Overview</label>
+                        <textarea class="form-control" rows="3" formControlName="overview"
+                            placeholder="Brief summary of the role (min 50 chars)"></textarea>
+                        <div *ngIf="jobForm.get('overview')?.touched && jobForm.get('overview')?.invalid"
+                            class="text-danger small mt-1">
+                            Overview is required (min 50 chars).
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label class="form-label required">Full Description</label>
+                        <textarea class="form-control" rows="6" formControlName="description"
+                            placeholder="Detailed description of the role..."></textarea>
+                        <div *ngIf="jobForm.get('description')?.touched && jobForm.get('description')?.invalid"
+                            class="text-danger small mt-1">
+                            Description is required (min 100 chars).
+                        </div>
+                    </div>
+
+                    <!-- Responsibilities -->
+                    <div class="col-12">
+                        <label class="form-label required">Key Responsibilities</label>
+                        <textarea class="form-control" rows="4" formControlName="responsibilities"
+                            placeholder="- Lead the development team&#10;- Architect scalable solutions..."></textarea>
+                        <div *ngIf="jobForm.get('responsibilities')?.touched && jobForm.get('responsibilities')?.invalid"
+                            class="text-danger small mt-1">
+                            Responsibilities are required.
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="col-12">
+                        <label class="form-label required">Requirements / Skills</label>
+                        <textarea class="form-control" rows="4" formControlName="requirements"
+                            placeholder="- 5+ years experience with Angular&#10;- Strong knowledge of TypeScript..."></textarea>
+                        <div *ngIf="jobForm.get('requirements')?.touched && jobForm.get('requirements')?.invalid"
+                            class="text-danger small mt-1">
+                            Requirements are required.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: SALARY & BENEFITS -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-primary"><i class="fas fa-money-bill-wave me-2"></i>Salary & Benefits</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <!-- Currency -->
+                    <div class="col-md-3">
+                        <label class="form-label">Currency</label>
+                        <select class="form-select" formControlName="currency">
+                            <option *ngFor="let curr of currencies" [value]="curr">{{ curr }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="col-md-5">
+                        <label class="form-label required">Salary Amount</label>
+
+                        <input type="text" class="form-control" formControlName="salary_amount"
+                            placeholder="e.g. 250,000 (Min Budget)" (input)="formatSalary($event)">
+
+                        <!-- Validation Errors -->
+                        <div *ngIf="jobForm.get('salary_amount')?.touched && jobForm.get('salary_amount')?.invalid"
+                            class="text-danger small mt-1">
+
+                            <div *ngIf="jobForm.get('salary_amount')?.hasError('required')">
+                                Salary is required.
+                            </div>
+
+                            <div *ngIf="jobForm.get('salary_amount')?.hasError('min')">
+                                Salary cannot be 0 or negative.
+                            </div>
+
+                            <div *ngIf="jobForm.get('salary_amount')?.hasError('max')">
+                                Salary is too high (Max: 99,999,999).
+                            </div>
+
+                            <div *ngIf="jobForm.get('salary_amount')?.hasError('invalidNumber')">
+                                Please enter a valid number.
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="col-md-4">
+                        <label class="form-label">Per</label>
+                        <select class="form-select" formControlName="salary_duration">
+                            <option *ngFor="let dur of salaryDurations" [value]="dur">{{ dur }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="col-12">
+                        <label class="form-label">Benefits & Perks</label>
+                        <textarea class="form-control" rows="3" formControlName="benefits"
+                            placeholder="- Health Insurance&#10;- Remote Work Options..."></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: CANDIDATE PREFERENCES -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-primary"><i class="fas fa-user-check me-2"></i>Candidate Preferences</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <!-- Experience Level -->
+                    <div class="col-md-4">
+                        <label class="form-label required">Experience Level</label>
+                        <select class="form-select" formControlName="experience_level">
+                            <option *ngFor="let level of experienceLevels" [value]="level">{{ level }}</option>
+                        </select>
+                    </div>
+
+                    <!-- English Fluency -->
+                    <div class="col-md-4">
+                        <label class="form-label">English Fluency</label>
+                        <select class="form-select" formControlName="english_fluency">
+                            <option *ngFor="let level of englishLevels" [value]="level">{{ level }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Deadline -->
+                    <div class="col-md-4">
+                        <label class="form-label">Application Deadline</label>
+                        <input type="date" class="form-control" formControlName="deadline">
+                        <div class="form-text">Leave blank for default (30 days).</div>
+                    </div>
+
+                    <!-- Nice to Have -->
+                    <div class="col-12">
+                        <label class="form-label">Nice to Have (Optional)</label>
+                        <textarea class="form-control" rows="3" formControlName="nice_to_have"
+                            placeholder="Additional skills that are a plus..."></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-5">
+            <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="isLoading || jobForm.invalid">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+                    aria-hidden="true"></span>
+                {{ isLoading ? 'Processing...' : (isEditMode ? 'Update Job' : 'Post Job Now') }}
+            </button>
+        </div>
+
+    </form>
+</div>
