@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CompanyProfileComponent implements OnInit {
   companyForm: FormGroup;
   isLoading = false;
+  isSaving = false;
   logoPreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
 
@@ -90,7 +91,7 @@ export class CompanyProfileComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.isSaving = true;
     const formData = new FormData();
     
     // Append form values
@@ -111,12 +112,12 @@ export class CompanyProfileComponent implements OnInit {
         } else {
           this.toastr.error(res.message || 'Failed to save profile.');
         }
-        this.isLoading = false;
+        this.isSaving = false;
       },
       error: (err) => {
         console.error('Error saving profile', err);
         this.toastr.error('An error occurred while saving.');
-        this.isLoading = false;
+        this.isSaving = false;
       }
     });
   }

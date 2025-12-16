@@ -12,9 +12,10 @@ export const API = {
   UPLOAD_PROFILE_PHOTO: 'dashboard/shared/upload_profile_photo',
   DELETE_PROFILE_PHOTO: 'dashboard/shared/delete_profile_photo',
   DELETE_ACCOUNT: 'dashboard/shared/delete_account',
-  
+
   // Employer Endpoints
   EMPLOYER_STATS: 'dashboard/employer/stats',
+  POST_JOB: 'dashboard/employer/post_job',
   GET_COMPANY_PROFILE: 'dashboard/employer/get_company_profile',
   SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile'
 };
@@ -53,10 +54,14 @@ export class DashboardService {
   }
 
 
-  
+
   // Employer Methods
   getEmployerStats(): Observable<any> {
     return this.http.get(this.fullUrl(API.EMPLOYER_STATS));
+  }
+
+  postJob(jobData: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.POST_JOB), jobData);
   }
 
   getCompanyProfile(): Observable<any> {

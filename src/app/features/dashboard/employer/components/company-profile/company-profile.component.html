@@ -79,9 +79,9 @@
 
       <!-- Actions -->
       <div class="form-actions">
-        <button type="submit" class="btn-save" [disabled]="isLoading || companyForm.invalid || !companyForm.dirty">
-          <span *ngIf="!isLoading">Save Changes</span>
-          <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+        <button type="submit" class="btn-save" [disabled]="isSaving || companyForm.invalid || !companyForm.dirty">
+          <span *ngIf="!isSaving">Save Changes</span>
+          <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
         </button>
       </div>
 
