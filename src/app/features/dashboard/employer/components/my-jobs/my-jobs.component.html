@@ -20,7 +20,7 @@
 
   <!-- Empty State (No Jobs) -->
   <div *ngIf="!isLoading && jobs.length === 0" class="text-center py-5 bg-white rounded shadow-sm border">
-    <img src="assets/icons/empty-box.svg" alt="No Jobs" style="width: 80px; opacity: 0.5;" class="mb-3">
+    <img src="assets/EmptyImg.svg" alt="No Jobs" style="width: 260px; opacity: 0.8;" class="mb-3">
     <h4>No Jobs Posted Yet</h4>
     <p class="text-muted mb-4">You haven't posted any jobs. Get started now!</p>
     <a routerLink="/dashboard/employer/post-job" class="btn btn-outline-primary">Post a Job</a>

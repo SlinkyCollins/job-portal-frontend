@@ -14,7 +14,7 @@ export const API = {
   DELETE_ACCOUNT: 'dashboard/shared/delete_account',
 
   // Employer Endpoints
-  EMPLOYER_STATS: 'dashboard/employer/stats',
+  GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
   POST_JOB: 'dashboard/employer/post_job',
   GET_EMPLOYER_JOBS: 'dashboard/employer/get_employer_jobs',
   GET_COMPANY_PROFILE: 'dashboard/employer/get_company_profile',
@@ -62,8 +62,8 @@ export class DashboardService {
 
 
   // Employer Methods
-  getEmployerStats(): Observable<any> {
-    return this.http.get(this.fullUrl(API.EMPLOYER_STATS));
+  getEmployerDashboardData(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_DASHBOARD_DATA));
   }
 
   postJob(jobData: any): Observable<any> {

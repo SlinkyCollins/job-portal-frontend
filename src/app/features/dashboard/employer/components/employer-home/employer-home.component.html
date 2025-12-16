@@ -35,15 +35,16 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-content">
-                    <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingTotalVisitor">Coming Soon
+                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingTotalApps">
+                        {{ stats.totalApplications }}
                     </div>
-                    <ng-template #loadingTotalVisitor>
+                    <ng-template #loadingTotalApps>
                         <div class="stat-number loading-placeholder"></div>
                     </ng-template>
-                    <div class="stat-label">Total Visitor</div>
+                    <div class="stat-label">Total Applications</div>
                 </div>
                 <div class="stat-icon user-icon">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-users"></i> <!-- Changed icon to users -->
                 </div>
             </div>
 
@@ -63,14 +64,16 @@
 
             <div class="stat-card">
                 <div class="stat-content">
-                    <div class="stat-number coming-soon" *ngIf="!isLoadingStats; else loadingViews">Coming Soon</div>
-                    <ng-template #loadingViews>
+                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingActive">
+                        {{ stats.activeJobs }}
+                    </div>
+                    <ng-template #loadingActive>
                         <div class="stat-number loading-placeholder"></div>
                     </ng-template>
-                    <div class="stat-label">Views</div>
+                    <div class="stat-label">Active Jobs</div>
                 </div>
                 <div class="stat-icon eye-icon">
-                    <i class="fas fa-eye"></i>
+                    <i class="fas fa-briefcase"></i> <!-- Changed icon to briefcase -->
                 </div>
             </div>
 
@@ -117,8 +120,7 @@
             <div class="jobs-section">
                 <div class="section-header">
                     <h2>Recently Posted Jobs</h2>
-                    <a routerLink="/dashboard/employer/my-jobs"
-                        *ngIf="recentJobs.length > 0 && !isLoadingJobs"
+                    <a routerLink="/dashboard/employer/my-jobs" *ngIf="recentJobs.length > 0 && !isLoadingJobs"
                         class="btn btn-link text-decoration-none p-0 d-none d-lg-block"
                         style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                         View All <i class="fas fa-arrow-right ms-1"></i>
@@ -189,21 +191,18 @@
                         </div>
                         <!-- Dropdown Menu -->
                         <div class="dropdown">
-                            <button class="btn btn-link job-menu" type="button"
-                                id="dropdownMenuButton{{ job.job_id }}" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <button class="btn btn-link job-menu" type="button" id="dropdownMenuButton{{ job.job_id }}"
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-ellipsis-h"></i>
                             </button>
-                            <ul class="dropdown-menu"
-                                [attr.aria-labelledby]="'dropdownMenuButton' + job.job_id">
+                            <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownMenuButton' + job.job_id">
                                 <li><a class="dropdown-item" (click)="viewJob(job)">View Job</a></li>
                             </ul>
                         </div>
                     </div>
 
                     <div style="text-align: center;" class="d-block d-lg-none">
-                        <a routerLink="/dashboard/employer/my-jobs"
-                            *ngIf="recentJobs.length > 0 && !isLoadingJobs"
+                        <a routerLink="/dashboard/employer/my-jobs" *ngIf="recentJobs.length > 0 && !isLoadingJobs"
                             class="btn btn-link text-decoration-none p-0"
                             style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                             View All <i class="fas fa-arrow-right ms-1"></i>
@@ -216,7 +215,8 @@
                             <img src="/assets/EmptyImg.svg" alt="No posts illustration"
                                 class="empty-state-image mb-3" />
                             <h5 class="empty-state-title text-muted">No Recent Posts</h5>
-                            <p class="empty-state-subtitle text-secondary">You haven't posted any jobs yet. Start posting to attract candidates.</p>
+                            <p class="empty-state-subtitle text-secondary">You haven't posted any jobs yet. Start
+                                posting to attract candidates.</p>
                         </div>
                     </div>
                 </div>

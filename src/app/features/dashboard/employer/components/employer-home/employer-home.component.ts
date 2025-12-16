@@ -24,9 +24,9 @@ export class EmployerHomeComponent {
   isLoadingStats: boolean = true;
   isLoadingJobs: boolean = true;
   stats: any = {
-    totalVisitors: 0,
+    totalApplications: 0,
     shortlisted: 0,
-    views: 0,
+    activeJobs: 0,
     postedJobs: 0
   };
   recentJobs: any[] = [];
@@ -56,16 +56,15 @@ export class EmployerHomeComponent {
         this.user = user;
         this.userFirstName = user.firstname;
         this.companyId = user.company_id;
-        
+
         // Logic to switch views
         if (this.companyId) {
           this.hasCompany = true;
-          this.loadStats(); // Load stats only if company exists
-          this.loadRecentJobs();
+          this.loadStatsAndJobs(); // Load stats only if company exists
         } else {
           this.hasCompany = false;
         }
-        
+
         this.isLoading = false; // Data received, stop loading
       }
     });
@@ -82,40 +81,31 @@ export class EmployerHomeComponent {
     }
   }
 
-  loadStats() {
-    this.dashboardService.getEmployerStats().subscribe({
-      next: (data) => {
-        this.stats.shortlisted = data.shortlisted || 0;
-        this.stats.postedJobs = data.postedJobs || 0;
-        this.stats.views = data.views || 0;
-        this.stats.totalVisitors = data.totalVisitors || 0;
-        this.isLoadingStats = false;
-      },
-      error: (err) => {
-        console.error('Error loading stats:', err);
-        this.isLoadingStats = false;
-      }
-    });
-  }
+  loadStatsAndJobs() {
+    this.isLoadingStats = true;
+    this.isLoadingJobs = true;
 
-  loadRecentJobs() {
-    // TODO: Implement getRecentPostedJobs in DashboardService
-    // For now, we'll simulate an empty list or mock data
-    this.isLoadingJobs = false;
-    this.recentJobs = []; 
-    
-    /* 
-    this.dashboardService.getRecentPostedJobs().subscribe({
-      next: (data) => {
-        this.recentJobs = data.recentJobs || [];
+    this.dashboardService.getEmployerDashboardData().subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          // Map Backend keys to Frontend keys
+          this.stats.postedJobs = res.stats.total_jobs;
+          this.stats.activeJobs = res.stats.active_jobs;
+          this.stats.totalApplications = res.stats.total_applications;
+          this.stats.shortlisted = res.stats.shortlisted_count;
+
+          // Load Jobs
+          this.recentJobs = res.recentJobs;
+        }
+        this.isLoadingStats = false;
         this.isLoadingJobs = false;
       },
       error: (err) => {
-        console.error('Error loading jobs:', err);
+        console.error('Error loading dashboard data:', err);
+        this.isLoadingStats = false;
         this.isLoadingJobs = false;
       }
     });
-    */
   }
 
   viewJob(job: any) {
