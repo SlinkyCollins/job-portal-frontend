@@ -26,7 +26,7 @@
     </div>
     <!-- User Dropdown Menu -->
     <div class="user-dropdown" [class.open]="userDropdownOpen">
-      <a routerLink="profile" class="dropdown-item"> 
+      <a routerLink="profile" class="dropdown-item">
         <i class="fas fa-user"></i>
         <span>My Profile</span>
       </a>
@@ -51,46 +51,51 @@
 
     <!-- Navigation Menu -->
     <nav class="nav-menu">
+
+      <!-- 1. Dashboard -->
       <a routerLink="/dashboard/employer" routerLinkActive="active" class="nav-item"
         [routerLinkActiveOptions]="{ exact: true }" (click)="onNavItemClick()">
         <i class="fas fa-th-large"></i>
         <span>Dashboard</span>
       </a>
 
-      <!-- 1. Company Profile (The Entity) -->
-      <a routerLink="/dashboard/employer/company-profile" routerLinkActive="active" class="nav-item"
-        (click)="onNavItemClick()">
-        <i class="fas fa-building"></i>
-        <span>Company Profile</span>
+      <!-- 2. My Profile -->
+      <a routerLink="/dashboard/employer/profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
+        <i class="fas fa-user-tie"></i>
+        <span>My Profile</span>
       </a>
 
-      <!-- 2. Post Job (The Action) -->
+      <!-- 3. My Jobs (Logical flow: Post -> Manage) -->
+      <a routerLink="/dashboard/employer/my-jobs" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
+        <i class="fas fa-briefcase"></i>
+        <span>My Jobs</span>
+      </a>
+
+      <!-- 4. Post Job  -->
       <a routerLink="/dashboard/employer/post-job" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
         <i class="fas fa-plus-circle"></i>
         <span>Post a Job</span>
       </a>
 
-      <!-- 3. My Jobs (The Management) -->
-      <a routerLink="/dashboard/employer/my-jobs" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
-        <i class="fas fa-briefcase"></i>
-        <span>My Jobs</span>
-      </a>
-
-      <!-- 4. RESTORED: Applications (The Inbox) -->
+      <!-- 5. Applications (The Goal: Hiring) -->
       <a routerLink="/dashboard/employer/applications" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
-        <i class="fas fa-users"></i> <!-- Changed icon to Users/Candidates -->
+        <i class="fas fa-users"></i>
         <span>Applications</span>
       </a>
 
-      <!-- 5. RESTORED: User Profile (The Person) -->
-      <!-- Renamed to "My Profile" to distinguish from Company -->
-      <a routerLink="/dashboard/employer/profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
-        <i class="fas fa-user-tie"></i> <!-- Changed icon to User Tie (Professional) -->
-        <span>My Profile</span>
+      <!-- Separator for visual grouping (Optional but recommended via CSS margin) -->
+      <div style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+
+      <!-- 6. Company Profile -->
+      <a routerLink="/dashboard/employer/company-profile" routerLinkActive="active" class="nav-item"
+        (click)="onNavItemClick()">
+        <i class="fas fa-building"></i>
+        <span>Company Profile</span>
       </a>
 
+      <!-- 7. Settings -->
       <a routerLink="/dashboard/employer/account-settings" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
         <i class="fas fa-cog"></i>

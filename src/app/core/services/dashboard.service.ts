@@ -21,7 +21,9 @@ export const API = {
   SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile',
   DELETE_JOB: 'dashboard/employer/delete_job',
   GET_JOB_DETAILS: 'dashboard/employer/get_job_details',
-  UPDATE_JOB: 'dashboard/employer/update_job'
+  UPDATE_JOB: 'dashboard/employer/update_job',
+  GET_APPLICATIONS: 'dashboard/employer/get_applications',
+  UPDATE_APPLICATION_STATUS: 'dashboard/employer/update_application_status'
 };
 
 @Injectable({
@@ -90,6 +92,17 @@ export class DashboardService {
 
   saveCompanyProfile(data: any): Observable<any> {
     return this.http.post(this.fullUrl(API.SAVE_COMPANY_PROFILE), data);
+  }
+
+  getApplications(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_APPLICATIONS));
+  }
+
+  updateApplicationStatus(appId: number, status: string): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATE_APPLICATION_STATUS), {
+      application_id: appId,
+      status: status
+    });
   }
 
   // Update user profile
