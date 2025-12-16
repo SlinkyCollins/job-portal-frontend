@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../../../../core/services/category.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
@@ -19,6 +19,9 @@ export class PostJobComponent implements OnInit {
   isLoading = false;
   categories: any[] = [];
 
+  isEditMode = false;
+  jobId: number | null = null;
+
   // Enums for dropdowns (matching your DB)
   employmentTypes = ['fulltime', 'parttime', 'contract', 'internship', 'fixedprice', 'freelance', 'remote'];
   experienceLevels = ['Fresher', 'Junior', 'Mid', 'Senior', 'No-Experience', 'Internship', 'Expert'];
@@ -31,7 +34,8 @@ export class PostJobComponent implements OnInit {
     private categoryService: CategoryService,
     private dashboardService: DashboardService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.jobForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
@@ -58,18 +62,29 @@ export class PostJobComponent implements OnInit {
       responsibilities: ['', Validators.required],
       requirements: ['', Validators.required],
       nice_to_have: [''],
-      benefits: ['']
+      benefits: [''],
+      // Add Status field (Only relevant for Edit, but harmless to have in form group)
+      status: ['active']
     });
   }
 
   ngOnInit(): void {
-    this.loadCategories();
-  }
-
-  loadCategories() {
     this.categoryService.getCategories().subscribe(cats => {
       this.categories = cats;
+
+      // 2. ONLY AFTER categories are here, check if we need to edit a job
+      this.checkEditMode();
     });
+  }
+
+  checkEditMode() {
+    // Check for ID in URL
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode = true;
+      this.jobId = +id;
+      this.loadJobDetails(this.jobId); // Now it's safe to load details!
+    }
   }
 
   // 1. The Formatting Logic
@@ -120,6 +135,60 @@ export class PostJobComponent implements OnInit {
     };
   }
 
+
+  compareFn(c1: any, c2: any): boolean {
+    return c1 == c2;
+  }
+
+  loadJobDetails(id: number) {
+    this.isLoading = true;
+    this.dashboardService.getJobDetails(id).subscribe({
+      next: (res: any) => {
+        this.isLoading = false;
+        if (res.status) {
+          this.patchFormValues(res.data);
+        } else {
+          this.toastr.error('Job not found');
+          this.router.navigate(['/dashboard/employer/my-jobs']);
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.toastr.error('Error loading job details');
+        this.router.navigate(['/dashboard/employer/my-jobs']);
+      }
+    });
+  }
+
+  patchFormValues(data: any) {
+    // 1. Format Salary (Add commas for display)
+    let formattedSalary = data.salary_amount;
+    if (formattedSalary) {
+      formattedSalary = new Intl.NumberFormat('en-US').format(parseInt(formattedSalary));
+    }
+
+    // 2. Patch the form
+    this.jobForm.patchValue({
+      title: data.title,
+      category_id: data.category_id, // Ensure this matches the type in <option [ngValue]>
+      employment_type: data.employment_type,
+      location: data.location,
+      salary_amount: formattedSalary, // Show formatted string
+      currency: data.currency,
+      salary_duration: data.salary_duration,
+      experience_level: data.experience_level,
+      english_fluency: data.english_fluency,
+      deadline: data.deadline,
+      overview: data.overview,
+      description: data.description,
+      responsibilities: data.responsibilities,
+      requirements: data.requirements,
+      nice_to_have: data.nice_to_have,
+      benefits: data.benefits,
+      status: data.status
+    });
+  }
+
   onSubmit() {
     if (this.jobForm.invalid) {
       this.jobForm.markAllAsTouched();
@@ -128,30 +197,50 @@ export class PostJobComponent implements OnInit {
     }
 
     this.isLoading = true;
-
-    // CLONE the form value so we don't mess up the UI
     const formData = { ...this.jobForm.value };
 
-    // CLEAN the salary (Remove commas: "250,000" -> 250000)
+    // Clean Salary (Remove commas)
     if (formData.salary_amount) {
       formData.salary_amount = parseInt(formData.salary_amount.toString().replace(/,/g, ''), 10);
     }
 
-    this.dashboardService.postJob(formData).subscribe({
-      next: (res: any) => {
-        this.isLoading = false;
-        if (res.status) {
-          this.toastr.success('Job posted successfully!');
-          this.router.navigate(['/dashboard/employer/my-jobs']);
-        } else {
-          this.toastr.error(res.message || 'Failed to post job.');
+    if (this.isEditMode && this.jobId) {
+      // --- UPDATE MODE ---
+      formData.job_id = this.jobId; // Add ID to payload
+
+      this.dashboardService.updateJob(formData).subscribe({
+        next: (res: any) => {
+          this.isLoading = false;
+          if (res.status) {
+            this.toastr.success('Job updated successfully!');
+            this.router.navigate(['/dashboard/employer/my-jobs']);
+          } else {
+            this.toastr.error(res.message || 'Update failed');
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.toastr.error('An error occurred');
         }
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.toastr.error('An error occurred. Please try again.');
-        console.error(err);
-      }
-    });
+      });
+
+    } else {
+      // --- CREATE MODE ---
+      this.dashboardService.postJob(formData).subscribe({
+        next: (res: any) => {
+          this.isLoading = false;
+          if (res.status) {
+            this.toastr.success('Job posted successfully!');
+            this.router.navigate(['/dashboard/employer/my-jobs']);
+          } else {
+            this.toastr.error(res.message || 'Post failed');
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.toastr.error('An error occurred');
+        }
+      });
+    }
   }
 }

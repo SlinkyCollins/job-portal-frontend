@@ -3,8 +3,9 @@
     <!-- Header -->
     <div class="page-header mb-4">
         <div>
-            <h1 class="h3 mb-1">Post a New Job</h1>
-            <p class="text-muted">Find the best talent for your company</p>
+            <h1 class="h3 mb-1">{{ isEditMode ? 'Edit Job' : 'Post a New Job' }}</h1>
+            <p class="text-muted">{{ isEditMode ? 'Update your job details' : 'Find the best talent for your company' }}
+            </p>
         </div>
         <button type="button" class="btn btn-outline-secondary" routerLink="/dashboard/employer/my-jobs">
             Cancel
@@ -32,10 +33,19 @@
                         </div>
                     </div>
 
+                    <!-- Status (Only in Edit Mode) -->
+                    <div class="col-md-6" *ngIf="isEditMode">
+                        <label class="form-label">Job Status</label>
+                        <select class="form-select" formControlName="status">
+                            <option value="active">Active</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+
                     <!-- Category -->
                     <div class="col-md-6">
                         <label class="form-label required">Category</label>
-                        <select class="form-select" formControlName="category_id">
+                        <select class="form-select" formControlName="category_id" [compareWith]="compareFn">
                             <!-- 1. Bind null to the default option -->
                             <option [ngValue]="null" disabled>Select Category</option>
 
@@ -242,7 +252,7 @@
             <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="isLoading || jobForm.invalid">
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
                     aria-hidden="true"></span>
-                {{ isLoading ? 'Posting Job...' : 'Post Job Now' }}
+                {{ isLoading ? 'Processing...' : (isEditMode ? 'Update Job' : 'Post Job Now') }}
             </button>
         </div>
 

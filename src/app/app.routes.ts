@@ -66,6 +66,7 @@ export const routes: Routes = [
             { path: 'company-profile', component: CompanyProfileComponent, title: 'Company Profile | JobNet'  },
             { path: 'applications', component: ApplicationsComponent, title: 'Applications | JobNet'  },
             { path: 'post-job', component: PostJobComponent, title: 'Submit Job | JobNet'  },
+            { path: 'edit-job/:id', component: PostJobComponent, title: 'Edit Job | JobNet'  },
             { path: 'my-jobs', component: MyJobsComponent, title: 'My Jobs | JobNet'  },
             { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet'  },
         ],

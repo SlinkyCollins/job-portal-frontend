@@ -18,7 +18,10 @@ export const API = {
   POST_JOB: 'dashboard/employer/post_job',
   GET_EMPLOYER_JOBS: 'dashboard/employer/get_employer_jobs',
   GET_COMPANY_PROFILE: 'dashboard/employer/get_company_profile',
-  SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile'
+  SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile',
+  DELETE_JOB: 'dashboard/employer/delete_job',
+  GET_JOB_DETAILS: 'dashboard/employer/get_job_details',
+  UPDATE_JOB: 'dashboard/employer/update_job'
 };
 
 @Injectable({
@@ -67,6 +70,18 @@ export class DashboardService {
 
   getEmployerJobs(): Observable<any> {
     return this.http.get(this.fullUrl(API.GET_EMPLOYER_JOBS));
+  }
+
+  deleteJob(jobId: number): Observable<any> {
+    return this.http.post(this.fullUrl(API.DELETE_JOB), { job_id: jobId });
+  }
+
+  getJobDetails(jobId: number): Observable<any> {
+    return this.http.get(`${this.fullUrl(API.GET_JOB_DETAILS)}?job_id=${jobId}`);
+  }
+
+  updateJob(jobData: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATE_JOB), jobData);
   }
 
   getCompanyProfile(): Observable<any> {
