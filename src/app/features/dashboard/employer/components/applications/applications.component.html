@@ -37,11 +37,10 @@
                         </div>
                     </div>
 
-                    <!-- Resume Button -->
-                    <a *ngIf="app.cv_url" [href]="app.cv_url" target="_blank" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-file-pdf me-1"></i> View Resume
-                    </a>
-
+                    <!-- In your candidates table/card -->
+                    <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="openResumePreview(app.cv_url)">
+                        <i class="fas fa-eye me-1"></i> Preview CV
+                    </button>
 
                     <!-- Status Actions -->
                     <div class="dropdown">
@@ -75,3 +74,50 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<!-- PREVIEW MODAL OVERLAY -->
+<div *ngIf="showPreviewModal" class="modal-backdrop fade show"></div>
+
+<!-- PREVIEW MODAL -->
+<div *ngIf="showPreviewModal" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered" style="height: 90vh;">
+        <div class="modal-content h-100">
+            <div class="modal-header py-2">
+                <h5 class="modal-title fs-6">Resume Preview</h5>
+                <button type="button" class="btn-close" (click)="closePreview()"></button>
+            </div>
+            <div
+                class="modal-body p-0 bg-light h-100 d-flex align-items-center justify-content-center position-relative">
+
+              <!-- 1. PDF Viewer (Optimized for Viewing Only) -->
+                <div *ngIf="previewFileType === 'pdf'" class="w-100 h-100">
+                    <ngx-extended-pdf-viewer 
+                        [src]="previewUrl" 
+                        [height]="'90vh'"
+                        
+                        [showToolbar]="true" 
+                        [showSidebarButton]="false" 
+                        [showFindButton]="true"
+                        [showPagingButtons]="true" 
+                        [showZoomButtons]="true" 
+                        [showPresentationModeButton]="true"
+                        [showDownloadButton]="true" 
+                        [showPrintButton]="true"
+                        
+                        [showTextEditor]="false"
+                        [showDrawEditor]="false"
+                        [showStampEditor]="false"
+                        [showHandToolButton]="true">
+                    </ngx-extended-pdf-viewer>
+                </div>
+
+                <!-- 2. DOC Viewer (Google Docs Iframe) -->
+                <iframe *ngIf="previewFileType === 'doc'" [src]="previewUrl" class="w-100 h-100 border-0">
+                </iframe>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../../core/services/profile.service';
+import { DashboardService } from '../../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-employer-dashboard',
@@ -31,10 +32,12 @@ export class EmployerDashboardComponent {
     public router: Router,
     public authService: AuthService,
     public toastr: ToastrService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private dashboardService: DashboardService
   ) { }
 
   ngOnInit(): void {
+    this.loadProfile();
     // Subscribe to Profile Updates (Photo/Name)
     this.profileService.employerProfile$.subscribe(update => {
       this.photoURL = update.photoURL;
@@ -50,6 +53,18 @@ export class EmployerDashboardComponent {
 
   dismissAlert() {
     this.isAlertDismissed = true;
+  }
+
+  loadProfile(): void {
+    this.dashboardService.getEmployerProfile().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.user = response.data;
+          this.photoURL = this.user.profile_pic_url || '';
+        }
+      },
+      error: (err) => console.error('Failed to load profile:', err)
+    });
   }
 
   getEmployerData(): void {
