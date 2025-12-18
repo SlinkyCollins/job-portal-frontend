@@ -23,6 +23,7 @@ export const API = {
 
   // Employer Endpoints
   GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
+  GET_TAGS: 'dashboard/employer/get_tags',
   POST_JOB: 'dashboard/employer/post_job',  
   GET_EMPLOYER_JOBS: 'dashboard/employer/get_employer_jobs',
   GET_EMPLOYER_PROFILE: 'dashboard/employer/get_profile',
@@ -110,6 +111,10 @@ export class DashboardService {
 
   getEmployerDashboardData(): Observable<any> {
     return this.http.get(this.fullUrl(API.GET_DASHBOARD_DATA));
+  }
+
+  getTags(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_TAGS));
   }
 
   postJob(jobData: any): Observable<any> {
