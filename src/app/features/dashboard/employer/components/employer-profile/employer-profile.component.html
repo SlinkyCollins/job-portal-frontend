@@ -22,6 +22,13 @@
             <img *ngIf="profilePicUrl" [src]="profilePicUrl" class="rounded-circle object-fit-cover"
               style="width: 80px; height: 80px; border: 2px solid #eee;">
 
+            <!-- DELETE BUTTON -->
+            <button *ngIf="profilePicUrl" (click)="deletePhoto($event)"
+              class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm"
+              style="width: 24px; height: 24px; z-index: 10;" title="Remove photo">
+              <i class="fas fa-times" style="font-size: 12px;"></i>
+            </button>
+
             <!-- Initials Fallback -->
             <div *ngIf="!profilePicUrl"
               class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"

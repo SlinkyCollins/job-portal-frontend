@@ -74,7 +74,6 @@ export class EmployerProfileComponent implements OnInit {
       next: (res) => {
         this.isSaving = false;
         if (res.status) {
-          // Note: Shared endpoint returns 'photoURL', not 'url'
           this.profilePicUrl = res.photoURL;
           this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
           this.toastr.success('Profile photo updated');
@@ -86,6 +85,27 @@ export class EmployerProfileComponent implements OnInit {
         this.isSaving = false;
         this.toastr.error('Photo upload failed');
         console.error(err);
+      }
+    });
+  }
+
+  deletePhoto(event: Event) {
+    event.stopPropagation(); // Prevent triggering the file input click
+    if (!confirm('Are you sure you want to remove your photo?')) return;
+
+    this.isSaving = true;
+    this.dashboardService.deleteProfilePhoto().subscribe({
+      next: (res) => {
+        this.isSaving = false;
+        if (res.status) {
+          this.profilePicUrl = null; // Clear view
+          this.profileService.updateEmployerProfile('', this.profileForm.get('firstname')?.value || '');
+          this.toastr.success('Photo removed');
+        }
+      },
+      error: () => {
+        this.isSaving = false;
+        this.toastr.error('Could not delete photo');
       }
     });
   }
