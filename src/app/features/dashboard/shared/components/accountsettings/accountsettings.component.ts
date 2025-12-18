@@ -83,7 +83,7 @@ export class AccountsettingsComponent implements OnInit {
 
   loadUserProfile(): void {
     this.isLoading = true;
-    this.authService.getSeekerProfile().subscribe({
+    this.dashboardService.getSeekerProfile().subscribe({
       next: (response: any) => {
         console.log(response);
         this.user = response.profile || {};

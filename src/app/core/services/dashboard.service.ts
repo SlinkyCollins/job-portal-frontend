@@ -3,20 +3,30 @@ import { HttpClient } from '@angular/common/http';
 import { ApiServiceService } from './api-service.service';
 import { Observable } from 'rxjs';
 export const API = {
+  // Seeker Endpoints
   SEEKER_STATS: 'dashboard/seeker/seeker_stats',
   RECENT_APPLICATIONS: 'dashboard/seeker/recent_applications',
   ALL_APPLICATIONS: 'dashboard/seeker/all_applications',
   RETRACT_APPLICATION: 'dashboard/seeker/retract_application',
   SAVED_JOBS: 'dashboard/seeker/saved_jobs',
-  UPDATE_PROFILE: 'dashboard/shared/update_profile',
+  UPDATE_PROFILE: 'dashboard/seeker/update_profile',
+  SAVEDJOBS: 'dashboard/seeker/saved_jobs',
+  SEEKERPROFILE: 'dashboard/seeker/seeker_profile',
+  UPLOAD_CV: 'dashboard/seeker/upload_cv',
+  DELETE_CV: 'dashboard/seeker/delete_cv',
+  UPDATERESUME: 'dashboard/seeker/update_resume',
+
+  // Shared Endpoints
   UPLOAD_PROFILE_PHOTO: 'dashboard/shared/upload_profile_photo',
   DELETE_PROFILE_PHOTO: 'dashboard/shared/delete_profile_photo',
   DELETE_ACCOUNT: 'dashboard/shared/delete_account',
 
   // Employer Endpoints
   GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
-  POST_JOB: 'dashboard/employer/post_job',
+  POST_JOB: 'dashboard/employer/post_job',  
   GET_EMPLOYER_JOBS: 'dashboard/employer/get_employer_jobs',
+  GET_EMPLOYER_PROFILE: 'dashboard/employer/get_profile',
+  UPDATE_EMPLOYER_PROFILE: 'dashboard/employer/update_profile',
   GET_COMPANY_PROFILE: 'dashboard/employer/get_company_profile',
   SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile',
   DELETE_JOB: 'dashboard/employer/delete_job',
@@ -38,6 +48,41 @@ export class DashboardService {
 
   fullUrl(endpoint: string) {
     return `${this.apiService.apiUrl}/${endpoint}`;
+  }
+
+
+  // Seeker Methods
+
+  getSavedJobs(params: any = {}) {
+    return this.http.get(this.fullUrl(API.SAVEDJOBS), { params });
+  }
+
+  getSeekerProfile() {
+    return this.http.get(this.fullUrl(API.SEEKERPROFILE));
+  }
+
+  // Update seeker profile
+  updateProfile(profileData: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATE_PROFILE), profileData);
+  }
+
+  uploadCV(file: File, filename: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', filename);  // Send to backend
+
+    return this.http.post(this.fullUrl(API.UPLOAD_CV), formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  deleteCV(): Observable<any> {
+    return this.http.post(this.fullUrl(API.DELETE_CV), {});
+  }
+
+  updateResume(data: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATERESUME), data);
   }
 
   // Get dashboard stats for job seeker
@@ -62,6 +107,7 @@ export class DashboardService {
 
 
   // Employer Methods
+
   getEmployerDashboardData(): Observable<any> {
     return this.http.get(this.fullUrl(API.GET_DASHBOARD_DATA));
   }
@@ -86,6 +132,14 @@ export class DashboardService {
     return this.http.post(this.fullUrl(API.UPDATE_JOB), jobData);
   }
 
+  getEmployerProfile(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_EMPLOYER_PROFILE));
+  }
+
+  updateEmployerProfile(data: any): Observable<any> {
+    return this.http.post(this.fullUrl(API.UPDATE_EMPLOYER_PROFILE), data);
+  }
+
   getCompanyProfile(): Observable<any> {
     return this.http.get(this.fullUrl(API.GET_COMPANY_PROFILE));
   }
@@ -105,10 +159,8 @@ export class DashboardService {
     });
   }
 
-  // Update user profile
-  updateProfile(profileData: any): Observable<any> {
-    return this.http.post(this.fullUrl(API.UPDATE_PROFILE), profileData);
-  }
+
+  // Shared Methods
 
   // Upload profile photo
   uploadProfilePhoto(photoData: File): Observable<any> {
@@ -122,12 +174,7 @@ export class DashboardService {
     return this.http.post(this.fullUrl(API.DELETE_PROFILE_PHOTO), {});
   }
 
-  // Get saved jobs
-  getSavedJobs(): Observable<any> {
-    return this.http.get(this.fullUrl(API.SAVED_JOBS));
-  }
-
-  // Delete account
+  //  Delete Account
   deleteAccount(param: any): Observable<any> {
     // You must send the body matching the PHP expectation
     return this.http.post(this.fullUrl(API.DELETE_ACCOUNT), param);

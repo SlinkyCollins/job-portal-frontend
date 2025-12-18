@@ -4,6 +4,8 @@ import { FormsModule } from "@angular/forms"
 import { Router } from "@angular/router"
 import { ToastrService } from "ngx-toastr"
 import { AuthService } from "../../../../../core/services/auth.service"
+import { DashboardService } from "../../../../../core/services/dashboard.service"
+
 
 interface SortOption {
   value: string
@@ -21,7 +23,12 @@ interface SortOption {
   styleUrls: ["./saved-jobs.component.css"],
 })
 export class SavedJobsComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router, 
+    private toastr: ToastrService,
+    private dashboardService: DashboardService
+  ) { }
   // Page Configuration
   pageTitle = "Saved Jobs"
   sortLabel = "Sort by"
@@ -64,7 +71,7 @@ export class SavedJobsComponent implements OnInit {
       per_page: this.perPage,
       sort: this.selectedSort
     };
-    this.authService.getSavedJobs(params).subscribe({
+    this.dashboardService.getSavedJobs(params).subscribe({
       next: (response: any) => {
         if (response.status && response.savedJobs) {
           this.savedJobs = response.savedJobs.map((job: any) => ({

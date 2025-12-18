@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ProfileService } from '../../../core/services/profile.service';
 
 @Component({
   selector: 'app-employer-dashboard',
@@ -29,10 +30,16 @@ export class EmployerDashboardComponent {
     public http: HttpClient,
     public router: Router,
     public authService: AuthService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
+    // Subscribe to Profile Updates (Photo/Name)
+    this.profileService.employerProfile$.subscribe(update => {
+      this.photoURL = update.photoURL;
+      this.user.firstname = update.firstname;
+    });
     this.getEmployerData();
   }
 
@@ -46,7 +53,7 @@ export class EmployerDashboardComponent {
   }
 
   getEmployerData(): void {
-      this.authService.getEmployerData().subscribe((response: any) => {
+    this.authService.getEmployerData().subscribe((response: any) => {
       if (response.status) {
         this.user = response.user;
         this.companyId = this.user.company_id;

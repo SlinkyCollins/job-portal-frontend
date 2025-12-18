@@ -1,6 +1,6 @@
 <!-- Dashboard Content -->
 <div class="dashboard-content">
-    <!-- <h1 class="page-title">Dashboard</h1> -->
+    <h1 class="page-title d-sm-block d-lg-none">Dashboard</h1>
 
     <!-- LOADING STATE -->
     <div *ngIf="isLoading" class="text-center py-5">
@@ -26,7 +26,7 @@
 
     <!-- VIEW 2: DASHBOARD STATS (Normal State) -->
     <div *ngIf="!isLoading && hasCompany" class="stats-container fade-in">
-        <div class="section-header">
+        <div class="section-header d-lg-flex d-none">
             <h2>Dashboard Overview</h2>
             <p class="text-muted">Welcome back, {{ user.firstname }}</p>
         </div>
@@ -44,7 +44,7 @@
                     <div class="stat-label">Total Applications</div>
                 </div>
                 <div class="stat-icon user-icon">
-                    <i class="fas fa-users"></i> <!-- Changed icon to users -->
+                    <i class="fas fa-users"></i> 
                 </div>
             </div>
 

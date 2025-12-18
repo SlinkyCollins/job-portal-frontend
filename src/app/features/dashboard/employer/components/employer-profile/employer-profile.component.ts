@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../../../environments/environment';
+import { DashboardService } from '../../../../../core/services/dashboard.service';
+import { ProfileService } from '../../../../../core/services/profile.service';
 
 @Component({
   selector: 'app-employer-profile',
@@ -15,16 +15,20 @@ export class EmployerProfileComponent implements OnInit {
   profileForm: FormGroup;
   isLoading = true;
   isSaving = false;
-  apiUrl = environment.apiUrl + '/dashboard/employer';
+
+  selectedFile: File | null = null;
+  profilePicUrl: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dashboardService: DashboardService,
+    private profileService: ProfileService
   ) {
     this.profileForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
+      employer_role: [''],
       email: ['', [Validators.required, Validators.email]]
     });
   }
@@ -35,10 +39,12 @@ export class EmployerProfileComponent implements OnInit {
 
   loadProfile() {
     this.isLoading = true;
-    this.http.get<any>(`${this.apiUrl}/get_profile.php`).subscribe({
+    this.dashboardService.getEmployerProfile().subscribe({
       next: (res) => {
         if (res.status) {
           this.profileForm.patchValue(res.data);
+          this.profilePicUrl = res.data.profile_pic_url || null;
+          this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
         }
         this.isLoading = false;
       },
@@ -49,17 +55,53 @@ export class EmployerProfileComponent implements OnInit {
     });
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.uploadPhoto();
+    }
+  }
+
+  // UPDATED: Use DashboardService for Shared Endpoint
+  uploadPhoto() {
+    if (!this.selectedFile) return;
+
+    this.isSaving = true;
+
+    // Use the shared service method
+    this.dashboardService.uploadProfilePhoto(this.selectedFile).subscribe({
+      next: (res) => {
+        this.isSaving = false;
+        if (res.status) {
+          // Note: Shared endpoint returns 'photoURL', not 'url'
+          this.profilePicUrl = res.photoURL;
+          this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
+          this.toastr.success('Profile photo updated');
+        } else {
+          this.toastr.error(res.message || 'Upload failed');
+        }
+      },
+      error: (err) => {
+        this.isSaving = false;
+        this.toastr.error('Photo upload failed');
+        console.error(err);
+      }
+    });
+  }
+
   onSubmit() {
     if (this.profileForm.invalid) return;
 
     this.isSaving = true;
-    this.http.post<any>(`${this.apiUrl}/update_profile.php`, this.profileForm.value)
+    this.dashboardService.updateEmployerProfile(this.profileForm.value)
       .subscribe({
         next: (res) => {
           this.isSaving = false;
           if (res.status) {
+            this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
             this.toastr.success('Profile updated successfully');
-            this.profileForm.markAsPristine(); // Disable save button until next change
+            this.profileForm.markAsPristine();
           } else {
             this.toastr.error(res.message);
           }
@@ -71,7 +113,6 @@ export class EmployerProfileComponent implements OnInit {
       });
   }
 
-  // Helper for the avatar circle
   getInitials(): string {
     const f = this.profileForm.get('firstname')?.value || '';
     const l = this.profileForm.get('lastname')?.value || '';

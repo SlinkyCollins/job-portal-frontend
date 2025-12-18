@@ -6,6 +6,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { HttpEventType } from '@angular/common/http';
 import { NgZone } from '@angular/core';  // Add import
+import { DashboardService } from '../../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-hero',
@@ -32,6 +33,7 @@ export class HeroComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private categoryService: CategoryService,
+    private dashboardService: DashboardService,
     private ngZone: NgZone  // Inject NgZone
   ) { }
 
@@ -45,7 +47,7 @@ export class HeroComponent implements OnInit {
     if (this.isLoggedIn() && this.getUserRole() === 'job_seeker') {
       this.isRefetching = true;  // Disable button during fetch
       console.log('Starting profile fetch...');  // Add for debugging
-      this.authService.getSeekerProfile().subscribe({
+      this.dashboardService.getSeekerProfile().subscribe({
         next: (response: any) => {
           console.log('Profile fetch response:', response);  // Add for debugging
           this.ngZone.run(() => {
@@ -161,7 +163,7 @@ export class HeroComponent implements OnInit {
   uploadFile(file: File, filename: string) {
     this.isUploading = true;
     this.uploadProgress = 0;
-    this.authService.uploadCV(file, filename).subscribe({
+    this.dashboardService.uploadCV(file, filename).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);
@@ -206,7 +208,7 @@ export class HeroComponent implements OnInit {
 
   confirmDelete() {
     this.isDeleting = true;
-    this.authService.deleteCV().subscribe({
+    this.dashboardService.deleteCV().subscribe({
       next: () => {
         this.closeDeleteModal();
         this.authService.toastr.success('CV deleted successfully!');
