@@ -7,26 +7,32 @@ import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCr
 import { BehaviorSubject, catchError, from, Observable, switchMap, tap } from 'rxjs';
 import { Location } from '@angular/common';
 export const API = {
+  // Auth Endpoints
   LOGIN: 'auth/login',
   LOGOUT: 'auth/logout',
+  SOCIAL_LOGIN: 'auth/social_login',
+
+  // Jobs Endpoints
   APPLY: 'jobs/apply',
+  ALLJOBS: 'jobs/all_jobs',
+  WISHLIST: 'jobs/wishlist',
+  WISHLIST_DELETE: 'jobs/wishlist_delete',
+  JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
+
+  // Shared Endpoints
   CHANGEPASSWORD: 'dashboard/shared/change_password',
   VERIFYOLDPASSWORD: 'dashboard/shared/verify_old_password',
   USERDATA: 'dashboard/shared/user_data',
-  SEEKERDATA: 'dashboard/seeker/seeker_dashboard',
-  EMPLOYERDATA: 'dashboard/employer/employer_dashboard',
-  ADMINDATA: 'dashboard/admin/admin_dashboard',
   UPDATEACCOUNT: 'dashboard/shared/update_account',
-  UPDATERESUME: 'dashboard/seeker/update_resume',
-  ALLJOBS: 'jobs/all_jobs',
-  SAVEDJOBS: 'dashboard/seeker/saved_jobs',
-  JOBDETAILS: (jobId: number) => `jobs/${jobId}`,
-  SEEKERPROFILE: 'dashboard/seeker/seeker_profile',
-  WISHLIST: 'jobs/wishlist',
-  WISHLIST_DELETE: 'jobs/wishlist_delete',
-  UPLOAD_CV: 'dashboard/seeker/upload_cv',
-  DELETE_CV: 'dashboard/seeker/delete_cv',
-  SOCIAL_LOGIN: 'auth/social_login'
+
+  // Seeker Endpoint
+  SEEKERDATA: 'dashboard/seeker/seeker_dashboard',
+
+  // Admin Endpoint
+  ADMINDATA: 'dashboard/admin/admin_dashboard',
+
+  // Employer Endpoint
+  EMPLOYERDATA: 'dashboard/employer/employer_dashboard'
 };
 
 
@@ -175,16 +181,10 @@ export class AuthService {
     return this.http.get(this.fullUrl(API.ALLJOBS));
   }
 
-  getSavedJobs(params: any = {}) {
-    return this.http.get(this.fullUrl(API.SAVEDJOBS), { params });
-  }
+
 
   getJobDetails(jobId: number) {
     return this.http.get(this.fullUrl(API.JOBDETAILS(jobId)));
-  }
-
-  getSeekerProfile() {
-    return this.http.get(this.fullUrl(API.SEEKERPROFILE));
   }
 
   updateAccountSettings(data: any) {
@@ -356,25 +356,6 @@ export class AuthService {
         this.isFacebookLoading = false;
       }
     });
-  }
-
-  uploadCV(file: File, filename: string): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('filename', filename);  // Send to backend
-
-    return this.http.post(this.fullUrl(API.UPLOAD_CV), formData, {
-      reportProgress: true,
-      observe: 'events'
-    });
-  }
-
-  deleteCV(): Observable<any> {
-    return this.http.post(this.fullUrl(API.DELETE_CV), {});
-  }
-
-  updateResume(data: any): Observable<any> {
-    return this.http.post(this.fullUrl(API.UPDATERESUME), data);
   }
 
   // Add signOut if needed

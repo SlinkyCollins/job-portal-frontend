@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
@@ -12,12 +12,19 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './post-job.component.html',
-  styleUrls: ['./post-job.component.css']
+  styleUrls: ['./post-job.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PostJobComponent implements OnInit {
   jobForm: FormGroup;
   isLoading = false;
   categories: any[] = [];
+  
+  // Custom Tag Input
+  tags: string[] = [];
+  allAvailableTags: any[] = [];  // All tags fetched from DB
+  filteredTags: any[] = [];      // Tags to display in the suggestions area
+  showAllTags = false;
 
   isEditMode = false;
   jobId: number | null = null;
@@ -42,6 +49,7 @@ export class PostJobComponent implements OnInit {
       category_id: [null, Validators.required],
       employment_type: ['fulltime', Validators.required],
       location: ['', Validators.required],
+      tags: [[]],
 
       // Salary Section
       salary_amount: [null, [
@@ -54,7 +62,7 @@ export class PostJobComponent implements OnInit {
       // Details
       experience_level: ['Mid', Validators.required],
       english_fluency: ['Fluent'],
-      deadline: [''], // Optional but recommended
+      deadline: [''], 
 
       // Rich Text / Long Text Fields
       overview: ['', [Validators.required, Validators.minLength(50)]],
@@ -63,78 +71,109 @@ export class PostJobComponent implements OnInit {
       requirements: ['', Validators.required],
       nice_to_have: [''],
       benefits: [''],
-      // Add Status field (Only relevant for Edit, but harmless to have in form group)
       status: ['active']
     });
   }
 
   ngOnInit(): void {
+    this.loadTags(); // Fetch tags immediately
+
     this.categoryService.getCategories().subscribe(cats => {
       this.categories = cats;
-
-      // 2. ONLY AFTER categories are here, check if we need to edit a job
       this.checkEditMode();
     });
   }
 
   checkEditMode() {
-    // Check for ID in URL
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
       this.jobId = +id;
-      this.loadJobDetails(this.jobId); // Now it's safe to load details!
+      this.loadJobDetails(this.jobId);
     }
   }
 
-  // 1. The Formatting Logic
+  // --- TAGS LOGIC START ---
+
+  // 1. Fetch Tags from Backend
+  loadTags() {
+    this.dashboardService.getTags().subscribe({
+      next: (res) => {
+        if (res.status) {
+          this.allAvailableTags = res.data;
+          this.filterSuggestions(); // Initial filter
+        }
+      }
+    });
+  }
+
+  // 2. Add Tag via "Enter" Key
+  addTag(event: any) {
+    const input = event.target;
+    const value = input.value.trim();
+
+    if (value && !this.tags.includes(value)) {
+      this.tags.push(value);
+      this.jobForm.get('tags')?.setValue(this.tags);
+      this.filterSuggestions(); // Update suggestions
+    }
+    input.value = ''; // Clear input
+  }
+
+  // 3. Add Tag via Clicking a Suggestion
+  selectSuggestion(tagName: string) {
+    if (!this.tags.includes(tagName)) {
+      this.tags.push(tagName);
+      this.jobForm.get('tags')?.setValue(this.tags);
+      this.filterSuggestions();
+    }
+  }
+
+  // 4. Remove Tag
+  removeTag(index: number) {
+    this.tags.splice(index, 1);
+    this.jobForm.get('tags')?.setValue(this.tags);
+    this.filterSuggestions();
+  }
+
+  // 5. Filter Suggestions (Hide already selected ones)
+  filterSuggestions(searchText: string = '') {
+    this.filteredTags = this.allAvailableTags.filter(tag => {
+      const isNotSelected = !this.tags.includes(tag.name);
+      const matchesSearch = tag.name.toLowerCase().includes(searchText.toLowerCase());
+      return isNotSelected && matchesSearch;
+    });
+  }
+
+  // 6. Handle Typing in Input to Filter Real-time
+  onTagInput(event: any) {
+    this.filterSuggestions(event.target.value);
+  }
+
+  // --- TAGS LOGIC END ---
+
   formatSalary(event: any) {
     const input = event.target;
     let value = input.value;
-
-    // Remove all non-numeric characters (except dot if you want decimals, but usually integers are fine for salary)
     value = value.replace(/[^0-9]/g, '');
-
     if (value) {
-      // Format with commas (e.g. 1000 -> 1,000)
       value = new Intl.NumberFormat('en-US').format(parseInt(value));
     }
-
-    // Update the input value visually
     input.value = value;
-
-    // Update the form control value (keep the commas for now so the user sees them)
     this.jobForm.get('salary_amount')?.setValue(value, { emitEvent: false });
   }
 
-  // ✨ CUSTOM VALIDATOR HELPER
   salaryRangeValidator(min: number, max: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) {
-        return null; // Let 'Validators.required' handle empty values
-      }
-
-      // 1. Remove commas to get the raw number
+      if (!control.value) return null;
       const rawValue = control.value.toString().replace(/,/g, '');
       const numValue = Number(rawValue);
-
-      // 2. Check if it's a valid number
-      if (isNaN(numValue)) {
-        return { invalidNumber: true };
-      }
-
-      // 3. Check Range
-      if (numValue < min) {
-        return { min: { min, actual: numValue } };
-      }
-      if (numValue > max) {
-        return { max: { max, actual: numValue } };
-      }
-
-      return null; // Valid!
+      if (isNaN(numValue)) return { invalidNumber: true };
+      if (numValue < min) return { min: { min, actual: numValue } };
+      if (numValue > max) return { max: { max, actual: numValue } };
+      return null;
     };
   }
-
 
   compareFn(c1: any, c2: any): boolean {
     return c1 == c2;
@@ -161,19 +200,17 @@ export class PostJobComponent implements OnInit {
   }
 
   patchFormValues(data: any) {
-    // 1. Format Salary (Add commas for display)
     let formattedSalary = data.salary_amount;
     if (formattedSalary) {
       formattedSalary = new Intl.NumberFormat('en-US').format(parseInt(formattedSalary));
     }
 
-    // 2. Patch the form
     this.jobForm.patchValue({
       title: data.title,
-      category_id: data.category_id, // Ensure this matches the type in <option [ngValue]>
+      category_id: data.category_id,
       employment_type: data.employment_type,
       location: data.location,
-      salary_amount: formattedSalary, // Show formatted string
+      salary_amount: formattedSalary,
       currency: data.currency,
       salary_duration: data.salary_duration,
       experience_level: data.experience_level,
@@ -187,6 +224,14 @@ export class PostJobComponent implements OnInit {
       benefits: data.benefits,
       status: data.status
     });
+
+    if (data.tags) {
+      if (Array.isArray(data.tags)) {
+        this.tags = data.tags.map((t: any) => typeof t === 'object' ? t.name : t);
+        this.jobForm.get('tags')?.setValue(this.tags);
+        this.filterSuggestions(); // Update suggestions based on loaded tags
+      }
+    }
   }
 
   onSubmit() {
@@ -199,15 +244,12 @@ export class PostJobComponent implements OnInit {
     this.isLoading = true;
     const formData = { ...this.jobForm.value };
 
-    // Clean Salary (Remove commas)
     if (formData.salary_amount) {
       formData.salary_amount = parseInt(formData.salary_amount.toString().replace(/,/g, ''), 10);
     }
 
     if (this.isEditMode && this.jobId) {
-      // --- UPDATE MODE ---
-      formData.job_id = this.jobId; // Add ID to payload
-
+      formData.job_id = this.jobId;
       this.dashboardService.updateJob(formData).subscribe({
         next: (res: any) => {
           this.isLoading = false;
@@ -223,9 +265,7 @@ export class PostJobComponent implements OnInit {
           this.toastr.error('An error occurred');
         }
       });
-
     } else {
-      // --- CREATE MODE ---
       this.dashboardService.postJob(formData).subscribe({
         next: (res: any) => {
           this.isLoading = false;

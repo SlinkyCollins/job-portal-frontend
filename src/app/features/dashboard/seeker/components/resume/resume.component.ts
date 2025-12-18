@@ -4,6 +4,7 @@ import { HttpEventType } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { ProfileService } from '../../../../../core/services/profile.service';
+import { DashboardService } from '../../../../../core/services/dashboard.service';
 // Custom validator for FormArray (requires at least one item)
 export function atLeastOneValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -32,7 +33,12 @@ export class ResumeComponent implements OnInit {
   completionPercentage: number = 0;
   isAlertDismissed: boolean = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) {
+  constructor(
+    private fb: FormBuilder, 
+    private authService: AuthService, 
+    private profileService: ProfileService,
+    private dashboardService: DashboardService
+  ) {
     this.resumeForm = this.fb.group({
       overview: ['', [Validators.required, Validators.maxLength(500)]],
       education: this.fb.array([], atLeastOneValidator()),
@@ -54,7 +60,7 @@ export class ResumeComponent implements OnInit {
   }
 
   loadProfile() {
-    this.authService.getSeekerProfile().subscribe({
+    this.dashboardService.getSeekerProfile().subscribe({
       next: (response: any) => {
         if (response.status) {
           this.uploadedCV = response.profile.cv_url || '';
@@ -102,7 +108,7 @@ export class ResumeComponent implements OnInit {
   uploadFile(file: File, filename: string) {
     this.isUploading = true;
     this.uploadProgress = 0;
-    this.authService.uploadCV(file, filename).subscribe({
+    this.dashboardService.uploadCV(file, filename).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);
@@ -135,7 +141,7 @@ export class ResumeComponent implements OnInit {
 
   confirmDelete() {
     this.isDeleting = true;
-    this.authService.deleteCV().subscribe({
+    this.dashboardService.deleteCV().subscribe({
       next: () => {
         this.closeDeleteModal();
         this.authService.toastr.success('CV deleted successfully!');
@@ -210,7 +216,7 @@ export class ResumeComponent implements OnInit {
         resume_skills: JSON.stringify(this.resumeForm.value.skills),
         experience: this.resumeForm.value.experience
       };
-      this.authService.updateResume(formData).subscribe({
+      this.dashboardService.updateResume(formData).subscribe({
         next: (response: any) => {
           if (response.status) {
             this.authService.toastr.success('Resume saved successfully!');

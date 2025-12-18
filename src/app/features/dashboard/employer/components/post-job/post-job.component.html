@@ -61,6 +61,53 @@
                         </div>
                     </div>
 
+                    <!-- Tags -->
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Job Tags <span class="text-muted small">(Skills, Tools,
+                                Keywords)</span></label>
+
+                        <!-- 1. The Input Box (Looks like a container) -->
+                        <div class="form-control d-flex flex-wrap align-items-center gap-2"
+                            style="min-height: 48px; height: auto; padding: 6px 12px;">
+
+                            <!-- Selected Tags (Blue Pills) -->
+                            <span *ngFor="let tag of tags; let i = index"
+                                class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill d-flex align-items-center px-3 py-2">
+                                {{ tag }}
+                                <i class="fas fa-times ms-2 cursor-pointer" (click)="removeTag(i)"
+                                    style="cursor: pointer; font-size: 0.8em;"></i>
+                            </span>
+
+                            <!-- Typing Input -->
+                            <input type="text" class="border-0 bg-transparent flex-grow-1"
+                                style="outline: none; min-width: 150px;" placeholder="Type & press Enter..."
+                                (keydown.enter)="$event.preventDefault(); addTag($event)" (input)="onTagInput($event)">
+                        </div>
+
+                        <!-- 2. Suggestions Area -->
+                        <div class="mt-2" *ngIf="filteredTags.length > 0">
+                            <small class="text-muted d-block mb-2">Suggested Skills:</small>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" 
+                                    *ngFor="let tag of filteredTags | slice:0:(showAllTags ? filteredTags.length : 10)"
+                                    (click)="selectSuggestion(tag.name)"
+                                    class="btn btn-sm btn-light border rounded-pill text-secondary hover-shadow transition-all">
+                                    {{ tag.name }} <i class="fas fa-plus ms-1 text-muted" style="font-size: 0.7em;"></i>
+                                </button>
+
+                                <button type="button" *ngIf="filteredTags.length > 10" 
+                                    (click)="showAllTags = !showAllTags"
+                                    class="btn btn-sm btn-link text-decoration-none">
+                                    {{ showAllTags ? 'Show Less' : '+' + (filteredTags.length - 10) + ' More' }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-text mt-1" *ngIf="filteredTags.length === 0">
+                            Type to create a new custom tag.
+                        </div>
+                    </div>
+
                     <!-- Employment Type -->
                     <div class="col-md-6">
                         <label class="form-label required">Employment Type</label>

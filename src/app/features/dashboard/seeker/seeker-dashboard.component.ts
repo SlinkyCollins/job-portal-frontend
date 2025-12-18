@@ -72,7 +72,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   loadProfile(): void {
-    this.authService.getSeekerProfile().subscribe({
+    this.dashboardService.getSeekerProfile().subscribe({
       next: (response: any) => {
         if (response.status) {
           this.user = response.profile;

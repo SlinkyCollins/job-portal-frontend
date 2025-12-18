@@ -7,20 +7,49 @@
   </div>
 
   <form [formGroup]="profileForm" *ngIf="!isLoading" (ngSubmit)="onSubmit()">
-    
+
     <!-- Profile Card -->
     <div class="card border-0 shadow-sm mb-4">
       <div class="card-body p-4">
 
-        <!-- Photo (Visual only for MVP, logic is complex so we skip upload for now to save time) -->
+        <!-- Photo Section -->
         <div class="d-flex align-items-center mb-4">
-          <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold" 
-               style="width: 80px; height: 80px; font-size: 2rem;">
-            {{ getInitials() }}
+
+          <!-- Clickable Avatar -->
+          <div class="position-relative" style="cursor: pointer;" (click)="fileInput.click()">
+
+            <!-- Image -->
+            <img *ngIf="profilePicUrl" [src]="profilePicUrl" class="rounded-circle object-fit-cover"
+              style="width: 80px; height: 80px; border: 2px solid #eee;">
+
+            <!-- DELETE BUTTON -->
+            <button *ngIf="profilePicUrl" (click)="deletePhoto($event)"
+              class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm"
+              style="width: 24px; height: 24px; z-index: 10;" title="Remove photo">
+              <i class="fas fa-times" style="font-size: 12px;"></i>
+            </button>
+
+            <!-- Initials Fallback -->
+            <div *ngIf="!profilePicUrl"
+              class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+              style="width: 80px; height: 80px; font-size: 2rem;">
+              {{ getInitials() }}
+            </div>
+
+            <!-- Camera Icon -->
+            <div
+              class="position-absolute bottom-0 end-0 bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+              style="width: 28px; height: 28px; border: 1px solid #ddd;">
+              <i class="fas fa-camera text-muted" style="font-size: 12px;"></i>
+            </div>
           </div>
+
+          <!-- Hidden Input -->
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+
           <div class="ms-3">
             <h5 class="mb-0 fw-bold">Personal Details</h5>
-            <p class="text-muted small mb-0">Manage your login details</p>
+            <p class="text-muted small mb-0">Click the photo to update</p>
           </div>
         </div>
 
@@ -37,7 +66,14 @@
             <input type="text" class="form-control" formControlName="lastname">
           </div>
 
-          <!-- Email (Read Only for safety in MVP) -->
+          <!-- NEW: Role -->
+          <div class="col-12">
+            <label class="form-label">Your Role at Company</label>
+            <input type="text" class="form-control" formControlName="employer_role"
+              placeholder="e.g. HR Manager, Senior Recruiter">
+          </div>
+
+          <!-- Email -->
           <div class="col-12">
             <label class="form-label">Email Address</label>
             <input type="email" class="form-control bg-light" formControlName="email" readonly>
@@ -50,7 +86,7 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-start">
-      <button type="submit" class="btn btn-primary px-4" 
+      <button type="submit" class="btn btn-primary px-4"
         [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
         <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
         {{ isSaving ? 'Saving...' : 'Save Changes' }}

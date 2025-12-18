@@ -27,7 +27,8 @@
 }
 
 .card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
 }
 
 .card-header {
@@ -61,7 +62,8 @@
   color: #dc2626;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
   border-radius: 8px;
   border: 1px solid #d1d5db;
   padding: 0.625rem 0.875rem;
@@ -69,7 +71,8 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
   outline: none;
@@ -92,8 +95,14 @@ textarea.form-control {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */
@@ -103,7 +112,7 @@ textarea.form-control {
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .page-header button {
     width: 100%;
   }
@@ -137,7 +146,8 @@ textarea.form-control {
 }
 
 .card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
 }
 
 .card-header {
@@ -171,7 +181,8 @@ textarea.form-control {
   color: #dc2626;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
   border-radius: 8px;
   border: 1px solid #d1d5db;
   padding: 0.625rem 0.875rem;
@@ -179,7 +190,8 @@ textarea.form-control {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
   outline: none;
@@ -196,14 +208,33 @@ textarea.form-control {
   min-height: 100px;
 }
 
+/* Suggestion Buttons */
+.hover-shadow:hover {
+  background-color: #eef2ff !important; /* Very light blue */
+  color: #4f46e5 !important; /* Primary color */
+  border-color: #c7d2fe !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.transition-all {
+  transition: all 0.2s ease;
+}
+
 /* Animation */
 .fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */
@@ -213,7 +244,7 @@ textarea.form-control {
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .page-header button {
     width: 100%;
   }
