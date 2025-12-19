@@ -73,12 +73,6 @@
   color: #244034;
 }
 
-.stat-number.coming-soon {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #24403469;
-}
-
 .stat-label {
   font-size: 1rem;
   color: #6b7280;
@@ -95,7 +89,7 @@
   color: #244034;
 }
 
-.stat-icon.user-icon {
+.stat-icon.check-circle-icon {
   background-color: #d2f34c;
   /* background: linear-gradient(135deg, #a4d65e, #6bbf59); */
 }
@@ -103,11 +97,11 @@
   background-color: #d2f34c;
   /* background: linear-gradient(135deg, #fbbf24, #f59e42); */
 }
-.stat-icon.eye-icon {
+.stat-icon.trophy-icon {
   background-color: #d2f34c;
   /* background: linear-gradient(135deg, #3b82f6, #2563eb); */
 }
-.stat-icon.edit-icon {
+.stat-icon.paper-plane-icon {
   background-color: #d2f34c;
   /* background: linear-gradient(135deg, #8b5cf6, #7c3aed); */
 }

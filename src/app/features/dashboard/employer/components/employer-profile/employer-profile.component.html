@@ -33,7 +33,7 @@
             <div *ngIf="!profilePicUrl"
               class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
               style="width: 80px; height: 80px; font-size: 2rem;">
-              {{ getInitials() }}
+              {{ user.firstname | initials:user.lastname }}
             </div>
 
             <!-- Camera Icon -->

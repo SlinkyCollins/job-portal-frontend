@@ -6,6 +6,7 @@ import { Auth, FacebookAuthProvider, linkWithPopup, GoogleAuthProvider } from '@
 import { AuthService } from '../../../../../core/services/auth.service';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { ProfileService } from '../../../../../core/services/profile.service';
+import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-profile',
@@ -13,14 +14,14 @@ import { ProfileService } from '../../../../../core/services/profile.service';
   imports: [
     ReactiveFormsModule,
     NgSelectModule,
-    CommonModule
+    CommonModule,
+    InitialsPipe
   ],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
   photoURL: string = '';
-  defaultPhotoURL: string = 'https://mockmind-api.uifaces.co/content/abstract/49.jpg';
   user: any = {};
   linkedProviders: string[] = [];
   isSaving: boolean = false;

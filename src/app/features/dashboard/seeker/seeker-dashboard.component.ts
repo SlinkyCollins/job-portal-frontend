@@ -6,10 +6,17 @@ import { AuthService } from '../../../core/services/auth.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
 import { RouterModule } from '@angular/router';
 import { ProfileService } from '../../../core/services/profile.service';
+import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-seeker-dashboard',
-  imports: [CommonModule, RouterLink, RouterModule, RouterLink],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterModule,
+    RouterLink,
+    InitialsPipe
+  ],
   templateUrl: './seeker-dashboard.component.html',
   styleUrl: './seeker-dashboard.component.css'
 })

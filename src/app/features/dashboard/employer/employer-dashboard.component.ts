@@ -6,11 +6,18 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../../core/services/profile.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
+import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-employer-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    InitialsPipe
+  ],
   templateUrl: './employer-dashboard.component.html',
   styleUrl: './employer-dashboard.component.css'
 })
