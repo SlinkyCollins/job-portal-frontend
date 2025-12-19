@@ -92,10 +92,7 @@ export class EmployerProfileComponent implements OnInit {
     });
   }
 
-  deletePhoto(event: Event) {
-    event.stopPropagation(); // Prevent triggering the file input click
-    if (!confirm('Are you sure you want to remove your photo?')) return;
-
+  confirmDeletePhoto() {
     this.isSaving = true;
     this.dashboardService.deleteProfilePhoto().subscribe({
       next: (res) => {

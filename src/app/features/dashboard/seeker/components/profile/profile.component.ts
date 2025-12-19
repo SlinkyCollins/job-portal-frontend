@@ -372,15 +372,14 @@ export class ProfileComponent implements OnInit {
       });
     }
   }
-
-  onDeletePhoto(): void {
+  
+  confirmDeletePhoto(): void {
     this.isDeleting = true;
     this.dashboardService.deleteProfilePhoto().subscribe({
       next: (response: any) => {
         if (response.status) {
-          this.photoURL = '';  // Revert to default (empty, so fallback to placeholder in template)
-          const firstname = this.user.fullname.split(' ')[0];  // Get first part
-          // Emit to service
+          this.photoURL = '';  // Revert to default
+          const firstname = this.user.fullname.split(' ')[0];
           this.profileService.updateProfile('', firstname);
           this.authService.toastr.success('Profile photo deleted successfully');
         }
@@ -388,6 +387,7 @@ export class ProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error('Delete failed:', err);
+        this.authService.toastr.error('Failed to delete photo');
         this.isDeleting = false;
       }
     });

@@ -4,11 +4,12 @@ import { DashboardService } from '../../../../../core/services/dashboard.service
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-applications',
   standalone: true,
-  imports: [CommonModule, NgxExtendedPdfViewerModule],
+  imports: [CommonModule, NgxExtendedPdfViewerModule, InitialsPipe],
   templateUrl: './applications.component.html',
   styleUrls: ['./applications.component.css']
 })
@@ -60,7 +61,11 @@ export class ApplicationsComponent implements OnInit {
   }
 
   openResumePreview(url: string) {
-    if (!url) return;
+    // 1. Check if URL is null, undefined, or empty string
+    if (!url || url.trim() === '') {
+      this.toastr.warning('This candidate has not attached a resume.', 'No Resume Found');
+      return; // Stop here. Do not open the modal.
+    }
 
     const extension = url.split('.').pop()?.toLowerCase();
 

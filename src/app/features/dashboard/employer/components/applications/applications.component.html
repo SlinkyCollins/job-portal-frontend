@@ -21,8 +21,14 @@
                 <div class="card-body d-flex align-items-center flex-wrap gap-3">
 
                     <!-- Avatar -->
-                    <img [src]="app.profile_pic_url || 'assets/images/default-avatar.png'" class="rounded-circle"
+                    <img *ngIf="app.profile_pic_url; else initials" [src]="app.profile_pic_url" class="rounded-circle"
                         width="60" height="60" style="object-fit: cover;">
+                    <ng-template #initials>
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+                            style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            {{ app.firstname | initials:app.lastname }}
+                        </div>
+                    </ng-template>
 
                     <!-- Info -->
                     <div class="flex-grow-1">
@@ -91,25 +97,13 @@
             <div
                 class="modal-body p-0 bg-light h-100 d-flex align-items-center justify-content-center position-relative">
 
-              <!-- 1. PDF Viewer (Optimized for Viewing Only) -->
+                <!-- 1. PDF Viewer (Optimized for Viewing Only) -->
                 <div *ngIf="previewFileType === 'pdf'" class="w-100 h-100">
-                    <ngx-extended-pdf-viewer 
-                        [src]="previewUrl" 
-                        [height]="'90vh'"
-                        
-                        [showToolbar]="true" 
-                        [showSidebarButton]="false" 
-                        [showFindButton]="true"
-                        [showPagingButtons]="true" 
-                        [showZoomButtons]="true" 
-                        [showPresentationModeButton]="true"
-                        [showDownloadButton]="true" 
-                        [showPrintButton]="true"
-                        
-                        [showTextEditor]="false"
-                        [showDrawEditor]="false"
-                        [showStampEditor]="false"
-                        [showHandToolButton]="true">
+                    <ngx-extended-pdf-viewer [src]="previewUrl" [height]="'90vh'" [showToolbar]="true"
+                        [showSidebarButton]="false" [showFindButton]="true" [showPagingButtons]="true"
+                        [showZoomButtons]="true" [showPresentationModeButton]="true" [showDownloadButton]="true"
+                        [showPrintButton]="true" [showTextEditor]="false" [showDrawEditor]="false"
+                        [showStampEditor]="false" [showHandToolButton]="true">
                     </ngx-extended-pdf-viewer>
                 </div>
 
