@@ -12,7 +12,12 @@ Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [CommonModule, CapitalizeFirstPipe, RouterLink, RelativeTimePipe],
+  imports: [
+    CommonModule,
+    CapitalizeFirstPipe,
+    RouterLink,
+    RelativeTimePipe
+  ],
   templateUrl: './dashboard-home.component.html',
   styleUrl: './dashboard-home.component.css'
 })
@@ -22,17 +27,17 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
   isRetracting: boolean = false;
   isLoadingStats: boolean = true;
   isLoadingApplications: boolean = true;
-  stats: any = {
-    totalVisitors: 0,
-    shortlisted: 0,
-    views: 0,
-    appliedJobs: 0
+  stats = {
+    applied: 0,
+    shortlisted_apps: 0,
+    accepted: 0,
+    saved_jobs: 0
   };
   recentApplications: any[] = [];
   profileViewsData: any = {};
   chart: Chart | null = null;
   activeTab: string = 'Day';
-  
+
   // Expose constants to template
   statusColors = STATUS_COLORS;
 
@@ -65,10 +70,15 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
 
   loadStats() {
     this.dashboardService.getSeekerStats().subscribe({
-      next: (data) => {
-        this.stats.shortlisted = data.shortlisted || 0;
-        this.stats.appliedJobs = data.appliedJobs || 0;
-        // Keep others as 0 or placeholders
+      next: (res: any) => {
+        // Check if the response status is true and data exists
+        if (res.status && res.data) {
+          this.stats.applied = res.data.applied || 0;
+          this.stats.shortlisted_apps = res.data.shortlisted_apps || 0;
+          this.stats.accepted = res.data.accepted || 0;
+          this.stats.saved_jobs = res.data.saved_jobs || 0;
+        }
+        
         this.isLoadingStats = false;
       },
       error: (err) => {
@@ -97,7 +107,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
 
   retractApplication(application: any) {
     this.applicationToRetract = application;
-    this.showRetractModal = true; 
+    this.showRetractModal = true;
   }
 
   confirmRetract() {
@@ -106,7 +116,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit, OnDestroy 
     this.dashboardService.retractApplication(this.applicationToRetract.application_id).subscribe({
       next: () => {
         this.recentApplications = this.recentApplications.filter(app => app.application_id !== this.applicationToRetract.application_id);
-        this.stats.appliedJobs--;
+        this.stats.applied--;
         this.toastr.success('Application successfully retracted.');
         this.showRetractModal = false;
         this.applicationToRetract = null;

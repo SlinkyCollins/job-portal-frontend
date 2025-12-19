@@ -6,10 +6,17 @@ import { AuthService } from '../../../core/services/auth.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
 import { RouterModule } from '@angular/router';
 import { ProfileService } from '../../../core/services/profile.service';
+import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-seeker-dashboard',
-  imports: [CommonModule, RouterLink, RouterModule, RouterLink],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterModule,
+    RouterLink,
+    InitialsPipe
+  ],
   templateUrl: './seeker-dashboard.component.html',
   styleUrl: './seeker-dashboard.component.css'
 })
@@ -42,7 +49,13 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
       this.user.firstname = update.firstname;
     });
 
-    // 2. NEW: Subscribe to Completion Percentage Updates
+    // 2. Subscribe to Initials Updates
+    this.profileService.initials$.subscribe(initials => {
+      this.user.firstname = initials.firstname;
+      this.user.lastname = initials.lastname;
+    });
+
+    // 3. NEW: Subscribe to Completion Percentage Updates
     this.profileService.completion$.subscribe(percentage => {
       if (this.isFirstLoad) {
         if (percentage > 0) {
@@ -80,6 +93,10 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
 
           // Initialize the service with the data we just fetched
           this.profileService.updateCompletionScore(this.user);
+
+          // 2. INITIALIZE SERVICE STATE
+          // Push the initial data to the service so it's not empty
+          this.profileService.updateInitials(this.user.firstname, this.user.lastname);
         }
       },
       error: (err) => console.error('Failed to load profile:', err)

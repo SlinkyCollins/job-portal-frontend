@@ -2,10 +2,10 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
-import { Auth, FacebookAuthProvider, linkWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { ProfileService } from '../../../../../core/services/profile.service';
+import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-profile',
@@ -13,26 +13,19 @@ import { ProfileService } from '../../../../../core/services/profile.service';
   imports: [
     ReactiveFormsModule,
     NgSelectModule,
-    CommonModule
+    CommonModule,
+    InitialsPipe
   ],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
   photoURL: string = '';
-  defaultPhotoURL: string = 'https://mockmind-api.uifaces.co/content/abstract/49.jpg';
   user: any = {};
-  linkedProviders: string[] = [];
   isSaving: boolean = false;
   isUploading: boolean = false;
   isDeleting: boolean = false;
   isLoading: boolean = true;
-  showLinkFacebook: boolean = false;
-  showLinkGoogle: boolean = false;
-  isGoogleLinked: boolean = false;
-  isLinkingGoogle: boolean = false;
-  isFacebookLinked: boolean = false;
-  isLinkingFacebook: boolean = false;
   completionPercentage: number = 0;
   isAlertDismissed: boolean = false;
   countries = [
@@ -286,9 +279,7 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private dashboardService: DashboardService,
     private profileService: ProfileService,
-    private cdr: ChangeDetectorRef,
-    private auth: Auth,
-    private ngZone: NgZone
+    private cdr: ChangeDetectorRef
   ) {
     // Initialize form early with defaults
     this.profileForm = this.fb.group({
@@ -303,9 +294,12 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.isAlertDismissed = false;
     this.loadProfile();
-    this.checkSocialLinked();
     this.profileService.completion$.subscribe(percentage => {
       this.completionPercentage = percentage;
+    });
+    this.profileService.initials$.subscribe(initials => {
+      this.user.firstname = initials.firstname;
+      this.user.lastname = initials.lastname;
     });
   }
 
@@ -320,7 +314,6 @@ export class ProfileComponent implements OnInit {
         if (response.status) {
           this.user = response.profile;
           this.photoURL = this.user.profile_pic_url || '';
-          this.linkedProviders = JSON.parse(this.user.linked_providers || '[]');
           // Update form with loaded data
           this.profileForm.patchValue({
             fullname: this.user.fullname || '',
@@ -329,7 +322,6 @@ export class ProfileComponent implements OnInit {
             address: this.user.address || '',
             country: this.user.country || ''
           });
-          this.checkSocialLinked();
           this.cdr.detectChanges();  // Force change detection
         }
         this.isLoading = false;
@@ -372,14 +364,13 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onDeletePhoto(): void {
+  confirmDeletePhoto(): void {
     this.isDeleting = true;
     this.dashboardService.deleteProfilePhoto().subscribe({
       next: (response: any) => {
         if (response.status) {
-          this.photoURL = '';  // Revert to default (empty, so fallback to placeholder in template)
-          const firstname = this.user.fullname.split(' ')[0];  // Get first part
-          // Emit to service
+          this.photoURL = '';  // Revert to default
+          const firstname = this.user.fullname.split(' ')[0];
           this.profileService.updateProfile('', firstname);
           this.authService.toastr.success('Profile photo deleted successfully');
         }
@@ -387,6 +378,7 @@ export class ProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error('Delete failed:', err);
+        this.authService.toastr.error('Failed to delete photo');
         this.isDeleting = false;
       }
     });
@@ -403,6 +395,7 @@ export class ProfileComponent implements OnInit {
             const firstname = this.user.fullname.split(' ')[0];  // Get first part
             // Emit to service
             this.profileService.updateProfile(this.photoURL, firstname);
+            this.profileService.updateInitials(this.user.fullname.split(' ')[0], this.user.fullname.split(' ')[1] || '');
 
             // Merge the form values into the existing user object to get the latest state
             const updatedProfile = { ...this.user, ...this.profileForm.value };
@@ -434,104 +427,5 @@ export class ProfileComponent implements OnInit {
       address: this.user.address || '',
       country: this.user.country || ''
     });
-  }
-
-  getProviderDisplayName(providerId: string): string {
-    const icons: { [key: string]: string } = {
-      'google.com': '<img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20" height="20" class="me-2">',
-      'facebook.com': '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" width="20" height="20" class="me-2">'
-    };
-    return icons[providerId] || providerId;  // Fallback to ID if unknown
-  }
-
-  checkSocialLinked(): void {
-    this.isFacebookLinked = this.linkedProviders.includes('facebook.com');
-    this.isGoogleLinked = this.linkedProviders.includes('google.com');
-
-    // Determine which button to show
-    this.showLinkFacebook = this.isGoogleLinked && !this.isFacebookLinked;  // Show if Google linked but Facebook not
-    this.showLinkGoogle = this.isFacebookLinked && !this.isGoogleLinked;    // Show if Facebook linked but Google not
-  }
-
-  saveLinkedProviders(): void {
-    const data = { linked_providers: JSON.stringify(this.linkedProviders) };
-    this.dashboardService.updateProfile(data).subscribe({
-      next: (response: any) => {
-        if (response.status) {
-          this.authService.toastr.success('Linked providers updated successfully');
-        }
-      },
-      error: (err) => {
-        console.error('Error saving linked providers:', err);
-        this.authService.toastr.error('Failed to update linked providers');
-      }
-    });
-  }
-
-  private handleLinkError(error: any): void {
-    if (error.code === 'auth/credential-already-in-use') {
-      this.authService.toastr.error('This account is already linked to another user.');
-    } else if (error.code === 'auth/popup-blocked') {
-      this.authService.toastr.error('Popup blocked. Please allow popups and try again.');
-    } else {
-      this.authService.toastr.error('Failed to link account.');
-      console.error('Linking error:', error);
-    }
-  }
-
-  linkGoogle(): void {
-    if (!this.auth.currentUser) {
-      this.authService.toastr.error('Please log in first.');
-      return;
-    }
-    this.isLinkingGoogle = true;
-    const provider = new GoogleAuthProvider();
-    this.ngZone.run(() =>
-      linkWithPopup(this.auth.currentUser!, provider)
-        .then(async (result) => {
-          await this.auth.currentUser?.reload();
-          // Update local linkedProviders from Firebase after reload
-          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
-          this.isLinkingGoogle = false;
-          this.authService.toastr.success('Google account linked successfully!');
-          this.checkSocialLinked();
-          this.saveLinkedProviders();
-        }).catch((error) => {
-          this.isLinkingGoogle = false;
-          this.handleLinkError(error);
-        })
-    );
-  }
-
-  linkFacebook(): void {
-    // Detect mobile devices
-    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-      this.authService.toastr.warning('Facebook linking is not supported on mobile devices. Please use a desktop browser.');
-      return;
-    }
-    if (!this.auth.currentUser) {
-      this.authService.toastr.error('Please log in first.');
-      return;
-    }
-    this.isLinkingFacebook = true;
-    const provider = new FacebookAuthProvider();
-    this.ngZone.run(() =>
-      linkWithPopup(this.auth.currentUser!, provider)
-        .then(async (result) => {
-          await this.auth.currentUser?.reload();  // Refresh user data
-          // Update local linkedProviders from Firebase after reload
-          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
-          console.log('Linked providers after reload:', this.auth.currentUser?.providerData);
-          this.isLinkingFacebook = false;
-          this.authService.toastr.success('Facebook account linked successfully!');
-          this.checkSocialLinked();
-          // Save to DB immediately
-          this.saveLinkedProviders();
-        }).catch((error) => {
-          this.isLinkingFacebook = false;
-          this.handleLinkError(error);
-        })
-    );
   }
 }

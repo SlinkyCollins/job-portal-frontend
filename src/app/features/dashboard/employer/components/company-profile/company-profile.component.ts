@@ -67,13 +67,16 @@ export class CompanyProfileComponent implements OnInit {
         this.toastr.error('Only PNG, JPG, and JPEG files are allowed.');
         return;
       }
-      
+
       if (file.size > 2 * 1024 * 1024) { // 2MB limit
         this.toastr.error('File size should not exceed 2MB.');
         return;
       }
 
       this.selectedFile = file;
+
+      // Mark the form as dirty so the Save button enables
+      this.companyForm.markAsDirty();
 
       // Create preview
       const reader = new FileReader();
@@ -93,7 +96,7 @@ export class CompanyProfileComponent implements OnInit {
 
     this.isSaving = true;
     const formData = new FormData();
-    
+
     // Append form values
     Object.keys(this.companyForm.value).forEach(key => {
       formData.append(key, this.companyForm.value[key]);

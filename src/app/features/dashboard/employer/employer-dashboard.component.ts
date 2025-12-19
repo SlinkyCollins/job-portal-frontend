@@ -6,11 +6,18 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../../core/services/profile.service';
 import { DashboardService } from '../../../core/services/dashboard.service';
+import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-employer-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    InitialsPipe
+  ],
   templateUrl: './employer-dashboard.component.html',
   styleUrl: './employer-dashboard.component.css'
 })
@@ -43,6 +50,11 @@ export class EmployerDashboardComponent {
       this.photoURL = update.photoURL;
       this.user.firstname = update.firstname;
     });
+    // Subscribe to Initials Updates
+    this.profileService.initials$.subscribe(initials => {
+      this.user.firstname = initials.firstname;
+      this.user.lastname = initials.lastname;
+    });
     this.getEmployerData();
   }
 
@@ -61,6 +73,10 @@ export class EmployerDashboardComponent {
         if (response.status) {
           this.user = response.data;
           this.photoURL = this.user.profile_pic_url || '';
+
+          // INITIALIZE SERVICE STATE
+          // Push the initial data to the service so it's not empty
+          this.profileService.updateInitials(this.user.firstname, this.user.lastname);
         }
       },
       error: (err) => console.error('Failed to load profile:', err)

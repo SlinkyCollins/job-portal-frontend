@@ -38,3 +38,36 @@ html {
   scrollbar-width: thin;
   scrollbar-color: #d2f34c #ffff;
 }
+
+/* Initials Avatar Placeholder */
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #eef2ff; /* Light Indigo */
+  color: #4f46e5; /* Indigo Text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  text-transform: uppercase;
+  border: 1px solid #c7d2fe;
+}
+
+/* Specific sizes if needed */
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.8rem;
+}
+.avatar-md {
+  width: 48px;
+  height: 48px;
+  font-size: 1rem;
+}
+.avatar-lg {
+  width: 80px;
+  height: 80px;
+  font-size: 1.5rem;
+}

@@ -4,17 +4,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { ProfileService } from '../../../../../core/services/profile.service';
+import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
 
 @Component({
   selector: 'app-employer-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, InitialsPipe],
   templateUrl: './employer-profile.component.html'
 })
 export class EmployerProfileComponent implements OnInit {
   profileForm: FormGroup;
   isLoading = true;
   isSaving = false;
+  user: any = {};
 
   selectedFile: File | null = null;
   profilePicUrl: string | null = null;
@@ -35,6 +37,10 @@ export class EmployerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadProfile();
+    this.profileService.initials$.subscribe(initials => {
+      this.user.firstname = initials.firstname;
+      this.user.lastname = initials.lastname;
+    });
   }
 
   loadProfile() {
@@ -42,6 +48,7 @@ export class EmployerProfileComponent implements OnInit {
     this.dashboardService.getEmployerProfile().subscribe({
       next: (res) => {
         if (res.status) {
+          this.user = res.data;
           this.profileForm.patchValue(res.data);
           this.profilePicUrl = res.data.profile_pic_url || null;
           this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
@@ -89,10 +96,7 @@ export class EmployerProfileComponent implements OnInit {
     });
   }
 
-  deletePhoto(event: Event) {
-    event.stopPropagation(); // Prevent triggering the file input click
-    if (!confirm('Are you sure you want to remove your photo?')) return;
-
+  confirmDeletePhoto() {
     this.isSaving = true;
     this.dashboardService.deleteProfilePhoto().subscribe({
       next: (res) => {
@@ -120,6 +124,7 @@ export class EmployerProfileComponent implements OnInit {
           this.isSaving = false;
           if (res.status) {
             this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
+            this.profileService.updateInitials(this.profileForm.get('firstname')?.value || '', this.profileForm.get('lastname')?.value || '');
             this.toastr.success('Profile updated successfully');
             this.profileForm.markAsPristine();
           } else {
@@ -131,11 +136,5 @@ export class EmployerProfileComponent implements OnInit {
           this.toastr.error('Update failed');
         }
       });
-  }
-
-  getInitials(): string {
-    const f = this.profileForm.get('firstname')?.value || '';
-    const l = this.profileForm.get('lastname')?.value || '';
-    return (f.charAt(0) + l.charAt(0)).toUpperCase();
   }
 }

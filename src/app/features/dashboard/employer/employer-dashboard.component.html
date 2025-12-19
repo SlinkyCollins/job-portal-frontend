@@ -13,7 +13,13 @@
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
       <div class="user-avatar">
-        <img [src]="photoURL || 'https://mockmind-api.uifaces.co/content/abstract/49.jpg'" alt="User Avatar">
+        <img *ngIf="photoURL" [src]="photoURL" alt="User Avatar">
+        <!-- Initials Fallback -->
+        <div *ngIf="!photoURL" 
+          class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+          style="width: 45px; height: 45px; font-size: 1.2rem;">
+          {{ user.firstname | initials:user.lastname }}
+        </div>
         <div class="status-indicator"></div>
       </div>
       <span class="username">{{ user.firstname || 'John Doe' }}</span>

@@ -1,4 +1,3 @@
-<!-- profile.component.html -->
 <div class="container py-4">
   <h5 class="card-title fw-bold">My Profile</h5>
 
@@ -6,14 +5,10 @@
   <div *ngIf="completionPercentage < 100 && !isAlertDismissed"
     class="alert alert-info alert-dismissible fade show d-flex align-items-center mb-4 shadow-sm" role="alert"
     style="border-left: 5px solid #0dcaf0;">
-
     <i class="fas fa-lightbulb me-3 fa-lg text-info"></i>
-
     <div class="flex-grow-1">
-      <strong>Tip:</strong> Complete all fields (including Bio, Address, and Profile Picture) to reach 100% profile
-      completion.
+      <strong>Tip:</strong> Complete all fields (including Bio, Address, and Profile Picture) to reach 100% profile completion.
     </div>
-
     <button type="button" class="btn-close" aria-label="Close" (click)="dismissAlert()"></button>
   </div>
 
@@ -74,36 +69,51 @@
       <div class="card-body">
 
         <div class="d-flex flex-column flex-md-row align-items-md-center mb-3">
-          <img [src]="photoURL || defaultPhotoURL" class="rounded-circle me-md-3 mb-2 mb-md-0" width="80" height="80"
-            alt="Profile Photo">
-          <div>
-            <button type="button" class="btn btn-outline-success btn-sm me-2" (click)="onUploadPhoto(fileInput)"
-              [disabled]="isUploading || isDeleting">
-              <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-1"></span>
-              Upload new photo
-            </button>
-            <button type="button" class="btn btn-outline-danger btn-sm me-2" (click)="onDeletePhoto()"
-              [disabled]="isDeleting || isUploading">
-              <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-1"></span>
-              Delete
-            </button>
-            <button type="button" *ngIf="showLinkFacebook" class="btn btn-outline-secondary btn-sm me-2"
-              (click)="linkFacebook()" [disabled]="isLinkingFacebook || isFacebookLinked">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
-                alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
-              <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
-              {{ isLinkingFacebook ? 'Linking...' : (isFacebookLinked ? 'Facebook Linked' : 'Link Facebook Account') }}
-            </button>
-            <button type="button" *ngIf="showLinkGoogle" class="btn btn-outline-secondary btn-sm" (click)="linkGoogle()"
-              [disabled]="isLinkingGoogle || isGoogleLinked">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"
-                width="20" height="20" class="me-2" *ngIf="!isLinkingGoogle">
-              <span *ngIf="isLinkingGoogle" class="spinner-border spinner-border-sm me-1"></span>
-              {{ isLinkingGoogle ? 'Linking...' : (isGoogleLinked ? 'Google Linked' : 'Link Google Account') }}
-            </button>
+          
+          <!-- SMART AVATAR SECTION -->
+          <div class="position-relative me-md-4 mb-3 mb-md-0 align-self-center align-self-md-auto">
+            
+            <!-- 1. Photo Exists -->
+            <ng-container *ngIf="photoURL">
+                <img [src]="photoURL" class="rounded-circle shadow-sm" width="100" height="100" alt="Profile Photo" style="object-fit: cover;">
+                
+                <!-- Delete Button (Trigger Modal) -->
+                <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
+                        style="width: 32px; height: 32px;"
+                        data-bs-toggle="modal" data-bs-target="#deletePhotoModal"
+                        title="Remove Photo">
+                    <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                </button>
+            </ng-container>
+    
+            <!-- 2. No Photo -->
+            <ng-container *ngIf="!photoURL">
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold border shadow-sm"
+                     style="width: 100px; height: 100px; font-size: 2.5rem;">
+                    {{ user.firstname | initials:user.lastname }}
+                </div>
+                
+                <!-- Upload Button -->
+                <button type="button" class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
+                        style="width: 32px; height: 32px;"
+                        (click)="fileInput.click()"
+                        title="Upload Photo">
+                    <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                </button>
+            </ng-container>
+            
+            <!-- Hidden Input -->
+            <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+            
+            <!-- Upload Spinner (Overlay) -->
+            <div *ngIf="isUploading" class="position-absolute top-50 start-50 translate-middle bg-white rounded-circle p-1 shadow-sm">
+                 <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+            </div>
           </div>
-          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+
+          <div class="d-flex flex-column justify-content-center">
+            <small class="text-muted" *ngIf="!photoURL">Upload a photo to make your profile stand out.</small>
+          </div>
         </div>
 
         <div class="row g-3">
@@ -115,15 +125,10 @@
               [class.is-invalid]="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)"
               required>
           </div>
-          <div
-            *ngIf="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)">
-            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('pattern')">Full name must include a
-              first and last name separated by a space.</span>
-            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('minlength')">This field must not be
-              less
-              than 2 words</span>
-            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('required')">This field is
-              required</span>
+          <div *ngIf="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.touched || profileForm.get('fullname')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('pattern')">Full name must include a first and last name separated by a space.</span>
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('minlength')">This field must not be less than 2 words</span>
+            <span class="text-danger" *ngIf="profileForm.get('fullname')?.getError('required')">This field is required</span>
           </div>
           <div class="col-md-6">
             <label class="form-label">Phone Number*</label>
@@ -131,14 +136,10 @@
               [class.is-valid]="profileForm.get('phone')?.valid && profileForm.get('phone')?.touched"
               [class.is-invalid]="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)"
               required>
-            <div
-              *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)">
-              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('required')">This field is
-                required</span>
-              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('pattern')">Invalid phone number
-                format (e.g. +123-456-7890)</span>
-              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('maxlength')">Phone number cannot
-                exceed 15 characters</span>
+            <div *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.touched || profileForm.get('phone')?.dirty)">
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('required')">This field is required</span>
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('pattern')">Invalid phone number format (e.g. +123-456-7890)</span>
+              <span class="text-danger" *ngIf="profileForm.get('phone')?.getError('maxlength')">Phone number cannot exceed 15 characters</span>
             </div>
           </div>
           <div class="col-12">
@@ -150,35 +151,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Linked Providers Section -->
-    <div class="mb-3" *ngIf="linkedProviders.length > 0">
-      <h6 class="fw-bold">Linked Accounts</h6>
-      <div *ngIf="linkedProviders.length > 0; else noProviders">
-        <span *ngFor="let provider of linkedProviders" class="badge bg-light me-2"
-          [innerHTML]="getProviderDisplayName(provider)">
-        </span>
-      </div>
-      <ng-template #noProviders>
-        <p class="text-muted">No linked accounts.</p>
-      </ng-template>
-    </div>
-
-    <!-- Social Media -->
-    <!-- <div class="card mb-4">
-      <div class="card-body">
-        <h5 class="card-title fw-bold">Social Media <span class="badge bg-secondary">Coming Soon</span></h5>
-        <div class="mb-3">
-          <label class="form-label">Network 1</label>
-          <input type="url" class="form-control" placeholder="https://facebook.com/" disabled>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Network 2</label>
-          <input type="url" class="form-control" placeholder="https://twitter.com/" disabled>
-        </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm" disabled>+ Add more link</button>
-      </div>
-    </div> -->
 
     <!-- Address & Location -->
     <div class="card mb-4">
@@ -195,10 +167,8 @@
               required>
             </ng-select>
           </div>
-          <div
-            *ngIf="profileForm.get('country')?.invalid && (profileForm.get('country')?.touched || profileForm.get('country')?.dirty)">
-            <span class="text-danger" *ngIf="profileForm.get('country')?.getError('required')">This field is
-              required</span>
+          <div *ngIf="profileForm.get('country')?.invalid && (profileForm.get('country')?.touched || profileForm.get('country')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('country')?.getError('required')">This field is required</span>
           </div>
           <div class="col-md-6">
             <label class="form-label">Address*</label>
@@ -207,10 +177,8 @@
               [class.is-invalid]="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)"
               required>
           </div>
-          <div
-            *ngIf="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)">
-            <span class="text-danger" *ngIf="profileForm.get('address')?.getError('required')">This field is
-              required</span>
+          <div *ngIf="profileForm.get('address')?.invalid && (profileForm.get('address')?.touched || profileForm.get('address')?.dirty)">
+            <span class="text-danger" *ngIf="profileForm.get('address')?.getError('required')">This field is required</span>
           </div>
         </div>
       </div>
@@ -226,4 +194,25 @@
         (click)="onReset()">Cancel</button>
     </div>
   </form>
+</div>
+
+<!-- DELETE CONFIRMATION MODAL -->
+<div class="modal fade" id="deletePhotoModal" tabindex="-1" aria-labelledby="deletePhotoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePhotoModalLabel">Remove Profile Photo?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove your profile photo? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDeletePhoto()">
+            Delete Photo
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

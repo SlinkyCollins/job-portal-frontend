@@ -15,41 +15,50 @@
         <!-- Photo Section -->
         <div class="d-flex align-items-center mb-4">
 
-          <!-- Clickable Avatar -->
-          <div class="position-relative" style="cursor: pointer;" (click)="fileInput.click()">
-
-            <!-- Image -->
-            <img *ngIf="profilePicUrl" [src]="profilePicUrl" class="rounded-circle object-fit-cover"
-              style="width: 80px; height: 80px; border: 2px solid #eee;">
-
-            <!-- DELETE BUTTON -->
-            <button *ngIf="profilePicUrl" (click)="deletePhoto($event)"
-              class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm"
-              style="width: 24px; height: 24px; z-index: 10;" title="Remove photo">
-              <i class="fas fa-times" style="font-size: 12px;"></i>
-            </button>
-
-            <!-- Initials Fallback -->
-            <div *ngIf="!profilePicUrl"
-              class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
-              style="width: 80px; height: 80px; font-size: 2rem;">
-              {{ getInitials() }}
-            </div>
-
-            <!-- Camera Icon -->
-            <div
-              class="position-absolute bottom-0 end-0 bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center"
-              style="width: 28px; height: 28px; border: 1px solid #ddd;">
-              <i class="fas fa-camera text-muted" style="font-size: 12px;"></i>
+          <!-- SMART AVATAR SECTION -->
+          <div class="position-relative me-3">
+            
+            <!-- 1. Photo Exists -->
+            <ng-container *ngIf="profilePicUrl">
+                <img [src]="profilePicUrl" class="rounded-circle shadow-sm object-fit-cover" width="80" height="80" alt="Profile Photo" style="border: 2px solid #eee;">
+                
+                <!-- Delete Button (Trigger Modal) -->
+                <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
+                        style="width: 28px; height: 28px;"
+                        data-bs-toggle="modal" data-bs-target="#deletePhotoModal"
+                        title="Remove Photo">
+                    <i class="fas fa-trash-alt" style="font-size: 0.7rem;"></i>
+                </button>
+            </ng-container>
+    
+            <!-- 2. No Photo -->
+            <ng-container *ngIf="!profilePicUrl">
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold border shadow-sm"
+                     style="width: 80px; height: 80px; font-size: 2rem;">
+                    {{ user.firstname | initials:user.lastname }}
+                </div>
+                
+                <!-- Upload Button -->
+                <button type="button" class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
+                        style="width: 28px; height: 28px;"
+                        (click)="fileInput.click()"
+                        title="Upload Photo">
+                    <i class="fas fa-camera" style="font-size: 0.7rem;"></i>
+                </button>
+            </ng-container>
+            
+            <!-- Hidden Input -->
+            <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+            
+            <!-- Upload Spinner (Overlay) -->
+            <div *ngIf="isSaving" class="position-absolute top-50 start-50 translate-middle bg-white rounded-circle p-1 shadow-sm">
+                 <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
             </div>
           </div>
 
-          <!-- Hidden Input -->
-          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-
-          <div class="ms-3">
+          <div class="ms-2">
             <h5 class="mb-0 fw-bold">Personal Details</h5>
-            <p class="text-muted small mb-0">Click the photo to update</p>
+            <p class="text-muted small mb-0">Click the camera icon to update</p>
           </div>
         </div>
 
@@ -93,4 +102,25 @@
       </button>
     </div>
   </form>
+</div>
+
+<!-- DELETE CONFIRMATION MODAL -->
+<div class="modal fade" id="deletePhotoModal" tabindex="-1" aria-labelledby="deletePhotoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePhotoModalLabel">Remove Profile Photo?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove your profile photo? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDeletePhoto()">
+            Delete Photo
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

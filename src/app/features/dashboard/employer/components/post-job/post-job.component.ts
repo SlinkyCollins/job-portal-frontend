@@ -19,12 +19,13 @@ export class PostJobComponent implements OnInit {
   jobForm: FormGroup;
   isLoading = false;
   categories: any[] = [];
-  
+
   // Custom Tag Input
   tags: string[] = [];
   allAvailableTags: any[] = [];  // All tags fetched from DB
   filteredTags: any[] = [];      // Tags to display in the suggestions area
   showAllTags = false;
+  maxTags = 5;
 
   isEditMode = false;
   jobId: number | null = null;
@@ -62,7 +63,7 @@ export class PostJobComponent implements OnInit {
       // Details
       experience_level: ['Mid', Validators.required],
       english_fluency: ['Fluent'],
-      deadline: [''], 
+      deadline: [''],
 
       // Rich Text / Long Text Fields
       overview: ['', [Validators.required, Validators.minLength(50)]],
@@ -112,16 +113,27 @@ export class PostJobComponent implements OnInit {
     const input = event.target;
     const value = input.value.trim();
 
+    if (this.tags.length >= this.maxTags) {
+      this.toastr.warning(`You can only add up to ${this.maxTags} tags.`);
+      input.value = '';
+      return;
+    }
+
     if (value && !this.tags.includes(value)) {
       this.tags.push(value);
       this.jobForm.get('tags')?.setValue(this.tags);
       this.filterSuggestions(); // Update suggestions
     }
-    input.value = ''; // Clear input
+    input.value = '';
   }
 
   // 3. Add Tag via Clicking a Suggestion
   selectSuggestion(tagName: string) {
+    if (this.tags.length >= this.maxTags) {
+      this.toastr.warning(`You can only add up to ${this.maxTags} tags.`);
+      return;
+    }
+
     if (!this.tags.includes(tagName)) {
       this.tags.push(tagName);
       this.jobForm.get('tags')?.setValue(this.tags);
