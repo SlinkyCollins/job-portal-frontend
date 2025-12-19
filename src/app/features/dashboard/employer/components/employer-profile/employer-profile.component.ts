@@ -37,6 +37,10 @@ export class EmployerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadProfile();
+    this.profileService.initials$.subscribe(initials => {
+      this.user.firstname = initials.firstname;
+      this.user.lastname = initials.lastname;
+    });
   }
 
   loadProfile() {
@@ -120,6 +124,7 @@ export class EmployerProfileComponent implements OnInit {
           this.isSaving = false;
           if (res.status) {
             this.profileService.updateEmployerProfile(this.profilePicUrl || '', this.profileForm.get('firstname')?.value || '');
+            this.profileService.updateInitials(this.profileForm.get('firstname')?.value || '', this.profileForm.get('lastname')?.value || '');
             this.toastr.success('Profile updated successfully');
             this.profileForm.markAsPristine();
           } else {

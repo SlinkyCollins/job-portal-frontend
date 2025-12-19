@@ -11,6 +11,9 @@ export class ProfileService {
   public employerProfileSubject = new BehaviorSubject<{ photoURL: string; firstname: string }>({ photoURL: '', firstname: '' });
   employerProfile$ = this.employerProfileSubject.asObservable();
 
+  public initialsSubject = new BehaviorSubject<{ firstname: string; lastname: string }>({ firstname: '', lastname: '' });
+  initials$ = this.initialsSubject.asObservable();
+
   // NEW: Completion Percentage Subject
   private completionSubject = new BehaviorSubject<number>(0);
   public completion$ = this.completionSubject.asObservable();
@@ -21,6 +24,10 @@ export class ProfileService {
 
   updateEmployerProfile(photoURL: string, firstname: string) {
     this.employerProfileSubject.next({ photoURL, firstname });
+  }
+
+  updateInitials(firstname: string, lastname: string) {
+    this.initialsSubject.next({ firstname, lastname });
   }
 
   // NEW: Centralized Calculation Logic

@@ -111,25 +111,7 @@
             </div>
           </div>
 
-          <!-- Social Buttons -->
           <div class="d-flex flex-column justify-content-center">
-            <div class="d-flex flex-wrap gap-2 mb-1">
-                <button type="button" *ngIf="showLinkFacebook" class="btn btn-outline-secondary btn-sm"
-                  (click)="linkFacebook()" [disabled]="isLinkingFacebook || isFacebookLinked">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
-                    alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
-                  <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
-                  {{ isLinkingFacebook ? 'Linking...' : (isFacebookLinked ? 'Facebook Linked' : 'Link Facebook Account') }}
-                </button>
-
-                <button type="button" *ngIf="showLinkGoogle" class="btn btn-outline-secondary btn-sm" (click)="linkGoogle()"
-                  [disabled]="isLinkingGoogle || isGoogleLinked">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"
-                    width="20" height="20" class="me-2" *ngIf="!isLinkingGoogle">
-                  <span *ngIf="isLinkingGoogle" class="spinner-border spinner-border-sm me-1"></span>
-                  {{ isLinkingGoogle ? 'Linking...' : (isGoogleLinked ? 'Google Linked' : 'Link Google Account') }}
-                </button>
-            </div>
             <small class="text-muted" *ngIf="!photoURL">Upload a photo to make your profile stand out.</small>
           </div>
         </div>
@@ -168,19 +150,6 @@
           <span>Brief description for your profile. URLs are hyperlinked.</span>
         </div>
       </div>
-    </div>
-
-    <!-- Linked Providers Section -->
-    <div class="mb-3" *ngIf="linkedProviders.length > 0">
-      <h6 class="fw-bold">Linked Accounts</h6>
-      <div *ngIf="linkedProviders.length > 0; else noProviders">
-        <span *ngFor="let provider of linkedProviders" class="badge bg-light me-2"
-          [innerHTML]="getProviderDisplayName(provider)">
-        </span>
-      </div>
-      <ng-template #noProviders>
-        <p class="text-muted">No linked accounts.</p>
-      </ng-template>
     </div>
 
     <!-- Address & Location -->

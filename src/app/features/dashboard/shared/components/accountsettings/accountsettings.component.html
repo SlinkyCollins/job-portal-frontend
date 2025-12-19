@@ -33,14 +33,6 @@
           </div>
         </div>
 
-        <!-- Phone Number Field Skeleton -->
-        <div class="row mb-3">
-          <div class="col-12">
-            <div class="skeleton skeleton-text mb-2" style="width: 100px;"></div>
-            <div class="skeleton skeleton-input"></div>
-          </div>
-        </div>
-
         <!-- Action Buttons Skeleton -->
         <div class="row">
           <div class="col-12">
@@ -91,31 +83,15 @@
           <!-- Email Field -->
           <div class="row mb-3">
             <div class="col-12">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control custom-input" id="email" formControlName="email"
-                placeholder="johndoe@example.com">
-              <!-- Helper text for social users -->
-              <div *ngIf="isSocialLogin" class="form-text text-muted">
-                <i class="fas fa-info-circle me-1"></i> Email cannot be changed for social login accounts.
-              </div>
+              <label for="email" class="form-label">Email Address</label>
 
-              <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
-                class="invalid-feedback d-block">
-                <span *ngIf="profileForm.get('email')?.errors?.['required']">Email is required</span>
-                <span *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email</span>
-              </div>
-            </div>
-          </div>
+              <!-- Added bg-light to make it look read-only visually -->
+              <input type="email" class="form-control custom-input bg-light" id="email" formControlName="email"
+                placeholder="johndoe@example.com" readonly>
 
-          <!-- Phone Number Field -->
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="phoneNumber" class="form-label">Phone Number</label>
-              <input type="tel" class="form-control custom-input" id="phoneNumber" formControlName="phoneNumber"
-                placeholder="+910 321 889 021">
-              <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched"
-                class="invalid-feedback d-block">
-                Phone number is required
+              <!-- Universal Helper Text -->
+              <div class="form-text text-muted">
+                <i class="fas fa-lock me-1"></i> To change your email address, please contact support.
               </div>
             </div>
           </div>
@@ -139,6 +115,39 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <!-- Social Buttons -->
+  <div class="d-flex flex-wrap gap-2 mb-1">
+    <button type="button" *ngIf="showLinkFacebook" class="btn btn-outline-secondary btn-sm" (click)="linkFacebook()"
+      [disabled]="isLinkingFacebook || isFacebookLinked">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
+        alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
+      <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
+      {{ isLinkingFacebook ? 'Linking...' : (isFacebookLinked ? 'Facebook Linked' : 'Link Facebook Account') }}
+    </button>
+
+    <button type="button" *ngIf="showLinkGoogle" class="btn btn-outline-secondary btn-sm" (click)="linkGoogle()"
+      [disabled]="isLinkingGoogle || isGoogleLinked">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20"
+        height="20" class="me-2" *ngIf="!isLinkingGoogle">
+      <span *ngIf="isLinkingGoogle" class="spinner-border spinner-border-sm me-1"></span>
+      {{ isLinkingGoogle ? 'Linking...' : (isGoogleLinked ? 'Google Linked' : 'Link Google Account') }}
+    </button>
+  </div>
+
+  <!-- Linked Providers Section -->
+  <div class="mb-3" *ngIf="linkedProviders.length > 0">
+    <h6 class="fw-bold">Linked Accounts</h6>
+    <div *ngIf="linkedProviders.length > 0; else noProviders">
+      <span *ngFor="let provider of linkedProviders" class="badge bg-light me-2"
+        [innerHTML]="getProviderDisplayName(provider)">
+      </span>
+    </div>
+    <ng-template #noProviders>
+      <p class="text-muted">No linked accounts.</p>
+    </ng-template>
   </div>
 
   <!-- Change Password Section -->
@@ -262,24 +271,23 @@
         <div class="alert alert-warning d-flex align-items-start mb-3">
           <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
           <div>
-            <strong>Warning:</strong> This action is permanent and cannot be undone. All your data, including profile information, resume, and job applications, will be permanently deleted.
+            <strong>Warning:</strong> This action is permanent and cannot be undone. All your data, including profile
+            information, resume, and job applications, will be permanently deleted.
           </div>
         </div>
-        
+
         <div class="mb-3">
           <label for="deleteConfirmation" class="form-label">To confirm, type "DELETE" below:</label>
-          <input type="text" class="form-control" id="deleteConfirmation" 
-            [value]="deleteConfirmationText" 
-            (input)="onDeleteInputChange($event)"
-            placeholder="DELETE">
+          <input type="text" class="form-control" id="deleteConfirmation" [value]="deleteConfirmationText"
+            (input)="onDeleteInputChange($event)" placeholder="DELETE">
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
-        <button class="btn btn-danger" 
-          [disabled]="deleteConfirmationText !== 'DELETE' || isDeletingAccount"
+        <button class="btn btn-danger" [disabled]="deleteConfirmationText !== 'DELETE' || isDeletingAccount"
           (click)="handleAccountDeletion()">
-          <span *ngIf="isDeletingAccount" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="isDeletingAccount" class="spinner-border spinner-border-sm me-2" role="status"
+            aria-hidden="true"></span>
           {{ isDeletingAccount ? 'Deleting...' : 'Delete Account' }}
         </button>
       </div>

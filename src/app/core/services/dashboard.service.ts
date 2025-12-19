@@ -20,6 +20,7 @@ export const API = {
   UPLOAD_PROFILE_PHOTO: 'dashboard/shared/upload_profile_photo',
   DELETE_PROFILE_PHOTO: 'dashboard/shared/delete_profile_photo',
   DELETE_ACCOUNT: 'dashboard/shared/delete_account',
+  GET_SETTINGS: 'dashboard/shared/get_settings',
 
   // Employer Endpoints
   GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
@@ -166,6 +167,11 @@ export class DashboardService {
 
 
   // Shared Methods
+
+  // Get Settings
+  getSettings(): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_SETTINGS));
+  }
 
   // Upload profile photo
   uploadProfilePhoto(photoData: File): Observable<any> {
