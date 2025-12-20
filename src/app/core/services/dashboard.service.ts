@@ -21,6 +21,7 @@ export const API = {
   DELETE_PROFILE_PHOTO: 'dashboard/shared/delete_profile_photo',
   DELETE_ACCOUNT: 'dashboard/shared/delete_account',
   GET_SETTINGS: 'dashboard/shared/get_settings',
+  LINK_SOCIAL: 'dashboard/shared/link_social',
 
   // Employer Endpoints
   GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
@@ -171,6 +172,10 @@ export class DashboardService {
   // Get Settings
   getSettings(): Observable<any> {
     return this.http.get(this.fullUrl(API.GET_SETTINGS));
+  }
+
+  linkSocial(providerId: string, socialUid: string): Observable<any> {
+    return this.http.post(this.fullUrl(API.LINK_SOCIAL), { provider_id: providerId, social_uid: socialUid });
   }
 
   // Upload profile photo

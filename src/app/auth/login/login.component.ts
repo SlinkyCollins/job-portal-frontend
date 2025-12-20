@@ -82,9 +82,9 @@ export class LoginComponent {
       }, (error: any) => {
         this.loading = false;
         if (error.status === 401) {
-          this.toastr.error('Incorrect email or password');
+          this.toastr.error('Invalid Credentials');
         } else if (error.status === 404) {
-          this.toastr.error('Incorrect email or password');
+          this.toastr.error('Invalid Credentials');
         } else {
           console.log(error.msg);
           this.toastr.error('Login failed. Please try again.');
