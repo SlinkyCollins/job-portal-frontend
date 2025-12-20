@@ -279,6 +279,7 @@ export class AccountsettingsComponent implements OnInit {
         if (response.status) {
           this.toastr.success('Account deleted successfully');
           this.showDeleteModal = false;
+          localStorage.removeItem('user');
           this.authService.logout();
         } else {
           this.toastr.error(response.message || 'Failed to delete account');
