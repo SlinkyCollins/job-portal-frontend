@@ -72,7 +72,6 @@ export class AccountsettingsComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForms();
     this.loadUserProfile();
-    this.checkSocialLinked();
   }
 
   private initializeForms(): void {
@@ -102,16 +101,16 @@ export class AccountsettingsComponent implements OnInit {
         this.user = response.data;
 
         // Handle Social Providers
-        let providers: any[] = [];
         if (this.user.linked_providers) {
           try {
-            providers = typeof this.user.linked_providers === 'string'
+            this.linkedProviders = typeof this.user.linked_providers === 'string'
               ? JSON.parse(this.user.linked_providers)
               : this.user.linked_providers;
           } catch (e) {
             console.error('Error parsing linked_providers', e);
           }
         }
+        this.checkSocialLinked();
 
         // Patch Form
         this.profileForm.patchValue({

@@ -105,8 +105,8 @@
             <!-- Hidden Input -->
             <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
             
-            <!-- Upload Spinner (Overlay) -->
-            <div *ngIf="isUploading" class="position-absolute top-50 start-50 translate-middle bg-white rounded-circle p-1 shadow-sm">
+            <!-- Upload or Delete Spinner (Overlay) -->
+            <div *ngIf="isUploading || isDeleting" class="position-absolute top-50 start-50 translate-middle bg-white rounded-circle p-1 shadow-sm">
                  <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
             </div>
           </div>
