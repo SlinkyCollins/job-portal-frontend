@@ -5,7 +5,7 @@ import { ToastrService } from "ngx-toastr"
 import { AuthService } from "../../../../../core/services/auth.service"
 import { ProfileService } from "../../../../../core/services/profile.service"
 import { DashboardService } from "../../../../../core/services/dashboard.service"
-import { Auth, FacebookAuthProvider, linkWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
+import { Auth, FacebookAuthProvider, signInWithPopup, UserCredential, linkWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
 
 @Component({
   selector: "app-accountsettings",
@@ -110,6 +110,13 @@ export class AccountsettingsComponent implements OnInit {
             console.error('Error parsing linked_providers', e);
           }
         }
+        // LOGIC UPDATE:
+        // We use the backend flag. 
+        // If they have a password, isSocialLogin is FALSE (meaning "Show Password Section").
+        // If they DON'T have a password, isSocialLogin is TRUE (meaning "Hide Password Section").
+        // If user has NO password, they are a "Social Login Only" user.
+        // If they have a password (even if linked), they are NOT "Social Login Only" in this context.
+        this.isSocialLogin = !this.user.has_password;
         this.checkSocialLinked();
 
         // Patch Form
@@ -310,25 +317,27 @@ export class AccountsettingsComponent implements OnInit {
   }
 
   checkSocialLinked(): void {
-    this.isFacebookLinked = this.linkedProviders.includes('facebook.com');
-    this.isGoogleLinked = this.linkedProviders.includes('google.com');
+    // Check for both short ('google') and long ('google.com') formats
+    this.isFacebookLinked = this.linkedProviders.includes('facebook') || this.linkedProviders.includes('facebook.com');
+    this.isGoogleLinked = this.linkedProviders.includes('google') || this.linkedProviders.includes('google.com');
 
-    // Determine which button to show
-    this.showLinkFacebook = this.isGoogleLinked && !this.isFacebookLinked;  // Show if Google linked but Facebook not
-    this.showLinkGoogle = this.isFacebookLinked && !this.isGoogleLinked;    // Show if Facebook linked but Google not
+    this.showLinkFacebook = !this.isFacebookLinked;
+    this.showLinkGoogle = !this.isGoogleLinked;
   }
 
-  saveLinkedProviders(): void {
-    const data = { linked_providers: JSON.stringify(this.linkedProviders) };
-    this.dashboardService.updateProfile(data).subscribe({
-      next: (response: any) => {
-        if (response.status) {
-          this.authService.toastr.success('Linked providers updated successfully');
+  // 1. Backend Saver
+  private saveSocialLink(providerId: string, socialUid: string): void {
+    this.dashboardService.linkSocial(providerId, socialUid).subscribe({
+      next: (res) => {
+        if (res.status) {
+          this.authService.toastr.success(res.message);
+          this.linkedProviders = res.linked_providers;
+          this.checkSocialLinked();
         }
       },
       error: (err) => {
-        console.error('Error saving linked providers:', err);
-        this.authService.toastr.error('Failed to update linked providers');
+        console.error('Backend Linking Error:', err);
+        this.authService.toastr.error(err.error?.message || 'Failed to link account.');
       }
     });
   }
@@ -344,60 +353,76 @@ export class AccountsettingsComponent implements OnInit {
     }
   }
 
-  linkGoogle(): void {
-    if (!this.auth.currentUser) {
-      this.authService.toastr.error('Please log in first.');
-      return;
-    }
+  // 2. Hybrid Google Link
+  async linkGoogle() {
     this.isLinkingGoogle = true;
     const provider = new GoogleAuthProvider();
-    this.ngZone.run(() =>
-      linkWithPopup(this.auth.currentUser!, provider)
-        .then(async (result) => {
-          await this.auth.currentUser?.reload();
-          // Update local linkedProviders from Firebase after reload
-          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
-          this.isLinkingGoogle = false;
-          this.authService.toastr.success('Google account linked successfully!');
-          this.checkSocialLinked();
-          this.saveLinkedProviders();
-        }).catch((error) => {
-          this.isLinkingGoogle = false;
-          this.handleLinkError(error);
-        })
-    );
+
+    try {
+      let result: UserCredential;
+      let socialUid: string;
+
+      // SCENARIO A: Social User (Has Firebase Session) -> Use Link
+      if (this.auth.currentUser) {
+        result = await linkWithPopup(this.auth.currentUser, provider);
+        // For linked accounts, the UID is usually the same as the main user, 
+        // but we grab the specific provider info to be safe.
+        const providerData = result.user.providerData.find(p => p.providerId === 'google.com');
+        socialUid = providerData?.uid || result.user.uid;
+      }
+      // SCENARIO B: Regular User (No Firebase Session) -> Use SignIn
+      else {
+        result = await signInWithPopup(this.auth, provider);
+        // For fresh sign-in, we definitely get the specific UID
+        const providerData = result.user.providerData.find(p => p.providerId === 'google.com');
+        socialUid = providerData?.uid || result.user.uid;
+      }
+
+      this.saveSocialLink('google.com', socialUid);
+
+    } catch (error: any) {
+      this.handleLinkError(error);
+    } finally {
+      this.isLinkingGoogle = false;
+    }
   }
 
-  linkFacebook(): void {
-    // Detect mobile devices
+  // 3. Hybrid Facebook Link
+  async linkFacebook() {
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
-      this.authService.toastr.warning('Facebook linking is not supported on mobile devices. Please use a desktop browser.');
+      this.authService.toastr.warning('Facebook linking is not supported on mobile devices.');
       return;
     }
-    if (!this.auth.currentUser) {
-      this.authService.toastr.error('Please log in first.');
-      return;
-    }
+
     this.isLinkingFacebook = true;
     const provider = new FacebookAuthProvider();
-    this.ngZone.run(() =>
-      linkWithPopup(this.auth.currentUser!, provider)
-        .then(async (result) => {
-          await this.auth.currentUser?.reload();  // Refresh user data
-          // Update local linkedProviders from Firebase after reload
-          this.linkedProviders = this.auth.currentUser?.providerData.map(p => p.providerId) || [];
-          console.log('Linked providers after reload:', this.auth.currentUser?.providerData);
-          this.isLinkingFacebook = false;
-          this.authService.toastr.success('Facebook account linked successfully!');
-          this.checkSocialLinked();
-          // Save to DB immediately
-          this.saveLinkedProviders();
-        }).catch((error) => {
-          this.isLinkingFacebook = false;
-          this.handleLinkError(error);
-        })
-    );
+
+    try {
+      let result: UserCredential;
+      let socialUid: string;
+
+      // SCENARIO A: Social User -> Use Link
+      if (this.auth.currentUser) {
+        result = await linkWithPopup(this.auth.currentUser, provider);
+        const providerData = result.user.providerData.find(p => p.providerId === 'facebook.com');
+        socialUid = providerData?.uid || result.user.uid;
+      }
+      // SCENARIO B: Regular User -> Use SignIn
+      else {
+        result = await signInWithPopup(this.auth, provider);
+        const providerData = result.user.providerData.find(p => p.providerId === 'facebook.com');
+        socialUid = providerData?.uid || result.user.uid;
+      }
+
+      // Common Step: Save to MySQL Backend
+      this.saveSocialLink('facebook.com', socialUid);
+
+    } catch (error: any) {
+      this.handleLinkError(error);
+    } finally {
+      this.isLinkingFacebook = false;
+    }
   }
 }
 
