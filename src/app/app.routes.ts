@@ -28,6 +28,12 @@ import { PostJobComponent } from './features/dashboard/employer/components/post-
 import { MyJobsComponent } from './features/dashboard/employer/components/my-jobs/my-jobs.component';
 import { EmployerProfileComponent } from './features/dashboard/employer/components/employer-profile/employer-profile.component';
 import { ApplicationsComponent } from './features/dashboard/employer/components/applications/applications.component';
+import { adminGuardGuard } from './core/guards/admin-guard.guard';
+import { AdminOverviewComponent } from './features/dashboard/admin/components/admin-overview/admin-overview.component';
+import { UserManagementComponent } from './features/dashboard/admin/components/user-management/user-management.component';
+import { JobManagementComponent } from './features/dashboard/admin/components/job-management/job-management.component';
+import { CategoryManagementComponent } from './features/dashboard/admin/components/category-management/category-management.component';
+import { AdminSettingsComponent } from './features/dashboard/admin/components/admin-settings/admin-settings.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, title: 'JobNet' },
@@ -61,17 +67,30 @@ export const routes: Routes = [
         component: EmployerDashboardComponent,
         title: 'Employer Dashboard | JobNet',
         children: [
-            { path: '', component: EmployerHomeComponent, title: 'Dashboard Home | JobNet'  },
+            { path: '', component: EmployerHomeComponent, title: 'Dashboard Home | JobNet' },
             { path: 'profile', component: EmployerProfileComponent, title: 'Profile | JobNet' },
-            { path: 'company-profile', component: CompanyProfileComponent, title: 'Company Profile | JobNet'  },
-            { path: 'applications', component: ApplicationsComponent, title: 'Applications | JobNet'  },
-            { path: 'post-job', component: PostJobComponent, title: 'Submit Job | JobNet'  },
-            { path: 'edit-job/:id', component: PostJobComponent, title: 'Edit Job | JobNet'  },
-            { path: 'my-jobs', component: MyJobsComponent, title: 'My Jobs | JobNet'  },
-            { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet'  },
+            { path: 'company-profile', component: CompanyProfileComponent, title: 'Company Profile | JobNet' },
+            { path: 'applications', component: ApplicationsComponent, title: 'Applications | JobNet' },
+            { path: 'post-job', component: PostJobComponent, title: 'Submit Job | JobNet' },
+            { path: 'edit-job/:id', component: PostJobComponent, title: 'Edit Job | JobNet' },
+            { path: 'my-jobs', component: MyJobsComponent, title: 'My Jobs | JobNet' },
+            { path: 'account-settings', component: AccountsettingsComponent, title: 'Account Settings | JobNet' },
         ],
         canActivate: [employerGuardGuard]
     },
-    { path: 'admin/dashboard', component: AdminDashboardComponent, title: 'Admin Dashboard | JobNet' },
+    {
+        path: 'dashboard/admin',
+        component: AdminDashboardComponent,
+        title: 'Admin Dashboard | JobNet',
+        children: [
+            { path: '', redirectTo: 'overview', pathMatch: 'full' },
+            { path: 'overview', component: AdminOverviewComponent },
+            { path: 'users', component: UserManagementComponent },
+            { path: 'jobs', component: JobManagementComponent },
+            { path: 'categories', component: CategoryManagementComponent },
+            { path: 'settings', component: AdminSettingsComponent },
+        ],
+        canActivate: [adminGuardGuard]
+    },
     { path: '**', component: ErrorpageComponent, title: '404 Not Found | JobNet' },
 ];
