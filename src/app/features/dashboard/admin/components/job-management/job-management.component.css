@@ -1,0 +1,19 @@
+.table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+}
+
+.table td {
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    background: #ffffff;
+}

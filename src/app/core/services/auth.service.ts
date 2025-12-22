@@ -160,6 +160,10 @@ export class AuthService {
     return this.http.get(this.fullUrl(API.SEEKERDATA));
   }
 
+  getAdminData() {
+    return this.http.get(this.fullUrl(API.ADMINDATA));
+  }
+
   // 2. Update getEmployerData to TAP into the response and save it
   getEmployerData(): Observable<any> {
     return this.http.get<any>(this.fullUrl(API.EMPLOYERDATA)).pipe(

@@ -1,0 +1,51 @@
+<div class="admin-page-header">
+  <h2>User Management</h2>
+  <p>Manage all registered users</p>
+</div>
+
+<div class="admin-table-container">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <i class="fas fa-spinner fa-spin"></i> Loading users...
+  </div>
+
+  <table *ngIf="!isLoading" class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Joined Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>#{{ user.user_id }}</td>
+        <td>
+          <div class="user-cell">
+            <!-- Initials Avatar -->
+            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+                style="width: 32px; height: 32px; font-size: 0.8rem; border: 1px solid #e2e8f0;">
+                {{ user.firstname | initials:user.lastname }}
+            </div>
+            <span>{{ user.firstname }} {{ user.lastname }}</span>
+          </div>
+        </td>
+        <td>
+          <span class="role-badge" [ngClass]="user.role">{{ user.role }}</span>
+        </td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.createdat | date }}</td>
+        <td>
+          <button class="action-btn delete" (click)="deleteUser(user.user_id)" title="Delete User">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="users.length === 0">
+        <td colspan="6" class="text-center">No users found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

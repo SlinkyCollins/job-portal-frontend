@@ -1,0 +1,109 @@
+.admin-page-header {
+  margin-bottom: 24px;
+}
+
+.admin-page-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.admin-page-header p {
+  color: #64748b;
+}
+
+.admin-table-container {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+  font-size: 14px;
+}
+
+.admin-table td {
+  color: #334155;
+  font-size: 14px;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-badge.admin {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.role-badge.employer {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.role-badge.job_seeker {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.action-btn.delete {
+  color: #ef4444;
+}
+
+.action-btn.delete:hover {
+  background: #fee2e2;
+}
+
+.loading-spinner {
+  padding: 48px;
+  text-align: center;
+  color: #64748b;
+}
+
+.text-center {
+  text-align: center;
+}

@@ -1,1 +1,137 @@
-<p>admin-dashboard works!</p>
+<!-- Main Container -->
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.sidebar-open]="sidebarOpen">
+        <!-- Mobile Close Button -->
+        <button class="mobile-close-btn" (click)="closeSidebar()">
+            <i class="fas fa-times"></i>
+        </button>
+        <!-- Brand Logo -->
+        <a class="brand-logo" routerLink="/dashboard/admin">
+            <img src="/assets/jobnetlogo2.png" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
+        </a>
+        <!-- User Profile -->
+        <div class="user-profile" (click)="toggleUserDropdown()">
+            <div class="user-avatar">
+                <!-- ALWAYS show Initials for Admin -->
+                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+                    style="width: 45px; height: 45px; font-size: 1.2rem; border: 2px solid #e2e8f0;">
+                    {{ user.firstname | initials:user.lastname }}
+                </div>
+                <div class="status-indicator"></div>
+            </div>
+
+            <div class="d-flex flex-column ms-2">
+                <span class="username fw-bold" style="font-size: 0.9rem;">{{ user.firstname || 'Admin' }}</span>
+                <span class="text-muted" style="font-size: 0.75rem;">Administrator</span>
+            </div>
+
+            <i class="fas fa-chevron-down dropdown-icon ms-auto" [class.rotated]="userDropdownOpen"></i>
+        </div>
+
+        <!-- User Dropdown Menu -->
+        <div class="user-dropdown" [class.open]="userDropdownOpen">
+            <a routerLink="settings" class="dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="showLogoutModal($event)">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="nav-menu">
+
+            <!-- 1. Dashboard -->
+            <a routerLink="/dashboard/admin/overview" routerLinkActive="active" class="nav-item"
+                [routerLinkActiveOptions]="{ exact: true }" (click)="onNavItemClick()">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- 2. Users -->
+            <a routerLink="/dashboard/admin/users" routerLinkActive="active" class="nav-item"
+                (click)="onNavItemClick()">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+
+            <!-- 3. Jobs -->
+            <a routerLink="/dashboard/admin/jobs" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
+                <i class="fas fa-briefcase"></i>
+                <span>Jobs</span>
+            </a>
+
+            <!-- 4. Categories -->
+            <a routerLink="/dashboard/admin/categories" routerLinkActive="active" class="nav-item"
+                (click)="onNavItemClick()">
+                <i class="fas fa-tags"></i>
+                <span>Categories</span>
+            </a>
+
+            <!-- 5. Settings -->
+            <a routerLink="/dashboard/admin/settings" routerLinkActive="active" class="nav-item"
+                (click)="onNavItemClick()">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <!-- Logout Button -->
+        <button class="logout-btn" (click)="showLogoutModal($event)">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </aside>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <button class="mobile-menu-btn" (click)="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="header-actions">
+                <!-- Search box for desktop, hidden on <=480px -->
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here..">
+                </div>
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+            </div>
+        </header>
+        <!-- This is where your routed content will appear -->
+        <router-outlet></router-outlet>
+    </main>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" [class.active]="showLogoutConfirm" (click)="hideLogoutModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Confirm Logout</h3>
+                <button class="modal-close-btn" (click)="hideLogoutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <p>Are you sure you want to logout?</p>
+                <p class="modal-subtitle">You will need to login again to access your account.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" (click)="hideLogoutModal()">Cancel</button>
+                <button class="btn-confirm" (click)="confirmLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
