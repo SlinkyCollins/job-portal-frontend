@@ -51,7 +51,6 @@ export const routes: Routes = [
     {
         path: 'dashboard/jobseeker',
         component: SeekerDashboardComponent,
-        title: 'Job Seeker Dashboard | JobNet',
         children: [
             { path: '', component: DashboardHomeComponent, title: 'Dashboard Home | JobNet' },
             { path: 'profile', component: ProfileComponent, title: 'Profile | JobNet' },
@@ -65,7 +64,6 @@ export const routes: Routes = [
     {
         path: 'dashboard/employer',
         component: EmployerDashboardComponent,
-        title: 'Employer Dashboard | JobNet',
         children: [
             { path: '', component: EmployerHomeComponent, title: 'Dashboard Home | JobNet' },
             { path: 'profile', component: EmployerProfileComponent, title: 'Profile | JobNet' },
@@ -81,14 +79,13 @@ export const routes: Routes = [
     {
         path: 'dashboard/admin',
         component: AdminDashboardComponent,
-        title: 'Admin Dashboard | JobNet',
         children: [
             { path: '', redirectTo: 'overview', pathMatch: 'full' },
-            { path: 'overview', component: AdminOverviewComponent },
-            { path: 'users', component: UserManagementComponent },
-            { path: 'jobs', component: JobManagementComponent },
-            { path: 'categories', component: CategoryManagementComponent },
-            { path: 'settings', component: AdminSettingsComponent },
+            { path: 'overview', component: AdminOverviewComponent, title: 'Overview | JobNet'  },
+            { path: 'users', component: UserManagementComponent, title: 'User Management | JobNet'  },
+            { path: 'jobs', component: JobManagementComponent, title: 'Job Management | JobNet'  },
+            { path: 'categories', component: CategoryManagementComponent, title: 'Category Management | JobNet'  },
+            { path: 'settings', component: AdminSettingsComponent, title: 'Settings | JobNet'  },
         ],
         canActivate: [adminGuardGuard]
     },

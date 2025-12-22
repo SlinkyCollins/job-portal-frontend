@@ -1,1 +1,39 @@
-<p>admin-overview works!</p>
+<div class="admin-page-header">
+  <h2>Dashboard Overview</h2>
+  <p>Welcome back, Admin!</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon users">
+      <i class="fas fa-users"></i>
+    </div>
+    <div class="stat-info">
+      <h3>Total Users</h3>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats.total_users }}</p>
+      <p class="stat-value" *ngIf="isLoading">...</p>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon jobs">
+      <i class="fas fa-briefcase"></i>
+    </div>
+    <div class="stat-info">
+      <h3>Active Jobs</h3>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats.total_jobs }}</p>
+      <p class="stat-value" *ngIf="isLoading">...</p>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon applications">
+      <i class="fas fa-file-alt"></i>
+    </div>
+    <div class="stat-info">
+      <h3>Total Applications</h3>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats.applications }}</p>
+      <p class="stat-value" *ngIf="isLoading">...</p>
+    </div>
+  </div>
+</div>

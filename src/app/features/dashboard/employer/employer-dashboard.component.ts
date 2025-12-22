@@ -115,7 +115,6 @@ export class EmployerDashboardComponent {
 
       localStorage.removeItem('role');
       localStorage.removeItem('token');
-      localStorage.removeItem('userId');
       this.router.navigate(['/login']);
     })
   };
