@@ -14,6 +14,8 @@ import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
 export class UserManagementComponent implements OnInit {
   users: any[] = [];
   isLoading: boolean = true;
+  showDeleteConfirm: boolean = false;
+  userToDelete: number | null = null;
 
   constructor(
     private adminService: AdminService,
@@ -43,9 +45,23 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  deleteUser(userId: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.adminService.deleteUser(userId).subscribe({
+  showDeleteModal(userId: number) {
+    this.userToDelete = userId;
+    this.showDeleteConfirm = true;
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+  }
+
+  hideDeleteModal() {
+    this.showDeleteConfirm = false;
+    this.userToDelete = null;
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+  }
+
+  confirmDelete() {
+    if (this.userToDelete !== null) {
+      this.adminService.deleteUser(this.userToDelete).subscribe({
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('User deleted successfully');
@@ -53,6 +69,7 @@ export class UserManagementComponent implements OnInit {
           } else {
             this.toastr.error(res.message || 'Failed to delete user');
           }
+          this.hideDeleteModal();
         },
         error: (err) => {
           console.error(err);
@@ -67,8 +84,13 @@ export class UserManagementComponent implements OnInit {
           } else {
             this.toastr.error('Error deleting user');
           }
+          this.hideDeleteModal();
         }
       });
     }
+  }
+
+  deleteUser(userId: number) {
+    this.showDeleteModal(userId);
   }
 }

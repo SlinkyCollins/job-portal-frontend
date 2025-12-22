@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { CommonModule } from '@angular/common';
 import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 import { ToastrService } from 'ngx-toastr';
+import { AdminUser } from '../../../core/models/admin-user.model';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -18,11 +19,10 @@ import { ToastrService } from 'ngx-toastr';
     styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent {
-    public user: any = '';
+    public user: AdminUser | null = null;
     public sidebarOpen: boolean = false;
     public userDropdownOpen: boolean = false;
     public showLogoutConfirm: boolean = false;
-    private chart: any;
     constructor(
         private authService: AuthService,
         private router: Router,
