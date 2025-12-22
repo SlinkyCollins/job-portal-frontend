@@ -16,13 +16,13 @@
                 <!-- ALWAYS show Initials for Admin -->
                 <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
                     style="width: 45px; height: 45px; font-size: 1.2rem; border: 2px solid #e2e8f0;">
-                    {{ user.firstname | initials:user.lastname }}
+                    {{ user?.firstname | initials:user?.lastname }}
                 </div>
                 <div class="status-indicator"></div>
             </div>
 
             <div class="d-flex flex-column ms-2">
-                <span class="username fw-bold" style="font-size: 0.9rem;">{{ user.firstname || 'Admin' }}</span>
+                <span class="username fw-bold" style="font-size: 0.9rem;">{{ user?.firstname || 'Admin' }}</span>
                 <span class="text-muted" style="font-size: 0.75rem;">Administrator</span>
             </div>
 
@@ -113,11 +113,11 @@
     <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
 
     <!-- Logout Confirmation Modal -->
-    <div class="modal-overlay" [class.active]="showLogoutConfirm" (click)="hideLogoutModal()">
+    <div class="modal-overlay" [class.active]="showLogoutConfirm" (click)="hideLogoutModal()" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
         <div class="modal-content" (click)="$event.stopPropagation()">
             <div class="modal-header">
-                <h3>Confirm Logout</h3>
-                <button class="modal-close-btn" (click)="hideLogoutModal()">
+                <h3 id="logoutModalTitle">Confirm Logout</h3>
+                <button class="modal-close-btn" (click)="hideLogoutModal()" aria-label="Close dialog">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

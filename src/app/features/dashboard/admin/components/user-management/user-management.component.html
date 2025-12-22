@@ -51,11 +51,11 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal-overlay" *ngIf="showDeleteConfirm" (click)="hideDeleteModal()">
+<div class="modal-overlay" *ngIf="showDeleteConfirm" (click)="hideDeleteModal()" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Confirm Deletion</h3>
-      <button class="modal-close" (click)="hideDeleteModal()">
+      <h3 id="deleteModalTitle">Confirm Deletion</h3>
+      <button class="modal-close" (click)="hideDeleteModal()" aria-label="Close dialog">
         <i class="fas fa-times"></i>
       </button>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../../core/services/admin.service';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +12,7 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css'
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent implements OnInit, OnDestroy {
   users: any[] = [];
   isLoading: boolean = true;
   showDeleteConfirm: boolean = false;
@@ -26,6 +26,11 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+
+  ngOnDestroy(): void {
+    // Ensure body scroll is restored when component is destroyed
+    this.renderer.setStyle(document.body, 'overflow', 'auto');
   }
 
   loadUsers() {

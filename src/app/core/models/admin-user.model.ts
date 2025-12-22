@@ -1,7 +1,8 @@
 export interface AdminUser {
-    id?: string;
-    name?: string;
-    email?: string;
-    role?: string;
-    created_at?: string;
+    user_id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    role: string;
+    createdat?: string;
 }

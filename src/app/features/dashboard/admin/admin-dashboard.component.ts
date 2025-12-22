@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ import { Renderer2 } from '@angular/core';
     templateUrl: './admin-dashboard.component.html',
     styleUrl: './admin-dashboard.component.css'
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit, OnDestroy {
     public user: AdminUser | null = null;
     public sidebarOpen: boolean = false;
     public userDropdownOpen: boolean = false;
@@ -33,6 +33,11 @@ export class AdminDashboardComponent {
 
     ngOnInit(): void {
         this.getAdminData();
+    }
+
+    ngOnDestroy(): void {
+        // Ensure body scroll is restored when component is destroyed
+        this.renderer.setStyle(document.body, 'overflow', 'auto');
     }
 
     getAdminData(): void {
