@@ -51,6 +51,16 @@
   color: #2563eb;
 }
 
+.stat-icon.seekers {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.stat-icon.employers {
+  background: #cffafe;
+  color: #0891b2;
+}
+
 .stat-icon.jobs {
   background: #dcfce7;
   color: #16a34a;

@@ -18,7 +18,7 @@ export class UserManagementComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -28,7 +28,7 @@ export class UserManagementComponent implements OnInit {
     this.isLoading = true;
     this.adminService.getAllUsers().subscribe({
       next: (res: any) => {
-        if (res.status === 'success') {
+        if (res.status) {
           this.users = res.data;
         } else {
           this.toastr.error(res.message || 'Failed to load users');
@@ -47,7 +47,7 @@ export class UserManagementComponent implements OnInit {
     if (confirm('Are you sure you want to delete this user?')) {
       this.adminService.deleteUser(userId).subscribe({
         next: (res: any) => {
-          if (res.status === 'success') {
+          if (res.status) {
             this.toastr.success('User deleted successfully');
             this.loadUsers();
           } else {
@@ -56,7 +56,17 @@ export class UserManagementComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.toastr.error('Error deleting user');
+          // The backend response body is inside err.error
+          const serverMessage = err.error?.message;
+          
+          if (serverMessage === 'Cannot delete other admins') {
+            this.toastr.error('You cannot delete other admins.');
+          } else if (serverMessage) {
+            // Show any other specific error from backend
+            this.toastr.error(serverMessage);
+          } else {
+            this.toastr.error('Error deleting user');
+          }
         }
       });
     }

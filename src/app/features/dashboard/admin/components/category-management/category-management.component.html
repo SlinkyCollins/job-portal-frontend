@@ -1,1 +1,51 @@
-<p>category-management works!</p>
+<div class="container-fluid">
+    <h2 class="h4 mb-4 text-gray-800">Category Management</h2>
+
+    <div class="row">
+        <!-- Add Category Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Add New Category</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" [(ngModel)]="newCategoryName" placeholder="e.g. Software Engineering">
+                        <button class="btn btn-primary" type="button" (click)="addCategory()" [disabled]="!newCategoryName">
+                            <i class="bi bi-plus-lg"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- List Categories -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4 py-3">Category Name</th>
+                                    <th class="text-end pe-4 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let cat of categories">
+                                    <td class="ps-4 fw-semibold">{{ cat.name }}</td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(cat.id)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="categories.length === 0 && !isLoading">
+                                    <td colspan="2" class="text-center py-4 text-muted">No categories found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

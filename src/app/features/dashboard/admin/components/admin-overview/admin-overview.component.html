@@ -14,13 +14,35 @@
       <p class="stat-value" *ngIf="isLoading">...</p>
     </div>
   </div>
+
+  <div class="stat-card">
+    <div class="stat-icon seekers">
+      <i class="fas fa-user-graduate"></i>
+    </div>
+    <div class="stat-info">
+      <h3>Job Seekers</h3>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats.job_seekers }}</p>
+      <p class="stat-value" *ngIf="isLoading">...</p>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon employers">
+      <i class="fas fa-building"></i>
+    </div>
+    <div class="stat-info">
+      <h3>Employers</h3>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats.employers }}</p>
+      <p class="stat-value" *ngIf="isLoading">...</p>
+    </div>
+  </div>
   
   <div class="stat-card">
     <div class="stat-icon jobs">
       <i class="fas fa-briefcase"></i>
     </div>
     <div class="stat-info">
-      <h3>Active Jobs</h3>
+      <h3>Total Jobs</h3>
       <p class="stat-value" *ngIf="!isLoading">{{ stats.total_jobs }}</p>
       <p class="stat-value" *ngIf="isLoading">...</p>
     </div>

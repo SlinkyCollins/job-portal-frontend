@@ -36,7 +36,7 @@
           <span class="role-badge" [ngClass]="user.role">{{ user.role }}</span>
         </td>
         <td>{{ user.email }}</td>
-        <td>{{ user.created_at | date }}</td>
+        <td>{{ user.createdat | date }}</td>
         <td>
           <button class="action-btn delete" (click)="deleteUser(user.user_id)" title="Delete User">
             <i class="fas fa-trash"></i>

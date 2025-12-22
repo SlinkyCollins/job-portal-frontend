@@ -1,1 +1,77 @@
-<p>job-management works!</p>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0 text-gray-800">Job Management</h2>
+        <span class="badge bg-primary rounded-pill px-3 py-2">{{ jobs.length }} Jobs Active</span>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3">Job Title</th>
+                            <th class="py-3">Company</th>
+                            <th class="py-3">Type</th>
+                            <th class="py-3">Posted By</th>
+                            <th class="py-3">Applications</th>
+                            <th class="py-3">Date</th>
+                            <th class="text-end pe-4 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoading">
+                            <td colspan="7" class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let job of jobs">
+                            <td class="ps-4">
+                                <div class="fw-bold text-dark">{{ job.job_title }}</div>
+                                <small class="text-muted">{{ job.location }}</small>
+                            </td>
+                            <td>
+                                <span class="fw-semibold text-primary">{{ job.company_name || 'Unknown Company'
+                                    }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">{{ job.job_type }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                        style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                        {{ job.firstname | initials:job.lastname }}
+                                    </div>
+                                    <small>{{ job.firstname }} {{ job.lastname }}</small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-info text-dark">{{ job.application_count }} Applicants</span>
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ job.created_at | date:'mediumDate' }}</small>
+                            </td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteJob(job.job_id)"
+                                    title="Delete Job">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="!isLoading && jobs.length === 0">
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-briefcase display-4 d-block mb-3"></i>
+                                No jobs found.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

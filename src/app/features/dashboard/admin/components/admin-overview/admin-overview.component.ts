@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 export class AdminOverviewComponent implements OnInit {
   stats: any = {
     total_users: 0,
+    job_seekers: 0,
+    employers: 0,
     total_jobs: 0,
     applications: 0
   };

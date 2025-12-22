@@ -1,1 +1,60 @@
-<p>admin-settings works!</p>
+<div class="container-fluid">
+    <h2 class="h4 mb-4 text-gray-800">Admin Settings</h2>
+
+    <div class="card shadow-sm border-0" style="max-width: 500px;">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Change Password</h5>
+            
+            <form (ngSubmit)="changePassword()">
+                <!-- Current Password -->
+                <div class="mb-3">
+                    <label for="currentPassword" class="form-label">Current Password</label>
+                    <div class="input-group">
+                        <input [type]="showCurrentPassword ? 'text' : 'password'" class="form-control" id="currentPassword" 
+                               [(ngModel)]="currentPassword" name="currentPassword" required>
+                        <button class="btn btn-outline-secondary" type="button" (click)="toggleVisibility('current')">
+                            <i class="fas" [class.fa-eye]="!showCurrentPassword" [class.fa-eye-slash]="showCurrentPassword"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- New Password -->
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <div class="input-group">
+                        <input [type]="showNewPassword ? 'text' : 'password'" class="form-control" id="newPassword" 
+                               [(ngModel)]="newPassword" name="newPassword" required minlength="6" #newPass="ngModel">
+                        <button class="btn btn-outline-secondary" type="button" (click)="toggleVisibility('new')">
+                            <i class="fas" [class.fa-eye]="!showNewPassword" [class.fa-eye-slash]="showNewPassword"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="newPass.invalid && (newPass.dirty || newPass.touched)" class="text-danger small mt-1">
+                        <div *ngIf="newPass.errors?.['minlength']">Password must be at least 6 characters long.</div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                    <div class="input-group">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" id="confirmPassword" 
+                               [(ngModel)]="confirmPassword" name="confirmPassword" required>
+                        <button class="btn btn-outline-secondary" type="button" (click)="toggleVisibility('confirm')">
+                            <i class="fas" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="confirmPassword && newPassword !== confirmPassword" class="text-danger small mt-1">
+                        Passwords do not match.
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100" [disabled]="isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Update Password
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
