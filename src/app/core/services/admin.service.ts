@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { ApiServiceService } from './api-service.service';
 
 export const API = {
-    GET_ALL_USERS: 'dashboard/admin/get_users',
-    DELETE_USER: 'dashboard/admin/delete_user',
-    GET_STATS: 'dashboard/admin/get_stats',
-    GET_ALL_JOBS: 'dashboard/admin/get_jobs',
-    DELETE_JOB: 'dashboard/admin/delete_job',
-    GET_CATEGORIES: 'dashboard/admin/get_categories',
-    ADD_CATEGORY: 'dashboard/admin/add_category',
-    DELETE_CATEGORY: 'dashboard/admin/delete_category',
-    UPDATE_PASSWORD: 'dashboard/admin/update_password'
+    getAllUsers: 'dashboard/admin/get_users',
+    deleteUser: 'dashboard/admin/delete_user',
+    getStats: 'dashboard/admin/get_stats',
+    getAllJobs: 'dashboard/admin/get_jobs',
+    deleteJob: 'dashboard/admin/delete_job',
+    getCategories: 'dashboard/admin/get_categories',
+    addCategory: 'dashboard/admin/add_category',
+    deleteCategory: 'dashboard/admin/delete_category',
+    updatePassword: 'dashboard/admin/update_password'
 };
 
 @Injectable({
@@ -30,42 +30,42 @@ export class AdminService {
 
     // User Management
     getAllUsers(): Observable<any> {
-        return this.http.get(this.fullUrl(API.GET_ALL_USERS));
+        return this.http.get(this.fullUrl(API.getAllUsers));
     }
 
     deleteUser(userId: number): Observable<any> {
-        return this.http.post(this.fullUrl(API.DELETE_USER), { user_id: userId });
+        return this.http.post(this.fullUrl(API.deleteUser), { user_id: userId });
     }
 
     // Job Management
     getAllJobs(): Observable<any> {
-        return this.http.get(this.fullUrl(API.GET_ALL_JOBS));
+        return this.http.get(this.fullUrl(API.getAllJobs));
     }
 
     deleteJob(jobId: number): Observable<any> {
-        return this.http.post(this.fullUrl(API.DELETE_JOB), { job_id: jobId });
+        return this.http.post(this.fullUrl(API.deleteJob), { job_id: jobId });
     }
 
     // Category Management (FIXED)
     getAllCategories(): Observable<any> {
-        return this.http.get(this.fullUrl(API.GET_CATEGORIES));
+        return this.http.get(this.fullUrl(API.getCategories));
     }
 
     createCategory(name: string): Observable<any> {
-        return this.http.post(this.fullUrl(API.ADD_CATEGORY), { name });
+        return this.http.post(this.fullUrl(API.addCategory), { name });
     }
 
     deleteCategory(categoryId: number): Observable<any> {
-        return this.http.post(this.fullUrl(API.DELETE_CATEGORY), { id: categoryId });
+        return this.http.post(this.fullUrl(API.deleteCategory), { id: categoryId });
     }
 
     // Overview Stats
     getDashboardStats(): Observable<any> {
-        return this.http.get(this.fullUrl(API.GET_STATS));
+        return this.http.get(this.fullUrl(API.getStats));
     }
 
     updatePassword(currentPassword: string, newPassword: string): Observable<any> {
-        return this.http.post(this.fullUrl(API.UPDATE_PASSWORD), {
+        return this.http.post(this.fullUrl(API.updatePassword), {
             current_password: currentPassword,
             new_password: newPassword
         });

@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 import { ToastrService } from 'ngx-toastr';
+import { AdminUser } from '../../../core/models/admin-user.model';
+import { Renderer2 } from '@angular/core';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -17,20 +19,25 @@ import { ToastrService } from 'ngx-toastr';
     templateUrl: './admin-dashboard.component.html',
     styleUrl: './admin-dashboard.component.css'
 })
-export class AdminDashboardComponent {
-    public user: any = '';
+export class AdminDashboardComponent implements OnInit, OnDestroy {
+    public user: AdminUser | null = null;
     public sidebarOpen: boolean = false;
     public userDropdownOpen: boolean = false;
     public showLogoutConfirm: boolean = false;
-    private chart: any;
     constructor(
         private authService: AuthService,
         private router: Router,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private renderer: Renderer2
     ) { }
 
     ngOnInit(): void {
         this.getAdminData();
+    }
+
+    ngOnDestroy(): void {
+        // Ensure body scroll is restored when component is destroyed
+        this.renderer.setStyle(document.body, 'overflow', 'auto');
     }
 
     getAdminData(): void {
@@ -91,13 +98,13 @@ export class AdminDashboardComponent {
         this.showLogoutConfirm = true;
         this.userDropdownOpen = false;
         // Prevent body scroll when modal is open
-        document.body.style.overflow = 'hidden';
+        this.renderer.setStyle(document.body, 'overflow', 'hidden');
     }
 
     hideLogoutModal() {
         this.showLogoutConfirm = false;
         // Restore body scroll
-        document.body.style.overflow = 'auto';
+        this.renderer.setStyle(document.body, 'overflow', 'auto');
     }
 
     confirmLogout() {

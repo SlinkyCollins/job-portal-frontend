@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../../core/services/admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-management',
@@ -11,17 +12,25 @@ import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css'
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent implements OnInit, OnDestroy {
   users: any[] = [];
   isLoading: boolean = true;
+  showDeleteConfirm: boolean = false;
+  userToDelete: number | null = null;
 
   constructor(
     private adminService: AdminService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+
+  ngOnDestroy(): void {
+    // Ensure body scroll is restored when component is destroyed
+    this.renderer.setStyle(document.body, 'overflow', 'auto');
   }
 
   loadUsers() {
@@ -43,9 +52,25 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  deleteUser(userId: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.adminService.deleteUser(userId).subscribe({
+  showDeleteModal(userId: number) {
+    this.userToDelete = userId;
+    this.showDeleteConfirm = true;
+    // Prevent body scroll when modal is open
+    this.renderer.setStyle(document.body, 'overflow', 'hidden');
+  }
+
+  hideDeleteModal() {
+    this.showDeleteConfirm = false;
+    this.userToDelete = null;
+    // Restore body scroll
+    this.renderer.setStyle(document.body, 'overflow', 'auto');
+  }
+
+  confirmDelete() {
+    if (this.userToDelete !== null) {
+      this.adminService.deleteUser(this.userToDelete).pipe(
+        finalize(() => this.hideDeleteModal())
+      ).subscribe({
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('User deleted successfully');
@@ -70,5 +95,9 @@ export class UserManagementComponent implements OnInit {
         }
       });
     }
+  }
+
+  deleteUser(userId: number) {
+    this.showDeleteModal(userId);
   }
 }
