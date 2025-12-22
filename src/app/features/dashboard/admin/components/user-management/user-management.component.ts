@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../../core/services/admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-management',
@@ -19,7 +20,8 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -49,19 +51,21 @@ export class UserManagementComponent implements OnInit {
     this.userToDelete = userId;
     this.showDeleteConfirm = true;
     // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
+    this.renderer.setStyle(document.body, 'overflow', 'hidden');
   }
 
   hideDeleteModal() {
     this.showDeleteConfirm = false;
     this.userToDelete = null;
     // Restore body scroll
-    document.body.style.overflow = 'auto';
+    this.renderer.setStyle(document.body, 'overflow', 'auto');
   }
 
   confirmDelete() {
     if (this.userToDelete !== null) {
-      this.adminService.deleteUser(this.userToDelete).subscribe({
+      this.adminService.deleteUser(this.userToDelete).pipe(
+        finalize(() => this.hideDeleteModal())
+      ).subscribe({
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('User deleted successfully');
@@ -69,7 +73,6 @@ export class UserManagementComponent implements OnInit {
           } else {
             this.toastr.error(res.message || 'Failed to delete user');
           }
-          this.hideDeleteModal();
         },
         error: (err) => {
           console.error(err);
@@ -84,7 +87,6 @@ export class UserManagementComponent implements OnInit {
           } else {
             this.toastr.error('Error deleting user');
           }
-          this.hideDeleteModal();
         }
       });
     }

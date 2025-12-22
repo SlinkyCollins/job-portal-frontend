@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { AdminUser } from '../../../core/models/admin-user.model';
+import { Renderer2 } from '@angular/core';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -26,7 +27,8 @@ export class AdminDashboardComponent {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private renderer: Renderer2
     ) { }
 
     ngOnInit(): void {
@@ -91,13 +93,13 @@ export class AdminDashboardComponent {
         this.showLogoutConfirm = true;
         this.userDropdownOpen = false;
         // Prevent body scroll when modal is open
-        document.body.style.overflow = 'hidden';
+        this.renderer.setStyle(document.body, 'overflow', 'hidden');
     }
 
     hideLogoutModal() {
         this.showLogoutConfirm = false;
         // Restore body scroll
-        document.body.style.overflow = 'auto';
+        this.renderer.setStyle(document.body, 'overflow', 'auto');
     }
 
     confirmLogout() {
