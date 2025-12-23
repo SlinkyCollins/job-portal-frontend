@@ -1,27 +1,69 @@
-# JobPortal
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0b83eae4-e0c3-4a34-a182-1f8615259708" />
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
 
-## Development server
+# JobNet: The Modern Bridge Between Talent & Opportunity
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![Build Status](https://img.shields.io/badge/Build-Passing-success) ![Stack](https://img.shields.io/badge/Stack-Angular_18+%7C_Bootstrap-red) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-## Code scaffolding
+**JobNet** is a full-stack recruitment platform engineered to solve the fragmentation between modern identity providers and legacy relational data. It features a high-performance **Angular 18** frontend backed by a hybrid **PHP/MySQL** architecture, offering a unified identity experience across social and native login methods.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 🚀 Why JobNet?
+Unlike standard job boards, JobNet implements a **Dual-Pipeline Identity System**. It allows users to authenticate via **Native Email/Password** (stored in MySQL) OR **Social Providers** (via Firebase), while a background synchronization engine ensures both methods resolve to a single, consistent User Profile.
 
-## Build
+### ✨ Key Architectural Features
+* **Dual-Pipeline Auth Bridge:** A sophisticated synchronization layer that merges **Firebase UIDs** (Social) with **MySQL Records** (Native). This allows for advanced features like account linking (connecting a Google account to an existing Email profile).
+* **Dynamic Salary Normalization:** Intelligent search algorithms that normalize salaries (USD, NGN, GBP, EUR) in real-time, allowing accurate "Sort by Salary" filtering across different economic zones.
+* **Polymorphic User Systems:** Strict data segregation between `Seekers` (Resume-centric) and `Employers` (Company-centric) using Class Table Inheritance.
+* **Asset Offloading:** Integrated **Cloudinary** pipeline for optimizing and serving user CVs and Company Logos, keeping the application lightweight.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 🛠️ Tech Stack
+* **Frontend:** Angular 18+, RxJS, Bootstrap 5
+* **Authentication:** Dual-Strategy (Firebase Social + Native PHP/MySQL)
+* **Backend:** Native PHP 8.2 (API-First Architecture)
+* **Database:** MySQL 8.0 (Aiven Cloud)
+* **Storage:** Cloudinary API
+* **Infrastructure:** Dockerized Apache environment
 
-## Running unit tests
+### ⚡ Quick Start
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+**Prerequisites:** Node.js v18+, NPM.
 
-## Running end-to-end tests
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/SlinkyCollins/job-portal-frontend.git
+    cd job-portal-frontend
+    ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-## Further help
+3.  **Environment Setup**
+    Create a `src/environments/environment.ts` file with your API and Firebase config:
+    ```typescript
+    export const environment = {
+      production: false,
+      apiUrl: 'http://localhost:8080/api', // Pointing to your PHP Backend
+      firebaseConfig: { ... }
+    };
+    ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+4.  **Run Development Server**
+    ```bash
+    ng serve
+    ```
+    Navigate to `http://localhost:4200`.
+
+### 📸 Application Preview
+| Candidate Dashboard | Employer Analytics |
+|:---:|:---:|
+| <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4fdac4b5-ed25-4f1c-a64f-5ce3ced45138" /> | <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d001b1cc-e015-4c1f-9974-0931fd0606e1" />
+
+---
+*Built with ❤️ by Collynx*
+
+> **🚀 Roadmap**
+> * [ ] Real-time WebSocket Notifications
+> * [ ] AI-Powered Resume Scoring
+> * [ ] Integrated Chat for Interview Scheduling
