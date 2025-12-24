@@ -4,17 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { ToastrService } from 'ngx-toastr';
+import { AppModalComponent } from '../../../../../shared/ui/app-modal/app-modal.component';
 
 @Component({
   selector: 'app-my-jobs',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterModule, RouterLink, AppModalComponent],
   templateUrl: './my-jobs.component.html',
   styleUrls: ['./my-jobs.component.css']
 })
 export class MyJobsComponent implements OnInit {
   jobs: any[] = [];
   isLoading = true;
+  showDeleteModal = false;
+  jobToDelete: number | null = null;
 
   // Pagination properties
   currentPage: number = 1;
@@ -68,14 +71,17 @@ export class MyJobsComponent implements OnInit {
   }
 
   deleteJob(jobId: number) {
-    if (confirm('Are you sure you want to delete this job? This action cannot be undone.')) {
+    this.jobToDelete = jobId;
+    this.showDeleteModal = true;
+  }
 
-      this.dashboardService.deleteJob(jobId).subscribe({
+  confirmDelete(): void {
+    if (this.jobToDelete) {
+      this.dashboardService.deleteJob(this.jobToDelete).subscribe({
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('Job deleted successfully');
-            // Reload current page
-            this.loadJobs();
+            this.loadJobs(); // Reload current page
           } else {
             this.toastr.error(res.message || 'Failed to delete job');
           }
@@ -86,6 +92,13 @@ export class MyJobsComponent implements OnInit {
         }
       });
     }
+    this.showDeleteModal = false;
+    this.jobToDelete = null;
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.jobToDelete = null;
   }
 
   // Pagination methods

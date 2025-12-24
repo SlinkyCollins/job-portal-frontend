@@ -1,227 +1,281 @@
-/* Container */
-.post-job-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding-bottom: 4rem;
+/* ========== THEME VARIABLES ========== */
+:host {
+  --primary-green: #244034; /* Forest Green (Logo Color) */
+  --accent-lime: #c3e80e; /* Accent Color */
+  --text-dark: #1f2937;
+  --text-muted: #6b7280;
+  --border-light: #e5e7eb;
+  --bg-soft-green: #ecfdf5; /* Very light green for pills */
+  --radius-md: 10px;
 }
 
-/* Header */
+/* ========== LAYOUT ========== */
+.post-job-container {
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 5rem;
+  font-family: "Gordita-Regular", cursive;
+}
+
+/* Page Header Text */
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  margin: 1rem;
 }
 
 .page-header h1 {
-  font-weight: 700;
-  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-green);
 }
 
-/* Cards */
+/* ========== CARDS & HEADERS ========== */
 .card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  padding: 2rem 2rem 5rem 2rem;
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  margin-bottom: 4rem;
+  background: #fff;
 }
 
-.card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+/* Custom Card Header to match screenshot */
+.theme-card-header {
+  background-color: transparent !important; /* Remove gray bg */
+  border-bottom: none; /* Remove separator line */
+  padding-top: 1.5rem;
+  padding-left: 1.5rem;
+  padding-bottom: 0.5rem;
 }
 
-.card-header {
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+/* The Section Titles */
+.theme-text {
+  color: #31795a !important;
+  font-weight: 700;
+  font-size: 1.15rem;
 }
 
-.card-header h5 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0;
-  display: flex;
-  align-items: center;
+.card-body {
+  padding: 1.5rem;
 }
 
-.card-header i {
-  color: #4f46e5; /* Primary Brand Color */
-}
-
-/* Form Elements */
+/* ========== INPUTS & FORM CONTROLS ========== */
 .form-label {
-  font-weight: 500;
-  color: #374151;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
   margin-bottom: 0.5rem;
 }
 
-/* The Red Asterisk for Required Fields */
 .form-label.required::after {
-  content: " *";
-  color: #dc2626;
+  content: "*";
+  color: #ef4444;
+  margin-left: 4px;
 }
 
+/* Taller, softer inputs like screenshot */
 .form-control,
 .form-select {
   border-radius: 8px;
   border: 1px solid #d1d5db;
-  padding: 0.625rem 0.875rem;
+  padding: 0.75rem 1rem;
   font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-  outline: none;
-}
-
-.form-text {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-/* Textareas */
-textarea.form-control {
-  resize: vertical; /* Allow vertical resizing only */
-  min-height: 100px;
-}
-
-/* Animation */
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .page-header button {
-    width: 100%;
-  }
-}
-
-.post-job-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding-bottom: 4rem;
-}
-
-/* Header */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.page-header h1 {
-  font-weight: 700;
-  color: #1f2937;
-}
-
-/* Cards */
-.card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
-}
-
-.card-header {
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.card-header h5 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.card-header i {
-  color: #4f46e5; /* Primary Brand Color */
-}
-
-/* Form Elements */
-.form-label {
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.5rem;
-}
-
-/* The Red Asterisk for Required Fields */
-.form-label.required::after {
-  content: " *";
-  color: #dc2626;
-}
-
-.form-control,
-.form-select {
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  padding: 0.625rem 0.875rem;
-  font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-  outline: none;
-}
-
-.form-text {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-/* Textareas */
-textarea.form-control {
-  resize: vertical; /* Allow vertical resizing only */
-  min-height: 100px;
-}
-
-/* Suggestion Buttons */
-.hover-shadow:hover {
-  background-color: #eef2ff !important; /* Very light blue */
-  color: #4f46e5 !important; /* Primary color */
-  border-color: #c7d2fe !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.transition-all {
+  color: var(--text-dark);
   transition: all 0.2s ease;
 }
 
-/* Animation */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(36, 64, 52, 0.1); /* Green Glow */
+  outline: none;
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ========== TAGS / PILLS ========== */
+/* The selected tag pill (Green style instead of Bootstrap Blue) */
+.tag-pill {
+  background-color: var(--bg-soft-green);
+  color: #065f46; /* Darker green text */
+  border: 1px solid #d1fae5;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.tag-pill i {
+  color: #047857;
+}
+
+/* Suggestion Buttons */
+.suggestion-btn {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-color: transparent;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.suggestion-btn:hover {
+  background-color: #e5e7eb;
+  color: var(--primary-green);
+  transform: translateY(-1px);
+}
+
+.theme-link {
+  color: var(--primary-green);
+  font-weight: 600;
+}
+
+/* ========== BUTTONS ========== */
+/* Submit Button (Forest Green) */
+.btn-theme {
+  background-color: #244034 !important; /* Your primary green */
+  color: #ffffff !important;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-theme:hover:not(:disabled) {
+  background-color: #1a3026 !important; /* Darker green on hover */
+  transform: translateY(-1px);
+  color: #fff !important;
+}
+
+.btn-theme:disabled {
+  background-color: #9ca3af !important;
+  cursor: not-allowed;
+}
+
+/* Cancel Button */
+.btn-cancel {
+  background-color: #f3f4f6 !important; /* Light gray background */
+  border-color: #d1d5db !important;
+  color: #374151 !important; /* Dark gray text */
+}
+
+.btn-cancel:hover {
+  background-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+/* ========== MODAL STYLES ========== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.cancel-icon {
+  font-size: 3rem;
+  color: #f59e0b; /* Warning color */
+  margin-bottom: 1rem;
+}
+
+.modal-body p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.modal-subtitle {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.btn-confirm {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.btn-confirm:hover {
+  background: #dc2626;
+}
+
+/* ========== ANIMATION ========== */
 .fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -237,7 +291,33 @@ textarea.form-control {
   }
 }
 
-/* Responsive */
+/* ========== RESPONSIVE STYLES ========== */
+@media (max-width: 576px) {
+  .btn-cancel,
+  .btn-theme {
+    width: 100% !important;
+    margin-bottom: 0.5rem;
+  }
+  .btn-theme {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-cancel,
+  .btn-theme {
+    width: auto !important;
+  }
+
+  .page-header {
+    margin: 0 1rem;
+  }
+
+  .card {
+    margin: 0 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .page-header {
     flex-direction: column;
@@ -245,7 +325,16 @@ textarea.form-control {
     gap: 1rem;
   }
 
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
   .page-header button {
     width: 100%;
+  }
+
+  .card {
+    margin: 0 1rem;
+    padding: 1rem 0rem 3rem 0rem;
   }
 }
