@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
-import { ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
 import { Chart } from 'chart.js';
 import { STATUS_COLORS } from '../../../../../core/constants/status-colors';
@@ -16,13 +15,11 @@ import { AuthService } from '../../../../../core/services/auth.service';
   styleUrl: './employer-home.component.css'
 })
 export class EmployerHomeComponent {
-  isLoading = true; // Start loading
+  isLoading = true;
   public user: any = '';
   public companyId: number | null = null;
   public hasCompany: boolean = false;
   public userFirstName: string = '';
-  isLoadingStats: boolean = true;
-  isLoadingJobs: boolean = true;
   stats: any = {
     totalApplications: 0,
     shortlisted: 0,
@@ -40,7 +37,6 @@ export class EmployerHomeComponent {
   constructor(
     private dashboardService: DashboardService,
     private authService: AuthService,
-    private toastr: ToastrService,
     private router: Router
   ) { }
 
@@ -50,28 +46,26 @@ export class EmployerHomeComponent {
   }
 
   ngOnInit() {
-    // SUBSCRIBE to the state instead of calling API
+    this.isLoading = true; 
+
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
         this.userFirstName = user.firstname;
         this.companyId = user.company_id;
 
-        // Logic to switch views
         if (this.companyId) {
           this.hasCompany = true;
-          this.loadStatsAndJobs(); // Load stats only if company exists
+          this.loadStatsAndJobs();
         } else {
           this.hasCompany = false;
+          this.isLoading = false; 
         }
-
-        this.isLoading = false; // Data received, stop loading
       }
     });
   }
 
   ngAfterViewInit() {
-    // Chart will be initialized after data is loaded
     this.initializeChart();
   }
 
@@ -82,9 +76,6 @@ export class EmployerHomeComponent {
   }
 
   loadStatsAndJobs() {
-    this.isLoadingStats = true;
-    this.isLoadingJobs = true;
-
     this.dashboardService.getEmployerDashboardData().subscribe({
       next: (res: any) => {
         if (res.status) {
@@ -97,13 +88,11 @@ export class EmployerHomeComponent {
           // Load Jobs
           this.recentJobs = res.recentJobs;
         }
-        this.isLoadingStats = false;
-        this.isLoadingJobs = false;
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error loading dashboard data:', err);
-        this.isLoadingStats = false;
-        this.isLoadingJobs = false;
+        this.isLoading = false;
       }
     });
   }

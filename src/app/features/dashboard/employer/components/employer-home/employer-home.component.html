@@ -2,10 +2,13 @@
 <div class="dashboard-content">
     <h1 class="page-title d-sm-block d-lg-none">Dashboard</h1>
 
-    <!-- LOADING STATE -->
-    <div *ngIf="isLoading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+    <!-- Shimmer Loader for Onboarding State -->
+    <div *ngIf="isLoading && !hasCompany" class="onboarding-container fade-in">
+        <div class="welcome-card text-center p-5 shadow-sm bg-white rounded shimmer-onboarding">
+            <div class="shimmer-img mb-4"></div>
+            <div class="shimmer-line mb-3" style="width: 60%; height: 2rem;"></div>
+            <div class="shimmer-line mb-4" style="width: 80%; height: 1rem;"></div>
+            <div class="shimmer-btn mx-auto"></div>
         </div>
     </div>
 
@@ -24,6 +27,35 @@
         </div>
     </div>
 
+    <!-- Shimmer Loader for Stats Cards -->
+    <div *ngIf="isLoading && hasCompany" class="stats-container fade-in">
+        <div class="stats-grid">
+            <div class="stat-card shimmer-stat" *ngFor="let i of [1,2,3,4]">
+                <div class="stat-content">
+                    <div class="shimmer-line" style="width: 50px; height: 2rem;"></div>
+                    <div class="shimmer-line" style="width: 80px; height: 1rem;"></div>
+                </div>
+                <div class="stat-icon shimmer-icon"></div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="chart-section">
+                <div class="shimmer-line mb-3" style="width: 120px; height: 1.5rem;"></div>
+                <div class="shimmer-chart"></div>
+            </div>
+            <div class="jobs-section">
+                <div class="shimmer-line mb-3" style="width: 120px; height: 1.5rem;"></div>
+                <div *ngFor="let i of [1,2,3]" class="job-item shimmer-job">
+                    <div class="shimmer-icon"></div>
+                    <div class="job-info">
+                        <div class="shimmer-line mb-2" style="width: 120px; height: 1rem;"></div>
+                        <div class="shimmer-line" style="width: 80px; height: 0.8rem;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- VIEW 2: DASHBOARD STATS (Normal State) -->
     <div *ngIf="!isLoading && hasCompany" class="stats-container fade-in">
         <div class="section-header d-lg-flex d-none">
@@ -35,54 +67,34 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-content">
-                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingTotalApps">
-                        {{ stats.totalApplications }}
-                    </div>
-                    <ng-template #loadingTotalApps>
-                        <div class="stat-number loading-placeholder"></div>
-                    </ng-template>
+                    <div class="stat-number">{{ stats.totalApplications }}</div>
                     <div class="stat-label">Total Applications</div>
                 </div>
                 <div class="stat-icon user-icon">
-                    <i class="fas fa-users"></i> 
+                    <i class="fas fa-users"></i>
                 </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-content">
-                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingShortlisted">{{ stats.shortlisted }}
-                    </div>
-                    <ng-template #loadingShortlisted>
-                        <div class="stat-number loading-placeholder"></div>
-                    </ng-template>
+                    <div class="stat-number">{{ stats.shortlisted }}</div>
                     <div class="stat-label">Applications Shortlisted</div>
                 </div>
                 <div class="stat-icon bookmark-icon">
                     <i class="fas fa-bookmark"></i>
                 </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-content">
-                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingActive">
-                        {{ stats.activeJobs }}
-                    </div>
-                    <ng-template #loadingActive>
-                        <div class="stat-number loading-placeholder"></div>
-                    </ng-template>
+                    <div class="stat-number">{{ stats.activeJobs }}</div>
                     <div class="stat-label">Active Jobs</div>
                 </div>
                 <div class="stat-icon eye-icon">
-                    <i class="fas fa-briefcase"></i> <!-- Changed icon to briefcase -->
+                    <i class="fas fa-briefcase"></i>
                 </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-content">
-                    <div class="stat-number" *ngIf="!isLoadingStats; else loadingPosted">{{ stats.postedJobs }}</div>
-                    <ng-template #loadingPosted>
-                        <div class="stat-number loading-placeholder"></div>
-                    </ng-template>
+                    <div class="stat-number">{{ stats.postedJobs }}</div>
                     <div class="stat-label">Posted Jobs</div>
                 </div>
                 <div class="stat-icon edit-icon">
@@ -120,54 +132,14 @@
             <div class="jobs-section">
                 <div class="section-header">
                     <h2>Recently Posted Jobs</h2>
-                    <a routerLink="/dashboard/employer/my-jobs" *ngIf="recentJobs.length > 0 && !isLoadingJobs"
+                    <a routerLink="/dashboard/employer/my-jobs" *ngIf="recentJobs.length > 0"
                         class="btn btn-link text-decoration-none p-0 d-none d-lg-block"
                         style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                         View All <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
                 <div class="job-list">
-                    <!-- Skeleton Loaders -->
-                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
-                        <div class="job-icon skeleton-icon"></div>
-                        <div class="job-info">
-                            <div class="skeleton-text skeleton-title"></div>
-                            <div class="skeleton-text skeleton-subtitle"></div>
-                        </div>
-                        <div class="dropdown">
-                            <div class="skeleton-button"></div>
-                        </div>
-                    </div>
-                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
-                        <div class="job-icon skeleton-icon"></div>
-                        <div class="job-info">
-                            <div class="skeleton-text skeleton-title"></div>
-                            <div class="skeleton-text skeleton-subtitle"></div>
-                        </div>
-                        <div class="dropdown">
-                            <div class="skeleton-button"></div>
-                        </div>
-                    </div>
-                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
-                        <div class="job-icon skeleton-icon"></div>
-                        <div class="job-info">
-                            <div class="skeleton-text skeleton-title"></div>
-                            <div class="skeleton-text skeleton-subtitle"></div>
-                        </div>
-                        <div class="dropdown">
-                            <div class="skeleton-button"></div>
-                        </div>
-                    </div>
-                    <div class="job-item skeleton" *ngIf="isLoadingJobs">
-                        <div class="job-icon skeleton-icon"></div>
-                        <div class="job-info">
-                            <div class="skeleton-text skeleton-title"></div>
-                            <div class="skeleton-text skeleton-subtitle"></div>
-                        </div>
-                        <div class="dropdown">
-                            <div class="skeleton-button"></div>
-                        </div>
-                    </div>
+
 
                     <!-- Actual Job Items -->
                     <div class="job-item" *ngFor="let job of recentJobs; trackBy: trackByJobId">
@@ -202,7 +174,7 @@
                     </div>
 
                     <div style="text-align: center;" class="d-block d-lg-none">
-                        <a routerLink="/dashboard/employer/my-jobs" *ngIf="recentJobs.length > 0 && !isLoadingJobs"
+                        <a routerLink="/dashboard/employer/my-jobs" *ngIf="recentJobs.length > 0"
                             class="btn btn-link text-decoration-none p-0"
                             style="color: #244034; font-weight: 600; font-size: 0.9rem;">
                             View All <i class="fas fa-arrow-right ms-1"></i>
@@ -210,7 +182,7 @@
                     </div>
 
                     <!-- Polished Empty State -->
-                    <div class="no-data" *ngIf="!isLoadingJobs && recentJobs.length === 0">
+                    <div class="no-data" *ngIf="recentJobs.length === 0">
                         <div class="empty-state-content">
                             <img src="/assets/EmptyImg.svg" alt="No posts illustration"
                                 class="empty-state-image mb-3" />

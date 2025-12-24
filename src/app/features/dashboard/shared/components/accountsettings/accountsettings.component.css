@@ -337,3 +337,32 @@
 .modal-close-btn:hover {
   color: #343a40;
 }
+
+/* Linked Account Pill */
+.connected-account-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: all 0.2s ease;
+}
+
+.connected-account-pill:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transform: translateY(-1px);
+}
+
+/* Bootstrap 5 Subtle Utility overrides (if not using BS 5.3) */
+.bg-success-subtle {
+  background-color: #d1e7dd !important;
+}
+.text-success {
+  color: #0f5132 !important;
+}
+.border-success-subtle {
+  border-color: #badbcc !important;
+}

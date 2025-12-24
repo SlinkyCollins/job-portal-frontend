@@ -13,16 +13,29 @@
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
       <div class="user-avatar">
-        <img *ngIf="photoURL" [src]="photoURL" alt="User Avatar">
-        <!-- Initials Fallback -->
-        <div *ngIf="!photoURL" 
-          class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
-          style="width: 45px; height: 45px; font-size: 1.2rem;">
-          {{ user.firstname | initials:user.lastname }}
-        </div>
+        <!-- Loading Skeleton -->
+        <ng-container *ngIf="isProfileLoading; else profileLoaded">
+          <div class="skeleton-avatar"></div>
+        </ng-container>
+        <!-- Loaded State -->
+        <ng-template #profileLoaded>
+          <img *ngIf="photoURL" [src]="photoURL" alt="User Avatar">
+          <div *ngIf="!photoURL"
+            class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+            style="width: 45px; height: 45px; font-size: 1.2rem;">
+            {{ user.firstname | initials:user.lastname }}
+          </div>
+        </ng-template>
         <div class="status-indicator"></div>
       </div>
-      <span class="username">{{ user.firstname || 'John Doe' }}</span>
+      <span class="username">
+        <ng-container *ngIf="isProfileLoading; else usernameLoaded">
+          <span class="skeleton-line" style="width: 60px; height: 1rem;"></span>
+        </ng-container>
+        <ng-template #usernameLoaded>
+          {{ user.firstname || 'John Doe' }}
+        </ng-template>
+      </span>
       <!-- ✨ NEW ROLE BADGE ✨ -->
       <span class="role-badge employer">
         <i class="fas fa-briefcase me-1"></i> Employer
@@ -106,17 +119,6 @@
       </a>
     </nav>
 
-    <!-- Profile Progress -->
-    <!-- <div class="profile-progress">
-      <div class="progress-info">
-        <span class="progress-percentage">{{ completionPercentage }}%</span>
-        <span class="progress-label">Profile Complete</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="completionPercentage"></div>
-      </div>
-    </div> -->
-
     <!-- Logout Button -->
     <button class="logout-btn" (click)="showLogoutModal($event)">
       <i class="fas fa-sign-out-alt"></i>
@@ -143,22 +145,6 @@
         <button class="post-job-btn" routerLink="/dashboard/employer/post-job">Post a Job</button>
       </div>
     </header>
-    <!-- This is where your routed content will appear -->
-
-    <!-- Low Completion Notification -->
-    <!-- <div *ngIf="completionPercentage < 80 && completionPercentage > 0 && !isAlertDismissed"
-      class="alert alert-warning alert-dismissible fade show m-3 p-2 p-lg-3 d-flex align-items-center shadow-sm"
-      role="alert" style="border-left: 5px solid #ffc107;">
-
-      <i class="fas fa-info-circle me-3 fa-lg text-warning"></i>
-
-      <div class="flex-grow-1">
-        <strong>Profile Incomplete:</strong> Your profile is {{completionPercentage}}% complete. Reach 80% or more to
-        improve your job application visibility!
-      </div>
-
-      <button type="button" class="btn-close" aria-label="Close" (click)="dismissAlert()"></button>
-    </div> -->
 
     <router-outlet></router-outlet>
   </main>
@@ -187,17 +173,4 @@
       </div>
     </div>
   </div>
-
-  <!-- Completion Success Modal -->
-  <!-- <div class="modal-overlay" [class.active]="showCompletionSuccessModal" (click)="closeSuccessModal()">
-    <div class="modal-content text-center p-4" (click)="$event.stopPropagation()" style="max-width: 400px;">
-      <div class="mb-3 text-success">
-        <i class="fas fa-check-circle fa-4x"></i>
-      </div>
-      <h3 class="mb-2">Congratulations!</h3>
-      <p class="lead mb-3">Your profile is 100% complete.</p>
-      <p class="text-muted mb-4">You are now ready to confidently start applying for jobs with a standout profile.</p>
-      <button class="btn btn-success w-100 py-2" routerLink="/jobs">Start Applying</button>
-    </div>
-  </div> -->
 </div>

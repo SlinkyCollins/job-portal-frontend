@@ -121,7 +121,7 @@
 .no-data {
   text-align: center;
   padding: 4rem 1rem;
-  background: #fff;
+  background: transparent;
   border-radius: 12px;
   margin-top: 2rem;
 }
@@ -161,6 +161,23 @@
 .skeleton-subtitle {
   height: 0.9rem;
   width: 60%;
+}
+
+.search-job-btn {
+  background-color: #244034;
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-job-btn:hover {
+  background-color: #d2f34c;
+  color: #000;
+  transform: translateY(-1px);
 }
 
 /* Responsive */

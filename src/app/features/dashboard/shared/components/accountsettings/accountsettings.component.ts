@@ -308,14 +308,6 @@ export class AccountsettingsComponent implements OnInit {
     this.deleteConfirmationText = (event.target as HTMLInputElement).value;
   }
 
-  getProviderDisplayName(providerId: string): string {
-    const icons: { [key: string]: string } = {
-      'google.com': '<img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20" height="20" class="me-2">',
-      'facebook.com': '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" width="20" height="20" class="me-2">'
-    };
-    return icons[providerId] || providerId;  // Fallback to ID if unknown
-  }
-
   checkSocialLinked(): void {
     // Check for both short ('google') and long ('google.com') formats
     this.isFacebookLinked = this.linkedProviders.includes('facebook') || this.linkedProviders.includes('facebook.com');

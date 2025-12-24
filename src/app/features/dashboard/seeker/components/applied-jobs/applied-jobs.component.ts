@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { CapitalizeFirstPipe } from '../../../../../core/pipes/capitalize-first.pipe';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { RelativeTimePipe } from '../../../../../core/pipes/relative-time.pipe';
 @Component({
   selector: 'app-applied-jobs',
   standalone: true,
-  imports: [CommonModule, CapitalizeFirstPipe, RelativeTimePipe],
+  imports: [CommonModule, CapitalizeFirstPipe, RelativeTimePipe, RouterLink],
   templateUrl: './applied-jobs.component.html',
   styleUrl: './applied-jobs.component.css'
 })

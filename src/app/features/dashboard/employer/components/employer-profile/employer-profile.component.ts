@@ -10,7 +10,8 @@ import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
   selector: 'app-employer-profile',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InitialsPipe],
-  templateUrl: './employer-profile.component.html'
+  templateUrl: './employer-profile.component.html',
+  styleUrl: './employer-profile.component.css'
 })
 export class EmployerProfileComponent implements OnInit {
   profileForm: FormGroup;
