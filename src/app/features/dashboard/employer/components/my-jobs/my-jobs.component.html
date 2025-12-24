@@ -1,83 +1,95 @@
 <div class="my-jobs-container fade-in">
 
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="h3 mb-1">My Jobs</h2>
-      <p class="text-muted">Manage your job postings and applications</p>
+  <div class="header-section">
+    <div class="header-left">
+      <h2 class="page-title">My Jobs</h2>
     </div>
-    <a routerLink="/dashboard/employer/post-job" class="btn btn-primary">
-      <i class="fas fa-plus me-2"></i> Post New Job
-    </a>
+    <div class="header-right">
+        <button class="filter-btn filter-btn-all">All</button>
+        <button class="filter-btn">New</button>
+        <div class="sort-section">
+            <span class="sort-label">Sort by:</span>
+            <select class="sort-dropdown">
+            <option>Active</option>
+            <option>Pending</option>
+            <option>Expired</option>
+            <option>All</option>
+            </select>
+        </div>
+    </div>
   </div>
 
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+  <div *ngIf="isLoading" class="py-4">
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="skeleton-table">
+            <div class="skeleton-row mb-3" *ngFor="let i of [1,2,3,4,5]">
+              <div class="skeleton-cell" style="width: 22%;"></div>
+              <div class="skeleton-cell" style="width: 12%;"></div>
+              <div class="skeleton-cell" style="width: 12%;"></div>
+              <div class="skeleton-cell" style="width: 14%;"></div>
+              <div class="skeleton-cell" style="width: 18%;"></div>
+              <div class="skeleton-cell" style="width: 22%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 
-  <!-- Empty State (No Jobs) -->
-  <div *ngIf="!isLoading && jobs.length === 0" class="text-center py-5 bg-white rounded shadow-sm border">
-    <img src="assets/EmptyImg.svg" alt="No Jobs" style="width: 260px; opacity: 0.8;" class="mb-3">
+  <div *ngIf="!isLoading && jobs.length === 0" class="empty-state">
+    <img src="assets/EmptyImg.svg" alt="No Jobs" class="empty-icon">
     <h4>No Jobs Posted Yet</h4>
     <p class="text-muted mb-4">You haven't posted any jobs. Get started now!</p>
-    <a routerLink="/dashboard/employer/post-job" class="btn btn-outline-primary">Post a Job</a>
+    <button class="post-job-btn" routerLink="/dashboard/employer/post-job">Post a Job</button>
   </div>
 
-  <!-- Data Table -->
-  <div *ngIf="!isLoading && jobs.length > 0" class="card border-0 shadow-sm">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="bg-light">
-          <tr>
-            <th class="ps-4">Job Title</th>
-            <th>Type</th>
-            <th>Applicants</th>
-            <th>Status</th>
-            <th>Posted Date</th>
-            <th class="text-end pe-4">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let job of jobs">
-            <td class="ps-4">
-              <div class="fw-bold text-dark">{{ job.title }}</div>
-              <div class="small text-muted">{{ job.location }}</div>
-            </td>
-            <td>
-              <span class="badge bg-light text-dark border">{{ job.employment_type | titlecase }}</span>
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
-                <i class="fas fa-users text-muted me-2"></i>
-                <span class="fw-bold">{{ job.application_count }}</span>
-              </div>
-            </td>
-            <td>
-              <span class="badge"
-                [ngClass]="{'bg-success-subtle text-success': job.status === 'active', 'bg-secondary-subtle text-secondary': job.status === 'closed'}">
-                {{ job.status | titlecase }}
-              </span>
-            </td>
-            <td class="text-muted small">
-              {{ job.published_at | date:'mediumDate' }}
-            </td>
-            <td class="text-end pe-4">
-              <div class="btn-group">
-                <button [routerLink]="['/dashboard/employer/edit-job', job.job_id]" class="btn btn-sm btn-outline-secondary" title="Edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteJob(job.job_id)" title="Delete">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div *ngIf="!isLoading && jobs.length > 0" class="responsive-table-wrapper">
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Job Created</th>
+          <th class="col-applicants">Applicants</th>
+          <th class="col-status">Status</th>
+          <th class="col-action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of jobs">
+          <td class="cell-title">
+            <div class="job-title-main">{{ job.title }}</div>
+            <div class="job-type-location">
+              <i class="fas fa-briefcase"></i> 
+              {{ job.employment_type | titlecase }} 
+              <span>•</span> 
+              {{ job.location }}
+            </div>
+          </td>
+          <td class="cell-created">
+            {{ job.published_at | date:'dd MMM, yyyy' }}
+          </td>
+          <td class="cell-applicants">
+            <span class="applicants-count">{{ job.application_count }}</span>
+            <span class="applicants-text">Applications</span>
+          </td>
+          <td class="cell-status">
+            <span class="status-badge"
+              [ngClass]="{'status-active': job.status === 'active', 'status-pending': job.status === 'pending', 'status-expired': job.status === 'expired', 'status-closed': job.status === 'closed'}">
+              <span class="status-dot"></span>{{ job.status | titlecase }}
+            </span>
+          </td>
+          <td class="cell-action">
+            <div class="action-buttons">
+              <button [routerLink]="['/dashboard/employer/edit-job', job.job_id]" class="action-btn edit-btn" title="Edit Job">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-btn delete-btn" (click)="deleteJob(job.job_id)" title="Delete Job">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
 </div>
