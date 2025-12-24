@@ -63,38 +63,6 @@
   gap: 1rem;
 }
 
-/* Filter Buttons */
-.filter-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  background-color: #fff;
-  color: #1f2937;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.filter-btn:hover {
-  background-color: #f3f4f6;
-  border-color: #9ca3af;
-}
-
-/* Add lime green styling for active filter button */
-.filter-btn-all {
-  background-color: #c3e80e;
-  color: #1f2937;
-  border-color: #c3e80e;
-  font-weight: 600;
-}
-
-.filter-btn-all:hover {
-  background-color: #b8d607;
-  border-color: #b8d607;
-}
-
 /* Sort Section */
 .sort-section {
   display: flex;
@@ -153,33 +121,93 @@
   }
 }
 
-/* ========== SKELETON LOADER STYLES ========== */
-.skeleton-table {
-  width: 100%;
+/* ========== SMART SKELETON LOADER ========== */
+
+/* Reuse the wrapper for consistent spacing, but remove border for the loader if desired */
+.skeleton-wrapper {
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  border: none;
 }
 
 .skeleton-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 1rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem; /* Matches real td padding */
+  border-bottom: 1px solid #f3f4f6;
+  background: #fff;
+  margin-bottom: 0;
+  gap: 1rem;
 }
 
+/* Base Animation & Style */
 .skeleton-cell {
-  height: 32px;
-  background: linear-gradient(90deg, #e0e0e0 25%, #c0c0c0 50%, #e0e0e0 75%);
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  flex: 1;
+  border-radius: 4px;
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* --- DESKTOP LAYOUT (Matches Table Columns) --- */
+.col-title { width: 35%; height: 24px; } /* Thicker for title emphasis */
+.col-date { width: 15%; }
+.col-applicants { width: 15%; }
+.col-status { width: 15%; border-radius: 12px; } /* Rounded for badge look */
+.col-action { width: 10%; margin-left: auto; height: 36px; border-radius: 8px; }
+
+/* --- MOBILE LAYOUT (Matches Card Stack) --- */
+@media (max-width: 768px) {
+  
+  /* 1. Make the row look like a card */
+  .skeleton-row {
+    display: block; /* Stack content vertically */
+    position: relative; /* For absolute positioning of status */
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }
-  100% {
-    background-position: 200% 0;
+
+  /* 2. Position the Status Skeleton (Top Left) 
+     Matches your real CSS: .cell-status { top: 1.25rem; left: 1rem; } */
+  .col-status {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    width: 80px;
+    height: 24px;
+  }
+
+  /* 3. Push Title down 
+     Matches your real CSS: .cell-title { margin-top: 2rem; } */
+  .col-title {
+    width: 70%;
+    margin-top: 2.5rem; /* Space for the status badge above it */
+    margin-bottom: 1rem;
+    height: 28px;
+  }
+
+  /* 4. Details (Date & Applicants) */
+  .col-date, .col-applicants {
+    width: 40%;
+    margin-bottom: 0.75rem;
+    height: 16px;
+  }
+
+  /* 5. Action Button (Full Width at Bottom) */
+  .col-action {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 1rem;
+    height: 42px; /* Matches mobile button height */
   }
 }
 
@@ -187,10 +215,7 @@
 .empty-state {
   text-align: center;
   padding: 3rem 2rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(36, 64, 52, 0.06);
-  border: 1px solid #e5e7eb;
+  background: transparent;
 }
 
 .empty-icon {
@@ -392,7 +417,70 @@
   transform: translateY(-1px);
 }
 
-/* ========== MOBILE RESPONSIVE CARD VIEW (Transformation) ========== */
+/* ========== PAGINATION ========== */
+.pagination-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.page-link {
+  color: #244034;
+  border-color: #d1d5db;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px !important;
+  margin: 0 2px;
+  transition: all 0.2s ease;
+}
+
+.page-link:hover {
+  color: #c3e80e;
+  background-color: #f9fafb;
+  border-color: #c3e80e;
+}
+
+.page-item.active .page-link {
+  background-color: #244034;
+  border-color: #244034;
+  color: #fff;
+}
+
+.page-item.disabled .page-link {
+  color: #9ca3af;
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .pagination-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .pagination-info {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-link {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
 @media (max-width: 768px) {
   /* Reset Wrapper styles for mobile to remove table-like border */
   .responsive-table-wrapper {

@@ -123,8 +123,8 @@ export class DashboardService {
     return this.http.post(this.fullUrl(API.POST_JOB), jobData);
   }
 
-  getEmployerJobs(): Observable<any> {
-    return this.http.get(this.fullUrl(API.GET_EMPLOYER_JOBS));
+  getEmployerJobs(params: any = {}): Observable<any> {
+    return this.http.get(this.fullUrl(API.GET_EMPLOYER_JOBS), { params });
   }
 
   deleteJob(jobId: number): Observable<any> {

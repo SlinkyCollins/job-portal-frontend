@@ -5,42 +5,54 @@
       <h2 class="page-title">My Jobs</h2>
     </div>
     <div class="header-right">
-        <button class="filter-btn filter-btn-all">All</button>
-        <button class="filter-btn">New</button>
-        <div class="sort-section">
-            <span class="sort-label">Sort by:</span>
-            <select class="sort-dropdown">
-            <option>Active</option>
-            <option>Pending</option>
-            <option>Expired</option>
-            <option>All</option>
-            </select>
-        </div>
+      <div class="sort-section">
+        <span class="sort-label">Sort by:</span>
+        <select class="sort-dropdown" [(ngModel)]="selectedSort" (change)="onSortChange()">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="pending">Pending</option>
+          <option value="closed">Closed</option>
+          <option value="new">New</option>
+          <option value="old">Old</option>
+        </select>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="py-4">
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-          <div class="skeleton-table">
-            <div class="skeleton-row mb-3" *ngFor="let i of [1,2,3,4,5]">
-              <div class="skeleton-cell" style="width: 22%;"></div>
-              <div class="skeleton-cell" style="width: 12%;"></div>
-              <div class="skeleton-cell" style="width: 12%;"></div>
-              <div class="skeleton-cell" style="width: 14%;"></div>
-              <div class="skeleton-cell" style="width: 18%;"></div>
-              <div class="skeleton-cell" style="width: 22%;"></div>
-            </div>
-          </div>
-        </div>
+  <div *ngIf="isLoading" class="responsive-table-wrapper skeleton-wrapper border-0">
+    <div class="skeleton-table">
+      <div class="skeleton-row" *ngFor="let i of [1,2,3,4,5]">
+
+        <div class="skeleton-cell col-title"></div>
+
+        <div class="skeleton-cell col-date"></div>
+
+        <div class="skeleton-cell col-applicants"></div>
+
+        <div class="skeleton-cell col-status"></div>
+
+        <div class="skeleton-cell col-action"></div>
+
       </div>
+    </div>
   </div>
 
   <div *ngIf="!isLoading && jobs.length === 0" class="empty-state">
     <img src="assets/EmptyImg.svg" alt="No Jobs" class="empty-icon">
-    <h4>No Jobs Posted Yet</h4>
-    <p class="text-muted mb-4">You haven't posted any jobs. Get started now!</p>
-    <button class="post-job-btn" routerLink="/dashboard/employer/post-job">Post a Job</button>
+
+    <!-- No jobs at all -->
+    <div *ngIf="totalAllJobs === 0">
+      <h4>No Jobs Posted Yet</h4>
+      <p class="text-muted mb-4">You haven't posted any jobs. Get started now!</p>
+      <button class="post-job-btn" routerLink="/dashboard/employer/post-job">Post a Job</button>
+    </div>
+
+    <!-- Jobs exist, but none match filter -->
+    <div *ngIf="totalAllJobs > 0">
+      <h4>No {{ selectedSort | titlecase }} Jobs Found</h4>
+      <p class="text-muted mb-4">You have {{ totalAllJobs }} job{{ totalAllJobs > 1 ? 's' : '' }} posted, but none match
+        the "{{ selectedSort }}" filter. Try a different filter.</p>
+    </div>
   </div>
 
   <div *ngIf="!isLoading && jobs.length > 0" class="responsive-table-wrapper">
@@ -59,9 +71,9 @@
           <td class="cell-title">
             <div class="job-title-main">{{ job.title }}</div>
             <div class="job-type-location">
-              <i class="fas fa-briefcase"></i> 
-              {{ job.employment_type | titlecase }} 
-              <span>•</span> 
+              <i class="fas fa-briefcase"></i>
+              {{ job.employment_type | titlecase }}
+              <span>•</span>
               {{ job.location }}
             </div>
           </td>
@@ -80,7 +92,8 @@
           </td>
           <td class="cell-action">
             <div class="action-buttons">
-              <button [routerLink]="['/dashboard/employer/edit-job', job.job_id]" class="action-btn edit-btn" title="Edit Job">
+              <button [routerLink]="['/dashboard/employer/edit-job', job.job_id]" class="action-btn edit-btn"
+                title="Edit Job">
                 <i class="fas fa-edit"></i>
               </button>
               <button class="action-btn delete-btn" (click)="deleteJob(job.job_id)" title="Delete Job">
@@ -91,5 +104,27 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="totalJobs > perPage" class="pagination-container mt-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="pagination-info mb-3 mb-md-0">
+        {{ getShowingText() }}
+      </div>
+      <nav aria-label="Job listings pagination">
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="#" (click)="prevPage(); $event.preventDefault();">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of getPagesArray()" [class.active]="page === currentPage">
+            <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault();">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault();">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
