@@ -1,9 +1,42 @@
-<div class="container py-4" style="max-width: 700px;">
+<div class="container py-4" style="max-width: 1500px;">
   <h5 class="card-title fw-bold mb-4">My Personal Profile</h5>
 
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status"></div>
+  <!-- Skeleton Shimmer Loading State -->
+  <div *ngIf="isLoading" class="py-4">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-4">
+        <div class="d-flex align-items-center mb-4">
+          <div class="position-relative me-3">
+            <div class="skeleton-circle"></div>
+          </div>
+          <div class="ms-2 w-100">
+            <div class="skeleton-title mb-2" style="width: 120px;"></div>
+            <div class="skeleton-label mb-1" style="width: 120px;"></div>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2" style="width: 80px;"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-md-6">
+            <div class="skeleton-label mb-2" style="width: 80px;"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-12">
+            <div class="skeleton-label mb-2" style="width: 160px;"></div>
+            <div class="skeleton-input"></div>
+          </div>
+          <div class="col-12">
+            <div class="skeleton-label mb-2" style="width: 120px;"></div>
+            <div class="skeleton-input"></div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-start mt-4">
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <form [formGroup]="profileForm" *ngIf="!isLoading" (ngSubmit)="onSubmit()">
@@ -17,42 +50,44 @@
 
           <!-- SMART AVATAR SECTION -->
           <div class="position-relative me-3">
-            
+
             <!-- 1. Photo Exists -->
             <ng-container *ngIf="profilePicUrl">
-                <img [src]="profilePicUrl" class="rounded-circle shadow-sm object-fit-cover" width="80" height="80" alt="Profile Photo" style="border: 2px solid #eee;">
-                
-                <!-- Delete Button (Trigger Modal) -->
-                <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
-                        style="width: 28px; height: 28px;"
-                        data-bs-toggle="modal" data-bs-target="#deletePhotoModal"
-                        title="Remove Photo">
-                    <i class="fas fa-trash-alt" style="font-size: 0.7rem;"></i>
-                </button>
+              <img [src]="profilePicUrl" class="rounded-circle shadow-sm object-fit-cover" width="80" height="80"
+                alt="Profile Photo" style="border: 2px solid #eee;">
+
+              <!-- Delete Button (Trigger Modal) -->
+              <button type="button"
+                class="btn btn-danger btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
+                style="width: 28px; height: 28px;" data-bs-toggle="modal" data-bs-target="#deletePhotoModal"
+                title="Remove Photo">
+                <i class="fas fa-trash-alt" style="font-size: 0.7rem;"></i>
+              </button>
             </ng-container>
-    
+
             <!-- 2. No Photo -->
             <ng-container *ngIf="!profilePicUrl">
-                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold border shadow-sm"
-                     style="width: 80px; height: 80px; font-size: 2rem;">
-                    {{ user.firstname | initials:user.lastname }}
-                </div>
-                
-                <!-- Upload Button -->
-                <button type="button" class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
-                        style="width: 28px; height: 28px;"
-                        (click)="fileInput.click()"
-                        title="Upload Photo">
-                    <i class="fas fa-camera" style="font-size: 0.7rem;"></i>
-                </button>
+              <div
+                class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold border shadow-sm"
+                style="width: 80px; height: 80px; font-size: 2rem;">
+                {{ user.firstname | initials:user.lastname }}
+              </div>
+
+              <!-- Upload Button -->
+              <button type="button"
+                class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"
+                style="width: 28px; height: 28px;" (click)="fileInput.click()" title="Upload Photo">
+                <i class="fas fa-camera" style="font-size: 0.7rem;"></i>
+              </button>
             </ng-container>
-            
+
             <!-- Hidden Input -->
             <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-            
+
             <!-- Upload Spinner (Overlay) -->
-            <div *ngIf="isSaving" class="position-absolute top-50 start-50 translate-middle bg-white rounded-circle p-1 shadow-sm">
-                 <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+            <div *ngIf="isSaving"
+              class="position-absolute top-50 start-50 translate-middle bg-white rounded-circle p-1 shadow-sm">
+              <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
             </div>
           </div>
 
@@ -95,8 +130,7 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-start">
-      <button type="submit" class="btn btn-primary px-4"
-        [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
+      <button type="submit" class="save-btn px-4" [disabled]="profileForm.invalid || isSaving || !profileForm.dirty">
         <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
         {{ isSaving ? 'Saving...' : 'Save Changes' }}
       </button>
@@ -118,7 +152,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDeletePhoto()">
-            Delete Photo
+          Delete Photo
         </button>
       </div>
     </div>

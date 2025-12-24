@@ -1,0 +1,21 @@
+<div class="modal-overlay" [class.active]="isVisible" (click)="onBackdropClick()" role="dialog" aria-modal="true" [attr.aria-labelledby]="title">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 id="{{title}}">{{ title }}</h3>
+      <button class="modal-close-btn" (click)="onCancel()" aria-label="Close dialog">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon" *ngIf="iconClass">
+        <i [class]="iconClass"></i>
+      </div>
+      <p>{{ message }}</p>
+      <p class="modal-subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+    </div>
+    <div class="modal-footer">
+      <button [class]="cancelButtonClass" (click)="onCancel()">{{ cancelText }}</button>
+      <button [class]="confirmButtonClass" (click)="onConfirm()">{{ confirmText }}</button>
+    </div>
+  </div>
+</div>

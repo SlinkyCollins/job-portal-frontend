@@ -33,6 +33,7 @@ export class EmployerDashboardComponent {
   public showCompletionSuccessModal: boolean = false;
   public companyId: number | null = null;
   public isAlertDismissed = false;
+  public isProfileLoading: boolean = true;
 
   constructor(
     public http: HttpClient,
@@ -68,18 +69,20 @@ export class EmployerDashboardComponent {
   }
 
   loadProfile(): void {
+    this.isProfileLoading = true;
     this.dashboardService.getEmployerProfile().subscribe({
       next: (response: any) => {
         if (response.status) {
           this.user = response.data;
           this.photoURL = this.user.profile_pic_url || '';
-
-          // INITIALIZE SERVICE STATE
-          // Push the initial data to the service so it's not empty
           this.profileService.updateInitials(this.user.firstname, this.user.lastname);
         }
+        this.isProfileLoading = false;
       },
-      error: (err) => console.error('Failed to load profile:', err)
+      error: (err) => {
+        console.error('Failed to load profile:', err);
+        this.isProfileLoading = false;
+      }
     });
   }
 

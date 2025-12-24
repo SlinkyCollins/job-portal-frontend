@@ -1,40 +1,594 @@
+/* ========== GENERAL STYLES ========== */
 .my-jobs-container {
   padding-bottom: 3rem;
 }
-
-.table th {
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.table td {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  vertical-align: middle;
-}
-
-.badge {
-  font-weight: 500;
-  padding: 0.5em 0.8em;
-}
-
-/* Custom Badge Colors */
-.bg-success-subtle { background-color: #dcfce7 !important; }
-.text-success { color: #166534 !important; }
-
-.bg-secondary-subtle { background-color: #f3f4f6 !important; }
-.text-secondary { color: #4b5563 !important; }
 
 .fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== HEADER SECTION ========== */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .header-section {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+.header-left {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Sort Section */
+.sort-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+.sort-dropdown {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231f2937' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.sort-dropdown:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+@media (max-width: 640px) {
+  .header-right {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .sort-label {
+    font-size: 0.8rem;
+  }
+
+  .sort-dropdown {
+    padding: 0.4rem 0.8rem;
+    padding-right: 1.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ========== SMART SKELETON LOADER ========== */
+
+/* Reuse the wrapper for consistent spacing, but remove border for the loader if desired */
+.skeleton-wrapper {
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  border: none;
+}
+
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1.5rem; /* Matches real td padding */
+  border-bottom: 1px solid #f3f4f6;
+  background: #fff;
+  margin-bottom: 0;
+  gap: 1rem;
+}
+
+/* Base Animation & Style */
+.skeleton-cell {
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* --- DESKTOP LAYOUT (Matches Table Columns) --- */
+.col-title { width: 35%; height: 24px; } /* Thicker for title emphasis */
+.col-date { width: 15%; }
+.col-applicants { width: 15%; }
+.col-status { width: 15%; border-radius: 12px; } /* Rounded for badge look */
+.col-action { width: 10%; margin-left: auto; height: 36px; border-radius: 8px; }
+
+/* --- MOBILE LAYOUT (Matches Card Stack) --- */
+@media (max-width: 768px) {
+  
+  /* 1. Make the row look like a card */
+  .skeleton-row {
+    display: block; /* Stack content vertically */
+    position: relative; /* For absolute positioning of status */
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  /* 2. Position the Status Skeleton (Top Left) 
+     Matches your real CSS: .cell-status { top: 1.25rem; left: 1rem; } */
+  .col-status {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    width: 80px;
+    height: 24px;
+  }
+
+  /* 3. Push Title down 
+     Matches your real CSS: .cell-title { margin-top: 2rem; } */
+  .col-title {
+    width: 70%;
+    margin-top: 2.5rem; /* Space for the status badge above it */
+    margin-bottom: 1rem;
+    height: 28px;
+  }
+
+  /* 4. Details (Date & Applicants) */
+  .col-date, .col-applicants {
+    width: 40%;
+    margin-bottom: 0.75rem;
+    height: 16px;
+  }
+
+  /* 5. Action Button (Full Width at Bottom) */
+  .col-action {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 1rem;
+    height: 42px; /* Matches mobile button height */
+  }
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: transparent;
+}
+
+.empty-icon {
+  width: 260px;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+/* ========== TABLE STYLES ========== */
+.responsive-table-wrapper {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px; /* Softer corners */
+  box-shadow: 0 2px 8px rgba(36, 64, 52, 0.04);
+  overflow: hidden;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+/* Remove the scroll hint since we are using Cards now */
+.table-scroll-hint {
+  display: none;
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table Header (Desktop) */
+.responsive-table thead {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.responsive-table th {
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Table Body */
+.responsive-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.responsive-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.responsive-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.responsive-table td {
+  padding: 1.25rem 1.5rem;
+  vertical-align: middle;
+  color: #374151;
+}
+
+/* Specific Column Styles */
+.job-title-main {
+  font-weight: 700;
+  color: #111827;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.job-type-location {
+  font-size: 0.85rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.applicants-count {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111827;
+  margin-right: 0.25rem;
+}
+
+.applicants-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+/* Badge Styles */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Badge Colors */
+.status-active {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+.status-active .status-dot {
+  background-color: #059669;
+}
+
+.status-pending {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+.status-pending .status-dot {
+  background-color: #d97706;
+}
+
+.status-expired {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+.status-expired .status-dot {
+  background-color: #dc2626;
+}
+
+.status-closed {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+.status-closed .status-dot {
+  background-color: #4b5563;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.edit-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: #eff6ff;
+}
+.delete-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+/* ========== POST JOB BUTTON ========== */
+.post-job-btn {
+  background-color: #244034;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.post-job-btn:hover {
+  background-color: #c3e80e;
+  color: #1f2937;
+  transform: translateY(-1px);
+}
+
+/* ========== PAGINATION ========== */
+.pagination-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.page-link {
+  color: #244034;
+  border-color: #d1d5db;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px !important;
+  margin: 0 2px;
+  transition: all 0.2s ease;
+}
+
+.page-link:hover {
+  color: #c3e80e;
+  background-color: #f9fafb;
+  border-color: #c3e80e;
+}
+
+.page-item.active .page-link {
+  background-color: #244034;
+  border-color: #244034;
+  color: #fff;
+}
+
+.page-item.disabled .page-link {
+  color: #9ca3af;
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .pagination-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .pagination-info {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-link {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+@media (max-width: 768px) {
+  /* Reset Wrapper styles for mobile to remove table-like border */
+  .responsive-table-wrapper {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    padding: 1rem;
+    margin: 0;
+  }
+
+  /* Hide the Table Header completely */
+  .responsive-table thead {
+    display: none;
+  }
+
+  /* Make the Table Block-level */
+  .responsive-table,
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Style Each Row as a Card */
+  .responsive-table tbody tr {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative; /* Context for absolute positioning if needed */
+  }
+
+  /* Style the Cells inside the Card */
+  .responsive-table td {
+    padding: 0.5rem 0;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+  }
+
+  /* 1. Title Section: Give it emphasis and space */
+  .cell-title {
+    padding-bottom: 1rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    margin-bottom: 0.75rem;
+    margin-top: 2rem;
+    display: block !important; /* Stack title and subtitle vertically */
+  }
+
+  .job-title-main {
+    font-size: 1.1rem;
+  }
+
+  /* 2. Created Date: Add a label for context */
+  .cell-created::before {
+    content: "Posted Date:";
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .cell-created {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  /* 3. Applicants: Add context label */
+  .cell-applicants {
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .applicants-count {
+    font-size: 1rem;
+  }
+
+  /* 4. Status: Push to top-right using absolute position for a cleaner look */
+  .cell-status {
+    position: absolute;
+    top: 1.25rem;
+    left: 1rem;
+    padding: 0 !important;
+    width: auto;
+  }
+
+  /* 5. Actions: Full width buttons at the bottom */
+  .cell-action {
+    margin-top: 1rem;
+    padding-top: 1rem !important;
+    border-top: 1px solid #f3f4f6;
+  }
+
+  .action-buttons {
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .action-btn {
+    flex: 1; /* Make buttons expand to fill width */
+    height: 42px; /* Taller touch target */
+    font-size: 1rem;
+    border-radius: 8px;
+  }
 }

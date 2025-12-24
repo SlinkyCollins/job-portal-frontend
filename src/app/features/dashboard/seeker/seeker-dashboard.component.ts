@@ -32,6 +32,7 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   public showCompletionSuccessModal: boolean = false;
   private isFirstLoad: boolean = true;
   public isAlertDismissed = false;
+  public isProfileLoading: boolean = true;
 
   constructor(
     public router: Router,
@@ -85,6 +86,8 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   loadProfile(): void {
+    this.isProfileLoading = true;
+
     this.dashboardService.getSeekerProfile().subscribe({
       next: (response: any) => {
         if (response.status) {
@@ -98,8 +101,12 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
           // Push the initial data to the service so it's not empty
           this.profileService.updateInitials(this.user.firstname, this.user.lastname);
         }
+        this.isProfileLoading = false;
       },
-      error: (err) => console.error('Failed to load profile:', err)
+      error: (err) => {
+        this.isProfileLoading = false;
+        console.error('Failed to load profile:', err);
+      }
     });
   }
 

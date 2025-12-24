@@ -18,6 +18,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export class PostJobComponent implements OnInit {
   jobForm: FormGroup;
   isLoading = false;
+  showCancelConfirm = false;
   categories: any[] = [];
 
   // Custom Tag Input
@@ -294,5 +295,24 @@ export class PostJobComponent implements OnInit {
         }
       });
     }
+  }
+
+  onReset(): void {
+    if (this.jobForm.dirty) {
+      this.showCancelConfirm = true;
+    } else {
+      this.router.navigate(['/dashboard/employer/my-jobs']);
+    }
+  }
+
+  // New: Hide the modal
+  hideCancelModal(): void {
+    this.showCancelConfirm = false;
+  }
+
+  // New: Confirm cancel and navigate
+  confirmCancel(): void {
+    this.showCancelConfirm = false;
+    this.router.navigate(['/dashboard/employer/my-jobs']);
   }
 }

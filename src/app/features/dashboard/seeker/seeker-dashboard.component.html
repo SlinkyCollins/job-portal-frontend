@@ -13,16 +13,29 @@
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
       <div class="user-avatar">
-        <img *ngIf="photoURL" [src]="photoURL" alt="User Avatar">
-        <!-- Initials Fallback -->
-        <div *ngIf="!photoURL"
-          class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
-          style="width: 45px; height: 45px; font-size: 1.2rem;">
-          {{ user.firstname | initials:user.lastname }}
-        </div>
+        <!-- Loading Skeleton -->
+        <ng-container *ngIf="isProfileLoading; else profileLoaded">
+          <div class="skeleton-avatar"></div>
+        </ng-container>
+        <!-- Loaded State -->
+        <ng-template #profileLoaded>
+          <img *ngIf="photoURL" [src]="photoURL" alt="User Avatar">
+          <div *ngIf="!photoURL"
+            class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
+            style="width: 45px; height: 45px; font-size: 1.2rem;">
+            {{ user.firstname | initials:user.lastname }}
+          </div>
+        </ng-template>
         <div class="status-indicator"></div>
       </div>
-      <span class="username">{{ user.firstname || 'John Doe' }}</span>
+      <span class="username">
+        <ng-container *ngIf="isProfileLoading; else usernameLoaded">
+          <span class="skeleton-line" style="width: 60px; height: 1rem;"></span>
+        </ng-container>
+        <ng-template #usernameLoaded>
+          {{ user.firstname || 'John Doe' }}
+        </ng-template>
+      </span>
 
       <span class="role-badge seeker">
         <i class="fas fa-user me-1"></i> Seeker

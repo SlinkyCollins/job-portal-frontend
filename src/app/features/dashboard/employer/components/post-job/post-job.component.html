@@ -1,28 +1,22 @@
 <div class="post-job-container fade-in">
 
-    <!-- Header -->
     <div class="page-header mb-4">
         <div>
             <h1 class="h3 mb-1">{{ isEditMode ? 'Edit Job' : 'Post a New Job' }}</h1>
             <p class="text-muted">{{ isEditMode ? 'Update your job details' : 'Find the best talent for your company' }}
             </p>
         </div>
-        <button type="button" class="btn btn-outline-secondary" routerLink="/dashboard/employer/my-jobs">
-            Cancel
-        </button>
     </div>
 
     <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
 
-        <!-- SECTION 1: BASIC INFORMATION -->
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 text-primary"><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+            <div class="card-header bg-white py-3 theme-card-header">
+                <h5 class="mb-0 theme-text"><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
             </div>
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row g-5">
 
-                    <!-- Job Title -->
                     <div class="col-md-12">
                         <label class="form-label required">Job Title</label>
                         <input type="text" class="form-control" formControlName="title"
@@ -33,7 +27,6 @@
                         </div>
                     </div>
 
-                    <!-- Status (Only in Edit Mode) -->
                     <div class="col-md-6" *ngIf="isEditMode">
                         <label class="form-label">Job Status</label>
                         <select class="form-select" formControlName="status">
@@ -42,14 +35,11 @@
                         </select>
                     </div>
 
-                    <!-- Category -->
                     <div class="col-md-6">
                         <label class="form-label required">Category</label>
                         <select class="form-select" formControlName="category_id" [compareWith]="compareFn">
-                            <!-- 1. Bind null to the default option -->
                             <option [ngValue]="null" disabled>Select Category</option>
 
-                            <!-- 2. Use [ngValue] to keep the ID as a Number -->
                             <option *ngFor="let cat of categories" [ngValue]="cat.id">
                                 {{ cat.name }}
                             </option>
@@ -61,43 +51,38 @@
                         </div>
                     </div>
 
-                    <!-- Tags -->
                     <div class="col-12 mb-3">
                         <label class="form-label">Job Tags <span class="text-muted small">(Skills, Tools,
                                 Keywords)</span></label>
 
-                        <!-- 1. The Input Box (Looks like a container) -->
                         <div class="form-control d-flex flex-wrap align-items-center gap-2"
                             style="min-height: 48px; height: auto; padding: 6px 12px;">
 
-                            <!-- Selected Tags (Blue Pills) -->
                             <span *ngFor="let tag of tags; let i = index"
-                                class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill d-flex align-items-center px-3 py-2">
+                                class="badge tag-pill rounded-pill d-flex align-items-center px-3 py-2">
                                 {{ tag }}
                                 <i class="fas fa-times ms-2 cursor-pointer" (click)="removeTag(i)"
                                     style="cursor: pointer; font-size: 0.8em;"></i>
                             </span>
 
-                            <!-- Typing Input -->
                             <input type="text" class="border-0 bg-transparent flex-grow-1"
                                 style="outline: none; min-width: 150px;" placeholder="Type & press Enter..."
                                 (keydown.enter)="$event.preventDefault(); addTag($event)" (input)="onTagInput($event)">
                         </div>
 
-                        <!-- 2. Suggestions Area -->
                         <div class="mt-2" *ngIf="filteredTags.length > 0">
                             <small class="text-muted d-block mb-2">Suggested Skills:</small>
                             <div class="d-flex flex-wrap gap-2">
-                                <button type="button" 
+                                <button type="button"
                                     *ngFor="let tag of filteredTags | slice:0:(showAllTags ? filteredTags.length : 10)"
                                     (click)="selectSuggestion(tag.name)"
-                                    class="btn btn-sm btn-light border rounded-pill text-secondary hover-shadow transition-all">
+                                    class="btn btn-sm suggestion-btn border rounded-pill transition-all">
                                     {{ tag.name }} <i class="fas fa-plus ms-1 text-muted" style="font-size: 0.7em;"></i>
                                 </button>
 
-                                <button type="button" *ngIf="filteredTags.length > 10" 
+                                <button type="button" *ngIf="filteredTags.length > 10"
                                     (click)="showAllTags = !showAllTags"
-                                    class="btn btn-sm btn-link text-decoration-none">
+                                    class="btn btn-sm btn-link text-decoration-none theme-link">
                                     {{ showAllTags ? 'Show Less' : '+' + (filteredTags.length - 10) + ' More' }}
                                 </button>
                             </div>
@@ -108,7 +93,6 @@
                         </div>
                     </div>
 
-                    <!-- Employment Type -->
                     <div class="col-md-6">
                         <label class="form-label required">Employment Type</label>
                         <select class="form-select" formControlName="employment_type">
@@ -116,7 +100,6 @@
                         </select>
                     </div>
 
-                    <!-- Location -->
                     <div class="col-md-12">
                         <label class="form-label required">Location</label>
                         <input type="text" class="form-control" formControlName="location"
@@ -131,15 +114,13 @@
             </div>
         </div>
 
-        <!-- SECTION 2: JOB DESCRIPTION -->
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 text-primary"><i class="fas fa-align-left me-2"></i>Job Details</h5>
+            <div class="card-header bg-white py-3 theme-card-header">
+                <h5 class="mb-0 theme-text"><i class="fas fa-align-left me-2"></i>Job Details</h5>
             </div>
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row g-5">
 
-                    <!-- Overview -->
                     <div class="col-12">
                         <label class="form-label required">Job Overview</label>
                         <textarea class="form-control" rows="3" formControlName="overview"
@@ -150,7 +131,6 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
                     <div class="col-12">
                         <label class="form-label required">Full Description</label>
                         <textarea class="form-control" rows="6" formControlName="description"
@@ -161,7 +141,6 @@
                         </div>
                     </div>
 
-                    <!-- Responsibilities -->
                     <div class="col-12">
                         <label class="form-label required">Key Responsibilities</label>
                         <textarea class="form-control" rows="4" formControlName="responsibilities"
@@ -172,7 +151,6 @@
                         </div>
                     </div>
 
-                    <!-- Requirements -->
                     <div class="col-12">
                         <label class="form-label required">Requirements / Skills</label>
                         <textarea class="form-control" rows="4" formControlName="requirements"
@@ -187,15 +165,13 @@
             </div>
         </div>
 
-        <!-- SECTION 3: SALARY & BENEFITS -->
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 text-primary"><i class="fas fa-money-bill-wave me-2"></i>Salary & Benefits</h5>
+            <div class="card-header bg-white py-3 theme-card-header">
+                <h5 class="mb-0 theme-text"><i class="fas fa-money-bill-wave me-2"></i>Salary & Benefits</h5>
             </div>
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row g-5">
 
-                    <!-- Currency -->
                     <div class="col-md-3">
                         <label class="form-label">Currency</label>
                         <select class="form-select" formControlName="currency">
@@ -203,14 +179,12 @@
                         </select>
                     </div>
 
-                    <!-- Amount -->
                     <div class="col-md-5">
                         <label class="form-label required">Salary Amount</label>
 
                         <input type="text" class="form-control" formControlName="salary_amount"
                             placeholder="e.g. 250,000 (Min Budget)" (input)="formatSalary($event)">
 
-                        <!-- Validation Errors -->
                         <div *ngIf="jobForm.get('salary_amount')?.touched && jobForm.get('salary_amount')?.invalid"
                             class="text-danger small mt-1">
 
@@ -233,7 +207,6 @@
                         </div>
                     </div>
 
-                    <!-- Duration -->
                     <div class="col-md-4">
                         <label class="form-label">Per</label>
                         <select class="form-select" formControlName="salary_duration">
@@ -241,7 +214,6 @@
                         </select>
                     </div>
 
-                    <!-- Benefits -->
                     <div class="col-12">
                         <label class="form-label">Benefits & Perks</label>
                         <textarea class="form-control" rows="3" formControlName="benefits"
@@ -252,15 +224,13 @@
             </div>
         </div>
 
-        <!-- SECTION 4: CANDIDATE PREFERENCES -->
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 text-primary"><i class="fas fa-user-check me-2"></i>Candidate Preferences</h5>
+            <div class="card-header bg-white py-3 theme-card-header">
+                <h5 class="mb-0 theme-text"><i class="fas fa-user-check me-2"></i>Candidate Preferences</h5>
             </div>
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row g-5">
 
-                    <!-- Experience Level -->
                     <div class="col-md-4">
                         <label class="form-label required">Experience Level</label>
                         <select class="form-select" formControlName="experience_level">
@@ -268,7 +238,6 @@
                         </select>
                     </div>
 
-                    <!-- English Fluency -->
                     <div class="col-md-4">
                         <label class="form-label">English Fluency</label>
                         <select class="form-select" formControlName="english_fluency">
@@ -276,14 +245,12 @@
                         </select>
                     </div>
 
-                    <!-- Deadline -->
                     <div class="col-md-4">
                         <label class="form-label">Application Deadline</label>
                         <input type="date" class="form-control" formControlName="deadline">
                         <div class="form-text">Leave blank for default (30 days).</div>
                     </div>
 
-                    <!-- Nice to Have -->
                     <div class="col-12">
                         <label class="form-label">Nice to Have (Optional)</label>
                         <textarea class="form-control" rows="3" formControlName="nice_to_have"
@@ -294,14 +261,40 @@
             </div>
         </div>
 
-        <!-- SUBMIT BUTTON -->
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-5">
-            <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="isLoading || jobForm.invalid">
+        <div class="d-flex flex-column flex-md-row gap-2 justify-content-between justify-content-md-end mb-5 mx-3">
+            <button type="button" class="btn btn-cancel w-100" (click)="onReset()">
+                Cancel
+            </button>
+            <button type="submit" class="btn btn-theme w-100" [disabled]="isLoading || jobForm.invalid || !jobForm.dirty">
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
                     aria-hidden="true"></span>
-                {{ isLoading ? 'Processing...' : (isEditMode ? 'Update Job' : 'Post Job Now') }}
+                {{ isLoading ? 'Processing...' : (isEditMode ? 'Update Job' : 'Next') }}
             </button>
         </div>
 
     </form>
+
+    <!-- Cancel Confirmation Modal -->
+    <div class="modal-overlay" [class.active]="showCancelConfirm" (click)="hideCancelModal()" role="dialog"
+        aria-modal="true" aria-labelledby="cancelModalTitle">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="cancelModalTitle">Confirm Cancel</h3>
+                <button class="modal-close-btn" (click)="hideCancelModal()" aria-label="Close dialog">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="cancel-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <p>Are you sure you want to cancel?</p>
+                <p class="modal-subtitle">Unsaved changes will be lost.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" (click)="hideCancelModal()">Keep Editing</button>
+                <button class="btn-confirm" (click)="confirmCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>

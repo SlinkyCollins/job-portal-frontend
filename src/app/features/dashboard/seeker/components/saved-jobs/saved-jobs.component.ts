@@ -25,7 +25,7 @@ interface SortOption {
 export class SavedJobsComponent implements OnInit {
   constructor(
     private authService: AuthService,
-    private router: Router, 
+    private router: Router,
     private toastr: ToastrService,
     private dashboardService: DashboardService
   ) { }
@@ -167,6 +167,17 @@ export class SavedJobsComponent implements OnInit {
         if (response.status) {
           this.savedJobs = this.savedJobs.filter((j) => j.job_id !== savedId);
           this.toastr.success('Job removed from saved jobs.');
+          this.totalJobs--;
+          // Recalculate totalPages
+          this.totalPages = Math.ceil(this.totalJobs / this.perPage);
+
+          // If current page is now empty and not the first page, go back one page
+          if (this.savedJobs.length === 0 && this.currentPage > 1) {
+            this.currentPage--;
+            this.loadSavedJobs();
+          } else {
+            this.updateVisiblePages();
+          }
         } else {
           this.toastr.error(response.msg || 'Failed to remove job.');
         }
