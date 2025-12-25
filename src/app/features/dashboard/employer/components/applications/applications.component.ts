@@ -5,17 +5,24 @@ import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { InitialsPipe } from '../../../../../core/pipes/initials.pipe';
+import { FormsModule } from '@angular/forms'; // Import FormsModule for select binding
 
 @Component({
   selector: 'app-applications',
   standalone: true,
-  imports: [CommonModule, NgxExtendedPdfViewerModule, InitialsPipe],
+  imports: [CommonModule, NgxExtendedPdfViewerModule, InitialsPipe, FormsModule],
   templateUrl: './applications.component.html',
   styleUrls: ['./applications.component.css']
 })
 export class ApplicationsComponent implements OnInit {
   applications: any[] = [];
   isLoading = true;
+  
+  // FILTERS
+  activeTab: string = 'all';       // Status Filter
+  selectedJob: string = 'all';     // Job Title Filter
+
+  // Modal State
   showPreviewModal = false;
   previewUrl: any = null;
   previewFileType: 'pdf' | 'doc' | 'unknown' = 'unknown';
@@ -46,12 +53,53 @@ export class ApplicationsComponent implements OnInit {
     });
   }
 
+  // --- GETTERS & HELPERS ---
+
+  // 1. Get Unique Job Titles for the Dropdown
+  get uniqueJobs(): string[] {
+    // Creates a unique list of job titles from the applications array
+    return [...new Set(this.applications.map(app => app.job_title))];
+  }
+
+  // 2. Master Filter Logic (Filters by BOTH Status and Job)
+  get filteredApplications() {
+    return this.applications.filter(app => {
+      // Check Status Match
+      const statusMatch = (this.activeTab === 'all') || (app.status === this.activeTab);
+      // Check Job Match
+      const jobMatch = (this.selectedJob === 'all') || (app.job_title === this.selectedJob);
+      
+      return statusMatch && jobMatch;
+    });
+  }
+
+  // 3. Count Helper (Respects the *other* filter)
+  // E.g. If I filter by "Senior Dev", the "Pending" tab count should only show Pending Senior Devs
+  getCount(status: string): number {
+    return this.applications.filter(app => {
+      const statusMatch = (status === 'all') || (app.status === status);
+      const jobMatch = (this.selectedJob === 'all') || (app.job_title === this.selectedJob);
+      return statusMatch && jobMatch;
+    }).length;
+  }
+
+  // --- ACTIONS ---
+
+  // Called when user clicks a job title in the card
+  filterBySpecificJob(jobTitle: string) {
+    this.selectedJob = jobTitle;
+    this.toastr.info(`Showing applications for ${jobTitle}`, 'Filter Applied');
+  }
+
+  clearJobFilter() {
+    this.selectedJob = 'all';
+  }
+
   updateStatus(appId: number, newStatus: string) {
     this.dashboardService.updateApplicationStatus(appId, newStatus).subscribe({
       next: (res: any) => {
         if (res.status) {
           this.toastr.success(`Candidate marked as ${newStatus}`);
-          // Update UI locally
           const app = this.applications.find(a => a.application_id === appId);
           if (app) app.status = newStatus;
         }
@@ -61,27 +109,23 @@ export class ApplicationsComponent implements OnInit {
   }
 
   openResumePreview(url: string) {
-    // 1. Check if URL is null, undefined, or empty string
     if (!url || url.trim() === '') {
       this.toastr.warning('This candidate has not attached a resume.', 'No Resume Found');
-      return; // Stop here. Do not open the modal.
+      return;
     }
 
     const extension = url.split('.').pop()?.toLowerCase();
 
     if (extension === 'pdf') {
       this.previewFileType = 'pdf';
-      // For ngx-extended-pdf-viewer, we pass the raw string URL, NOT the sanitized one
       this.previewUrl = url;
     }
     else if (['doc', 'docx'].includes(extension || '')) {
       this.previewFileType = 'doc';
-      // Use Google Docs Viewer for Word files
       const googleViewer = `https://docs.google.com/gview?url=${url}&embedded=true`;
       this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(googleViewer);
     }
     else {
-      // Fallback: Just open in new tab
       window.open(url, '_blank');
       return;
     }

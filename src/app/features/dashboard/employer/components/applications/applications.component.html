@@ -1,116 +1,157 @@
-<div class="container-fluid fade-in">
-    <h2 class="h3 mb-4">Candidate Applications</h2>
+<div class="container-fluid fade-in mt-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h2 class="h4 mb-1">Candidate Applications</h2>
+            <p class="text-muted small mb-0">Manage and track your incoming talent.</p>
+        </div>
 
-    <!-- Loading -->
+        <div class="job-filter-wrapper">
+            <select class="form-select job-select" [(ngModel)]="selectedJob">
+                <option value="all">All Jobs</option>
+                <option *ngFor="let job of uniqueJobs" [value]="job">{{ job }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="status-tabs">
+        <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">
+            All <span class="count-badge">{{ getCount('all') }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'pending'" (click)="activeTab = 'pending'">
+            Pending <span class="count-badge">{{ getCount('pending') }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'shortlisted'" (click)="activeTab = 'shortlisted'">
+            Shortlisted <span class="count-badge">{{ getCount('shortlisted') }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'accepted'" (click)="activeTab = 'accepted'">
+            Accepted <span class="count-badge">{{ getCount('accepted') }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'rejected'" (click)="activeTab = 'rejected'">
+            Rejected <span class="count-badge">{{ getCount('rejected') }}</span>
+        </button>
+    </div>
+
+    <div *ngIf="selectedJob !== 'all'" class="mb-3 fade-in">
+        <div class="alert alert-soft-green d-flex align-items-center justify-content-between py-2 px-3">
+            <span>
+                <i class="fas fa-filter me-2 text-success"></i>
+                Filtering by: <strong>{{ selectedJob }}</strong>
+            </span>
+            <button class="btn btn-sm btn-link text-decoration-none text-muted" (click)="clearJobFilter()">
+                Clear Filter
+            </button>
+        </div>
+    </div>
+
     <div *ngIf="isLoading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status"></div>
+        <div class="spinner-border text-success" role="status"></div>
+        <p class="text-muted mt-2">Loading applications...</p>
     </div>
 
-    <!-- Empty State -->
-    <div *ngIf="!isLoading && applications.length === 0" class="text-center py-5 bg-white rounded shadow-sm">
-        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
-        <h4>No Applications Yet</h4>
-        <p class="text-muted">Once candidates apply to your jobs, they will appear here.</p>
+    <div *ngIf="!isLoading && filteredApplications.length === 0" class="empty-state">
+        <div class="mb-3">
+            <i class="fas fa-search fa-3x text-muted opacity-50"></i>
+        </div>
+        <h5 class="text-dark">No Candidates Found</h5>
+        <p class="text-muted">
+            No applications found for <strong>{{ activeTab | titlecase }}</strong> 
+            <span *ngIf="selectedJob !== 'all'"> in <strong>{{ selectedJob }}</strong></span>.
+        </p>
+        <button *ngIf="selectedJob !== 'all'" class="btn btn-sm btn-outline-success mt-2" (click)="clearJobFilter()">
+            View All Applications
+        </button>
     </div>
 
-    <!-- List -->
-    <div *ngIf="!isLoading && applications.length > 0" class="row">
-        <div class="col-12" *ngFor="let app of applications">
+    <div *ngIf="!isLoading && filteredApplications.length > 0" class="row">
+        <div class="col-12" *ngFor="let app of filteredApplications">
 
-            <div class="card mb-3 border-0 shadow-sm">
-                <div class="card-body d-flex align-items-center flex-wrap gap-3">
+            <div class="candidate-card">
+                <div class="d-flex align-items-center flex-wrap gap-3 candidate-card-body">
 
-                    <!-- Avatar -->
-                    <img *ngIf="app.profile_pic_url; else initials" [src]="app.profile_pic_url" class="rounded-circle"
-                        width="60" height="60" style="object-fit: cover;">
-                    <ng-template #initials>
-                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
-                            style="width: 60px; height: 60px; font-size: 1.5rem;">
-                            {{ app.firstname | initials:app.lastname }}
-                        </div>
-                    </ng-template>
+                    <div class="avatar-area">
+                        <img *ngIf="app.profile_pic_url; else initials" [src]="app.profile_pic_url" class="avatar-img">
+                        <ng-template #initials>
+                            <div class="avatar-initials">
+                                {{ app.firstname | initials:app.lastname }}
+                            </div>
+                        </ng-template>
+                    </div>
 
-                    <!-- Info -->
                     <div class="flex-grow-1">
-                        <h5 class="mb-1">{{ app.firstname }} {{ app.lastname }}</h5>
-                        <p class="mb-1 text-muted small">
-                            Applied for <span class="fw-bold text-dark">{{ app.job_title }}</span>
+                        <h5 class="candidate-name text-truncate" style="max-width: 250px;">
+                            {{ app.firstname }} {{ app.lastname }}
+                        </h5>
+                        <p class="job-applied mb-0 text-truncate" style="max-width: 100%;">
+                            Applied for 
+                            <span class="job-link" (click)="filterBySpecificJob(app.job_title)" title="Filter by this job">
+                                {{ app.job_title }}
+                            </span>
                         </p>
-                        <div class="small text-muted">
-                            <i class="fas fa-envelope me-1"></i> {{ app.email }}
-                            <span class="mx-2">•</span>
-                            <i class="fas fa-clock me-1"></i> {{ app.applied_at | date:'mediumDate' }}
+                        <div class="meta-info">
+                            <span class="text-truncate" style="max-width: 200px;">
+                                <i class="far fa-envelope me-1"></i> {{ app.email }}
+                            </span>
+                            <span>
+                                <i class="far fa-clock me-1"></i> {{ app.applied_at | date:'mediumDate' }}
+                            </span>
                         </div>
                     </div>
 
-                    <!-- In your candidates table/card -->
-                    <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="openResumePreview(app.cv_url)">
-                        <i class="fas fa-eye me-1"></i> Preview CV
-                    </button>
-
-                    <!-- Status Actions -->
-                    <div class="dropdown">
-                        <button class="btn btn-sm dropdown-toggle text-white" type="button" data-bs-toggle="dropdown"
-                            [ngClass]="{
-                            'btn-warning text-dark': app.status === 'pending',
-                            'btn-info': app.status === 'shortlisted',
-                            'btn-success': app.status === 'accepted',
-                            'btn-danger': app.status === 'rejected'
-                        }">
-                            {{ app.status | titlecase }}
+                    <div class="actions-area">
+                        <button class="btn btn-preview" (click)="openResumePreview(app.cv_url)">
+                            <i class="fas fa-file-alt me-2"></i> Resume
                         </button>
 
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <!-- Added Accepted Option -->
-                            <li><a class="dropdown-item" (click)="updateStatus(app.application_id, 'accepted')">Accept
-                                    (Hire)</a></li>
-                            <li><a class="dropdown-item"
-                                    (click)="updateStatus(app.application_id, 'shortlisted')">Shortlist</a></li>
-                            <li><a class="dropdown-item"
-                                    (click)="updateStatus(app.application_id, 'rejected')">Reject</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" (click)="updateStatus(app.application_id, 'pending')">Reset to
-                                    Pending</a></li>
-                        </ul>
-                    </div>
-                </div>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle status-dropdown-btn" type="button" data-bs-toggle="dropdown"
+                                [ngClass]="'status-' + app.status">
+                                <span>{{ app.status | titlecase }}</span>
+                            </button>
 
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                                <li><a class="dropdown-item py-2" (click)="updateStatus(app.application_id, 'accepted')">
+                                    <i class="fas fa-check text-success me-2"></i> Hire (Accept)
+                                </a></li>
+                                <li><a class="dropdown-item py-2" (click)="updateStatus(app.application_id, 'shortlisted')">
+                                    <i class="fas fa-star text-primary me-2"></i> Shortlist
+                                </a></li>
+                                <li><a class="dropdown-item py-2" (click)="updateStatus(app.application_id, 'rejected')">
+                                    <i class="fas fa-times text-danger me-2"></i> Reject
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2" (click)="updateStatus(app.application_id, 'pending')">
+                                    <i class="fas fa-undo text-muted me-2"></i> Reset to Pending
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
         </div>
     </div>
 </div>
 
-
-<!-- PREVIEW MODAL OVERLAY -->
 <div *ngIf="showPreviewModal" class="modal-backdrop fade show"></div>
-
-<!-- PREVIEW MODAL -->
 <div *ngIf="showPreviewModal" class="modal fade show d-block" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered" style="height: 90vh;">
-        <div class="modal-content h-100">
-            <div class="modal-header py-2">
-                <h5 class="modal-title fs-6">Resume Preview</h5>
+        <div class="modal-content h-100 shadow-lg border-0" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-header py-3">
+                <h5 class="modal-title fs-6"><i class="fas fa-file-alt me-2"></i>Resume Preview</h5>
                 <button type="button" class="btn-close" (click)="closePreview()"></button>
             </div>
-            <div
-                class="modal-body p-0 bg-light h-100 d-flex align-items-center justify-content-center position-relative">
-
-                <!-- 1. PDF Viewer (Optimized for Viewing Only) -->
+            <div class="modal-body p-0 bg-light h-100 position-relative">
                 <div *ngIf="previewFileType === 'pdf'" class="w-100 h-100">
-                    <ngx-extended-pdf-viewer [src]="previewUrl" [height]="'90vh'" [showToolbar]="true"
+                    <ngx-extended-pdf-viewer [src]="previewUrl" [height]="'100%'" [showToolbar]="true"
                         [showSidebarButton]="false" [showFindButton]="true" [showPagingButtons]="true"
                         [showZoomButtons]="true" [showPresentationModeButton]="true" [showDownloadButton]="true"
                         [showPrintButton]="true" [showTextEditor]="false" [showDrawEditor]="false"
                         [showStampEditor]="false" [showHandToolButton]="true">
                     </ngx-extended-pdf-viewer>
                 </div>
-
-                <!-- 2. DOC Viewer (Google Docs Iframe) -->
-                <iframe *ngIf="previewFileType === 'doc'" [src]="previewUrl" class="w-100 h-100 border-0">
-                </iframe>
-
+                <iframe *ngIf="previewFileType === 'doc'" [src]="previewUrl" class="w-100 h-100 border-0"></iframe>
             </div>
         </div>
     </div>
