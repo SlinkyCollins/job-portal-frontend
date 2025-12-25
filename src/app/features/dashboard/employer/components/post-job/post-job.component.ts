@@ -18,6 +18,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export class PostJobComponent implements OnInit {
   jobForm: FormGroup;
   isLoading = false;
+  isSubmitting = false;
   showCancelConfirm = false;
   categories: any[] = [];
 
@@ -78,7 +79,7 @@ export class PostJobComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTags(); // Fetch tags immediately
+    this.loadTags();
 
     this.categoryService.getCategories().subscribe(cats => {
       this.categories = cats;
@@ -97,13 +98,13 @@ export class PostJobComponent implements OnInit {
 
   // --- TAGS LOGIC START ---
 
-  // 1. Fetch Tags from Backend
+  // 1. Load All Tags from Backend
   loadTags() {
     this.dashboardService.getTags().subscribe({
       next: (res) => {
         if (res.status) {
           this.allAvailableTags = res.data;
-          this.filterSuggestions(); // Initial filter
+          this.filterSuggestions(); 
         }
       }
     });
@@ -123,7 +124,8 @@ export class PostJobComponent implements OnInit {
     if (value && !this.tags.includes(value)) {
       this.tags.push(value);
       this.jobForm.get('tags')?.setValue(this.tags);
-      this.filterSuggestions(); // Update suggestions
+      this.filterSuggestions();
+      this.jobForm.markAsDirty();
     }
     input.value = '';
   }
@@ -139,6 +141,7 @@ export class PostJobComponent implements OnInit {
       this.tags.push(tagName);
       this.jobForm.get('tags')?.setValue(this.tags);
       this.filterSuggestions();
+      this.jobForm.markAsDirty();
     }
   }
 
@@ -147,6 +150,7 @@ export class PostJobComponent implements OnInit {
     this.tags.splice(index, 1);
     this.jobForm.get('tags')?.setValue(this.tags);
     this.filterSuggestions();
+    this.jobForm.markAsDirty();
   }
 
   // 5. Filter Suggestions (Hide already selected ones)
@@ -254,7 +258,7 @@ export class PostJobComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.isSubmitting = true;
     const formData = { ...this.jobForm.value };
 
     if (formData.salary_amount) {
@@ -265,7 +269,7 @@ export class PostJobComponent implements OnInit {
       formData.job_id = this.jobId;
       this.dashboardService.updateJob(formData).subscribe({
         next: (res: any) => {
-          this.isLoading = false;
+          this.isSubmitting = false;
           if (res.status) {
             this.toastr.success('Job updated successfully!');
             this.router.navigate(['/dashboard/employer/my-jobs']);
@@ -274,14 +278,14 @@ export class PostJobComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.isLoading = false;
+          this.isSubmitting = false;
           this.toastr.error('An error occurred');
         }
       });
     } else {
       this.dashboardService.postJob(formData).subscribe({
         next: (res: any) => {
-          this.isLoading = false;
+          this.isSubmitting = false;
           if (res.status) {
             this.toastr.success('Job posted successfully!');
             this.router.navigate(['/dashboard/employer/my-jobs']);
@@ -290,7 +294,7 @@ export class PostJobComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.isLoading = false;
+          this.isSubmitting = false;
           this.toastr.error('An error occurred');
         }
       });

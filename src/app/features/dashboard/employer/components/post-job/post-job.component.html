@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading || !isEditMode">
 
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white py-3 theme-card-header">
@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="form-text mt-1" *ngIf="filteredTags.length === 0">
-                            Type to create a new custom tag.
+                            Type and press Enter to create a new custom tag.
                         </div>
                     </div>
 
@@ -265,14 +265,139 @@
             <button type="button" class="btn btn-cancel w-100" (click)="onReset()">
                 Cancel
             </button>
-            <button type="submit" class="btn btn-theme w-100" [disabled]="isLoading || jobForm.invalid || !jobForm.dirty">
-                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+            <button type="submit" class="btn btn-theme w-100" [disabled]="isSubmitting || jobForm.invalid || !jobForm.dirty">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"
                     aria-hidden="true"></span>
-                {{ isLoading ? 'Processing...' : (isEditMode ? 'Update Job' : 'Next') }}
+                {{ isSubmitting ? 'Processing...' : (isEditMode ? 'Update Job' : 'Next') }}
             </button>
         </div>
 
     </form>
+
+    <!-- Skeleton Loader for Edit Mode -->
+    <div *ngIf="isLoading && isEditMode" class="skeleton-container">
+        <!-- Basic Information Skeleton -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 theme-card-header">
+                <div class="skeleton skeleton-header"></div>
+            </div>
+            <div class="card-body">
+                <div class="row g-5">
+                    <div class="col-md-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input" style="min-height: 48px;"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Details Skeleton -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 theme-card-header">
+                <div class="skeleton skeleton-header"></div>
+            </div>
+            <div class="card-body">
+                <div class="row g-5">
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-textarea"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-textarea"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-textarea"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-textarea"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Salary & Benefits Skeleton -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 theme-card-header">
+                <div class="skeleton skeleton-header"></div>
+            </div>
+            <div class="card-body">
+                <div class="row g-5">
+                    <div class="col-md-3">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-textarea"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Candidate Preferences Skeleton -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 theme-card-header">
+                <div class="skeleton skeleton-header"></div>
+            </div>
+            <div class="card-body">
+                <div class="row g-5">
+                    <div class="col-md-4">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-input"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="skeleton skeleton-text mb-2"></div>
+                        <div class="skeleton skeleton-textarea"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons Skeleton -->
+        <div class="d-flex flex-column flex-md-row gap-2 justify-content-between justify-content-md-end mb-5 mx-3">
+            <div class="skeleton skeleton-button w-100"></div>
+            <div class="skeleton skeleton-button w-100"></div>
+        </div>
+    </div>
 
     <!-- Cancel Confirmation Modal -->
     <div class="modal-overlay" [class.active]="showCancelConfirm" (click)="hideCancelModal()" role="dialog"
