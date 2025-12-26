@@ -1,108 +1,146 @@
-.category-header {
-  color: #212529;
-  font-family: "EB Garamond", serif;
-  font-size: 35px;
-  font-weight: 600;
+/* ========== THEME VARIABLES ========== */
+:host {
+  --primary-green: #00be57;
+  --accent-lime: #c3e80e;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --bg-soft: #f9fafb;
 }
 
+.category-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Header Typography */
+.category-header {
+  color: var(--text-dark);
+  font-family: "EB Garamond", serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* ========== GRID LAYOUT (Responsive Rules) ========== */
+.category-grid {
+  display: grid;
+  /* 1. Mobile (320px - 479px): 1 Column */
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+/* 2. Large Mobile (480px+): 2 Columns */
+@media (min-width: 480px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* 3. Tablet (992px+): 3 Columns */
+/* Note: Using 992px for 3 columns often looks better than 768px for this card shape */
+@media (min-width: 992px) {
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* 4. Desktop (1400px+): 6 Columns */
+@media (min-width: 1400px) {
+  .category-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* ========== CARD STYLING (The Screenshot Look) ========== */
 .category-card-wrapper {
-  flex: 1 1 200px;
-  max-width: 220px;
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0 0;
-}
-
-.category-card-wrapper:first-child {
-  margin: 2.5rem 0 0;
 }
 
 .category-card {
-  position: relative;
   background-color: #fff;
-  border-radius: 40px;
-  border: 0.666667px solid #cbcbcb;
+  /* Super rounded corners for the capsule look */
+  border-radius: 50px; 
+  border: 1px solid var(--border-color);
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 3.5rem 0;
+  /* Tall padding for elegance */
+  padding: 3.5rem 1.5rem; 
   width: 100%;
-  max-width: 200px;
-  margin: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
+/* Hover Effect: Green Border + Lift */
 .category-card:hover {
-  border: 0.666667px solid #00bf58;
+  border-color: var(--primary-green); /* Forest Green Border */
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(36, 64, 52, 0.1);
 }
 
+/* Icon Container */
 .category-card .icon {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  padding: 0.5rem;
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
+  transition: all 0.3s ease;
 }
 
+/* SVG Styling */
 .category-card .icon svg {
   display: block;
-  width: 25px;
-  height: 25px;
-  color: #333;
+  width: 32px; /* Slightly larger icons */
+  height: 32px;
+  fill: currentColor;
 }
 
+/* On hover, icon turns green */
+.category-card:hover .icon {
+  color: var(--primary-green);
+  transform: scale(1.1);
+}
+
+/* Title Text */
 .category-card .title {
-  color: #254035;
-  cursor: pointer;
-  font-family: "Gordita-Regular", cursive;
-  font-size: 18px;
-  font-weight: 500;
-  margin: 1rem 0 2rem;
-  text-align: center;
+  color: var(--text-main);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
+/* Job Count Text */
 .category-card .total-job {
-  color: #09321c99;
-  cursor: pointer;
-  font-family: "Gordita-Regular", cursive;
-  font-size: 14px;
-  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 400;
 }
 
+/* ========== EXPLORE LINK ========== */
 .explore-all .btn {
-  font-family: "Gordita-Regular", cursive;
   font-size: 1rem;
-  font-weight: 700;
-  line-height: 25px;
-  text-decoration: underline;
-  color: #00be57;
-  text-underline-offset: 6px;
-  text-decoration-thickness: 2px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--primary-green);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s;
 }
 
-.custom-gap {
-  --bs-gutter-x: 3rem;
-  --bs-gutter-y: 3rem;
-}
-
-
-@media (min-width: 768px) {
-  .category-card {
-    padding: 2.5rem 0;
-  }
-
-  .category-card .title {
-    font-size: 20px;
-  }
-
-  .category-header {
-  font-size: 45px;
-  }
-}
-
-@media (min-width: 992px) {
-  .category-header {
-    font-size: 50px;
-  }
+.explore-all .btn:hover {
+  transform: scale(1.05);
+  border-bottom-color: var(--accent-lime);
+  color: var(--primary-green);
 }
