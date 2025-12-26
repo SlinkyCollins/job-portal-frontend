@@ -13,9 +13,9 @@
 
     <!-- New: Quick Actions for Logged-In Users -->
     <div class="quick-actions" *ngIf="isLoggedIn()">
-      <h2>Quick Actions</h2>
-      <button *ngIf="getUserRole() === 'employer'" routerLink="/post-job" class="btn btn-primary">Post a New Job</button>
-      <button *ngIf="getUserRole() === 'job_seeker'" routerLink="/jobs" class="btn btn-secondary">Browse All Jobs</button>
+      <h2 style="margin-bottom: 1rem;">Quick Actions</h2>
+      <button *ngIf="getUserRole() === 'employer'" routerLink="/dashboard/employer/post-job" class="btn btn-post">Post a New Job</button>
+      <button *ngIf="getUserRole() === 'job_seeker'" routerLink="/jobs" class="btn btn-browse">Browse All Jobs</button>
       <button (click)="goToDashboard($event)" class="btn btn-outline">Go to Dashboard</button>
     </div>
 

@@ -141,7 +141,7 @@
                 <!-- Actual Job Items -->
                 <div class="job-item" *ngFor="let application of recentApplications; trackBy: trackByApplicationId">
                     <div class="job-icon">
-                        <img [src]="application.logo_url" alt="Company Logo" />
+                        <img [src]="application.logo_url" loading="lazy" alt="Company Logo" />
                     </div>
                     <div class="job-info">
                         <div class="job-title">{{ application.title }}</div>
@@ -184,7 +184,7 @@
                 <!-- Polished Empty State -->
                 <div class="no-data" *ngIf="!isLoadingApplications && recentApplications.length === 0">
                     <div class="empty-state-content">
-                        <img src="/assets/EmptyImg.svg" alt="No applications illustration"
+                        <img src="/assets/EmptyImg.svg" loading="lazy" alt="No applications illustration"
                             class="empty-state-image mb-3" />
                         <h5 class="empty-state-title text-muted">No Recent Applications</h5>
                         <p class="empty-state-subtitle text-secondary">You haven't applied to any jobs recently. Start

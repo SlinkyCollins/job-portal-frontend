@@ -38,7 +38,7 @@
   </div>
 
   <div *ngIf="!isLoading && jobs.length === 0" class="empty-state">
-    <img src="assets/EmptyImg.svg" alt="No Jobs" class="empty-icon">
+    <img src="assets/EmptyImg.svg" loading="lazy" alt="No Jobs" class="empty-icon">
 
     <!-- No jobs at all -->
     <div *ngIf="totalAllJobs === 0">

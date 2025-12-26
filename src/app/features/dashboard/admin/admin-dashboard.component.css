@@ -49,8 +49,6 @@ body {
   .sidebar {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    /* Optional: If you want floating sidebar look, uncomment below */
-    /* margin: 1rem; height: calc(100vh - 2rem); border-radius: 16px; */
   }
 }
 

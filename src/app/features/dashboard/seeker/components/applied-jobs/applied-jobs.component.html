@@ -19,7 +19,7 @@
   <div class="applications-list" *ngIf="!isLoading && applications.length > 0">
     <div class="job-item" *ngFor="let application of paginatedApplications">
       <div class="job-icon">
-        <img [src]="application.logo_url || 'assets/icons/company-placeholder.svg'" alt="Company Logo" 
+        <img [src]="application.logo_url || 'assets/icons/company-placeholder.svg'" loading="lazy" alt="Company Logo" 
              onerror="this.src='assets/icons/company-placeholder.svg'"/>
       </div>
       
@@ -79,7 +79,7 @@
   <!-- Empty State -->
   <div class="no-data" *ngIf="!isLoading && applications.length === 0">
     <div class="empty-state-content">
-      <img src="assets/EmptyImg.svg" alt="No applications" class="empty-state-image mb-3" />
+      <img src="assets/EmptyImg.svg" loading="lazy" alt="No applications" class="empty-state-image mb-3" />
       <h5 class="empty-state-title">No Applications Yet</h5>
       <p class="empty-state-subtitle">You haven't applied to any jobs yet. Start your search today!</p>
       <button routerLink="/jobs" class="search-job-btn">Browse Jobs</button>

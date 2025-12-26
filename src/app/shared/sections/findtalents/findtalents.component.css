@@ -1,116 +1,149 @@
+/* ========== BASE STYLES ========== */
+.talents {
+  padding: 0 1rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* Subtitle */
 .talents p {
-  font-size: 14px;
-  font-weight: 300;
-  color: #0000004d;
-  font-family: "Gordita-Regular", cursive;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280; /* Gray-500 */
+  font-family: "Gordita-Regular", sans-serif;
   letter-spacing: 1px;
   margin: 0 0 1rem;
   text-transform: uppercase;
 }
 
+/* Header */
 .talents .header {
   font-family: "EB Garamond", serif;
-  font-size: 2.4rem;
-  font-weight: 500;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1f2937;
   max-width: 100%;
+  margin-bottom: 2rem;
 }
 
+/* Button */
 .talents .talent-btn {
   text-transform: capitalize;
   background: transparent;
   border: 1px solid #00be57;
   color: #00be57;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  transition: color 0.3s ease-in-out;
-  transition: background-color 0.3s ease-in-out;
+  border-radius: 50px; /* Pill shape matches other components */
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  margin-top: 1rem;
 }
 
 .talents .talent-btn:hover {
   color: #fff;
-  background-color: #244034;
+  background-color: #244034; /* Forest Green Hover */
+  border-color: #244034;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(36, 64, 52, 0.2);
 }
 
+/* ========== ACCORDION POLISH ========== */
 .accordion {
-  margin: 1.5rem 0 2rem;
-  font-family: "Gordita-Regular", cursive;
+  margin: 2rem 0;
+  font-family: "Gordita-Regular", sans-serif;
 }
 
-.accordion .accordion-button {
-  background: transparent;
-  color: #000;
-  font-weight: 600;
+.accordion-item {
   border: none;
-  box-shadow: none;
+  border-bottom: 1px solid #e5e7eb; /* Subtle border */
+  background: transparent;
+  margin-bottom: 0;
 }
 
-.accordion .accordion-item {
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 0.5rem;
-  overflow: hidden;
-  padding: 0;
+.accordion-item:last-child {
+  border-bottom: none;
 }
 
-.accordion-item .accordion-header .accordion-button {
-  font-size: 1.1rem;
+.accordion-button {
+  background: transparent;
+  color: #1f2937;
   font-weight: 600;
+  font-size: 1.2rem;
+  padding: 1.5rem 0;
+  box-shadow: none !important; /* Remove blue glow */
 }
 
-.accordion-item .accordion-collapse .accordion-body {
-  font-size: 0.9rem;
-  font-weight: 500;
+/* Active State Color */
+.accordion-button:not(.collapsed) {
+  color: #00be57; /* Brand Green */
+  background: transparent;
 }
 
+.accordion-body {
+  padding: 0 0 1.5rem 0;
+  font-size: 1rem;
+  color: #4b5563; /* Gray-600 */
+  line-height: 1.6;
+}
+
+/* Customizing the Arrow (Optional) */
+.accordion-button::after {
+  background-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+/* ========== IMAGES & SHAPES ========== */
 .talent-imgs {
-  max-width: 576px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-@media (min-width: 576px) {
-  .talents {
-    margin: 0 1rem 0;
-  }
-
-  .talents p {
-    margin: 0 0 1rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .talents .header {
-    margin: 0 0 0 1rem;
-    font-size: 2.3rem;
-  }
+.rounded-3 {
+  border-radius: 16px !important;
 }
 
+/* Floating Shapes */
+.shape-float {
+  position: absolute;
+  z-index: -1; /* Behind images */
+  opacity: 0.8;
+}
+
+/* ========== RESPONSIVE DESKTOP FIX ========== */
 @media (min-width: 992px) {
   .talents {
     display: flex;
-    gap: 1.5rem;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-around;
-    margin: 2rem 1rem 0;
-  }
-
-  .talent-imgs {
-    max-width: 800px;
-    margin: 0 0;
+    gap: 4rem; /* Generous gap */
+    flex-direction: row-reverse; /* Images Left, Text Right */
+    align-items: center; /* Center vertically */
+    justify-content: space-between;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
   }
 
   .talents .header {
-    font-size: 3rem;
-    font-weight: 600;
+    font-size: 3.5rem;
   }
 
-  .accordion-item .accordion-header .accordion-button {
-    font-size: 1.5rem;
-    font-weight: 600;
+  /* FIX: Lock widths so they don't jump when accordion changes height */
+  .text-content {
+    flex: 1; /* Takes available space */
+    max-width: 50%;
   }
 
-  .accordion-item .accordion-collapse .accordion-body {
-    font-size: 1rem;
-    font-weight: 500;
+  .visual-content {
+    flex: 1; /* Takes available space */
+    max-width: 50%;
+  }
+
+  /* Reset Mobile Margins */
+  .talents p {
+    margin-left: 0;
+  }
+
+  .talents .header {
+    margin-left: 0;
   }
 }

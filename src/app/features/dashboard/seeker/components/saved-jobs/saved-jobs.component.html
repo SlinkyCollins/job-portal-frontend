@@ -69,7 +69,7 @@
             <div class="d-lg-none mobile-job-layout">
               <div class="d-flex align-items-start mb-3">
                 <div class="company-logo me-3">
-                  <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
+                  <img [src]="job.companyLogo" loading="lazy" [alt]="job.companyName + ' logo'" class="logo-img">
                 </div>
 
                 <div class="flex-grow-1">
@@ -128,7 +128,7 @@
 
                 <div class="col-auto">
                   <div class="company-logo">
-                    <img [src]="job.companyLogo" [alt]="job.companyName + ' logo'" class="logo-img">
+                    <img [src]="job.companyLogo" loading="lazy" [alt]="job.companyName + ' logo'" class="logo-img">
                   </div>
                 </div>
 
@@ -195,7 +195,7 @@
 
   <div *ngIf="!isLoading && savedJobs.length === 0" class="empty-state text-center py-5">
     <div class="empty-state-content">
-      <img src="/assets/EmptyImg.svg" alt="No saved jobs illustration" class="empty-state-image mb-3" />
+      <img src="/assets/EmptyImg.svg" loading="lazy" alt="No saved jobs illustration" class="empty-state-image mb-3" />
       <h4 class="empty-state-title text-muted">No Saved Jobs Yet</h4>
       <p class="empty-state-subtitle text-secondary">Start saving jobs to keep track of opportunities you're interested
         in.</p>

@@ -53,7 +53,7 @@
 
             <!-- 1. Photo Exists -->
             <ng-container *ngIf="profilePicUrl">
-              <img [src]="profilePicUrl" class="rounded-circle shadow-sm object-fit-cover" width="80" height="80"
+              <img [src]="profilePicUrl" loading="lazy" class="rounded-circle shadow-sm object-fit-cover" width="80" height="80"
                 alt="Profile Photo" style="border: 2px solid #eee;">
 
               <!-- Delete Button (Trigger Modal) -->
