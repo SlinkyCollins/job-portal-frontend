@@ -25,7 +25,7 @@
 
         <div class="job-logo-container">
           <ng-container *ngIf="job.company_logo; else dummyLogo">
-            <img [src]="job.company_logo" alt="Company" class="job-logo me-3 mb-3 mb-md-0">
+            <img [src]="job.company_logo" loading="lazy" alt="Company" class="job-logo me-3 mb-3 mb-md-0">
           </ng-container>
           <ng-template #dummyLogo>
             <div class="job-logo dummy-logo me-3 mb-3 mb-md-0">

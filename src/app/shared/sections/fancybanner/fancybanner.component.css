@@ -1,208 +1,196 @@
+/* ========== BASE STYLES (Mobile First) ========== */
 .banner-container {
-  margin: 6rem 0;
+  margin: 5rem 0 0 0 !important;
 }
 
+/* The Main Card */
 .fancy-banner {
   color: #fff;
   font-family: "Gordita-Regular", cursive;
+  display: flex;
+  flex-direction: column; /* Stack vertically on mobile */
+  border-radius: 30px; /* Global radius */
+  overflow: hidden; /* Ensures content respects radius */
+  box-shadow: 0 10px 30px -10px rgba(118, 82, 70, 0.3); /* Subtle shadow matching theme */
 }
 
+/* Text Side */
 .fancy-banner .fancy-banner-text {
-  background-color: #765246;
-  padding: 3rem 1.2rem;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  background-color: #765246; /* Your Theme Color */
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .fancy-banner .fancy-banner-text h2 {
-  font-size: 2.5rem;
-  margin: 0 0 2rem;
+  font-size: 2rem;
+  margin: 0 0 1.5rem;
   font-family: "EB Garamond", serif;
   color: #ffffff;
-  font-weight: 550;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .fancy-banner .fancy-banner-text p {
   font-weight: 400;
   margin-bottom: 2rem;
-  color: #ffffff;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  letter-spacing: 0.2px;
-  max-width: 100%;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
+/* Button */
 .fancy-banner .fancy-banner-text button {
-  padding: 0.5rem 0;
+  /* Mobile First: Smaller padding and font */
+  padding: 0.6rem 0.9rem;
   background: transparent;
-  border: 1px solid #fff;
-  border-radius: 20px;
-  font-size: 15px;
-  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  font-size: 0.9rem; /* Reduced from 1rem */
+  font-weight: 600;
   color: #fff;
-  width: 100%;
-  margin: 0 auto;
+  width: fit-content;
+  max-width: 100%; /* Ensure it doesn't overflow container */
+  transition: all 0.3s ease;
+
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem; /* Reduced gap */
+  flex-wrap: wrap; /* Safety: allows text to stack if screen is EXTREMELY small */
+  text-align: center;
 }
 
+.fancy-banner .fancy-banner-text button:hover {
+  background-color: #fff;
+  color: #765246;
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Link inside button */
+.fancy-banner .fancy-banner-text button span.text-decoration-underline {
+  text-decoration: none !important; /* Remove default underline */
+  border-bottom: 1px solid currentColor; /* Custom underline */
+  cursor: pointer;
+}
+
+/* Image Side */
 .fancy-banner-img {
   width: 100%;
+  min-height: 300px; /* Minimum height for mobile visibility */
+  position: relative;
 }
 
 .fancy-banner-img img {
-  max-width: 100%;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Critical: Fills area without distortion */
+  display: block;
 }
 
+/* ========== ACHIEVEMENTS ========== */
 .achievements-wrapper {
-  padding: 5rem 1.2rem;
-}
-
-.achievements-wrapper .achievement {
-  font-family: "Gordita-Regular", cursive;
+  padding: 4rem 1rem;
+  margin: 1rem 0 0 0;
 }
 
 .achievements-wrapper .achievement h1 {
-  font-size: 1.9rem;
+  font-size: 2rem;
   font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
 }
 
 .achievements-wrapper .achievement p {
-  font-size: 1rem;
-  font-weight: 400;
-  margin: 0.5rem 0 0;
-  color: #333;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  text-transform: capitalize;
+  letter-spacing: 1px;
 }
 
 .hr-line {
-  width: 100%;
-  margin: 0 auto;
+  border-color: #e5e7eb;
+  opacity: 0.5;
+  margin: 0;
 }
 
-/* >=576px (sm and up): reduce image height for better balance */
-@media (min-width: 576px) {
-  .fancy-banner-img img {
-    max-height: 400px;
-    object-fit: cover;
-    width: 100%;
-  }
-
-  .fancy-banner-text {
-    padding: 3.5rem 2rem;
-  }
-}
-
-/* Tablet and Up (>=768px) */
+/* ========== RESPONSIVE (Tablet & Up) ========== */
 @media (min-width: 768px) {
-  .fancy-banner {
-    flex-direction: row;
-    justify-content: space-between;
+  .achievements-wrapper {
+    margin: 2rem 0 0 0;
   }
-
-  .fancy-banner-text {
-    flex: 1;
-    padding: 4rem 3rem;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 30px;
-  }
-
-  .fancy-banner-img {
-    flex: 1;
-    max-height: 420px;
-  }
-
-  .fancy-banner-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-bottom-left-radius: 30px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 30px;
-  }
-
-  .fancy-banner .fancy-banner-text button {
-    width: auto;
-    padding: 0.5rem 1.5rem;
-  }
-}
-
-@media (min-width: 992px) {
   .achievements-wrapper .achievement h1 {
-    font-size: 3rem !important;
+    font-size: 2.4rem;
+  }
+
+  .achievements-wrapper .achievement p {
+    font-size: 1rem;
+  }
+  /* Restore larger button on Tablet & Desktop */
+  .fancy-banner .fancy-banner-text button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    gap: 0.5rem;
+    flex-wrap: nowrap; /* No wrapping needed on desktop */
   }
 
   .banner-container {
-    margin: 10rem 0;
+    margin: 9rem 0 !important;
   }
 
+  /* Side by Side Layout */
   .fancy-banner {
-    display: flex;
-    flex-direction: row-reverse;
-    height: 100%;
-    align-items: stretch;
+    flex-direction: row; /* Text Left, Image Right */
+    align-items: stretch; /* CRITICAL: Ensures equal height */
   }
 
-  .fancy-banner .fancy-banner-text {
+  .fancy-banner-text {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 4rem;
-    padding-right: 4rem;
-    border-top-left-radius: 0;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 0;
+    padding: 4rem;
+    border-radius: 0; /* Reset radius since container handles it */
   }
 
   .fancy-banner-img {
     flex: 1;
-    display: flex;
-  }
-
-  .fancy-banner-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    min-height: auto; /* Let flex stretch handle height */
   }
 }
 
-/* Desktop and Up (>=1200px) */
-@media (min-width: 1200px) {
-  .fancy-banner-text {
-    padding: 5.5rem 5rem;
+/* ========== RESPONSIVE (Desktop) ========== */
+@media (min-width: 992px) {
+  .achievements-wrapper .achievement h1 {
+    font-size: 3rem;
   }
 
-  .fancy-banner-img img {
-    max-height: 430px;
+  .achievements-wrapper .achievement p {
+    font-size: 1.2rem;
+  }
+
+  .fancy-banner {
+    flex-direction: row-reverse; /* Image Left, Text Right (As per your design) */
+  }
+
+  .fancy-banner .fancy-banner-text {
+    padding: 5rem 4rem;
   }
 
   .fancy-banner .fancy-banner-text h2 {
-    font-size: 3.2rem;
-  }
-
-  .fancy-banner .fancy-banner-text p {
-    font-size: 1.2rem;
-    max-width: 90%;
+    font-size: 3rem;
   }
 
   .achievements-wrapper {
     flex-direction: row;
-    justify-content: center;
-    gap: 8rem !important;
-    padding: 6rem 2rem;
+    gap: 5rem !important;
   }
+}
 
-  .achievements-wrapper .achievement h1 {
-    font-size: 2.2rem;
-  }
-
-  .achievements-wrapper .achievement p {
-    font-size: 1.1rem;
+/* ========== RESPONSIVE (Large Desktop) ========== */
+@media (min-width: 1200px) {
+  .fancy-banner .fancy-banner-text {
+    padding: 6rem;
   }
 }

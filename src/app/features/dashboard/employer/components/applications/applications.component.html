@@ -70,7 +70,7 @@
                 <div class="d-flex align-items-center flex-wrap gap-3 candidate-card-body">
 
                     <div class="avatar-area">
-                        <img *ngIf="app.profile_pic_url; else initials" [src]="app.profile_pic_url" class="avatar-img">
+                        <img *ngIf="app.profile_pic_url; else initials" [src]="app.profile_pic_url" class="avatar-img" loading="lazy" alt="Candidate Avatar">
                         <ng-template #initials>
                             <div class="avatar-initials">
                                 {{ app.firstname | initials:app.lastname }}

@@ -10,14 +10,14 @@
 
 /* Base Wrapper */
 .QandA-wrapper {
-  margin: 8rem auto 6rem;
+  margin: 10rem auto 6rem !important;
   padding: 0 1.5rem;
   max-width: 1000px; /* Constrained width for better readability */
 }
 
 /* Header */
 .QandA-wrapper .header {
-  font-size: clamp(2rem, 3vw, 4rem);
+  font-size: 4rem;
   font-family: "EB Garamond", serif;
   font-weight: 600;
   text-align: center;
@@ -168,6 +168,14 @@
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
+  .QandA-wrapper {
+    margin: 5rem auto 6rem !important;
+  }
+
+  .QandA-wrapper .header {
+    font-size: 2rem;
+  }
+
   .accordion-button {
     font-size: 1rem;
     padding: 1.25rem;

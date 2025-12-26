@@ -8,7 +8,7 @@
     </button>
     <!-- Brand Logo -->
     <a class="brand-logo" routerLink="/dashboard/employer">
-      <img src="/assets/jobnetlogo2.png" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
+      <img src="/assets/jobnetlogo2.png" loading="lazy" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
     </a>
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
@@ -19,7 +19,7 @@
         </ng-container>
         <!-- Loaded State -->
         <ng-template #profileLoaded>
-          <img *ngIf="photoURL" [src]="photoURL" alt="User Avatar">
+          <img *ngIf="photoURL" [src]="photoURL" loading="lazy" alt="User Avatar">
           <div *ngIf="!photoURL"
             class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold"
             style="width: 45px; height: 45px; font-size: 1.2rem;">

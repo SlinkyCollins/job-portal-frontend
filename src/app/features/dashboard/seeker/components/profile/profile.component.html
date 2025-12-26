@@ -75,7 +75,7 @@
             
             <!-- 1. Photo Exists -->
             <ng-container *ngIf="photoURL">
-                <img [src]="photoURL" class="rounded-circle shadow-sm" width="100" height="100" alt="Profile Photo" style="object-fit: cover;">
+                <img [src]="photoURL" loading="lazy" class="rounded-circle shadow-sm" width="100" height="100" alt="Profile Photo" style="object-fit: cover;">
                 
                 <!-- Delete Button (Trigger Modal) -->
                 <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 rounded-circle shadow border-2 border-white d-flex align-items-center justify-content-center"

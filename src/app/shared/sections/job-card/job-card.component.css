@@ -12,12 +12,12 @@
 .new-jobs {
   padding: 0 1rem;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 8rem auto 0;
 }
 
 /* Header Section */
 .new-jobs .header {
-  font-size: clamp(2rem, 3vw, 2.5rem);
+  font-size: 2.2rem;
   font-family: "EB Garamond", serif;
   font-weight: 600;
   color: var(--text-main);
@@ -220,7 +220,7 @@
 
 /* ========== CTA BANNER ========== */
 .job-posting {
-  background-color: #F1F6F3;
+  background-color: #f1f6f3;
   border-radius: 16px;
   padding: 2rem;
   text-align: center;
@@ -307,6 +307,10 @@
 
 /* ========== RESPONSIVE ========== */
 @media (min-width: 768px) {
+  .new-jobs .header {
+    font-size: 3rem;
+  }
+
   .job-card {
     flex-direction: row;
     align-items: center;
@@ -341,5 +345,11 @@
     justify-content: space-between;
     text-align: left;
     padding: 3rem 4rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .new-jobs .header {
+    font-size: 3.2rem;
   }
 }

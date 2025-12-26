@@ -12,7 +12,6 @@ import { filter } from 'rxjs/operators';
 })
 export class NavbarComponent {
   public isMenuOpen = false;
-  public isExploreOpen: boolean = false;
   public showMegaDropdown: boolean = false;
   public currentRoute: string = '';
 
@@ -40,8 +39,8 @@ export class NavbarComponent {
     this.authService.goToDashboard(event);
   }
 
-  toggleExploreDropdown() {
-    this.isExploreOpen = !this.isExploreOpen;
+  toggleMegaDropdown() {
+    this.showMegaDropdown = !this.showMegaDropdown;
   }
 
   toggleMenu() {

@@ -319,7 +319,12 @@
   }
 }
 
+/* ========== DESKTOP POLISH (THE FIX) ========== */
 @media (min-width: 992px) {
+  .scrolled:not(.scrolled-auth) {
+    padding: 1rem;
+  }
+
   .hamburger {
     display: none;
   }
@@ -338,5 +343,20 @@
   }
   .scrolled {
     padding: 0.5rem 2rem;
+  }
+
+  /* NEW: Absolute Centering Logic */
+  .navbar-wrapper {
+    position: relative; /* Context for absolute positioning */
+  }
+
+  .fullmenu {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Dead Center */
+    margin: 0 0 4rem 0 !important;
+    padding: 0;
+    white-space: nowrap; /* Prevent wrapping */
   }
 }

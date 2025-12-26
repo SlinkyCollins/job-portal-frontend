@@ -18,7 +18,7 @@
 .category-header {
   color: var(--text-dark);
   font-family: "EB Garamond", serif;
-  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-size: 2.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
@@ -35,6 +35,9 @@
 
 /* 2. Large Mobile (480px+): 2 Columns */
 @media (min-width: 480px) {
+  .category-header {
+    font-size: 2.75rem;
+  }
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
@@ -44,6 +47,9 @@
 /* 3. Tablet (992px+): 3 Columns */
 /* Note: Using 992px for 3 columns often looks better than 768px for this card shape */
 @media (min-width: 992px) {
+  .category-header {
+    font-size: 3rem;
+  }
   .category-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
@@ -52,6 +58,9 @@
 
 /* 4. Desktop (1400px+): 6 Columns */
 @media (min-width: 1400px) {
+  .category-header {
+    font-size: 3.5rem;
+  }
   .category-grid {
     grid-template-columns: repeat(6, 1fr);
     gap: 1.5rem;
@@ -68,11 +77,11 @@
 .category-card {
   background-color: #fff;
   /* Super rounded corners for the capsule look */
-  border-radius: 50px; 
+  border-radius: 50px;
   border: 1px solid var(--border-color);
   cursor: pointer;
   /* Tall padding for elegance */
-  padding: 3.5rem 1.5rem; 
+  padding: 3.5rem 1.5rem;
   width: 100%;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -115,7 +124,7 @@
   color: var(--text-main);
   font-size: 1.15rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 /* Job Count Text */

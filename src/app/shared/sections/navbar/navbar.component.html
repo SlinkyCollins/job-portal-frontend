@@ -18,7 +18,7 @@
     <div class="d-flex justify-content-between align-items-center w-100">
       <!-- Brand Logo -->
       <a class="brand-logo" routerLink="/">
-        <img src="/assets/jobnetlogo2.png" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
+        <img src="/assets/jobnetlogo2.png" loading="lazy" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
       </a>
 
       <!-- Desktop Menu -->
@@ -101,11 +101,11 @@
           <a class="nav-link" routerLink="/jobs" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Jobs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex justify-content-between align-items-center" (click)="toggleExploreDropdown()">
+          <a class="nav-link d-flex justify-content-between align-items-center" (click)="toggleMegaDropdown()">
             Explore
-            <span [class.rotate]="isExploreOpen" class="ms-2">&#9662;</span> <!-- Down arrow -->
+            <span [class.rotate]="showMegaDropdown" class="ms-2">&#9662;</span> <!-- Down arrow -->
           </a>
-          <div *ngIf="isExploreOpen" class="dropdown-explore bg-light p-3 rounded">
+          <div *ngIf="showMegaDropdown" class="dropdown-explore bg-light p-3 rounded">
             <div>
               <strong class="text-success">Candidates</strong>
               <ul class="list-unstyled ps-3 mb-3">

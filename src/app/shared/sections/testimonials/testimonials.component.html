@@ -24,7 +24,7 @@
     <swiper-slide *ngFor="let item of testimonials">
       <div class="testimonial-slide">
         <div class="carousel-content">
-          <img src="{{ item.logo }}" alt="Logo" class="logo" />
+          <img src="{{ item.logo }}" loading="lazy" alt="Logo" class="logo"  />
           <blockquote class="testimonial-quote">"{{ item.quote }}"</blockquote>
           <p class="testifier-name">
             <span>{{ item.name }}</span
