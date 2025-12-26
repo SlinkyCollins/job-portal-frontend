@@ -3,12 +3,14 @@ import { AdminService } from '../../../../../core/services/admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-settings',
+  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './admin-settings.component.html',
-  styleUrl: './admin-settings.component.css'
+  styleUrls: ['./admin-settings.component.css']
 })
 export class AdminSettingsComponent {
   currentPassword: string = '';
@@ -47,26 +49,30 @@ export class AdminSettingsComponent {
 
     this.isLoading = true;
 
-    // Pass both current and new password
-    this.adminService.updatePassword(this.currentPassword, this.newPassword).subscribe({
-      next: (res: any) => {
-        if (res.status) {
-          this.toastr.success('Password updated successfully');
-          // Clear form
-          this.currentPassword = '';
-          this.newPassword = '';
-          this.confirmPassword = '';
-        } else {
-          this.toastr.error(res.message || 'Failed to update password');
+    this.adminService.updatePassword(this.currentPassword, this.newPassword)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (res: any) => {
+          if (res.status) {
+            this.toastr.success('Password updated successfully');
+            this.resetForm();
+          } else {
+            this.toastr.error(res.message || 'Failed to update password');
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastr.error(err.error?.message || 'Error updating password');
         }
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error updating password:', err);
-        this.toastr.error(err.error?.message || 'Error updating password');
-        this.isLoading = false;
-      }
-    });
+      });
   }
 
+  resetForm() {
+    this.currentPassword = '';
+    this.newPassword = '';
+    this.confirmPassword = '';
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
+  }
 }

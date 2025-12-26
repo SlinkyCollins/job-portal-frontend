@@ -10,11 +10,17 @@ import { finalize } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, InitialsPipe],
   templateUrl: './user-management.component.html',
-  styleUrl: './user-management.component.css'
+  styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit, OnDestroy {
   users: any[] = [];
   isLoading: boolean = true;
+  
+  // Pagination State
+  currentPage: number = 1;
+  pageSize: number = 10;
+
+  // Modal State
   showDeleteConfirm: boolean = false;
   userToDelete: number | null = null;
 
@@ -29,7 +35,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Ensure body scroll is restored when component is destroyed
     this.renderer.setStyle(document.body, 'overflow', 'auto');
   }
 
@@ -39,6 +44,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         if (res.status) {
           this.users = res.data;
+          // Reset to page 1 on new data load
+          this.currentPage = 1;
         } else {
           this.toastr.error(res.message || 'Failed to load users');
         }
@@ -52,17 +59,38 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+  // --- Pagination Logic ---
+  get paginatedUsers() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.users.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages() {
+    return Math.ceil(this.users.length / this.pageSize);
+  }
+
+  get totalPagesArray() {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      // Optional: Scroll to top of table
+      // window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  // --- Delete Logic ---
   showDeleteModal(userId: number) {
     this.userToDelete = userId;
     this.showDeleteConfirm = true;
-    // Prevent body scroll when modal is open
     this.renderer.setStyle(document.body, 'overflow', 'hidden');
   }
 
   hideDeleteModal() {
     this.showDeleteConfirm = false;
     this.userToDelete = null;
-    // Restore body scroll
     this.renderer.setStyle(document.body, 'overflow', 'auto');
   }
 
@@ -74,20 +102,23 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('User deleted successfully');
-            this.loadUsers();
+            // Optimistic update: remove from local array instead of reloading API
+            this.users = this.users.filter(u => u.user_id !== this.userToDelete);
+            
+            // Adjust page if empty
+            if (this.paginatedUsers.length === 0 && this.currentPage > 1) {
+              this.currentPage--;
+            }
           } else {
             this.toastr.error(res.message || 'Failed to delete user');
           }
         },
         error: (err) => {
           console.error(err);
-          // The backend response body is inside err.error
           const serverMessage = err.error?.message;
-          
           if (serverMessage === 'Cannot delete other admins') {
             this.toastr.error('You cannot delete other admins.');
           } else if (serverMessage) {
-            // Show any other specific error from backend
             this.toastr.error(serverMessage);
           } else {
             this.toastr.error('Error deleting user');

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Import this!
+import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../../../../core/services/admin.service';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-category-management',
@@ -11,15 +12,28 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './category-management.component.html',
   styleUrls: ['./category-management.component.css']
 })
-export class CategoryManagementComponent implements OnInit {
+export class CategoryManagementComponent implements OnInit, OnDestroy {
   categories: any[] = [];
   newCategoryName: string = '';
   isLoading = false;
+  isAdding = false;
 
-  constructor(private adminService: AdminService, private toastr: ToastrService) {}
+  // Modal State
+  showDeleteConfirm: boolean = false;
+  categoryToDelete: number | null = null;
+
+  constructor(
+    private adminService: AdminService,
+    private toastr: ToastrService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
+  }
+
+  ngOnDestroy(): void {
+    this.renderer.setStyle(document.body, 'overflow', 'auto');
   }
 
   loadCategories() {
@@ -36,31 +50,56 @@ export class CategoryManagementComponent implements OnInit {
   addCategory() {
     if (!this.newCategoryName.trim()) return;
 
-    this.adminService.createCategory(this.newCategoryName).subscribe({
+    this.isAdding = true;
+    this.adminService.createCategory(this.newCategoryName).pipe(
+      finalize(() => this.isAdding = false)
+    ).subscribe({
       next: (res: any) => {
         if (res.status) {
-          this.toastr.success('Category added');
+          this.toastr.success('Category added successfully');
           this.newCategoryName = ''; // Clear input
           this.loadCategories();
         } else {
           this.toastr.error(res.message);
         }
       },
-      error: (err) => this.toastr.error(err.error?.message || 'Failed to add')
+      error: (err) => this.toastr.error(err.error?.message || 'Failed to add category')
     });
   }
 
-  deleteCategory(id: number) {
-    if (confirm('Delete this category? Jobs using it will be unassigned.')) {
-      this.adminService.deleteCategory(id).subscribe({
+  // --- Delete Logic ---
+  showDeleteModal(id: number) {
+    this.categoryToDelete = id;
+    this.showDeleteConfirm = true;
+    this.renderer.setStyle(document.body, 'overflow', 'hidden');
+  }
+
+  hideDeleteModal() {
+    this.showDeleteConfirm = false;
+    this.categoryToDelete = null;
+    this.renderer.setStyle(document.body, 'overflow', 'auto');
+  }
+
+  confirmDelete() {
+    if (this.categoryToDelete !== null) {
+      this.adminService.deleteCategory(this.categoryToDelete).pipe(
+        finalize(() => this.hideDeleteModal())
+      ).subscribe({
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('Category deleted');
-            this.loadCategories();
+            // Optimistic update
+            this.categories = this.categories.filter(c => c.id !== this.categoryToDelete);
+          } else {
+            this.toastr.error(res.message);
           }
         },
-        error: () => this.toastr.error('Failed to delete')
+        error: () => this.toastr.error('Failed to delete category')
       });
     }
+  }
+
+  deleteCategory(id: number) {
+    this.showDeleteModal(id);
   }
 }
