@@ -1,85 +1,145 @@
+/* ========== THEME VARIABLES ========== */
+:host {
+  --primary-green: #244034;
+  --accent-lime: #c3e80e;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+}
+
 .admin-page-header {
-  margin-bottom: 32px;
+  margin-bottom: 2rem;
 }
 
 .admin-page-header h2 {
-  font-size: 24px;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 8px;
+  color: var(--primary-green);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
 }
 
 .admin-page-header p {
-  color: #64748b;
+  color: var(--text-muted);
+  font-size: 1rem;
 }
 
+/* ========== STATS GRID ========== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .stat-card {
   background: white;
-  padding: 24px;
-  border-radius: 12px;
+  padding: 1.5rem;
+  border-radius: 16px; /* Modern rounded corners */
   border: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
-  gap: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 1.25rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Hover Effect: Lift up + subtle shadow */
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(36, 64, 52, 0.15);
+  border-color: #d1fae5;
 }
 
+/* Decorative Green Line on Top */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary-green);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* ========== ICON STYLES (THEMED) ========== */
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
+/* 1. Users - Forest Green */
 .stat-icon.users {
-  background: #dbeafe;
-  color: #2563eb;
+  background: rgba(36, 64, 52, 0.1);
+  color: var(--primary-green);
 }
 
+/* 2. Seekers - Lime Accent */
 .stat-icon.seekers {
-  background: #ffedd5;
-  color: #ea580c;
+  background: rgba(195, 232, 14, 0.15); /* Low opacity Lime */
+  color: #65a30d; /* Darker Lime for text contrast */
 }
 
+/* 3. Employers - Blueish Green (Teal) */
 .stat-icon.employers {
-  background: #cffafe;
-  color: #0891b2;
+  background: #ccfbf1;
+  color: #0f766e;
 }
 
+/* 4. Jobs - Forest Green again */
 .stat-icon.jobs {
   background: #dcfce7;
-  color: #16a34a;
+  color: #15803d;
 }
 
+/* 5. Applications - Soft Gray/Green */
 .stat-icon.applications {
-  background: #f3e8ff;
-  color: #9333ea;
+  background: #f1f5f9;
+  color: #475569;
 }
 
+/* Text Styles */
 .stat-info h3 {
-  font-size: 14px;
-  color: #64748b;
-  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stat-value {
-  font-size: 24px;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--primary-green);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .admin-page-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+  }
 }

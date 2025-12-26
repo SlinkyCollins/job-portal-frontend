@@ -35,6 +35,7 @@ html {
 
 /* Firefox support */
 * {
+  font-family: "Gordita-Regular", cursive;
   scrollbar-width: thin;
   scrollbar-color: #d2f34c #ffff;
 }
