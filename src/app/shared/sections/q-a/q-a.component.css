@@ -1,273 +1,188 @@
-/* Mobile First - Base Styles (Mobile) */
+/* ========== THEME VARIABLES ========== */
+:host {
+  --primary-green: #244034;
+  --accent-lime: #c3e80e;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --bg-soft: #f9fafb;
+  --bg-accordion: #f0fdf4; /* Very light green tint */
+}
+
+/* Base Wrapper */
 .QandA-wrapper {
-  margin: 3rem auto 4rem;
-  padding: 0 0.25rem;
-  max-width: 1300px;
+  margin: 8rem auto 6rem;
+  padding: 0 1.5rem;
+  max-width: 1000px; /* Constrained width for better readability */
 }
 
+/* Header */
 .QandA-wrapper .header {
-  font-size: 2rem;
+  font-size: clamp(2rem, 3vw, 4rem);
   font-family: "EB Garamond", serif;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
-  padding: 0.5rem;
   color: #333;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
+/* ========== ACCORDION STYLES ========== */
 .accordion {
-  background-color: #eff6f3;
-  border-radius: 20px;
-  padding: 1rem 1.5rem;
-  margin: 1rem auto;
+  /* Removed background color for a cleaner, modern look */
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin: 0 auto;
   max-width: 100%;
 }
 
-/* Accordion Styles */
 .accordion-item {
-  background: transparent;
-  border: none;
-  border-radius: 0 !important;
-  margin-bottom: 0;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px !important; /* Rounded cards */
+  margin-bottom: 1rem;
   overflow: hidden;
-  border-bottom: 1px solid #d1d5db;
+  transition: all 0.3s ease;
 }
 
-.accordion-item:last-child {
-  border-bottom: none;
+/* Active State styling (Optional: highlight active card) */
+.accordion-item:has(.show) {
+  border-color: #eff6f3;
 }
 
 .accordion-button {
   background: transparent !important;
-  color: #000 !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main) !important;
   font-weight: 600;
   font-size: 1.1rem;
-  padding: 1.5rem 0;
+  padding: 1.5rem;
   border: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
   box-shadow: none !important;
-  border-radius: 0 !important;
-  transition: none;
 }
 
-.accordion-button:hover {
-  background-color: transparent !important;
-}
-
+/* Active Button Text */
 .accordion-button:not(.collapsed) {
-  background-color: transparent !important;
   color: #333 !important;
-  box-shadow: none !important;
-  border-bottom: none;
-}
-
-.accordion-button:focus {
-  box-shadow: none !important;
-  border-color: transparent;
-}
-
-.accordion-button::after {
-  display: none !important;
+  background-color: #eff6f3 !important; /* Subtle highlight */
 }
 
 .accordion-body {
-  padding: 0 0 1rem 0;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
   background-color: transparent;
-  font-size: 0.9rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.6;
-  color: #666;
 }
 
-/* Custom Toggle Icons */
+/* Active Body Background to match button */
+.accordion-collapse.show .accordion-body {
+  background-color: #eff6f3;
+}
+
+/* ========== CUSTOM TOGGLE ICONS ========== */
 .toggle-icon {
-  width: 30px;
-  height: 30px;
-  background-color: #fff;
-  border: 1px solid transparent;
+  width: 32px;
+  height: 32px;
+  background-color: #eff6f3;
   border-radius: 50%;
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
+  color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
   transition: all 0.3s ease;
   flex-shrink: 0;
+  margin-left: auto; /* Push to right */
 }
 
+/* Plus Icon */
 .accordion-button.collapsed .toggle-icon::before {
-  content: "+";
+  content: "\2b"; /* Plus sign */
 }
 
+/* Minus Icon */
 .accordion-button:not(.collapsed) .toggle-icon::before {
-  content: "−";
+  content: "\2212"; /* Minus sign */
 }
 
+/* Active Icon Style */
 .accordion-button:not(.collapsed) .toggle-icon {
   background-color: #00be57;
   color: #fff;
-  border-color: #00be57;
+  transform: rotate(180deg);
 }
 
-/* Support Link */
+.accordion-button::after {
+  display: none !important; /* Hide default Bootstrap arrow */
+}
+
+/* ========== CUSTOMER SUPPORT (Polished) ========== */
 .customer-support {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 3rem auto 0;
-  text-align: center;
+  margin-top: 3.5rem;
 }
 
-.customer-support div {
-  background-color: #fff;
-  border: 2px solid #00be57;
+.support-pill {
+  background-color: #f1f6f3;
+  border: 1px solid var(--border-color);
   border-radius: 50px;
-  padding: 8px 20px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-weight: 500;
-  font-size: 0.85rem;
-  color: #000;
-  display: inline-block;
-  transition: all 0.2s ease;
+  padding: 1rem 2rem;
+  color: var(--text-main);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: default;
+  transition: transform 0.2s;
 }
 
-.hr-line {
-  width: 100%;
-  margin: 0 auto 1rem;
+.support-pill:hover {
+  transform: scale(1.05);
 }
 
-.customer-support div:hover {
-  background-color: #f8f9fa;
+.support-pill span {
+  font-weight: 400;
+  opacity: 0.9;
 }
 
-.customer-support div span {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #000;
-}
-
-.customer-support a {
-  border: none;
-  background: transparent;
-  text-decoration: underline;
-  font-size: 0.85rem;
-  font-weight: 500;
+.support-link {
   color: #00be57;
-  margin-left: 4px;
-  padding: 0;
-  display: inline;
-  transition: color 0.2s ease;
-  pointer-events: auto;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
   cursor: pointer;
 }
 
-.customer-support a:hover {
-  color: #00a84d;
+.support-link:hover {
+  border-bottom-color: var(--accent-lime);
 }
 
-/* Tablet and up (min-width: 481px) */
-@media (min-width: 481px) {
-  .QandA-wrapper {
-    padding: 0 0.5rem;
-  }
+.hr-line {
+  margin: 4rem auto;
+  border-color: var(--border-color);
+  opacity: 0.5;
+  max-width: 1300px;
+}
 
-  .accordion {
-    padding: 1.5rem 1.5rem;
-    margin: 1.5rem auto;
-  }
-
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
   .accordion-button {
-    font-size: 1.3rem;
-    padding: 1.4rem 0;
+    font-size: 1rem;
+    padding: 1.25rem;
   }
 
-  .accordion-body {
+  .support-pill {
+    padding: 0.8rem 1.5rem;
     font-size: 0.9rem;
-    padding: 0 0 1.2rem 0;
-  }
-
-  .customer-support div {
-    padding: 8px 24px;
-    font-size: 0.9rem;
-  }
-
-  .customer-support div span,
-  .customer-support a {
-    font-size: 0.9rem;
-  }
-}
-
-/* Tablet Large and up (min-width: 769px) */
-@media (min-width: 769px) {
-  .QandA-wrapper {
-    margin: 5rem auto 6rem;
-    padding: 0 1rem;
-  }
-
-  .QandA-wrapper .header {
-    font-size: 3rem;
-    padding: 1rem;
-  }
-
-  .accordion {
-    border-radius: 30px;
-    padding: 0.5rem 3rem;
-    margin: 2rem auto;
-  }
-
-  .accordion-button {
-    font-size: 1.5rem;
-    padding: 1.8rem 0;
-  }
-
-  .accordion-body {
-    font-size: 0.95rem;
-    padding: 0 0 1.5rem 0;
-  }
-
-  .toggle-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
-  }
-
-  .customer-support div {
-    padding: 6px 32px;
-    font-size: 1rem;
-  }
-
-  .customer-support div span,
-  .customer-support a {
-    font-size: 1rem;
-  }
-}
-
-/* Large Desktop (min-width: 1024px) */
-@media (min-width: 1024px) {
-  .customer-support div {
-    padding: 4px 32px;
-    font-size: 1rem;
-  }
-
-  .customer-support div span,
-  .customer-support a {
-    font-size: 1rem;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-align: center;
+    border-radius: 20px;
   }
 
   .QandA-wrapper {
-    margin: 10rem auto 6rem;
-  }
-  .QandA-wrapper .header {
-    font-size: 4.2rem;
-  }
-
-  .accordion-button {
-    font-size: 1.6rem;
-    font-weight: 600;
+    margin: 3rem auto 4rem;
   }
 }
