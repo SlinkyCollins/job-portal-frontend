@@ -1,93 +1,102 @@
 <div class="new-jobs">
-  <div class="d-lg-flex align-items-lg-center justify-content-lg-between">
-    <h1 class="header">New Job Listing</h1>
-    <div class="explore-all mb-4 d-none d-lg-block d-sm-none d-md-none">
-      <a class="btn" routerLink="/jobs">Explore all jobs &gt;</a>
+
+  <div class="d-lg-flex align-items-lg-center justify-content-lg-between align-items-center">
+    <h1 class="header">New Job Listings</h1>
+    <div class="explore-all mb-4 d-none d-lg-block">
+      <a class="btn" routerLink="/jobs">Explore all jobs <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 
   <div class="view-jobs-wrapper">
-    <!-- Skeleton Loader -->
+
     <div *ngIf="loading" class="skeleton-cards">
-      <div *ngFor="let i of [1,2,3,4,5]" class="job-card skeleton d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center">
-        <!-- LEFT + MAIN INFO -->
-        <div class="d-flex gap-3 w-100 align-items-start">
-          <div class="job-logo skeleton-item"></div>
-
-          <div class="job-main">
-            <div class="job-title skeleton-item"></div>
-
-            <div class="job-details">
-              <div class="job-type skeleton-item"></div>
-              <div class="job-meta skeleton-item"></div>
-            </div>
-
-            <div class="job-location-tags">
-              <div class="job-location skeleton-item"></div>
-              <div class="job-tags skeleton-item"></div>
-            </div>
-
-            <div class="job-actions">
-              <div class="bookmark-btn skeleton-item"></div>
-              <div class="apply-btn skeleton-item"></div>
-            </div>
-          </div>
+      <div *ngFor="let i of [1,2,3,4,5]" class="job-card d-flex gap-3">
+        <div class="job-logo skeleton-item"></div>
+        <div class="w-100">
+          <div class="skeleton-item title"></div>
+          <div class="skeleton-item text-line" style="width: 40%"></div>
+          <div class="skeleton-item text-line" style="width: 30%"></div>
         </div>
       </div>
     </div>
 
-    <!-- Actual Jobs -->
     <div *ngIf="!loading">
-      <div *ngFor="let job of jobs"
-        class="job-card d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-center">
-        <!-- LEFT + MAIN INFO -->
-        <div class="d-flex gap-3 w-100 align-items-start">
-          <img [src]="job.company_logo" alt="Company Logo" class="job-logo" />
+      <div *ngFor="let job of jobs" class="job-card">
 
-          <div class="job-main">
-            <h2 class="job-title">{{ job.title }}</h2>
-
-            <div class="job-details">
-              <p class="job-type" [style.color]="job.employment_type === 'fulltime' ? '#00be57' : 'red'"
-                [style.text-transform]="'capitalize'">{{ job.employment_type }}</p>
-              <p class="job-meta">
-                <span style="color: #646765; font-weight: 400">
-                  {{ job.published_at | relativeTime }} by
-                </span> {{ job.company_name }}
-              </p>
+        <div class="job-logo-container">
+          <ng-container *ngIf="job.company_logo; else dummyLogo">
+            <img [src]="job.company_logo" alt="Company" class="job-logo me-3 mb-3 mb-md-0">
+          </ng-container>
+          <ng-template #dummyLogo>
+            <div class="job-logo dummy-logo me-3 mb-3 mb-md-0">
+              <i class="fas fa-building"></i>
             </div>
+          </ng-template>
+        </div>
+
+        <div class="job-main">
+
+          <div class="job-info-block">
+            <h2 class="job-title"><a [routerLink]="['/jobdetails', job.job_id]" style="text-decoration: none; color: inherit; cursor: pointer;">{{ job.title }}</a></h2>
+
+            <p class="job-meta">
+              <strong>{{ job.company_name }}</strong>
+              <span>•</span>
+              {{ job.published_at | relativeTime }}
+            </p>
 
             <div class="job-location-tags">
-              <p class="job-location">{{ job.location }}</p>
-              <p class="job-tags">{{ job.tags }}</p>
-            </div>
+              <div class="job-location">
+                <i class="fas fa-map-marker-alt text-muted"></i> {{ job.location }}
+              </div>
 
-            <div class="job-actions">
-              <button class="btn btn-sm btn-outline-secondary bookmark-btn" title="Save Job" [class.active]="job.isSaved"
-                [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
-                *ngIf="!userRole || userRole === 'job_seeker'">
-                <div class="btn-content">
-                  <div class="spinner-border spinner-border-sm" *ngIf="job.isSaving"></div>
-                  <i *ngIf="!job.isSaving && !job.isSaved" class="far fa-bookmark"></i>
-                  <i *ngIf="!job.isSaving && job.isSaved" class="fas fa-bookmark bookmark-saved"></i>
-                </div>
-              </button>
+              <span class="tag-pill type">{{ job.employment_type }}</span>
 
-              <button class="apply-btn" [routerLink]="['/jobdetails', job.job_id]">Apply</button>
+              <ng-container *ngIf="job.tags && job.tags.length > 0">
+                <span class="tag-pill d-none d-md-inline-block">{{ job.tags[0] }}</span>
+                <span *ngIf="job.tags.length > 1" class="tag-pill d-none d-md-inline-block">+{{ job.tags.length - 1
+                  }}</span>
+              </ng-container>
             </div>
           </div>
+
+          <div class="job-actions">
+            <button class="bookmark-btn" title="Save Job" [class.active]="job.isSaved && !job.isSaving" [class.loading]="job.isSaving"
+              [disabled]="job.isSaving" (click)="onToggleSaveJob(job)" *ngIf="!userRole || userRole === 'job_seeker'">
+
+              <div *ngIf="job.isSaving" class="spinner-border spinner-border-sm" role="status"></div>
+
+              <ng-container *ngIf="!job.isSaving">
+                <i class="far fa-bookmark" *ngIf="!job.isSaved"></i>
+                <i class="fas fa-bookmark" *ngIf="job.isSaved"></i>
+              </ng-container>
+            </button>
+
+            <a class="apply-btn" [routerLink]="['/jobdetails', job.job_id]">
+              Apply Now
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
+
   </div>
 
-  <div class="explore-all text-center mt-5 mb-4 d-lg-none">
-    <a class="btn" routerLink="/jobs">Explore all jobs &gt;</a>
+  <div class="explore-all text-center mt-3 mb-3 d-lg-none">
+    <a class="btn" routerLink="/jobs">Explore all jobs <i class="fas fa-arrow-right"></i></a>
   </div>
-
 
   <div class="job-posting" *ngIf="!isLoggedIn() || getUserRole() === 'employer'">
-    <div class="job-text">Do you want to post a job for your company? We can help.</div>
-    <span class="job-link"><a routerLink="/post-job">Click here</a></span>
+    <div class="job-text">
+      <h3>Hiring?</h3>
+      <div style="opacity: 0.9; font-weight: 400; font-size: 1rem;">
+        Find the best talent for your company today.
+      </div>
+    </div>
+    <div class="job-link">
+      <a routerLink="/dashboard/employer/post-job">Post a Job</a>
+    </div>
   </div>
+
 </div>
