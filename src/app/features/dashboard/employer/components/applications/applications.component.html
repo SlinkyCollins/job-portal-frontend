@@ -90,7 +90,7 @@
                         </p>
                         <div class="meta-info">
                             <span class="text-truncate" style="max-width: 200px;">
-                                <i class="far fa-envelope me-1"></i> {{ app.email }}
+                                <i class="far fa-envelope me-1"></i> <a href="mailto:{{ app.email }}" style="text-decoration: none; color: inherit;">{{ app.email }}</a>
                             </span>
                             <span>
                                 <i class="far fa-clock me-1"></i> {{ app.applied_at | date:'mediumDate' }}
