@@ -356,7 +356,7 @@
                   <div class="company-details">
                     <h5>{{ job.company_name || 'Company Name' }}</h5>
                     <p>Leading technology company</p>
-                    <a href="#" class="company-website">Visit Website</a>
+                    <a [href]="job.website" class="company-website" target="_blank" rel="noopener noreferrer">Visit Website</a>
                   </div>
                 </div>
               </div>

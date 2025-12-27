@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-category-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css'
 })
