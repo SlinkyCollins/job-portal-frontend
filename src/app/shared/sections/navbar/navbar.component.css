@@ -43,6 +43,31 @@
   border: 2px solid #d2f34c;
 }
 
+.navbar-auth .mega-dropdown ul li a {
+  color: #fff !important;
+}
+
+.navbar-auth .mega-dropdown ul li a:hover {
+  color: #00be57 !important;
+}
+
+.navbar-auth .mega-dropdown {
+  background-color: #244034 !important;
+}
+
+.navbar-auth .mega-dropdown .dropdown-header {
+  color: #fff;
+}
+
+.navbar-auth .dropdown-explore {
+  background-color: #244034 !important;
+  border: 1px solid #e1eec8;
+}
+
+.navbar-auth .dropdown-explore .nav-link {
+  color: #fff !important;
+}
+
 .navbar-home .nav-link.active {
   color: #00be57 !important;
   font-weight: bold !important;
