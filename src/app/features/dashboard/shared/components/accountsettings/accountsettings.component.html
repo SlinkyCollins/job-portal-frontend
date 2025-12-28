@@ -123,8 +123,7 @@
       [disabled]="isLinkingFacebook || isFacebookLinked">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
-        loading="lazy"
-        alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
+        loading="lazy" alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
       <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
       {{ isLinkingFacebook ? 'Linking...' : (isFacebookLinked ? 'Facebook Linked' : 'Link Facebook Account') }}
     </button>
@@ -152,8 +151,8 @@
 
         <!-- Facebook Icon -->
         <img *ngIf="provider.includes('facebook')"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png" loading="lazy"
-          alt="Facebook" width="20" height="20">
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
+          loading="lazy" alt="Facebook" width="20" height="20">
 
         <!-- Provider Name -->
         <span class="ms-2 fw-semibold text-dark">
@@ -294,8 +293,10 @@
         <div class="alert alert-warning d-flex align-items-start mb-3">
           <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
           <div>
-            <strong>Warning:</strong> This action is permanent and cannot be undone. All your data, including profile
-            information, resume, and job applications, will be permanently deleted.
+            <strong>Warning:</strong> This action is permanent and cannot be undone. All your data, including
+            <span *ngIf="userRole === 'job_seeker'">profile information, resume, and job applications</span>
+            <span *ngIf="userRole === 'employer'">profile information, company details, and posted jobs</span>
+            will be permanently deleted.
           </div>
         </div>
 

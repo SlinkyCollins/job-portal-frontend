@@ -21,6 +21,7 @@ export class PostJobComponent implements OnInit {
   isSubmitting = false;
   showCancelConfirm = false;
   categories: any[] = [];
+  minDate: string = '';
 
   // Custom Tag Input
   tags: string[] = [];
@@ -85,6 +86,8 @@ export class PostJobComponent implements OnInit {
       this.categories = cats;
       this.checkEditMode();
     });
+
+    this.minDate = new Date().toISOString().split('T')[0]; // Sets to today's date in YYYY-MM-DD format
   }
 
   checkEditMode() {
@@ -295,7 +298,14 @@ export class PostJobComponent implements OnInit {
         },
         error: (err) => {
           this.isSubmitting = false;
-          this.toastr.error('An error occurred');
+          console.log(err);
+          if (err.status === 403) {
+            this.toastr.error(err.error.message);
+          } else if (err.status === 400) {
+            this.toastr.error(err.error.message || 'Invalid data provided');
+          } else {
+            this.toastr.error('An error occurred while posting the job.');
+          }
         }
       });
     }

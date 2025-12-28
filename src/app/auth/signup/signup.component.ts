@@ -59,16 +59,16 @@ export class SignupComponent {
         this.router.navigate(['/login']);
       }
       form.resetForm();
-    }, (error: any) => {
+    }, (err: any) => {
       this.loading = false;
-      if (error.status === 403) {
-        this.toastr.info('Email already exists');
-      } else if (error.status === 500) {
+      if (err.status === 403) {
+        this.toastr.info(err.error.msg);
+      } else if (err.status === 500) {
         this.toastr.error('Server error. Please try again.');
       } else {
         this.toastr.error('Signup failed. Please try again.');
       }
-      console.error('Signup Error:', error);
+      console.error('Signup Error:', err);
     })
   }
 
