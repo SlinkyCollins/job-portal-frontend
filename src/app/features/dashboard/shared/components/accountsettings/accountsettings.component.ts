@@ -45,6 +45,7 @@ export class AccountsettingsComponent implements OnInit {
   public isDeletingAccount: boolean = false;
 
   user: any = {};
+  userRole: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -72,6 +73,7 @@ export class AccountsettingsComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForms();
     this.loadUserProfile();
+    this.userRole = this.authService.getUserRole();
   }
 
   private initializeForms(): void {

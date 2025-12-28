@@ -364,7 +364,7 @@
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-              <button class="btn btn-apply btn-block" *ngIf="!userRole || userRole === 'job_seeker'"
+              <button class="btn btn-apply btn-block mb-2" *ngIf="!userRole || userRole === 'job_seeker'"
                 [disabled]="hasApplied || isRetracted || isApplying" (click)="onApplyNow()">
                 <div class="btn-content">
                   <div class="spinner-border spinner-border-sm me-2" *ngIf="isApplying"></div>
@@ -377,13 +377,18 @@
                 </div>
               </button>
 
-              <button class="btn btn-save btn-block" *ngIf="!userRole || userRole === 'job_seeker'"
-                [disabled]="isSaved || isSaving" (click)="onSaveJob()">
+              <button class="btn btn-save btn-block" [class.active]="job.isSaved"
+                [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob()"
+                *ngIf="!userRole || userRole === 'job_seeker'">
                 <div class="btn-content">
-                  <div class="spinner-border spinner-border-sm me-2" *ngIf="isSaving"></div>
-                  <i class="fas fa-bookmark me-2" *ngIf="!isSaving"></i>
-                  <span *ngIf="isSaving">Saving...</span>
-                  <span *ngIf="!isSaving">{{ isSaved ? 'Saved' : 'Save Job' }}</span>
+                  <div class="spinner-border spinner-border-sm me-2" *ngIf="job.isSaving"></div>
+                  <i *ngIf="!job.isSaving && !job.isSaved" class="far fa-bookmark me-2"></i>
+                  <i *ngIf="!job.isSaving && job.isSaved" class="fas fa-bookmark bookmark-saved me-2"></i>
+                  <span *ngIf="job.isSaving && !job.isSaved">Saving...</span>
+                  <span *ngIf="job.isSaving && job.isSaved">Unsaving...</span>
+                  <span *ngIf="!job.isSaving">
+                    {{ job.isSaved ? 'Unsave' : 'Save Job for Later' }}
+                  </span>
                 </div>
               </button>
             </div>
@@ -442,6 +447,57 @@
       </div>
     </div>
   </section>
+
+  <!-- Apply Modal -->
+  <div class="modal-overlay" [class.active]="showApplyModal" (click)="closeApplyModal()" role="dialog" aria-modal="true" aria-labelledby="applyModalTitle">
+    <div class="modal-content apply-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="applyModalTitle">Apply for {{ job?.title }}</h3>
+        <button class="modal-close-btn" (click)="closeApplyModal()" aria-label="Close dialog">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form (ngSubmit)="submitApplication()" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="coverLetter">Cover Letter (Optional)</label>
+            <textarea
+              id="coverLetter"
+              [(ngModel)]="coverLetter"
+              name="coverLetter"
+              placeholder="Tell us why you're interested in this position..."
+              rows="4"
+              maxlength="500"
+              class="form-control">
+            </textarea>
+            <small class="text-muted">{{ coverLetter.length }}/500 characters</small>
+          </div>
+
+          <div class="form-group">
+            <label for="cvFile">Upload CV (Optional)</label>
+            <input
+              type="file"
+              id="cvFile"
+              (change)="onFileSelected($event)"
+              accept=".pdf,.docx"
+              class="form-control" />
+            <small class="text-muted">
+              Accepted formats: PDF, DOCX (Max 10MB).
+              {{ selectedFileName ? 'Selected: ' + selectedFileName : (hasDefaultCV ? 'If not uploaded, your default CV will be used.' : 'No default CV found. Upload one to apply.') }}
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeApplyModal()" [disabled]="isApplying">Cancel</button>
+          <button type="submit" class="btn btn-apply" [disabled]="isApplying || (!selectedFile && !hasDefaultCV)">
+            <span *ngIf="isApplying" class="spinner-border spinner-border-sm me-2"></span>
+            {{ isApplying ? 'Applying...' : 'Submit Application' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- CTA only for unauthenticated users -->
   <app-cta *ngIf="!isLoggedIn()"></app-cta>
   <app-footer></app-footer>

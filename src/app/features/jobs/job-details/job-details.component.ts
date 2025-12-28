@@ -8,10 +8,20 @@ import { NavbarComponent } from "../../../shared/sections/navbar/navbar.componen
 import { FooterComponent } from "../../../shared/sections/footer/footer.component";
 import { RelativeTimePipe } from "../../../core/pipes/relative-time.pipe";
 import { AuthService } from "../../../core/services/auth.service";
+import { FormsModule } from "@angular/forms";
+import { DashboardService } from "../../../core/services/dashboard.service";
 
 @Component({
   selector: "app-job-details",
-  imports: [CommonModule, CtaComponent, NavbarComponent, FooterComponent, RouterLink, RelativeTimePipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CtaComponent,
+    NavbarComponent,
+    FooterComponent,
+    RouterLink,
+    RelativeTimePipe
+  ],
   templateUrl: "./job-details.component.html",
   styleUrls: ["./job-details.component.css"],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -24,18 +34,24 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
   job: any = null;
   isLoading = true;
   hasApplied = false;
-  isSaved = false;
   errorMsg: string | null = null;
   userRole: string | null = null;
   showFullDescription = false;
   relatedJobs: any[] = [];
   isApplying = false;
-  isSaving = false;
   isRetracted: boolean = false;
+
+  // New properties for apply modal
+  showApplyModal = false;
+  coverLetter = '';
+  selectedFile: File | null = null;
+  selectedFileName = '';
+  hasDefaultCV = false; // Will be set based on user data
 
   constructor(
     private route: ActivatedRoute,
     public authService: AuthService,
+    public dashboardService: DashboardService,
     public router: Router,
   ) { }
 
@@ -46,6 +62,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     if (this.jobId) {
       this.fetchJobDetails(this.jobId);
       this.fetchRelatedJobs();
+      this.checkDefaultCV(); // New: Check if user has default CV
     } else {
       this.errorMsg = "Invalid job ID"
       this.isLoading = false
@@ -66,8 +83,9 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
         if (res.status && res.job) {
           this.job = res.job
           this.hasApplied = res.job.hasApplied || false
-          this.isSaved = res.job.isSaved || false
-          this.isRetracted = res.job.isRetracted || false 
+          this.job.isSaved = res.job.isSaved || false;
+          this.job.isSaving = false;
+          this.isRetracted = res.job.isRetracted || false
         } else {
           this.errorMsg = res.msg || "Job not found"
         }
@@ -79,6 +97,20 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
         this.isLoading = false
       },
     })
+  }
+
+  // New: Check if user has default CV
+  checkDefaultCV(): void {
+    this.dashboardService.getSeekerProfile().subscribe({
+      next: (res: any) => {
+        if (res.status && res.profile && res.profile.cv_url) {
+          this.hasDefaultCV = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error checking default CV:', err);
+      }
+    });
   }
 
   onApplyNow(): void {
@@ -96,60 +128,75 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Set loading state to true
-    this.isApplying = true
-
-    this.authService.applyToJob(this.jobId!).subscribe({
-      next: (res: any) => {
-        if (res.status) {
-          this.hasApplied = true
-          this.authService.toastr.success(res.msg)
-        } else {
-          this.authService.toastr.error(res.msg)
-        }
-        // Set loading state to false
-        this.isApplying = false
-      },
-      error: (err) => {
-        console.error(err)
-        this.authService.toastr.error("An error occurred while applying.")
-        // Set loading state to false on error
-        this.isApplying = false
-      },
-    })
+    // Open the apply modal instead of direct submission
+    this.showApplyModal = true;
   }
 
-  onSaveJob(): void {
-    console.log("User clicked for save job ID:", this.jobId)
-    const userRole = localStorage.getItem("role")
+  // New: Handle file selection
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const maxSize = 10 * 1024 * 1024; // 10MB
 
-    if (!userRole) {
-      this.authService.toastr.warning("Please log in to save jobs.")
-      this.router.navigate(["/login"])
-      return
+      if (!allowedTypes.includes(file.type)) {
+        this.authService.toastr.error('Invalid file type. Only PDF and DOCX allowed.');
+        return;
+      }
+      if (file.size > maxSize) {
+        this.authService.toastr.error('File too large. Max 10MB.');
+        return;
+      }
+
+      this.selectedFile = file;
+      this.selectedFileName = file.name;
+    }
+  }
+
+  // New: Submit application via modal
+  submitApplication(): void {
+    if (!this.jobId) return;
+
+    this.isApplying = true;
+
+    const formData = new FormData();
+    formData.append('jobId', this.jobId.toString());
+    if (this.coverLetter.trim()) {
+      formData.append('cover_letter', this.coverLetter.trim());
+    }
+    if (this.selectedFile) {
+      formData.append('cv_file', this.selectedFile);
     }
 
-    // Set loading state to true
-    this.isSaving = true
-
-    this.authService.addToWishlist(this.jobId!).subscribe({
+    this.authService.applyToJobWithCV(formData).subscribe({
       next: (res: any) => {
         if (res.status) {
-          this.isSaved = true
-          this.authService.toastr.success(res.msg)
+          this.hasApplied = true;
+          this.authService.toastr.success(res.msg);
+          this.closeApplyModal();
         } else {
-          this.authService.toastr.error(res.msg)
+          this.authService.toastr.error(res.msg);
         }
-        // Set loading state to false
-        this.isSaving = false
+        this.isApplying = false;
       },
       error: (err) => {
-        console.error(err)
-        this.authService.toastr.error("An error occurred while saving the job.")
-        // Set loading state to false on error
-        this.isSaving = false
+        console.error(err);
+        this.authService.toastr.error("An error occurred while applying.");
+        this.isApplying = false;
       },
-    })
+    });
+  }
+
+  // New: Close modal and reset form
+  closeApplyModal(): void {
+    this.showApplyModal = false;
+    this.coverLetter = '';
+    this.selectedFile = null;
+    this.selectedFileName = '';
+  }
+
+  onToggleSaveJob(): void {
+    this.authService.toggleSaveJob(this.job);
   }
 
   toggleDescription(): void {

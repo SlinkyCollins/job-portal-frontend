@@ -195,8 +195,8 @@ export class AuthService {
     return this.http.post(this.fullUrl(API.UPDATEACCOUNT), data);
   }
 
-  applyToJob(jobId: number) {
-    return this.http.post(this.fullUrl(API.APPLY), { jobId });
+  applyToJobWithCV(formData: FormData): Observable<any> {
+    return this.http.post(this.fullUrl(API.APPLY), formData);
   }
 
   addToWishlist(jobId: number) {
