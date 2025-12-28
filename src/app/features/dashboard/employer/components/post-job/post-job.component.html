@@ -247,7 +247,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label">Application Deadline</label>
-                        <input type="date" class="form-control" formControlName="deadline">
+                        <input type="date" class="form-control" formControlName="deadline" [min]="minDate">
                         <div class="form-text">Leave blank for default (30 days).</div>
                     </div>
 

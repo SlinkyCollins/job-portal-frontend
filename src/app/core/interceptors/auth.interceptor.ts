@@ -7,8 +7,8 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   const token = localStorage.getItem('token');
   const router = inject(Router);
   const API = {
-    SEEKER_PROFILE: 'seekers/profile',
-    EMPLOYER_PROFILE: 'employers/profile'
+    SEEKER_PROFILE: 'dashboard/seeker/seeker_profile',
+    EMPLOYER_PROFILE: 'dashboard/employer/get_profile'
   };
 
   // Clone the request and add the Authorization header if a token exists

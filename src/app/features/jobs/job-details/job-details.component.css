@@ -682,6 +682,17 @@ img {
   text-decoration: underline;
 }
 
+/* Closed Job Alert */
+.alert-danger {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
 /* Action Buttons */
 .action-buttons {
   padding: 0 1rem;

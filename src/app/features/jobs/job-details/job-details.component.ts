@@ -10,6 +10,7 @@ import { RelativeTimePipe } from "../../../core/pipes/relative-time.pipe";
 import { AuthService } from "../../../core/services/auth.service";
 import { FormsModule } from "@angular/forms";
 import { DashboardService } from "../../../core/services/dashboard.service";
+import { CapitalizeFirstPipe } from "../../../core/pipes/capitalize-first.pipe";
 
 @Component({
   selector: "app-job-details",
@@ -20,7 +21,8 @@ import { DashboardService } from "../../../core/services/dashboard.service";
     NavbarComponent,
     FooterComponent,
     RouterLink,
-    RelativeTimePipe
+    RelativeTimePipe,
+    CapitalizeFirstPipe
   ],
   templateUrl: "./job-details.component.html",
   styleUrls: ["./job-details.component.css"],
@@ -62,7 +64,9 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     if (this.jobId) {
       this.fetchJobDetails(this.jobId);
       this.fetchRelatedJobs();
-      this.checkDefaultCV(); // New: Check if user has default CV
+      if (this.userRole === 'job_seeker') {
+        this.checkDefaultCV(); // New: Check if user has default CV
+      }
     } else {
       this.errorMsg = "Invalid job ID"
       this.isLoading = false
@@ -71,6 +75,11 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
+  }
+
+  get processedRequirements(): string[] {
+    if (!this.job || !this.job.requirements) return [];
+    return this.job.requirements.split('.').map((s: string) => s.trim()).filter((s: string) => s.length > 0);
   }
 
   ngAfterViewInit() {
@@ -86,6 +95,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
           this.job.isSaved = res.job.isSaved || false;
           this.job.isSaving = false;
           this.isRetracted = res.job.isRetracted || false
+          this.job.is_closed = res.job.is_closed || false; 
         } else {
           this.errorMsg = res.msg || "Job not found"
         }
