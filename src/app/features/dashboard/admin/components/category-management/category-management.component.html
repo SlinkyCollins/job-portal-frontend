@@ -53,8 +53,11 @@
                                 <span class="category-name">{{ cat.name }}</span>
                             </td>
 
-                            <td class="col-count" data-label="Status">
-                                <span class="badge-active">Active</span>
+                            <td class="col-status" data-label="Status">
+                                <span class="status-badge" [class.badge-active]="cat.job_count > 0"
+                                    [class.badge-inactive]="cat.job_count === 0">
+                                    {{ cat.job_count > 0 ? 'Active' : 'Inactive' }}
+                                </span>
                             </td>
 
                             <td class="col-actions" data-label="Actions">

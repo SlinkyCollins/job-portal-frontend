@@ -44,7 +44,15 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.adminService.getAllCategories().subscribe({
       next: (res: any) => {
-        if (res.status) this.categories = res.data;
+        if (res.status) {
+          // Ensure job_count is a number for proper class binding
+          this.categories = res.data.map((cat: any) => ({
+            ...cat,
+            job_count: parseInt(cat.job_count, 10) || 0
+          }));
+        } else {
+          this.toastr.error('Failed to load categories');
+        }
         this.isLoading = false;
       },
       error: () => this.isLoading = false
