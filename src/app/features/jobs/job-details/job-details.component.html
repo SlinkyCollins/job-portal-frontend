@@ -356,9 +356,9 @@
               <div class="card-body">
                 <div class="company-info">
                   <div class="company-logo">
-                    <!-- <i class="fas fa-building"></i> -->
-                    <img [src]="job.logo_url" loading="lazy" alt="Company Logo"
+                    <img *ngIf="job.logo_url" [src]="job.logo_url" loading="lazy" alt="Company Logo"
                       style="width: 50px; height: 50px; object-fit: cover;" />
+                    <i *ngIf="!job.logo_url" class="fas fa-building" style="font-size: 50px; color: #ccc;"></i>
                   </div>
                   <div class="company-details">
                     <h5>{{ job.company_name || 'Company Name' }}</h5>

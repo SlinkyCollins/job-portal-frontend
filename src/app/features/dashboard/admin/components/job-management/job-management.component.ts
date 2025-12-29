@@ -28,7 +28,7 @@ export class JobManagementComponent implements OnInit, OnDestroy {
     private adminService: AdminService,
     private toastr: ToastrService,
     private renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadJobs();
@@ -52,6 +52,22 @@ export class JobManagementComponent implements OnInit, OnDestroy {
         console.error('Error fetching jobs:', err);
         this.toastr.error('Failed to load jobs');
         this.isLoading = false;
+      }
+    });
+  }
+
+  updateJobStatus(jobId: number, status: string) {
+    this.adminService.updateJobStatus(jobId, status).subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          this.toastr.success(`Job ${status === 'active' ? 'approved' : 'closed'} successfully`);
+          this.loadJobs(); // Refresh list
+        } else {
+          this.toastr.error(res.message || 'Update failed');
+        }
+      },
+      error: (err) => {
+        this.toastr.error('Error updating job status');
       }
     });
   }
@@ -99,7 +115,7 @@ export class JobManagementComponent implements OnInit, OnDestroy {
             this.toastr.success('Job deleted successfully');
             // Optimistic update
             this.jobs = this.jobs.filter(j => j.job_id !== this.jobToDelete);
-            
+
             // Adjust page if empty
             if (this.paginatedJobs.length === 0 && this.currentPage > 1) {
               this.currentPage--;

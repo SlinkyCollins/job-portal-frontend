@@ -149,14 +149,23 @@
   color: var(--primary-green);
 }
 
-.badge-active {
-  background-color: #ecfdf5;
-  color: #059669;
+.status-badge {
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-badge.badge-active {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.status-badge.badge-inactive {
+  background-color: #f8f9fa;
+  color: #6c757d;
 }
 
 /* Actions */
@@ -276,6 +285,15 @@
   color: #fff;
 }
 
+.btn-update {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #244034;
+  color: #fff;
+}
+
 /* ========== MOBILE RESPONSIVE (Card Transformation) ========== */
 @media (max-width: 768px) {
   
@@ -348,6 +366,14 @@
 
   .category-name {
     font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 768.99px) {
+  .col-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
   }
 }
 

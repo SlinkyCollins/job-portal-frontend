@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-company-profile',
@@ -21,6 +22,7 @@ export class CompanyProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dashboardService: DashboardService,
+    private authService: AuthService,
     private toastr: ToastrService
   ) {
     this.companyForm = this.fb.group({
@@ -111,7 +113,13 @@ export class CompanyProfileComponent implements OnInit {
       next: (res: any) => {
         if (res.status) {
           this.toastr.success('Company profile saved successfully!');
-          // Optionally reload or update local state
+          this.companyForm.markAsPristine();
+          // Refresh user data to update hasCompany reactively
+          this.authService.getEmployerData().subscribe({
+            error: (err) => {
+              console.error('Error refreshing user data:', err);
+            }
+          });
         } else {
           this.toastr.error(res.message || 'Failed to save profile.');
         }

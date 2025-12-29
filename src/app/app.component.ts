@@ -97,9 +97,7 @@ export class AppComponent implements OnInit {
       this.offlineToast = null;
     }
 
-    this.authService.toastr.success('✅ Back online!', '', { timeOut: 3000 });
-    // Optional: Re-sync data or refresh page
-    // window.location.reload();
+    this.authService.toastr.success('Back online!', '', { timeOut: 3000 });
   }
 
   // Handle offline event
@@ -112,7 +110,7 @@ export class AppComponent implements OnInit {
 
   // Show offline toast
   private showOfflineToast() {
-    this.offlineToast = this.authService.toastr.error('❌ No internet connection. Some features may not work.', 'Offline', {
+    this.offlineToast = this.authService.toastr.warning('No internet connection. Some features may not work.', 'Offline', {
       timeOut: 0,  // Persistent until online
       extendedTimeOut: 0,
       closeButton: true,

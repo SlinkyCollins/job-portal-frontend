@@ -4,7 +4,7 @@
 </div>
 
 <div class="admin-table-container fade-in">
-  
+
   <div *ngIf="isLoading" class="loading-spinner">
     <div class="spinner-border text-success" role="status"></div>
     <p class="mt-2 text-muted">Loading users...</p>
@@ -24,16 +24,16 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of paginatedUsers">
-          
+
           <td class="col-id" data-label="ID">
             <span class="id-badge">#{{ user.user_id }}</span>
           </td>
-          
+
           <td class="col-user">
             <div class="user-cell">
               <div class="user-avatar-wrapper">
                 <div class="user-initials">
-                    {{ user.firstname | initials:user.lastname }}
+                  {{ user.firstname | initials:user.lastname }}
                 </div>
               </div>
               <div class="user-info">
@@ -44,8 +44,7 @@
           </td>
 
           <td class="col-role" data-label="Role">
-            <span class="role-badge" 
-              [ngClass]="{
+            <span class="role-badge" [ngClass]="{
                 'admin': user.role === 'admin',
                 'employer': user.role === 'employer',
                 'job_seeker': user.role === 'job_seeker'
@@ -63,7 +62,11 @@
           </td>
 
           <td class="col-actions" data-label="Actions">
-            <button class="action-btn delete" (click)="deleteUser(user.user_id)" title="Delete User">
+            <button *ngIf="user.role !== 'admin'" class="action-btn suspend" (click)="toggleSuspend(user)"
+              title="{{ user.suspended ? 'Unsuspend' : 'Suspend' }} User">
+              <i class="fas fa-{{ user.suspended ? 'play' : 'pause' }}"></i>
+            </button>
+            <button *ngIf="user.role !== 'admin'" class="action-btn delete" (click)="deleteUser(user.user_id)" title="Delete User">
               <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -83,24 +86,25 @@
 
     <div class="pagination-footer" *ngIf="users.length > pageSize">
       <div class="pagination-info">
-        Showing <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong> to 
-        <strong>{{ (currentPage * pageSize) > users.length ? users.length : (currentPage * pageSize) }}</strong> 
+        Showing <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong> to
+        <strong>{{ (currentPage * pageSize) > users.length ? users.length : (currentPage * pageSize) }}</strong>
         of <strong>{{ users.length }}</strong> users
       </div>
-      
+
       <div class="pagination-controls">
         <button class="page-btn prev" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
           <i class="fas fa-chevron-left"></i>
         </button>
-        
+
         <ng-container *ngFor="let page of totalPagesArray">
-            <button *ngIf="totalPages <= 7 || page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
-                    class="page-btn number" 
-                    [class.active]="currentPage === page" 
-                    (click)="changePage(page)">
-              {{ page }}
-            </button>
-            <span *ngIf="totalPages > 7 && ((page === 2 && currentPage > 4) || (page === totalPages - 1 && currentPage < totalPages - 3))" class="dots">...</span>
+          <button
+            *ngIf="totalPages <= 7 || page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+            class="page-btn number" [class.active]="currentPage === page" (click)="changePage(page)">
+            {{ page }}
+          </button>
+          <span
+            *ngIf="totalPages > 7 && ((page === 2 && currentPage > 4) || (page === totalPages - 1 && currentPage < totalPages - 3))"
+            class="dots">...</span>
         </ng-container>
 
         <button class="page-btn next" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">

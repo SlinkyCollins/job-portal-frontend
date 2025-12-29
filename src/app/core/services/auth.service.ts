@@ -89,7 +89,7 @@ export class AuthService {
     } else if (role === 'employer') {
       this.router.navigate(['/dashboard/employer']);
     } else if (role === 'admin') {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/dashboard/admin']);
     } else {
       this.router.navigate(['/login']);
     }
@@ -102,7 +102,9 @@ export class AuthService {
           this.toastr.success('Logged out');
           localStorage.removeItem('token');
           localStorage.removeItem('role');
-          localStorage.removeItem('user_cv'); // Clear uploaded CV
+          // Reset social loading flags
+          this.isGoogleLoading = false;
+          this.isFacebookLoading = false;
           this.router.navigate(['/login']);
         } else {
           this.toastr.error('Logout failed');
@@ -110,6 +112,9 @@ export class AuthService {
       },
       err => {
         this.toastr.error('Logout failed');
+        // Reset social loading flags
+        this.isGoogleLoading = false;
+        this.isFacebookLoading = false;
       }
     );
   }

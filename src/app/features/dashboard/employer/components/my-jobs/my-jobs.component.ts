@@ -18,6 +18,8 @@ export class MyJobsComponent implements OnInit {
   isLoading = true;
   showDeleteModal = false;
   jobToDelete: number | null = null;
+  showCloseModal = false;
+  jobToClose: number | null = null;
 
   // Pagination properties
   currentPage: number = 1;
@@ -68,6 +70,37 @@ export class MyJobsComponent implements OnInit {
   onSortChange() {
     this.currentPage = 1; // Reset to first page when sorting
     this.loadJobs();
+  }
+
+
+  closeJob(jobId: number) {
+    this.jobToClose = jobId;
+    this.showCloseModal = true;
+  }
+
+  confirmClose(): void {
+    if (this.jobToClose) {
+      this.dashboardService.closeJob(this.jobToClose).subscribe({ 
+        next: (res: any) => {
+          if (res.status) {
+            this.toastr.success('Job closed successfully');
+            this.loadJobs();
+          } else {
+            this.toastr.error(res.message || 'Failed to close job');
+          }
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'An error occurred while closing the job');
+        }
+      });
+    }
+    this.showCloseModal = false;
+    this.jobToClose = null;
+  }
+
+  cancelClose(): void {
+    this.showCloseModal = false;
+    this.jobToClose = null;
   }
 
   deleteJob(jobId: number) {

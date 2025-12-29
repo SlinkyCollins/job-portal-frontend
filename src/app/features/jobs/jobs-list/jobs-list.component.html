@@ -313,8 +313,11 @@
           <div class="col-md-6 col-xl-4 mb-4" *ngFor="let job of jobs">
             <div class="job-card">
               <div class="job-card-header">
-                <img [src]="job.company_logo" loading="lazy" alt="Company Logo"
-                  style="width: 50px; height: 50px; object-fit: cover;" />
+                <div class="company-logo">
+                  <img *ngIf="job.company_logo" [src]="job.company_logo" loading="lazy" alt="Company Logo"
+                    style="width: 50px; height: 50px; object-fit: cover;" />
+                  <i *ngIf="!job.company_logo" class="fas fa-building" style="font-size: 50px; color: #ccc;"></i>
+                </div>
                 <button class="btn btn-sm btn-outline-secondary bookmark-btn" [class.active]="job.isSaved"
                   [class.loading]="job.isSaving" [disabled]="job.isSaving" (click)="onToggleSaveJob(job)"
                   *ngIf="!userRole || userRole === 'job_seeker'">

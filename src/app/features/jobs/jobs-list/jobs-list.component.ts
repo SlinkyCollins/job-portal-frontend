@@ -12,6 +12,7 @@ import { RelativeTimePipe } from '../../../core/pipes/relative-time.pipe';
 import { AuthService } from '../../../core/services/auth.service';
 import { ApiServiceService } from '../../../core/services/api-service.service';
 import { CategoryService } from '../../../core/services/category.service';
+import { DashboardService } from '../../../core/services/dashboard.service';
 export const API = {
   ALL_JOBS: 'jobs/all_jobs'
 }
@@ -41,6 +42,7 @@ export class JobsListComponent implements OnInit {
   };
   Math = Math; // Added to expose Math to the template
   jobs: any[] = [];
+  tags: any[] = [];
   loading = true;
   isSearching = false;
   applyingFilters = false;
@@ -94,7 +96,7 @@ export class JobsListComponent implements OnInit {
   ];
 
   experienceLevels = [
-    { label: 'Fresher', value: 'Fresher', selected: false },
+    { label: 'Entry Level', value: 'Fresher', selected: false },
     { label: 'Junior', value: 'Junior', selected: false },
     { label: 'Intermediate', value: 'Mid', selected: false },
     { label: 'Senior', value: 'Senior', selected: false },
@@ -103,51 +105,9 @@ export class JobsListComponent implements OnInit {
     { label: 'Expert', value: 'Expert', selected: false }
   ];
 
-  tags = [
-    { name: 'JavaScript', value: 'JavaScript', selected: false, count: 0 },
-    { name: 'Python', value: 'Python', selected: false, count: 0 },
-    { name: 'PHP', value: 'PHP', selected: false, count: 0 },
-    { name: 'Laravel', value: 'Laravel', selected: false, count: 0 },
-    { name: 'React', value: 'React', selected: false, count: 0 },
-    { name: 'Vue.js', value: 'Vue.js', selected: false, count: 0 },
-    { name: 'Figma', value: 'Figma', selected: false, count: 0 },
-    { name: 'UI/UX', value: 'UI/UX', selected: false, count: 0 },
-    { name: 'SEO', value: 'SEO', selected: false, count: 0 },
-    { name: 'Content Writing', value: 'Content Writing', selected: false, count: 0 },
-    { name: 'Data Analysis', value: 'Data Analysis', selected: false, count: 0 },
-    { name: 'Machine Learning', value: 'Machine Learning', selected: false, count: 0 },
-    { name: 'Excel', value: 'Excel', selected: false, count: 0 },
-    { name: 'Leadership', value: 'Leadership', selected: false, count: 0 },
-    { name: 'Communication', value: 'Communication', selected: false, count: 0 },
-    { name: 'SQL', value: 'SQL', selected: false, count: 0 },
-    { name: 'Node.js', value: 'Node.js', selected: false, count: 0 },
-    { name: 'Flutter', value: 'Flutter', selected: false, count: 0 },
-    { name: 'Dart', value: 'Dart', selected: false, count: 0 },
-    { name: 'WordPress', value: 'WordPress', selected: false, count: 0 },
-    { name: 'Fullstack', value: 'Fullstack', selected: false, count: 0 },
-    { name: 'Angular', value: 'Angular', selected: false, count: 0 },
-    { name: 'Java', value: 'java', selected: false, count: 0 },
-    { name: 'Developer', value: 'developer', selected: false, count: 0 },
-    { name: 'Finance', value: 'finance', selected: false, count: 0 },
-    { name: 'Design', value: 'design', selected: false, count: 0 },
-    { name: 'Seo', value: 'seo', selected: false, count: 0 },
-    { name: 'Analytics', value: 'analytics', selected: false, count: 0 },
-    { name: 'Data', value: 'data', selected: false, count: 0 },
-    { name: 'Frontend', value: 'frontend', selected: false, count: 0 },
-    { name: 'Other', value: 'other', selected: false, count: 0 },
-    { name: 'Marketing', value: 'marketing', selected: false, count: 0 },
-    { name: 'Management', value: 'management', selected: false, count: 0 },
-    { name: 'Software', value: 'software', selected: false, count: 0 },
-    { name: 'Engineering', value: 'engineering', selected: false, count: 0 },
-    { name: 'Writing', value: 'writing', selected: false, count: 0 },
-    { name: 'Blogging', value: 'blogging', selected: false, count: 0 },
-    { name: 'Graphic', value: 'graphic', selected: false, count: 0 },
-    { name: 'Illustration', value: 'illustration', selected: false, count: 0 },
-    { name: 'Product', value: 'product', selected: false, count: 0 }
-  ];
-
   constructor(
     public authService: AuthService,
+    public dashboardService: DashboardService,
     public apiService: ApiServiceService,
     public router: Router,
     public http: HttpClient,
@@ -157,6 +117,7 @@ export class JobsListComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
     this.loadCategories();
+    this.loadTags();  // Add this to fetch tags dynamically
 
     // One single restore flow
     this.restoreSearchAndFilters();
@@ -176,6 +137,24 @@ export class JobsListComponent implements OnInit {
 
   clearKeyword() {
     this.searchKeyword = '';
+  }
+
+  loadTags(): void {
+    this.dashboardService.getTags().subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          this.tags = res.data.map((tag: any) => ({
+            name: tag.name,
+            value: tag.name,
+            selected: false,
+            count: 0
+          }));
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching tags:', err);
+      }
+    })
   }
 
   restoreSearchAndFilters(): void {
@@ -199,9 +178,9 @@ export class JobsListComponent implements OnInit {
     // Helper function to check if there's at least one meaningful search value
     const hasAnySearchValue = (search: any): boolean => {
       return (
-        (search.category !== undefined && search.category !== null) ||
-        search.location !== '' ||
-        search.keyword !== ''
+        (search.category !== undefined && search.category !== null && search.category !== 0) ||
+        (search.location && search.location.trim() !== '') ||
+        (search.keyword && search.keyword.trim() !== '')
       );
     };
 
