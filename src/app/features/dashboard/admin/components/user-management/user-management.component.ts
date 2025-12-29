@@ -15,7 +15,7 @@ import { finalize } from 'rxjs/operators';
 export class UserManagementComponent implements OnInit, OnDestroy {
   users: any[] = [];
   isLoading: boolean = true;
-  
+
   // Pagination State
   currentPage: number = 1;
   pageSize: number = 10;
@@ -55,6 +55,24 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         console.error(err);
         this.toastr.error('Error loading users');
         this.isLoading = false;
+      }
+    });
+  }
+
+  toggleSuspend(user: any) {
+    const action = user.suspended ? 'unsuspend' : 'suspend';
+    const message = action === 'suspend' ? 'suspended' : 'unsuspended';
+    this.adminService.toggleUserSuspension(user.user_id, action).subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          user.suspended = !user.suspended;
+          this.toastr.success(`User ${message} successfully`);
+        } else {
+          this.toastr.error(res.message || 'Action failed');
+        }
+      },
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Error updating user status');
       }
     });
   }
@@ -104,7 +122,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
             this.toastr.success('User deleted successfully');
             // Optimistic update: remove from local array instead of reloading API
             this.users = this.users.filter(u => u.user_id !== this.userToDelete);
-            
+
             // Adjust page if empty
             if (this.paginatedUsers.length === 0 && this.currentPage > 1) {
               this.currentPage--;

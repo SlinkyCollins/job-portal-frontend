@@ -33,6 +33,7 @@ export const API = {
   GET_COMPANY_PROFILE: 'dashboard/employer/get_company_profile',
   SAVE_COMPANY_PROFILE: 'dashboard/employer/save_company_profile',
   DELETE_JOB: 'dashboard/employer/delete_job',
+  CLOSE_JOB: 'dashboard/employer/close_job',
   GET_JOB_DETAILS: 'dashboard/employer/get_job_details',
   UPDATE_JOB: 'dashboard/employer/update_job',
   GET_APPLICATIONS: 'dashboard/employer/get_applications',
@@ -137,6 +138,10 @@ export class DashboardService {
 
   updateJob(jobData: any): Observable<any> {
     return this.http.post(this.fullUrl(API.UPDATE_JOB), jobData);
+  }
+
+  closeJob(jobId: number): Observable<any> {
+    return this.http.post(this.fullUrl(API.CLOSE_JOB), { job_id: jobId });
   }
 
   getEmployerProfile(): Observable<any> {

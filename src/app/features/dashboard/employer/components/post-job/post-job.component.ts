@@ -74,8 +74,7 @@ export class PostJobComponent implements OnInit {
       responsibilities: ['', Validators.required],
       requirements: ['', Validators.required],
       nice_to_have: [''],
-      benefits: [''],
-      status: ['active']
+      benefits: ['']
     });
   }
 
@@ -241,8 +240,7 @@ export class PostJobComponent implements OnInit {
       responsibilities: data.responsibilities,
       requirements: data.requirements,
       nice_to_have: data.nice_to_have,
-      benefits: data.benefits,
-      status: data.status
+      benefits: data.benefits
     });
 
     if (data.tags) {

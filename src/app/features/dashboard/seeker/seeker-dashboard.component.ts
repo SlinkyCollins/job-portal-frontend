@@ -118,22 +118,22 @@ export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestro
         }
       },
       (err: any) => {
-        console.error('Error fetching user data:', err.status, err.statusText, err.message);
+        console.error('Error fetching user data:', err.status, err.statusText, err.msg);
         let errorMsg = 'An unexpected error occurred. Please log in again.';
         if (err.status === 401) {
           errorMsg = 'Your token has expired. Please log in again.';
-          this.toastr.warning(errorMsg, 'Token Timeout');
+          this.toastr.warning(err.error?.msg || errorMsg, 'Token Timeout');
         } else if (err.status === 403) {
           errorMsg = 'You do not have permission to access this page.';
-          this.toastr.error(errorMsg, 'Access Denied');
+          this.toastr.error(err.error?.msg || errorMsg, 'Access Denied');
         } else if (err.status === 404) {
           errorMsg = 'We could not find your user data. Please contact support.';
-          this.toastr.info(errorMsg, 'User Not Found');
+          this.toastr.info(err.error?.msg || errorMsg, 'User Not Found');
         } else if (err.status === 500) {
           errorMsg = 'Something went wrong on our end. Please try again later.';
-          this.toastr.error(errorMsg, 'Server Error');
+          this.toastr.error( err.error?.msg || errorMsg, 'Server Error');
         } else {
-          this.toastr.error(errorMsg, 'Error');
+          this.toastr.error(err.error?.msg || errorMsg, 'Error');
         }
 
         localStorage.removeItem('role');

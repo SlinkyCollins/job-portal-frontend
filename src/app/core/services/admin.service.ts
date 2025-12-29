@@ -5,6 +5,7 @@ import { ApiServiceService } from './api-service.service';
 
 export const API = {
     getAllUsers: 'dashboard/admin/get_users',
+    suspendUser: 'dashboard/admin/suspend_user',
     deleteUser: 'dashboard/admin/delete_user',
     getStats: 'dashboard/admin/get_stats',
     getAllJobs: 'dashboard/admin/get_jobs',
@@ -33,6 +34,10 @@ export class AdminService {
     // User Management
     getAllUsers(): Observable<any> {
         return this.http.get(this.fullUrl(API.getAllUsers));
+    }
+
+    toggleUserSuspension(userId: number, action: string): Observable<any> {
+        return this.http.put(this.fullUrl(API.suspendUser), { user_id: userId, action });
     }
 
     deleteUser(userId: number): Observable<any> {

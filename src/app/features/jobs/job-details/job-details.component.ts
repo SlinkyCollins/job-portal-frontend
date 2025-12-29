@@ -191,7 +191,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error(err);
-        this.authService.toastr.error("An error occurred while applying.");
+        this.authService.toastr.error(err.error?.message || "An error occurred while applying.");
         this.isApplying = false;
       },
     });

@@ -27,14 +27,6 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" *ngIf="isEditMode">
-                        <label class="form-label">Job Status</label>
-                        <select class="form-select" formControlName="status">
-                            <option value="active">Active</option>
-                            <option value="closed">Closed</option>
-                        </select>
-                    </div>
-
                     <div class="col-md-6">
                         <label class="form-label required">Category</label>
                         <select class="form-select" formControlName="category_id" [compareWith]="compareFn">

@@ -87,7 +87,7 @@ export class LoginComponent {
           this.toastr.error('Invalid Credentials');
         } else {
           console.log(error.msg);
-          this.toastr.error('Login failed. Please try again.');
+          this.toastr.error(error?.error.msg || 'Login failed. Please try again.');
         }
         console.error(error);
         console.log('Error Response:', error.error);
