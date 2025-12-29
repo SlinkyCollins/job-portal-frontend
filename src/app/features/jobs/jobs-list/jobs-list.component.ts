@@ -96,7 +96,7 @@ export class JobsListComponent implements OnInit {
   ];
 
   experienceLevels = [
-    { label: 'Fresher', value: 'Fresher', selected: false },
+    { label: 'Entry Level', value: 'Fresher', selected: false },
     { label: 'Junior', value: 'Junior', selected: false },
     { label: 'Intermediate', value: 'Mid', selected: false },
     { label: 'Senior', value: 'Senior', selected: false },
