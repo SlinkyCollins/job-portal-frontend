@@ -4,7 +4,7 @@
 </div>
 
 <div class="admin-table-container fade-in">
-    
+
     <div *ngIf="isLoading" class="loading-spinner">
         <div class="spinner-border text-success" role="status"></div>
         <p class="mt-2 text-muted">Loading jobs...</p>
@@ -17,6 +17,7 @@
                     <th class="th-title">Job Title</th>
                     <th class="th-company">Company</th>
                     <th class="th-type">Type</th>
+                    <th class="th-status">Status</th>
                     <th class="th-posted">Posted By</th>
                     <th class="th-stats">Applicants</th>
                     <th class="th-date">Date</th>
@@ -25,7 +26,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let job of paginatedJobs">
-                    
+
                     <td class="col-title" data-label="Job Title">
                         <div class="job-title-text">{{ job.job_title }}</div>
                         <div class="job-location"><i class="fas fa-map-marker-alt me-1"></i> {{ job.location }}</div>
@@ -37,6 +38,14 @@
 
                     <td class="col-type" data-label="Type">
                         <span class="badge-type">{{ job.job_type }}</span>
+                    </td>
+
+                    <td class="col-status" data-label="Status">
+                        <span class="badge-status" [class.badge-pending]="job.status === 'pending'"
+                            [class.badge-active]="job.status === 'active'"
+                            [class.badge-closed]="job.status === 'closed'">
+                            {{ job.status | titlecase }}
+                        </span>
                     </td>
 
                     <td class="col-posted" data-label="Posted By">
@@ -59,6 +68,16 @@
                     </td>
 
                     <td class="col-actions" data-label="Actions">
+                        <button class="action-btn approve" [disabled]="job.status !== 'pending'"
+                            [title]="job.status === 'pending' ? 'Approve Job' : 'Job is not pending'"
+                            (click)="updateJobStatus(job.job_id, 'active')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="action-btn close" [disabled]="job.status === 'closed'"
+                            [title]="job.status === 'closed' ? 'Job is already closed' : 'Close Job'"
+                            (click)="updateJobStatus(job.job_id, 'closed')">
+                            <i class="fas fa-times"></i>
+                        </button>
                         <button class="action-btn delete" (click)="deleteJob(job.job_id)" title="Delete Job">
                             <i class="fas fa-trash-alt"></i>
                         </button>
@@ -66,7 +85,7 @@
                 </tr>
 
                 <tr *ngIf="jobs.length === 0">
-                    <td colspan="7" class="text-center py-5">
+                    <td colspan="8" class="text-center py-5">
                         <div class="empty-state">
                             <i class="fas fa-briefcase fa-2x mb-3 text-muted"></i>
                             <p>No jobs found.</p>
@@ -78,27 +97,29 @@
 
         <div class="pagination-footer" *ngIf="jobs.length > pageSize">
             <div class="pagination-info">
-                Showing <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong> to 
-                <strong>{{ (currentPage * pageSize) > jobs.length ? jobs.length : (currentPage * pageSize) }}</strong> 
+                Showing <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong> to
+                <strong>{{ (currentPage * pageSize) > jobs.length ? jobs.length : (currentPage * pageSize) }}</strong>
                 of <strong>{{ jobs.length }}</strong> jobs
             </div>
-            
+
             <div class="pagination-controls">
                 <button class="page-btn prev" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                
+
                 <ng-container *ngFor="let page of totalPagesArray">
-                    <button *ngIf="totalPages <= 7 || page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
-                            class="page-btn number" 
-                            [class.active]="currentPage === page" 
-                            (click)="changePage(page)">
+                    <button
+                        *ngIf="totalPages <= 7 || page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+                        class="page-btn number" [class.active]="currentPage === page" (click)="changePage(page)">
                         {{ page }}
                     </button>
-                    <span *ngIf="totalPages > 7 && ((page === 2 && currentPage > 4) || (page === totalPages - 1 && currentPage < totalPages - 3))" class="dots">...</span>
+                    <span
+                        *ngIf="totalPages > 7 && ((page === 2 && currentPage > 4) || (page === totalPages - 1 && currentPage < totalPages - 3))"
+                        class="dots">...</span>
                 </ng-container>
 
-                <button class="page-btn next" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+                <button class="page-btn next" [disabled]="currentPage === totalPages"
+                    (click)="changePage(currentPage + 1)">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>

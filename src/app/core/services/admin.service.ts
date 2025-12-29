@@ -8,6 +8,7 @@ export const API = {
     deleteUser: 'dashboard/admin/delete_user',
     getStats: 'dashboard/admin/get_stats',
     getAllJobs: 'dashboard/admin/get_jobs',
+    updateJobStatus: 'dashboard/admin/update_job_status',
     deleteJob: 'dashboard/admin/delete_job',
     getCategories: 'dashboard/admin/get_categories',
     addCategory: 'dashboard/admin/add_category',
@@ -41,6 +42,10 @@ export class AdminService {
     // Job Management
     getAllJobs(): Observable<any> {
         return this.http.get(this.fullUrl(API.getAllJobs));
+    }
+
+    updateJobStatus(jobId: number, status: string): Observable<any> {
+        return this.http.put(this.fullUrl(API.updateJobStatus), { job_id: jobId, status });
     }
 
     deleteJob(jobId: number): Observable<any> {
