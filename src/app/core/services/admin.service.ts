@@ -11,6 +11,7 @@ export const API = {
     deleteJob: 'dashboard/admin/delete_job',
     getCategories: 'dashboard/admin/get_categories',
     addCategory: 'dashboard/admin/add_category',
+    updateCategory: 'dashboard/admin/update_category',
     deleteCategory: 'dashboard/admin/delete_category',
     updatePassword: 'dashboard/admin/update_password'
 };
@@ -47,12 +48,16 @@ export class AdminService {
     }
 
     // Category Management (FIXED)
+    createCategory(name: string): Observable<any> {
+        return this.http.post(this.fullUrl(API.addCategory), { name });
+    }
+
     getAllCategories(): Observable<any> {
         return this.http.get(this.fullUrl(API.getCategories));
     }
 
-    createCategory(name: string): Observable<any> {
-        return this.http.post(this.fullUrl(API.addCategory), { name });
+    updateCategory(id: number, name: string): Observable<any> {
+        return this.http.put(this.fullUrl(API.updateCategory), { id, name });
     }
 
     deleteCategory(categoryId: number): Observable<any> {

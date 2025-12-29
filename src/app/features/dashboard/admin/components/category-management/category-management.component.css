@@ -276,6 +276,15 @@
   color: #fff;
 }
 
+.btn-update {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #244034;
+  color: #fff;
+}
+
 /* ========== MOBILE RESPONSIVE (Card Transformation) ========== */
 @media (max-width: 768px) {
   
@@ -348,6 +357,14 @@
 
   .category-name {
     font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 768.99px) {
+  .col-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
   }
 }
 

@@ -18,6 +18,10 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
   isLoading = false;
   isAdding = false;
 
+  showEditModal = false;
+  editCategoryName = '';
+  editingCategory: any = null;
+
   // Modal State
   showDeleteConfirm: boolean = false;
   categoryToDelete: number | null = null;
@@ -26,7 +30,7 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
     private adminService: AdminService,
     private toastr: ToastrService,
     private renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCategories();
@@ -101,5 +105,36 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   deleteCategory(id: number) {
     this.showDeleteModal(id);
+  }
+
+  editCategory(cat: any) {
+    this.editingCategory = cat;
+    this.editCategoryName = cat.name;
+    this.showEditModal = true;
+  }
+
+  hideEditModal() {
+    this.showEditModal = false;
+    this.editCategoryName = '';
+    this.editingCategory = null;
+  }
+
+  confirmEdit() {
+    if (!this.editCategoryName.trim()) return;
+
+    this.adminService.updateCategory(this.editingCategory.id, this.editCategoryName.trim()).subscribe({
+      next: (res: any) => {
+        if (res.status) {
+          this.toastr.success('Category updated successfully');
+          this.loadCategories();
+          this.hideEditModal();
+        } else {
+          this.toastr.error(res.message || 'Update failed');
+        }
+      },
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Error updating category');
+      }
+    });
   }
 }

@@ -648,7 +648,7 @@ img {
 .company-logo {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #2d5a3d, #1e3a2a);
+  background: transparent;
   border-radius: 10px;
   display: flex;
   align-items: center;
