@@ -51,15 +51,6 @@ export class JobManagementComponent implements OnInit, OnDestroy {
     return this.jobs.filter(job => this.selectedSort === 'all' || job.status === this.selectedSort);
   }
 
-  get paginatedJobs(): any[] {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.sortedJobs.slice(startIndex, startIndex + this.pageSize);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.sortedJobs.length / this.pageSize);
-  }
-
   ngOnInit(): void {
     this.loadJobs();
   }
