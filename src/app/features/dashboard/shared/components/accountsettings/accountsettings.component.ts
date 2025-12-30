@@ -330,7 +330,8 @@ export class AccountsettingsComponent implements OnInit {
         next: (credential) => {
           this.isLinkingGoogle = false;
           const providerId = 'google.com';
-          this.dashboardService.linkSocial(providerId).subscribe({
+          const socialUid = this.auth.currentUser?.uid || credential.user.uid;  // Always send UID
+          this.dashboardService.linkSocial(providerId, socialUid).subscribe({
             next: (res: any) => {
               if (res.status) {
                 this.toastr.success('Account linked successfully');
@@ -398,7 +399,8 @@ export class AccountsettingsComponent implements OnInit {
         next: (credential) => {
           this.isLinkingFacebook = false;
           const providerId = 'facebook.com';
-          this.dashboardService.linkSocial(providerId).subscribe({
+          const socialUid = this.auth.currentUser!.uid || credential.user.uid;  // Always send UID
+          this.dashboardService.linkSocial(providerId, socialUid).subscribe({
             next: (res: any) => {
               if (res.status) {
                 this.toastr.success('Account linked successfully');
