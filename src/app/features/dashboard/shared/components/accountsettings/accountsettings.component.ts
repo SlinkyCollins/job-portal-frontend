@@ -319,103 +319,132 @@ export class AccountsettingsComponent implements OnInit {
     this.showLinkGoogle = !this.isGoogleLinked;
   }
 
-  // 1. Backend Saver
-  private saveSocialLink(providerId: string, socialUid: string): void {
-    this.dashboardService.linkSocial(providerId, socialUid).subscribe({
-      next: (res) => {
-        if (res.status) {
-          this.authService.toastr.success(res.message);
-          this.linkedProviders = res.linked_providers;
-          this.checkSocialLinked();
-        }
-      },
-      error: (err) => {
-        console.error('Backend Linking Error:', err);
-        this.authService.toastr.error(err.error?.message || 'Failed to link account.');
-      }
-    });
-  }
-
-  private handleLinkError(error: any): void {
-    if (error.code === 'auth/credential-already-in-use') {
-      this.authService.toastr.error('This account is already linked to another user.');
-    } else if (error.code === 'auth/popup-blocked') {
-      this.authService.toastr.error('Popup blocked. Please allow popups and try again.');
-    } else {
-      this.authService.toastr.error('Failed to link account.');
-      console.error('Linking error:', error);
-    }
-  }
-
   // 2. Hybrid Google Link
-  async linkGoogle() {
+  linkGoogle() {
+    if (this.isGoogleLinked) return;
     this.isLinkingGoogle = true;
-    const provider = new GoogleAuthProvider();
 
-    try {
-      let result: UserCredential;
-      let socialUid: string;
-
-      // SCENARIO A: Social User (Has Firebase Session) -> Use Link
-      if (this.auth.currentUser) {
-        result = await linkWithPopup(this.auth.currentUser, provider);
-        // For linked accounts, the UID is usually the same as the main user, 
-        // but we grab the specific provider info to be safe.
-        const providerData = result.user.providerData.find(p => p.providerId === 'google.com');
-        socialUid = providerData?.uid || result.user.uid;
-      }
-      // SCENARIO B: Regular User (No Firebase Session) -> Use SignIn
-      else {
-        result = await signInWithPopup(this.auth, provider);
-        // For fresh sign-in, we definitely get the specific UID
-        const providerData = result.user.providerData.find(p => p.providerId === 'google.com');
-        socialUid = providerData?.uid || result.user.uid;
-      }
-
-      this.saveSocialLink('google.com', socialUid);
-
-    } catch (error: any) {
-      this.handleLinkError(error);
-    } finally {
-      this.isLinkingGoogle = false;
+    if (this.auth.currentUser) {
+      // Social user: Link to existing Firebase user
+      this.authService.linkWithGoogle().subscribe({
+        next: (credential) => {
+          this.isLinkingGoogle = false;
+          const providerId = 'google.com';
+          this.dashboardService.linkSocial(providerId).subscribe({
+            next: (res: any) => {
+              if (res.status) {
+                this.toastr.success('Account linked successfully');
+                this.isGoogleLinked = true;
+                this.linkedProviders = res.linked_providers;
+              } else {
+                this.toastr.error(res.message || 'Failed to link account');
+              }
+            },
+            error: (err) => {
+              this.toastr.error('Failed to link account');
+            }
+          });
+        },
+        error: (err) => {
+          this.isLinkingGoogle = false;
+          this.toastr.error('Failed to link account');
+        }
+      });
+    } else {
+      // Password user: Sign in with popup and link
+      this.authService.signInWithGoogle(true).subscribe({
+        next: (credential) => {
+          this.isLinkingGoogle = false;
+          const providerId = 'google.com';
+          const socialUid = credential.user.uid;
+          this.dashboardService.linkSocial(providerId, socialUid).subscribe({
+            next: (res: any) => {
+              if (res.status) {
+                this.toastr.success('Account linked successfully');
+                this.isGoogleLinked = true;
+                this.linkedProviders = res.linked_providers;
+                this.checkSocialLinked();
+              } else {
+                this.toastr.error(res.message || 'Failed to link account');
+              }
+            },
+            error: (err) => {
+              this.toastr.error(err.error?.message || 'Failed to link account');
+            }
+          });
+        },
+        error: (err) => {
+          this.isLinkingGoogle = false;
+          this.toastr.error(err.error?.message || 'Failed to link account');
+        }
+      });
     }
   }
 
   // 3. Hybrid Facebook Link
-  async linkFacebook() {
+  linkFacebook() {
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
       this.authService.toastr.warning('Facebook linking is not supported on mobile devices.');
       return;
     }
 
+    if (this.isFacebookLinked) return;
     this.isLinkingFacebook = true;
-    const provider = new FacebookAuthProvider();
 
-    try {
-      let result: UserCredential;
-      let socialUid: string;
-
-      // SCENARIO A: Social User -> Use Link
-      if (this.auth.currentUser) {
-        result = await linkWithPopup(this.auth.currentUser, provider);
-        const providerData = result.user.providerData.find(p => p.providerId === 'facebook.com');
-        socialUid = providerData?.uid || result.user.uid;
-      }
-      // SCENARIO B: Regular User -> Use SignIn
-      else {
-        result = await signInWithPopup(this.auth, provider);
-        const providerData = result.user.providerData.find(p => p.providerId === 'facebook.com');
-        socialUid = providerData?.uid || result.user.uid;
-      }
-
-      // Common Step: Save to MySQL Backend
-      this.saveSocialLink('facebook.com', socialUid);
-
-    } catch (error: any) {
-      this.handleLinkError(error);
-    } finally {
-      this.isLinkingFacebook = false;
+    if (this.auth.currentUser) {
+      // Social user: Link to existing Firebase user
+      this.authService.linkWithFacebook().subscribe({
+        next: (credential) => {
+          this.isLinkingFacebook = false;
+          const providerId = 'facebook.com';
+          this.dashboardService.linkSocial(providerId).subscribe({
+            next: (res: any) => {
+              if (res.status) {
+                this.toastr.success('Account linked successfully');
+                this.isFacebookLinked = true;
+                this.linkedProviders = res.linked_providers;
+              } else {
+                this.toastr.error(res.message || 'Failed to link account');
+              }
+            },
+            error: (err) => {
+              this.toastr.error('Failed to link account');
+            }
+          });
+        },
+        error: (err) => {
+          this.isLinkingFacebook = false;
+          this.toastr.error('Failed to link account');
+        }
+      });
+    } else {
+      // Password user: Sign in with popup and link
+      this.authService.signInWithFacebook(true).subscribe({
+        next: (credential) => {
+          this.isLinkingFacebook = false;
+          const providerId = 'facebook.com';
+          const socialUid = credential.user.uid;
+          this.dashboardService.linkSocial(providerId, socialUid).subscribe({
+            next: (res: any) => {
+              if (res.status) {
+                this.toastr.success('Account linked successfully');
+                this.isFacebookLinked = true;
+                this.linkedProviders = res.linked_providers;
+              } else {
+                this.toastr.error(res.message || 'Failed to link account');
+              }
+            },
+            error: (err) => {
+              this.toastr.error(err.error?.message || 'Failed to link account');
+            }
+          });
+        },
+        error: (err) => {
+          this.isLinkingFacebook = false;
+          this.toastr.error(err.error?.message || 'Failed to link account');
+        }
+      });
     }
   }
 }

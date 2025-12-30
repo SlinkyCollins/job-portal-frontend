@@ -26,7 +26,7 @@ export const API = {
   // Employer Endpoints
   GET_DASHBOARD_DATA: 'dashboard/employer/get_dashboard_data',
   GET_TAGS: 'dashboard/employer/get_tags',
-  POST_JOB: 'dashboard/employer/post_job',  
+  POST_JOB: 'dashboard/employer/post_job',
   GET_EMPLOYER_JOBS: 'dashboard/employer/get_employer_jobs',
   GET_EMPLOYER_PROFILE: 'dashboard/employer/get_profile',
   UPDATE_EMPLOYER_PROFILE: 'dashboard/employer/update_profile',
@@ -179,8 +179,11 @@ export class DashboardService {
     return this.http.get(this.fullUrl(API.GET_SETTINGS));
   }
 
-  linkSocial(providerId: string, socialUid: string): Observable<any> {
-    return this.http.post(this.fullUrl(API.LINK_SOCIAL), { provider_id: providerId, social_uid: socialUid });
+  // In dashboard.service.ts, keep linkSocial with both parameters
+  linkSocial(providerId: string, socialUid?: string): Observable<any> {
+    const body: any = { provider_id: providerId };
+    if (socialUid) body.social_uid = socialUid;
+    return this.http.post(this.fullUrl(API.LINK_SOCIAL), body);
   }
 
   // Upload profile photo

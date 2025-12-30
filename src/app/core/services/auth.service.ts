@@ -3,7 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, UserCredential } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, linkWithPopup, UserCredential } from '@angular/fire/auth';
 import { BehaviorSubject, catchError, from, Observable, switchMap, tap } from 'rxjs';
 import { Location } from '@angular/common';
 export const API = {
@@ -269,15 +269,31 @@ export class AuthService {
     }
   }
 
-  signInWithGoogle(): Observable<UserCredential> {
-    if (this.isLoggedIn()) {
+  linkWithGoogle(): Observable<UserCredential> {
+    const user = this.auth.currentUser;
+    if (!user) {
+      throw new Error('No user logged in');
+    }
+    return from(this.ngZone.run(() => linkWithPopup(user, new GoogleAuthProvider())));
+  }
+
+  linkWithFacebook(): Observable<UserCredential> {
+    const user = this.auth.currentUser;
+    if (!user) {
+      throw new Error('No user logged in');
+    }
+    return from(this.ngZone.run(() => linkWithPopup(user, new FacebookAuthProvider())));
+  }
+
+  signInWithGoogle(isLinking: boolean = false): Observable<UserCredential> {
+    if (!isLinking && this.isLoggedIn()) {
       this.toastr.warning('Please log out before using Google login.');
       throw new Error('User already logged in');
     }
-    this.isGoogleLoading = true;  // Start loading for Google
+    this.isGoogleLoading = true;
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new GoogleAuthProvider()))).pipe(
       catchError(err => {
-        this.isGoogleLoading = false;  // Stop on error
+        this.isGoogleLoading = false;
         if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
@@ -289,23 +305,22 @@ export class AuthService {
     );
   }
 
-  signInWithFacebook(): Observable<UserCredential> {
-    // Detect mobile devices
+  signInWithFacebook(isLinking: boolean = false): Observable<UserCredential> {
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
       this.toastr.warning('Facebook login is not supported on mobile devices. Please use Google or email/password.');
       throw new Error('Facebook login disabled on mobile');
     }
-    if (this.isLoggedIn()) {
+    if (!isLinking && this.isLoggedIn()) {
       this.toastr.warning('Please log out before using Facebook login.');
       throw new Error('User already logged in');
     }
     this.isFacebookLoading = true;
-    console.log('Attempting Facebook login with popup');  // Add logging
+    console.log('Attempting Facebook login with popup');
     return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
       catchError(err => {
         this.isFacebookLoading = false;
-        console.error('Facebook popup error:', err);  // Enhanced logging
+        console.error('Facebook popup error:', err);
         if (err.code === 'auth/popup-blocked') {
           this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
         } else if (err.code === 'auth/account-exists-with-different-credential') {
