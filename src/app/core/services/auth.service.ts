@@ -321,17 +321,20 @@ export class AuthService {
       catchError(err => {
         this.isFacebookLoading = false;
         console.error('Facebook popup error:', err);
+
+        // Restructure as a proper if-else chain to avoid conflicts
         if (err.code === 'auth/popup-blocked') {
           this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
         } else if (err.code === 'auth/account-exists-with-different-credential') {
           this.toastr.warning('An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.');
-        } else if (err.code === 'auth/credential-already-in-use' || err.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED') {
+        } else if (err.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED' || err.error?.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED') {
           this.toastr.error('This Facebook account is already linked to another user.');
         } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {
           this.toastr.error('Facebook login failed. Please check your connection.');
         }
+
         throw err;
       })
     );
