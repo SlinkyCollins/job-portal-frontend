@@ -325,6 +325,8 @@ export class AuthService {
           this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
         } else if (err.code === 'auth/account-exists-with-different-credential') {
           this.toastr.warning('An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.');
+        } else if (err.code === 'auth/credential-already-in-use' || err.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED') {
+          this.toastr.error('This Facebook account is already linked to another user.');
         } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
           this.toastr.error('Login cancelled. Try again.');
         } else {

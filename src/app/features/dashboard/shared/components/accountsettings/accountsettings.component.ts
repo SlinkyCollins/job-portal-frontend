@@ -444,7 +444,7 @@ export class AccountsettingsComponent implements OnInit {
         },
         error: (err) => {
           this.isLinkingFacebook = false;
-          this.toastr.error(err.error?.message || 'Failed to link account');
+          this.toastr.error(err.error?.errorMessage || 'Failed to link account');
         }
       });
     }
