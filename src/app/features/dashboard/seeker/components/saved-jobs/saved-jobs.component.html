@@ -243,7 +243,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="confirmRemoveBtn" (click)="confirmRemove()">Remove</button>
+          <button type="button" class="btn btn-danger" id="confirmRemoveBtn" (click)="confirmRemove()" [disabled]="isRemoving">
+            <span *ngIf="isRemoving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+            {{ isRemoving ? 'Removing...' : 'Remove' }}
+          </button>
         </div>
       </div>
     </div>

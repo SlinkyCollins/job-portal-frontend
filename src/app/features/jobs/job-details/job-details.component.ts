@@ -79,7 +79,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
 
   get processedRequirements(): string[] {
     if (!this.job || !this.job.requirements) return [];
-    return this.job.requirements.split('.').map((s: string) => s.trim()).filter((s: string) => s.length > 0);
+    return this.job.requirements.split('\n').map((s: string) => s.replace(/^-+\s*/, '').trim()).filter((s: string) => s.length > 0);
   }
 
   ngAfterViewInit() {
@@ -95,7 +95,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
           this.job.isSaved = res.job.isSaved || false;
           this.job.isSaving = false;
           this.isRetracted = res.job.isRetracted || false
-          this.job.is_closed = res.job.is_closed || false; 
+          this.job.is_closed = res.job.is_closed || false;
         } else {
           this.errorMsg = res.msg || "Job not found"
         }

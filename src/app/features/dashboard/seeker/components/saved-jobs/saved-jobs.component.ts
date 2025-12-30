@@ -152,8 +152,6 @@ export class SavedJobsComponent implements OnInit {
 
   confirmRemove(): void {
     if (!this.jobToRemove) return;
-    const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('removeModal'));
-    modal.hide();
     this.removeJob(this.jobToRemove.job_id);
     this.jobToRemove = null;
   }
@@ -178,6 +176,9 @@ export class SavedJobsComponent implements OnInit {
           } else {
             this.updateVisiblePages();
           }
+          // Hide modal
+          const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('removeModal'));
+          if (modal) modal.hide();
         } else {
           this.toastr.error(response.msg || 'Failed to remove job.');
         }

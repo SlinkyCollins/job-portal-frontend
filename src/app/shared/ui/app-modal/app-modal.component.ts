@@ -18,6 +18,7 @@ export class AppModalComponent {
   @Input() cancelText: string = 'Cancel';
   @Input() confirmButtonClass: string = 'btn-confirm';
   @Input() cancelButtonClass: string = 'btn-cancel';
+  @Input() isLoading: boolean = false;
 
   @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();

@@ -15,7 +15,10 @@
     </div>
     <div class="modal-footer">
       <button [class]="cancelButtonClass" (click)="onCancel()">{{ cancelText }}</button>
-      <button [class]="confirmButtonClass" (click)="onConfirm()">{{ confirmText }}</button>
+      <button [class]="confirmButtonClass" (click)="onConfirm()" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+        {{ confirmText }}
+      </button>
     </div>
   </div>
 </div>

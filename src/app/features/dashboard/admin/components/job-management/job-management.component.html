@@ -11,6 +11,19 @@
     </div>
 
     <ng-container *ngIf="!isLoading">
+        <!-- Sorting Controls -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+                <label for="sortSelect" class="me-2 fw-bold">Sort by Status:</label>
+                <select id="sortSelect" class="form-select form-select-sm" style="width: auto;" [(ngModel)]="selectedSort" (ngModelChange)="currentPage = 1">
+                    <option *ngFor="let option of sortOptions" [value]="option.value">{{ option.label }}</option>
+                </select>
+            </div>
+            <div class="text-muted">
+                Showing {{ paginatedJobs.length }} of {{ sortedJobs.length }} jobs
+            </div>
+        </div>
+
         <table class="admin-table">
             <thead>
                 <tr>
@@ -70,12 +83,12 @@
                     <td class="col-actions" data-label="Actions">
                         <button class="action-btn approve" [disabled]="job.status !== 'pending'"
                             [title]="job.status === 'pending' ? 'Approve Job' : 'Job is not pending'"
-                            (click)="updateJobStatus(job.job_id, 'active')">
+                            (click)="showStatusUpdateModal(job, 'active')">
                             <i class="fas fa-check"></i>
                         </button>
                         <button class="action-btn close" [disabled]="job.status === 'closed'"
                             [title]="job.status === 'closed' ? 'Job is already closed' : 'Close Job'"
-                            (click)="updateJobStatus(job.job_id, 'closed')">
+                            (click)="showStatusUpdateModal(job, 'closed')">
                             <i class="fas fa-times"></i>
                         </button>
                         <button class="action-btn delete" (click)="deleteJob(job.job_id)" title="Delete Job">
@@ -143,7 +156,36 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-cancel" (click)="hideDeleteModal()">Cancel</button>
-            <button class="btn btn-confirm" (click)="confirmDelete()">Delete Job</button>
+            <button class="btn btn-confirm" (click)="confirmDelete()" [disabled]="isDeleting">
+                <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ isDeleting ? 'Deleting...' : 'Delete Job' }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal-overlay" [class.active]="showStatusModal" (click)="hideStatusModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ newStatus === 'active' ? 'Approve' : 'Close' }} Job</h3>
+            <button class="modal-close" (click)="hideStatusModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="status-icon" [class.approve]="newStatus === 'active'" [class.close]="newStatus === 'closed'">
+                <i [class]="newStatus === 'active' ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+            </div>
+            <p>Are you sure you want to <strong>{{ newStatus === 'active' ? 'approve' : 'close' }}</strong> the job posting for <strong>"{{ jobToUpdate?.job_title }}"</strong>?</p>
+            <p class="text-muted">{{ newStatus === 'active' ? 'This will make the job visible to job seekers.' : 'This will hide the job from job seekers.' }}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-cancel" (click)="hideStatusModal()">Cancel</button>
+            <button class="btn" [class.btn-approve]="newStatus === 'active'" [class.btn-close]="newStatus === 'closed'" (click)="confirmStatusUpdate()" [disabled]="isUpdatingStatus">
+                <span *ngIf="isUpdatingStatus" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ isUpdatingStatus ? 'Updating...' : (newStatus === 'active' ? 'Approve Job' : 'Close Job') }}
+            </button>
         </div>
     </div>
 </div>

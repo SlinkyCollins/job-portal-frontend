@@ -18,8 +18,10 @@ export class MyJobsComponent implements OnInit {
   isLoading = true;
   showDeleteModal = false;
   jobToDelete: number | null = null;
+  isDeleting = false;
   showCloseModal = false;
   jobToClose: number | null = null;
+  isClosing = false;
 
   // Pagination properties
   currentPage: number = 1;
@@ -80,7 +82,8 @@ export class MyJobsComponent implements OnInit {
 
   confirmClose(): void {
     if (this.jobToClose) {
-      this.dashboardService.closeJob(this.jobToClose).subscribe({ 
+      this.isClosing = true;
+      this.dashboardService.closeJob(this.jobToClose).subscribe({
         next: (res: any) => {
           if (res.status) {
             this.toastr.success('Job closed successfully');
@@ -91,11 +94,14 @@ export class MyJobsComponent implements OnInit {
         },
         error: (err) => {
           this.toastr.error(err.error?.message || 'An error occurred while closing the job');
+        },
+        complete: () => {
+          this.isClosing = false;
+          this.showCloseModal = false;
+          this.jobToClose = null;
         }
       });
     }
-    this.showCloseModal = false;
-    this.jobToClose = null;
   }
 
   cancelClose(): void {
@@ -110,6 +116,7 @@ export class MyJobsComponent implements OnInit {
 
   confirmDelete(): void {
     if (this.jobToDelete) {
+      this.isDeleting = true;
       this.dashboardService.deleteJob(this.jobToDelete).subscribe({
         next: (res: any) => {
           if (res.status) {
@@ -122,11 +129,14 @@ export class MyJobsComponent implements OnInit {
         error: (err) => {
           this.toastr.error('An error occurred while deleting');
           console.error(err);
+        },
+        complete: () => {
+          this.isDeleting = false;
+          this.showDeleteModal = false;
+          this.jobToDelete = null;
         }
       });
     }
-    this.showDeleteModal = false;
-    this.jobToDelete = null;
   }
 
   cancelDelete(): void {
