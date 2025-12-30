@@ -106,7 +106,7 @@ export class PostJobComponent implements OnInit {
       next: (res) => {
         if (res.status) {
           this.allAvailableTags = res.data;
-          this.filterSuggestions(); 
+          this.filterSuggestions();
         }
       }
     });
@@ -326,5 +326,25 @@ export class PostJobComponent implements OnInit {
   confirmCancel(): void {
     this.showCancelConfirm = false;
     this.router.navigate(['/dashboard/employer/my-jobs']);
+  }
+
+  get previewRequirements(): string[] {
+    const req = this.jobForm.get('requirements')?.value || '';
+    return req.split('\n').map((s: string) => s.replace(/^-+\s*/, '').trim()).filter((s: string) => s.length > 0);
+  }
+
+  get previewResponsibilities(): string[] {
+    const resp = this.jobForm.get('responsibilities')?.value || '';
+    return resp.split('\n').map((s: string) => s.replace(/^-+\s*/, '').trim()).filter((s: string) => s.length > 0);
+  }
+
+  get previewBenefits(): string[] {
+    const ben = this.jobForm.get('benefits')?.value || '';
+    return ben.split('\n').map((s: string) => s.replace(/^-+\s*/, '').trim()).filter((s: string) => s.length > 0);
+  }
+
+  get previewNiceToHave(): string[] {
+    const nice = this.jobForm.get('nice_to_have')?.value || '';
+    return nice.split('\n').map((s: string) => s.replace(/^-+\s*/, '').trim()).filter((s: string) => s.length > 0);
   }
 }
