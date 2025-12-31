@@ -45,8 +45,8 @@ export class AdminService {
     }
 
     // Job Management
-    getAllJobs(): Observable<any> {
-        return this.http.get(this.fullUrl(API.getAllJobs));
+    getAllJobs(params?: any): Observable<any> {
+        return this.http.get(this.fullUrl(API.getAllJobs), { params });
     }
 
     updateJobStatus(jobId: number, status: string): Observable<any> {

@@ -47,8 +47,24 @@ export class JobManagementComponent implements OnInit, OnDestroy {
     private renderer: Renderer2
   ) { }
 
-  get sortedJobs(): any[] {
-    return this.jobs.filter(job => this.selectedSort === 'all' || job.status === this.selectedSort);
+  // --- Pagination Logic ---
+  get paginatedJobs() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.jobs.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages() {
+    return Math.ceil(this.jobs.length / this.pageSize);
+  }
+
+  get totalPagesArray() {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 
   ngOnInit(): void {
@@ -61,7 +77,8 @@ export class JobManagementComponent implements OnInit, OnDestroy {
 
   loadJobs() {
     this.isLoading = true;
-    this.adminService.getAllJobs().subscribe({
+    const params = this.selectedSort !== 'all' ? { status: this.selectedSort } : {};
+    this.adminService.getAllJobs(params).subscribe({
       next: (res: any) => {
         if (res.status) {
           this.jobs = res.data;
@@ -93,26 +110,6 @@ export class JobManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  // --- Pagination Logic ---
-  get paginatedJobs() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.jobs.slice(startIndex, startIndex + this.pageSize);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.jobs.length / this.pageSize);
-  }
-
-  get totalPagesArray() {
-    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-  }
-
-  changePage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
   // --- Delete Logic ---
   showDeleteModal(jobId: number) {
     this.jobToDelete = jobId;
@@ -128,10 +125,12 @@ export class JobManagementComponent implements OnInit, OnDestroy {
 
   confirmDelete() {
     if (this.jobToDelete !== null) {
+      this.isDeleting = true;
       this.adminService.deleteJob(this.jobToDelete).pipe(
         finalize(() => this.hideDeleteModal())
       ).subscribe({
         next: (res: any) => {
+          this.isDeleting = false;
           if (res.status) {
             this.toastr.success('Job deleted successfully');
             // Optimistic update
@@ -146,6 +145,8 @@ export class JobManagementComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
+          this.isDeleting = false;
+          console.error(err);
           this.toastr.error('Failed to delete job');
         }
       });

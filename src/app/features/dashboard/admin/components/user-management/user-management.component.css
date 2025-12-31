@@ -169,6 +169,11 @@
   color: #dc2626;
 }
 
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ========== PAGINATION ========== */
 .pagination-footer {
   display: flex;
@@ -326,9 +331,13 @@
   color: #fff;
 }
 
+.btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ========== MOBILE RESPONSIVE (Card Transformation) ========== */
 @media (max-width: 768px) {
-  
   /* 1. Reset Container */
   .admin-table-container {
     background: transparent;
@@ -339,13 +348,13 @@
 
   /* 2. Hide Header */
   .admin-table thead {
-    display: none; 
+    display: none;
   }
 
   /* 3. Make Table Elements Blocks */
-  .admin-table, 
-  .admin-table tbody, 
-  .admin-table tr, 
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
   .admin-table td {
     display: block;
     width: 100%;
@@ -359,7 +368,7 @@
     margin-bottom: 1rem;
     padding: 1rem; /* Restore padding for breathing room */
     position: relative;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
   }
 
   /* 5. Style the "Cells" inside */
@@ -400,7 +409,7 @@
     flex-direction: column;
     align-items: flex-start !important;
   }
-  
+
   .col-user::before {
     display: none; /* Hide generic label for main user card area */
   }
@@ -412,12 +421,12 @@
 
   /* Show Email on Mobile (Optional) */
   .user-email-mobile {
-    display: block; 
+    display: block;
     margin-top: 2px;
     /* Force truncation on very small screens */
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     max-width: 100%;
   }
 
@@ -427,7 +436,7 @@
 
   /* Hide ID to save space */
   .col-id {
-    display: none; 
+    display: none;
   }
 
   /* --- PAGINATION FIX FOR 320px --- */
@@ -450,7 +459,7 @@
     flex-wrap: wrap; /* Allows buttons to wrap if needed */
     gap: 0.25rem; /* Smaller gap on mobile */
   }
-  
+
   /* Touch Targets */
   .page-btn {
     width: 36px; /* Slightly larger tap target */
@@ -466,12 +475,79 @@
   }
 }
 
+/* ========== EXTRA SMALL SCREENS (320px - 375px) ========== */
+@media (max-width: 375px) {
+  /* Reduce pagination button sizes and gaps for tighter fit */
+  .pagination-controls {
+    gap: 0.1rem; /* Tighter gap between buttons */
+  }
+
+  .page-btn {
+    width: 32px; /* Smaller buttons */
+    height: 32px;
+    font-size: 0.8rem; /* Smaller font */
+  }
+
+  /* Reduce footer padding to save space */
+  .pagination-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  /* Ensure table cards don't overflow */
+  .admin-table tr {
+    padding: 0.75rem; /* Reduce card padding */
+    margin-bottom: 0.75rem; /* Reduce margin between cards */
+  }
+
+  .admin-table td {
+    padding: 0.5rem 0; /* Reduce cell padding */
+  }
+
+    /* Shorten long emails with ellipsis */
+  .user-email-mobile {
+    max-width: 150px; /* Limit width to force truncation */
+    flex-shrink: 1; /* Allow shrinking in flex container */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Ensure user-cell doesn't overflow */
+  .user-cell {
+    min-width: 0; /* Allow flex items to shrink below content size */
+  }
+
+  /* Add to the new media query */
+  .pagination-controls-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  /* Force pagination controls to center and wrap tightly */
+  .pagination-controls {
+    display: flex;
+    gap: 0.1rem;
+    min-width: max-content; /* Ensure buttons don't shrink below their size */
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100%; /* Prevent overflow */
+    overflow-x: hidden; /* Hide any horizontal overflow */
+  }
+}
+
 /* Fade Animation */
 .fade-in {
   animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

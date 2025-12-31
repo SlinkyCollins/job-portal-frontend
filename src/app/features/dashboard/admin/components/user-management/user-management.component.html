@@ -38,7 +38,8 @@
               </div>
               <div class="user-info">
                 <span class="user-name">{{ user.firstname }} {{ user.lastname }}</span>
-                <span class="user-email-mobile d-md-none">{{ user.email }}</span>
+                <span class="user-email-mobile d-md-none">{{ (user.email.length > 20) ? (user.email | slice:0:20) +
+                  '...' : user.email }}</span>
               </div>
             </div>
           </td>
@@ -63,10 +64,12 @@
 
           <td class="col-actions" data-label="Actions">
             <button *ngIf="user.role !== 'admin'" class="action-btn suspend" (click)="toggleSuspend(user)"
-              title="{{ user.suspended ? 'Unsuspend' : 'Suspend' }} User">
-              <i class="fas fa-{{ user.suspended ? 'play' : 'pause' }}"></i>
+              title="{{ user.suspended ? 'Unsuspend' : 'Suspend' }} User" [disabled]="user.isSuspending">
+              <span *ngIf="user.isSuspending" class="spinner-border spinner-border-sm" role="status"></span>
+              <i *ngIf="!user.isSuspending" class="fas fa-{{ user.suspended ? 'play' : 'pause' }}"></i>
             </button>
-            <button *ngIf="user.role !== 'admin'" class="action-btn delete" (click)="deleteUser(user.user_id)" title="Delete User">
+            <button *ngIf="user.role !== 'admin'" class="action-btn delete" (click)="deleteUser(user.user_id)"
+              title="Delete User">
               <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -91,25 +94,27 @@
         of <strong>{{ users.length }}</strong> users
       </div>
 
-      <div class="pagination-controls">
-        <button class="page-btn prev" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-
-        <ng-container *ngFor="let page of totalPagesArray">
-          <button
-            *ngIf="totalPages <= 7 || page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
-            class="page-btn number" [class.active]="currentPage === page" (click)="changePage(page)">
-            {{ page }}
+      <div class="pagination-controls-wrapper">
+        <div class="pagination-controls">
+          <button class="page-btn prev" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+            <i class="fas fa-chevron-left"></i>
           </button>
-          <span
-            *ngIf="totalPages > 7 && ((page === 2 && currentPage > 4) || (page === totalPages - 1 && currentPage < totalPages - 3))"
-            class="dots">...</span>
-        </ng-container>
 
-        <button class="page-btn next" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
-          <i class="fas fa-chevron-right"></i>
-        </button>
+          <ng-container *ngFor="let page of totalPagesArray">
+            <button
+              *ngIf="totalPages <= 7 || page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+              class="page-btn number" [class.active]="currentPage === page" (click)="changePage(page)">
+              {{ page }}
+            </button>
+            <span
+              *ngIf="totalPages > 7 && ((page === 2 && currentPage > 4) || (page === totalPages - 1 && currentPage < totalPages - 3))"
+              class="dots">...</span>
+          </ng-container>
+
+          <button class="page-btn next" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </div>
   </ng-container>
@@ -131,7 +136,10 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-cancel" (click)="hideDeleteModal()">Cancel</button>
-      <button class="btn btn-confirm" (click)="confirmDelete()">Delete User</button>
+      <button class="btn btn-confirm" (click)="confirmDelete()" [disabled]="isDeleting">
+        <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+        {{ isDeleting ? 'Deleting...' : 'Delete User' }}
+      </button>
     </div>
   </div>
 </div>

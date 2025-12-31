@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { DashboardService } from '../../../../../core/services/dashboard.service';
 import { Router, RouterLink } from '@angular/router';
 import { Chart } from 'chart.js';
-import { STATUS_COLORS } from '../../../../../core/constants/status-colors';
 import { CapitalizeFirstPipe } from '../../../../../core/pipes/capitalize-first.pipe';
 import { RelativeTimePipe } from '../../../../../core/pipes/relative-time.pipe';
 import { CommonModule } from '@angular/common';
@@ -31,8 +30,11 @@ export class EmployerHomeComponent {
   chart: Chart | null = null;
   activeTab: string = 'Day';
 
-  // Expose constants to template
-  statusColors = STATUS_COLORS;
+  statusColors = {
+    ACTIVE: '#28a745',   // Green
+    CLOSED: '#757575',   // Grey
+    PENDING: '#ffc107',  // Amber/Yellow
+  };
 
   constructor(
     private dashboardService: DashboardService,
@@ -46,7 +48,7 @@ export class EmployerHomeComponent {
   }
 
   ngOnInit() {
-    this.isLoading = true; 
+    this.isLoading = true;
 
     this.authService.currentUser$.subscribe(user => {
       if (user) {
@@ -59,7 +61,7 @@ export class EmployerHomeComponent {
           this.loadStatsAndJobs();
         } else {
           this.hasCompany = false;
-          this.isLoading = false; 
+          this.isLoading = false;
         }
       }
     });

@@ -19,10 +19,12 @@
   <div class="applications-list" *ngIf="!isLoading && applications.length > 0">
     <div class="job-item" *ngFor="let application of paginatedApplications">
       <div class="job-icon">
-        <img [src]="application.logo_url || 'assets/icons/company-placeholder.svg'" loading="lazy" alt="Company Logo" 
-             onerror="this.src='assets/icons/company-placeholder.svg'"/>
+        <img *ngIf="application.logo_url" [src]="application.logo_url" loading="lazy" alt="Company Logo" />
+        <div *ngIf="!application.logo_url" class="default-logo">
+          <i class="fas fa-building"></i>
+        </div>
       </div>
-      
+
       <div class="job-info">
         <div class="job-title">{{ application.title }}</div>
         <div class="job-meta">
@@ -35,9 +37,8 @@
       </div>
 
       <div class="status-section">
-        <div class="status-badge" 
-             [style.background-color]="getStatusColor(application.status) + '20'" 
-             [style.color]="getStatusColor(application.status)">
+        <div class="status-badge" [style.background-color]="getStatusColor(application.status) + '20'"
+          [style.color]="getStatusColor(application.status)">
           {{ application.status | capitalizeFirst }}
         </div>
       </div>
@@ -49,12 +50,14 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" (click)="viewJob(application)">
-              <i class="fas fa-eye me-2"></i>View Job
-            </a></li>
-            <li><hr class="dropdown-divider"></li>
+                <i class="fas fa-eye me-2"></i>View Job
+              </a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li><a class="dropdown-item text-danger" (click)="retractApplication(application)">
-              <i class="fas fa-times-circle me-2"></i>Retract Application
-            </a></li>
+                <i class="fas fa-times-circle me-2"></i>Retract Application
+              </a></li>
           </ul>
         </div>
       </div>
@@ -62,15 +65,13 @@
 
     <!-- Pagination -->
     <div class="pagination-container" *ngIf="totalPages > 1">
-      <button class="btn btn-outline-secondary btn-sm" 
-              [disabled]="currentPage === 1"
-              (click)="changePage(currentPage - 1)">
+      <button class="btn btn-outline-secondary btn-sm" [disabled]="currentPage === 1"
+        (click)="changePage(currentPage - 1)">
         <i class="fas fa-chevron-left"></i>
       </button>
       <span class="page-info">Page {{currentPage}} of {{totalPages}}</span>
-      <button class="btn btn-outline-secondary btn-sm" 
-              [disabled]="currentPage === totalPages"
-              (click)="changePage(currentPage + 1)">
+      <button class="btn btn-outline-secondary btn-sm" [disabled]="currentPage === totalPages"
+        (click)="changePage(currentPage + 1)">
         <i class="fas fa-chevron-right"></i>
       </button>
     </div>
@@ -87,7 +88,8 @@
   </div>
 
   <!-- Retract Modal -->
-  <div class="modal fade show" *ngIf="showRetractModal" style="display: block; background: rgba(0,0,0,0.5);" (click)="closeRetractModal()">
+  <div class="modal fade show" *ngIf="showRetractModal" style="display: block; background: rgba(0,0,0,0.5);"
+    (click)="closeRetractModal()">
     <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
       <div class="modal-content">
         <div class="modal-header">

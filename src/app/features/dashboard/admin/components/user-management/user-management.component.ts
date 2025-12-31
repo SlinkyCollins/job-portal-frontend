@@ -23,6 +23,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   // Modal State
   showDeleteConfirm: boolean = false;
   userToDelete: number | null = null;
+  isDeleting: boolean = false;
 
   constructor(
     private adminService: AdminService,
@@ -62,6 +63,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   toggleSuspend(user: any) {
     const action = user.suspended ? 'unsuspend' : 'suspend';
     const message = action === 'suspend' ? 'suspended' : 'unsuspended';
+    user.isSuspending = true;
     this.adminService.toggleUserSuspension(user.user_id, action).subscribe({
       next: (res: any) => {
         if (res.status) {
@@ -73,6 +75,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.toastr.error(err.error?.message || 'Error updating user status');
+      },
+      complete: () => {
+        user.isSuspending = false;
       }
     });
   }
@@ -114,8 +119,12 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   confirmDelete() {
     if (this.userToDelete !== null) {
+      this.isDeleting = true;
       this.adminService.deleteUser(this.userToDelete).pipe(
-        finalize(() => this.hideDeleteModal())
+        finalize(() => {
+          this.isDeleting = false;
+          this.hideDeleteModal();
+        })
       ).subscribe({
         next: (res: any) => {
           if (res.status) {
