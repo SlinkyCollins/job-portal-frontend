@@ -1,9 +1,8 @@
-/* resume.component.css */
-
 /* General layout */
 .container {
   max-width: 1600px;
   margin: auto;
+  overflow-x: hidden; /* Hide any overflow */
 }
 
 .card {
@@ -30,6 +29,12 @@
   color: #244034;
   margin-bottom: 2rem;
   letter-spacing: -0.5px;
+}
+
+/* Ensure form elements wrap */
+.form-control, .btn {
+  max-width: 100%;
+  word-break: break-word;
 }
 
 /* Section Headings */
@@ -193,6 +198,7 @@ h6.fw-bold {
 }
 
 /* Resume Attachment Custom Styles */
+/* Update .uploaded-file-item to manage flex width */
 .uploaded-file-item {
   background-color: #f1f5f9;
   border-radius: 8px;
@@ -203,9 +209,50 @@ h6.fw-bold {
   color: #4a5568;
   font-weight: 500;
   border: 1px solid #e2e8f0;
+  /* NEW: Prevents the container from breaking out */
+  max-width: 100%;
+  overflow: hidden;
+}
+
+
+/* In resume.component.css, add truncation for long file names */
+.uploaded-file-item .file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Limit width to prevent overflow */
+  display: inline-block; /* Ensure it behaves as a block for ellipsis */
+  margin-right: 10px;        /* Space between text and delete button */
+  vertical-align: middle; /* Align with delete button */
+}
+
+/* Mobile-specific adjustment */
+@media (max-width: 767px) {
+  .uploaded-file-item .file-name {
+    max-width: 150px; /* Shorter on mobile for better fit */
+  }
+}
+
+@media (min-width: 768px) {
+  .uploaded-file-item .file-name {
+    max-width: 250px;
+  }
+}
+
+@media (min-width: 992px) {
+  .uploaded-file-item .file-name {
+    max-width: 350px; /* More space on larger screens */
+  }
+}
+
+@media (min-width: 1200px) {
+  .uploaded-file-item .file-name {
+    max-width: 400px; /* More space on larger screens */
+  }
 }
 
 .btn-close-custom {
+  flex-shrink: 0;
   background: none;
   border: none;
   color: #244034;
@@ -253,6 +300,10 @@ h6.fw-bold {
 
 /* Mobile adjustments */
 @media (max-width: 576px) {
+  form {
+    width: 100%;
+
+  }
   .card-body {
     padding: 1.5rem;
   }
@@ -329,7 +380,11 @@ h6.fw-bold {
   }
 }
 
-/* Modal Styles */
+/* =========================================
+   MODAL STYLES
+   ========================================= */
+
+/* --- 1. Shared Overlay (for custom modals) --- */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -351,15 +406,20 @@ h6.fw-bold {
   visibility: visible;
 }
 
-.modal-content {
+/* --- 2. DELETE MODAL SPECIFIC STYLES --- */
+/* We renamed this from .modal-content to .modal-content.delete 
+   so it doesn't break the PDF Preview modal */
+.modal-content.delete {
   background: white;
   border-radius: 8px;
   width: 90%;
-  max-width: 400px;
+  max-width: 400px; /* Keeps the delete box small */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: modalFadeIn 0.3s ease-out;
+  position: relative;
 }
 
+/* Delete Modal Header/Body/Footer */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -437,17 +497,90 @@ h6.fw-bold {
   background: #c82333;
 }
 
-/* Disabled Button State */
 .btn-confirm:disabled, .btn-cancel:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+
+/* Custom styling to match app theme */
+.modal-content {
+  border-radius: 16px !important;
+  border: none !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+.modal-content.preview .modal-header {
+  background: linear-gradient(135deg, #244034 0%, #2d5a47 100%);
+  color: white;
+  border-bottom: none;
+  border-radius: 16px 16px 0 0 !important;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 0.8;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* --- 3. PREVIEW CV MODAL STYLES --- */
+
+/* Desktop/Tablet Default: 
+   Bootstrap 'modal-xl' handles width/centering. 
+   We just set the height. */
+.modal-content.preview {
+  height: 85vh; /* Nice tall modal on desktop */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Ensure the PDF viewer area takes up all remaining space */
+.modal-content.preview .modal-body {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+  text-align: left; /* Reset alignment */
+}
+
+/* MOBILE RESPONSIVENESS (< 768px) */
+/* Force full screen on mobile */
+@media (max-width: 768px) {
+  
+  /* Remove Bootstrap margins and force full size */
+  .modal-dialog.modal-xl {
+    max-width: 100%;
+    margin: 0;
+    height: 100%;
+  }
+
+  /* Make content fill the screen exactly */
+  .modal-content.preview {
+    height: 100% !important;
+    border-radius: 0; /* Remove rounded corners */
+    border: none;
+  }
+
+  /* Adjust header padding for mobile */
+  .modal-content.preview .modal-header {
+    padding: 15px;
+  }
+}
+
+/* Animations */
 .btn-confirm:disabled i.fa-spinner {
   animation: spin 1s linear infinite;
 }
 
-/* Spinner Animation */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -457,3 +590,4 @@ h6.fw-bold {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
+

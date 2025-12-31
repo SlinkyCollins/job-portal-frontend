@@ -1,19 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { CommonModule } from "@angular/common";
-import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { CtaComponent } from "../../../shared/sections/cta/cta.component";
-import { NavbarComponent } from "../../../shared/sections/navbar/navbar.component";
-import { FooterComponent } from "../../../shared/sections/footer/footer.component";
-import { RelativeTimePipe } from "../../../core/pipes/relative-time.pipe";
-import { AuthService } from "../../../core/services/auth.service";
-import { FormsModule } from "@angular/forms";
-import { DashboardService } from "../../../core/services/dashboard.service";
-import { CapitalizeFirstPipe } from "../../../core/pipes/capitalize-first.pipe";
+import { CtaComponent } from '../../../shared/sections/cta/cta.component';
+import { NavbarComponent } from '../../../shared/sections/navbar/navbar.component';
+import { FooterComponent } from '../../../shared/sections/footer/footer.component';
+import { RelativeTimePipe } from '../../../core/pipes/relative-time.pipe';
+import { AuthService } from '../../../core/services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { DashboardService } from '../../../core/services/dashboard.service';
+import { CapitalizeFirstPipe } from '../../../core/pipes/capitalize-first.pipe';
+import * as mammoth from 'mammoth';
 
 @Component({
-  selector: "app-job-details",
+  selector: 'app-job-details',
   imports: [
     CommonModule,
     FormsModule,
@@ -22,10 +25,11 @@ import { CapitalizeFirstPipe } from "../../../core/pipes/capitalize-first.pipe";
     FooterComponent,
     RouterLink,
     RelativeTimePipe,
-    CapitalizeFirstPipe
+    CapitalizeFirstPipe,
+    NgxExtendedPdfViewerModule,
   ],
-  templateUrl: "./job-details.component.html",
-  styleUrls: ["./job-details.component.css"],
+  templateUrl: './job-details.component.html',
+  styleUrls: ['./job-details.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
 })
@@ -42,6 +46,9 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
   relatedJobs: any[] = [];
   isApplying = false;
   isRetracted: boolean = false;
+  showPreviewModal = false;
+  previewUrl: any = null;
+  previewFileType: 'pdf' | 'docx' | 'unknown' = 'unknown';
 
   // New properties for apply modal
   showApplyModal = false;
@@ -55,11 +62,12 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     public authService: AuthService,
     public dashboardService: DashboardService,
     public router: Router,
-  ) { }
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem("role")
-    this.jobId = Number(this.route.snapshot.paramMap.get("id"))
+    this.userRole = localStorage.getItem('role');
+    this.jobId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (this.jobId) {
       this.fetchJobDetails(this.jobId);
@@ -68,9 +76,63 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
         this.checkDefaultCV(); // New: Check if user has default CV
       }
     } else {
-      this.errorMsg = "Invalid job ID"
-      this.isLoading = false
+      this.errorMsg = 'Invalid job ID';
+      this.isLoading = false;
     }
+  }
+
+  previewSelectedCV() {
+    if (!this.selectedFile) {
+      this.authService.toastr.warning('No CV selected to preview.');
+      return;
+    }
+
+    const extension = this.selectedFile.name.split('.').pop()?.toLowerCase();
+
+    if (extension === 'pdf') {
+      this.previewFileType = 'pdf';
+      this.previewUrl = URL.createObjectURL(this.selectedFile); // Blob URL for PDF
+    } else if (['docx'].includes(extension || '')) {
+      this.previewFileType = 'docx';
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const arrayBuffer = e.target?.result as ArrayBuffer;
+        mammoth
+          .convertToHtml({ arrayBuffer })
+          .then((result: any) => {
+            this.previewUrl = this.sanitizer.bypassSecurityTrustHtml(
+              result.value
+            );
+            this.showPreviewModal = true;
+          })
+          .catch((err: any) => {
+            console.error('DOC preview error:', err);
+            this.previewFileType = 'unknown';
+            this.previewUrl = null;
+            this.showPreviewModal = true;
+          });
+      };
+      reader.readAsArrayBuffer(this.selectedFile);
+    } else {
+      // Other types: Show unsupported message
+      this.previewFileType = 'unknown';
+      this.previewUrl = null;
+    }
+
+    this.showPreviewModal = true;
+  }
+
+  closePreview() {
+    this.showPreviewModal = false;
+    if (
+      this.previewUrl &&
+      typeof this.previewUrl === 'string' &&
+      this.previewUrl.startsWith('blob:')
+    ) {
+      URL.revokeObjectURL(this.previewUrl); // Clean up PDF blob URL
+    }
+    this.previewUrl = null;
+    this.previewFileType = 'unknown';
   }
 
   isLoggedIn(): boolean {
@@ -79,7 +141,10 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
 
   get processedRequirements(): string[] {
     if (!this.job || !this.job.requirements) return [];
-    return this.job.requirements.split('\n').map((s: string) => s.replace(/^-+\s*/, '').trim()).filter((s: string) => s.length > 0);
+    return this.job.requirements
+      .split('\n')
+      .map((s: string) => s.replace(/^-+\s*/, '').trim())
+      .filter((s: string) => s.length > 0);
   }
 
   ngAfterViewInit() {
@@ -90,23 +155,23 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     this.authService.getJobDetails(id).subscribe({
       next: (res: any) => {
         if (res.status && res.job) {
-          this.job = res.job
-          this.hasApplied = res.job.hasApplied || false
+          this.job = res.job;
+          this.hasApplied = res.job.hasApplied || false;
           this.job.isSaved = res.job.isSaved || false;
           this.job.isSaving = false;
-          this.isRetracted = res.job.isRetracted || false
+          this.isRetracted = res.job.isRetracted || false;
           this.job.is_closed = res.job.is_closed || false;
         } else {
-          this.errorMsg = res.msg || "Job not found"
+          this.errorMsg = res.msg || 'Job not found';
         }
-        this.isLoading = false
+        this.isLoading = false;
       },
       error: (err) => {
-        console.error(err)
-        this.errorMsg = "An error occurred while fetching job details."
-        this.isLoading = false
+        console.error(err);
+        this.errorMsg = 'An error occurred while fetching job details.';
+        this.isLoading = false;
       },
-    })
+    });
   }
 
   // New: Check if user has default CV
@@ -119,22 +184,24 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error('Error checking default CV:', err);
-      }
+      },
     });
   }
 
   onApplyNow(): void {
-    console.log("User clicked apply for job ID:", this.jobId)
-    const userRole = localStorage.getItem("role")
+    console.log('User clicked apply for job ID:', this.jobId);
+    const userRole = localStorage.getItem('role');
 
     if (!userRole) {
-      this.authService.toastr.warning("Please log in to apply.")
-      this.router.navigate(["/login"])
-      return
+      this.authService.toastr.warning('Please log in to apply.');
+      this.router.navigate(['/login']);
+      return;
     }
 
     if (this.isRetracted) {
-      this.authService.toastr.info('Application retracted. Contact support to re-apply.');
+      this.authService.toastr.info(
+        'Application retracted. Contact support to re-apply.'
+      );
       return;
     }
 
@@ -146,11 +213,16 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const allowedTypes = [
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      ];
       const maxSize = 10 * 1024 * 1024; // 10MB
 
       if (!allowedTypes.includes(file.type)) {
-        this.authService.toastr.error('Invalid file type. Only PDF and DOCX allowed.');
+        this.authService.toastr.error(
+          'Invalid file type. Only PDF and DOCX allowed.'
+        );
         return;
       }
       if (file.size > maxSize) {
@@ -191,7 +263,9 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error(err);
-        this.authService.toastr.error(err.error?.message || "An error occurred while applying.");
+        this.authService.toastr.error(
+          err.error?.message || 'An error occurred while applying.'
+        );
         this.isApplying = false;
       },
     });
@@ -210,7 +284,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
   }
 
   toggleDescription(): void {
-    this.showFullDescription = !this.showFullDescription
+    this.showFullDescription = !this.showFullDescription;
   }
 
   fetchRelatedJobs(): void {
@@ -219,52 +293,52 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
     this.relatedJobs = [
       {
         job_id: 1,
-        job_title: "Data Science Expert With Algorithm",
-        company_name: "TechCorp",
-        location: "Spain, Barcelona",
-        job_type: "Fulltime",
+        job_title: 'Data Science Expert With Algorithm',
+        company_name: 'TechCorp',
+        location: 'Spain, Barcelona',
+        job_type: 'Fulltime',
         salary: 5000,
       },
       {
         job_id: 2,
-        job_title: "UI/UX Product Management",
-        company_name: "DesignHub",
-        location: "USA, New York",
-        job_type: "Part time",
+        job_title: 'UI/UX Product Management',
+        company_name: 'DesignHub',
+        location: 'USA, New York',
+        job_type: 'Part time',
         salary: 3500,
       },
       {
         job_id: 3,
-        job_title: "Web Developer",
-        company_name: "WebCraft",
-        location: "UK, London",
-        job_type: "Fulltime",
+        job_title: 'Web Developer',
+        company_name: 'WebCraft',
+        location: 'UK, London',
+        job_type: 'Fulltime',
         salary: 4200,
       },
       {
         job_id: 4,
-        job_title: "Mobile App Developer",
-        company_name: "AppMakers",
-        location: "Canada, Toronto",
-        job_type: "Contract",
+        job_title: 'Mobile App Developer',
+        company_name: 'AppMakers',
+        location: 'Canada, Toronto',
+        job_type: 'Contract',
         salary: 4000,
       },
       {
         job_id: 5,
-        job_title: "DevOps Engineer",
-        company_name: "CloudNet",
-        location: "Germany, Berlin",
-        job_type: "Fulltime",
+        job_title: 'DevOps Engineer',
+        company_name: 'CloudNet',
+        location: 'Germany, Berlin',
+        job_type: 'Fulltime',
         salary: 5500,
       },
       {
         job_id: 6,
-        job_title: "Digital Marketing Specialist",
-        company_name: "MarketGurus",
-        location: "Australia, Sydney",
-        job_type: "Part time",
+        job_title: 'Digital Marketing Specialist',
+        company_name: 'MarketGurus',
+        location: 'Australia, Sydney',
+        job_type: 'Part time',
         salary: 3000,
       },
-    ]
+    ];
   }
 }

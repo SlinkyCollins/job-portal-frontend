@@ -3,8 +3,23 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from './api-service.service';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, linkWithPopup, UserCredential } from '@angular/fire/auth';
-import { BehaviorSubject, catchError, from, Observable, switchMap, tap } from 'rxjs';
+import {
+  Auth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  linkWithPopup,
+  UserCredential,
+} from '@angular/fire/auth';
+import {
+  BehaviorSubject,
+  catchError,
+  from,
+  Observable,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { Location } from '@angular/common';
 export const API = {
   // Auth Endpoints
@@ -32,14 +47,12 @@ export const API = {
   ADMINDATA: 'dashboard/admin/admin_dashboard',
 
   // Employer Endpoint
-  EMPLOYERDATA: 'dashboard/employer/employer_dashboard'
+  EMPLOYERDATA: 'dashboard/employer/employer_dashboard',
 };
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthService {
   public isGoogleLoading: boolean = false;
   public isFacebookLoading: boolean = false;
@@ -52,7 +65,7 @@ export class AuthService {
     private auth: Auth,
     private ngZone: NgZone,
     private location: Location
-  ) { }
+  ) {}
 
   // 1. Create a BehaviorSubject to hold the user state
   private currentUserSubject = new BehaviorSubject<any>(null);
@@ -82,7 +95,10 @@ export class AuthService {
 
   // Helper to redirect unauthorized users to their correct home
   redirectBasedOnRole(role: string) {
-    this.toastr.warning('You do not have permission to view that page.', 'Access Denied');
+    this.toastr.warning(
+      'You do not have permission to view that page.',
+      'Access Denied'
+    );
 
     if (role === 'job_seeker') {
       this.router.navigate(['/dashboard/jobseeker']);
@@ -110,7 +126,7 @@ export class AuthService {
           this.toastr.error('Logout failed');
         }
       },
-      err => {
+      (err) => {
         this.toastr.error('Logout failed');
         // Reset social loading flags
         this.isGoogleLoading = false;
@@ -138,16 +154,13 @@ export class AuthService {
     if (role === 'job_seeker') {
       this.router.navigate(['/dashboard/jobseeker']);
       this.toastr.success('Welcome back to your dashboard!');
-    }
-    else if (role === 'employer') {
+    } else if (role === 'employer') {
       this.router.navigate(['/dashboard/employer']);
       this.toastr.success('Welcome back to your employer dashboard!');
-    }
-    else if (role === 'admin') {
+    } else if (role === 'admin') {
       this.router.navigate(['/dashboard/admin']);
       this.toastr.success('Welcome back to your admin dashboard!');
-    }
-    else {
+    } else {
       this.toastr.error('Unknown role. Please log in again.');
       this.router.navigate(['/login']);
     }
@@ -172,7 +185,7 @@ export class AuthService {
   // 2. Update getEmployerData to TAP into the response and save it
   getEmployerData(): Observable<any> {
     return this.http.get<any>(this.fullUrl(API.EMPLOYERDATA)).pipe(
-      tap(response => {
+      tap((response) => {
         if (response.status && response.user) {
           // Save the user data to our state
           this.currentUserSubject.next(response.user);
@@ -189,8 +202,6 @@ export class AuthService {
   getAllJobs() {
     return this.http.get(this.fullUrl(API.ALLJOBS));
   }
-
-
 
   getJobDetails(jobId: number) {
     return this.http.get(this.fullUrl(API.JOBDETAILS(jobId)));
@@ -219,7 +230,7 @@ export class AuthService {
   changePassword(oldPassword: string, newPassword: string) {
     return this.http.post(this.fullUrl(API.CHANGEPASSWORD), {
       oldPassword,
-      newPassword
+      newPassword,
     });
   }
 
@@ -274,7 +285,9 @@ export class AuthService {
     if (!user) {
       throw new Error('No user logged in');
     }
-    return from(this.ngZone.run(() => linkWithPopup(user, new GoogleAuthProvider())));
+    return from(
+      this.ngZone.run(() => linkWithPopup(user, new GoogleAuthProvider()))
+    );
   }
 
   linkWithFacebook(): Observable<UserCredential> {
@@ -282,7 +295,9 @@ export class AuthService {
     if (!user) {
       throw new Error('No user logged in');
     }
-    return from(this.ngZone.run(() => linkWithPopup(user, new FacebookAuthProvider())));
+    return from(
+      this.ngZone.run(() => linkWithPopup(user, new FacebookAuthProvider()))
+    );
   }
 
   signInWithGoogle(isLinking: boolean = false): Observable<UserCredential> {
@@ -291,10 +306,17 @@ export class AuthService {
       throw new Error('User already logged in');
     }
     this.isGoogleLoading = true;
-    return from(this.ngZone.run(() => signInWithPopup(this.auth, new GoogleAuthProvider()))).pipe(
-      catchError(err => {
+    return from(
+      this.ngZone.run(() =>
+        signInWithPopup(this.auth, new GoogleAuthProvider())
+      )
+    ).pipe(
+      catchError((err) => {
         this.isGoogleLoading = false;
-        if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        if (
+          err.code === 'auth/popup-closed-by-user' ||
+          err.code === 'auth/cancelled-popup-request'
+        ) {
           this.toastr.error('Login cancelled. Try again.');
         } else {
           this.toastr.error('Google login failed');
@@ -306,9 +328,14 @@ export class AuthService {
   }
 
   signInWithFacebook(isLinking: boolean = false): Observable<UserCredential> {
-    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobile =
+      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
     if (isMobile) {
-      this.toastr.warning('Facebook login is not supported on mobile devices. Please use Google or email/password.');
+      this.toastr.warning(
+        'Facebook login is not supported on mobile devices. Please use Google or email/password.'
+      );
       throw new Error('Facebook login disabled on mobile');
     }
     if (!isLinking && this.isLoggedIn()) {
@@ -317,22 +344,42 @@ export class AuthService {
     }
     this.isFacebookLoading = true;
     console.log('Attempting Facebook login with popup');
-    return from(this.ngZone.run(() => signInWithPopup(this.auth, new FacebookAuthProvider()))).pipe(
-      catchError(err => {
+    return from(
+      this.ngZone.run(() =>
+        signInWithPopup(this.auth, new FacebookAuthProvider())
+      )
+    ).pipe(
+      catchError((err) => {
         this.isFacebookLoading = false;
         console.error('Facebook popup error:', err);
 
         // Restructure as a proper if-else chain to avoid conflicts
         if (err.code === 'auth/popup-blocked') {
-          this.toastr.error('Popup blocked by browser. Please allow popups for this site and try again.');
-        } else if (err.code === 'auth/account-exists-with-different-credential') {
-          this.toastr.warning('An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.');
-        } else if (err.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED' || err.error?.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED') {
-          this.toastr.error('This Facebook account is already linked to another user.');
-        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+          this.toastr.error(
+            'Popup blocked by browser. Please allow popups for this site and try again.'
+          );
+        } else if (
+          err.code === 'auth/account-exists-with-different-credential'
+        ) {
+          this.toastr.warning(
+            'An account with this email already exists. Please log in with Google first, then link Facebook in your profile settings.'
+          );
+        } else if (
+          err.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED' ||
+          err.error?.errorMessage === 'FEDERATED_USER_ID_ALREADY_LINKED'
+        ) {
+          this.toastr.error(
+            'This Facebook account is already linked to another user.'
+          );
+        } else if (
+          err.code === 'auth/popup-closed-by-user' ||
+          err.code === 'auth/cancelled-popup-request'
+        ) {
           this.toastr.error('Login cancelled. Try again.');
         } else {
-          this.toastr.error('Facebook login failed. Please check your connection.');
+          this.toastr.error(
+            'Facebook login failed. Please check your connection.'
+          );
         }
 
         throw err;
@@ -341,55 +388,78 @@ export class AuthService {
   }
 
   handleSocialLogin(credential: UserCredential): void {
-    // Note: This is called after popup success, so loading is already true
-    this.ngZone.run(() => {
-      const user = credential.user;
-      if (user) {
-        from(user.getIdToken()).pipe(
-          switchMap(token => {
-            return this.http.post(this.fullUrl(API.SOCIAL_LOGIN), { token, photoURL: user.photoURL || '' });
+    const user = credential.user;
+    if (user) {
+      from(user.getIdToken())
+        .pipe(
+          switchMap((token) => {
+            return this.http.post(this.fullUrl(API.SOCIAL_LOGIN), {
+              token,
+              photoURL: user.photoURL || '',
+            });
+          }),
+          finalize(() => {
+            // Always reset both flags
+            this.isGoogleLoading = false;
+            this.isFacebookLoading = false;
           })
-        ).subscribe({
+        )
+        .subscribe({
           next: (response: any) => {
-            // Stop loading for the specific provider
-            const providerId = credential.user.providerData[0]?.providerId;  // Get the provider ID
-            if (providerId === 'google.com') {
-              this.isGoogleLoading = false;
-            } else if (providerId === 'facebook.com') {
-              this.isFacebookLoading = false;
-            }
             if (response.status) {
+              // Success logic
               localStorage.setItem('token', response.token);
               localStorage.setItem('role', response.user.role);
               this.toastr.success('Login successful');
-              this.router.navigate([response.user.role === 'job_seeker' ? '/dashboard/jobseeker' : (response.user.role === 'employer' ? '/dashboard/employer' : '/dashboard/admin')]);
+              this.router.navigate([
+                response.user.role === 'job_seeker'
+                  ? '/dashboard/jobseeker'
+                  : response.user.role === 'employer'
+                  ? '/dashboard/employer'
+                  : '/dashboard/admin',
+              ]);
             } else if (response.newUser) {
-              this.router.navigate(['/role-select'], { state: { uid: user.uid, token: response.token, photoURL: user.photoURL || '' } });
+              this.router.navigate(['/role-select'], {
+                state: {
+                  uid: user.uid,
+                  token: response.token,
+                  photoURL: user.photoURL || '',
+                },
+              });
+            } else {
+              // Handle suspended/other errors
+              this.toastr.error(response.msg || 'Login failed');
+              // Reset flags
+              this.isGoogleLoading = false;
+              this.isFacebookLoading = false;
             }
           },
           error: (err) => {
-            // Stop loading for the specific provider
-            const providerId = credential.user.providerData[0]?.providerId;  // Get the provider ID
-            if (providerId === 'google.com') {
-              this.isGoogleLoading = false;
-            } else if (providerId === 'facebook.com') {
-              this.isFacebookLoading = false;
+            // Handle HTTP errors
+            if (err.status === 403) {
+              this.toastr.error(
+                'Your account has been suspended. Please contact support.'
+              );
+            } else {
+              this.toastr.error(
+                'Login failed: ' + (err.message || 'Unknown error')
+              );
             }
-            console.warn('Backend error:', err); // Debug
-            this.toastr.error('Login failed: ' + (err.message || 'Unknown error'));
-          }
+            console.warn('Backend error:', err);
+            // Reset flags
+            this.isGoogleLoading = false;
+            this.isFacebookLoading = false;
+          },
         });
-      } else {
-        // Stop if no user
-        this.isGoogleLoading = false;
-        this.isFacebookLoading = false;
-      }
-    });
+    } else {
+      // No user, reset flags
+      this.isGoogleLoading = false;
+      this.isFacebookLoading = false;
+    }
   }
 
   // Add signOut if needed
   firebaseSignOut() {
-    this.auth.signOut().then(() => this.logout());  // Chain to your PHP logout
+    this.auth.signOut().then(() => this.logout()); // Chain to your PHP logout
   }
-
 }

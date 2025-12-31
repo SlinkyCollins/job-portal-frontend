@@ -495,9 +495,14 @@
               (change)="onFileSelected($event)"
               accept=".pdf,.docx"
               class="form-control" />
+              <div class="mt-2" *ngIf="selectedFile">
+                <button type="button" class="btn btn-outline-secondary" (click)="previewSelectedCV()">Preview CV</button>
+              </div>
             <small class="text-muted">
               Accepted formats: PDF, DOCX (Max 10MB).
-              {{ selectedFileName ? 'Selected: ' + selectedFileName : (hasDefaultCV ? 'If not uploaded, your default CV will be used.' : 'No default CV found. Upload one to apply.') }}
+              <div>
+                {{ selectedFileName ? 'Selected: ' + selectedFileName : (hasDefaultCV ? 'If not uploaded, your default CV will be used.' : 'No default CV found. Upload one to apply.') }}
+              </div>
             </small>
           </div>
         </div>
@@ -509,6 +514,39 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- CV Preview Modal -->
+  <div *ngIf="showPreviewModal" class="modal-backdrop fade show"></div>
+  <div *ngIf="showPreviewModal" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content preview h-100 shadow-lg border-0">
+        <div class="modal-header py-3">
+          <h5 class="modal-title fs-6"><i class="fas fa-file-alt me-2"></i>CV Preview</h5>
+          <button type="button" class="btn-close" (click)="closePreview()"></button>
+        </div>
+        <div class="modal-body p-0 bg-light position-relative">
+          <div *ngIf="previewFileType === 'pdf'" class="w-100 h-100" style="min-height: 70vh;">
+            <ngx-extended-pdf-viewer [src]="previewUrl" [height]="'100%'" [showToolbar]="true"
+              [showSidebarButton]="false" [showFindButton]="true" [showPagingButtons]="true"
+              [showZoomButtons]="true" [showPresentationModeButton]="true" [showDownloadButton]="true"
+              [showPrintButton]="true" [showTextEditor]="false" [showDrawEditor]="false"
+              [showStampEditor]="false" [showHandToolButton]="true">
+            </ngx-extended-pdf-viewer>
+          </div>
+          <div *ngIf="previewFileType === 'docx'" class="w-100 h-100 p-3 overflow-auto">
+            <div [innerHTML]="previewUrl"></div>
+          </div>
+          <div *ngIf="previewFileType === 'unknown'" class="w-100 d-flex align-items-center justify-content-center" style="height: 70vh;">
+            <div class="text-center">
+              <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+              <h5>Preview Not Available</h5>
+              <p class="text-muted">This file type is not supported for preview. Please download the file to view it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -31,6 +31,7 @@
     "chart.js": "^4.5.0",
     "date-fns": "^4.1.0",
     "firebase": "^11.10.0",
+    "mammoth": "^1.11.0",
     "ngx-extended-pdf-viewer": "^25.6.4",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",

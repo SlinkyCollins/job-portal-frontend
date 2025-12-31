@@ -90,13 +90,16 @@
 
                     <!-- Uploaded File Display -->
                     <div *ngIf="uploadedCV && !isUploading" class="uploaded-file-item mb-3">
-                        <span class="file-name">{{ selectedFileName }}</span>
+                        <span class="file-name" [title]="selectedFileName">{{ selectedFileName }}</span>
                         <button type="button" class="btn-close-custom" [disabled]="isDeleting"
                             (click)="openDeleteModal()" title="Delete CV">
                             <i *ngIf="!isDeleting" class="fas fa-times"></i>
                             <i *ngIf="isDeleting" class="fas fa-spinner fa-spin"></i>
                         </button>
                     </div>
+
+                    <button *ngIf="uploadedCV" class="btn btn-outline-primary" (click)="openCVPreview()">Preview
+                        CV</button>
 
                     <!-- Upload Button -->
                     <div *ngIf="!uploadedCV">
@@ -263,7 +266,7 @@
 
 <!-- Delete Confirmation Modal -->
 <div class="modal-overlay" [class.active]="showDeleteModal" (click)="closeDeleteModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content delete" (click)="$event.stopPropagation()">
         <div class="modal-header">
             <h3>Confirm Delete</h3>
             <button class="modal-close-btn" (click)="closeDeleteModal()">
@@ -283,6 +286,39 @@
                 {{ isDeleting ? 'Deleting...' : 'Delete' }}
                 <i *ngIf="isDeleting" class="fas fa-spinner fa-spin ms-2"></i>
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- Preview CV modal -->
+<div *ngIf="showPreviewModal" class="modal-backdrop fade show"></div>
+<div *ngIf="showPreviewModal" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content preview h-100 shadow-lg border-0">
+            <div class="modal-header py-3">
+                <h5 class="modal-title fs-6"><i class="fas fa-file-alt me-2"></i>CV Preview</h5>
+                <button type="button" class="btn-close" (click)="closePreview()"></button>
+            </div>
+            <div class="modal-body p-0 bg-light position-relative">
+                <div *ngIf="previewFileType === 'pdf'" class="w-100 h-100" style="min-height: 70vh;">
+                    <ngx-extended-pdf-viewer [src]="previewUrl" [height]="'100%'" [showToolbar]="true"
+                        [showSidebarButton]="false" [showFindButton]="true" [showPagingButtons]="true"
+                        [showZoomButtons]="true" [showPresentationModeButton]="true" [showDownloadButton]="true"
+                        [showPrintButton]="true" [showTextEditor]="false" [showDrawEditor]="false"
+                        [showStampEditor]="false" [showHandToolButton]="true">
+                    </ngx-extended-pdf-viewer>
+                </div>
+                <iframe *ngIf="previewFileType === 'doc'" [src]="previewUrl" class="w-100 h-100 border-0"
+                    style="min-height: 70vh;"></iframe>
+                <div *ngIf="previewFileType === 'unknown'"
+                    class="w-100 d-flex align-items-center justify-content-center" style="height: 70vh;">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <h5>Preview Not Available</h5>
+                        <p class="text-muted">This file type is not supported for preview. Please download to view.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
