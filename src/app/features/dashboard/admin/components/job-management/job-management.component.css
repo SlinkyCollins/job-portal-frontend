@@ -348,7 +348,12 @@
   border-radius: 8px;
   border: none;
   background: #dc2626;
+  opacity: 1;
   color: #fff;
+}
+
+.btn-close:hover {
+  background: #b91c1c;
 }
 
 /* ========== MOBILE RESPONSIVE (Card Transformation) ========== */

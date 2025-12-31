@@ -8,7 +8,8 @@
     </button>
     <!-- Brand Logo -->
     <a class="brand-logo" routerLink="/dashboard/employer">
-      <img src="/assets/jobnetlogo2.png" loading="lazy" alt="" width="150" height="45" style="object-fit: cover;" loading="lazy">
+      <img src="/assets/jobnetlogo2.png" loading="lazy" alt="" width="150" height="45" style="object-fit: cover;"
+        loading="lazy">
     </a>
     <!-- User Profile -->
     <div class="user-profile" (click)="toggleUserDropdown()">
@@ -78,10 +79,11 @@
         <span>Dashboard</span>
       </a>
 
-      <!-- 2. My Profile -->
-      <a routerLink="/dashboard/employer/profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
-        <i class="fas fa-user-tie"></i>
-        <span>My Profile</span>
+      <!-- 2. Post Job  -->
+      <a routerLink="/dashboard/employer/post-job" routerLinkActive="active" class="nav-item"
+        (click)="onNavItemClick()">
+        <i class="fas fa-plus-circle"></i>
+        <span>Post a Job</span>
       </a>
 
       <!-- 3. My Jobs (Logical flow: Post -> Manage) -->
@@ -90,25 +92,25 @@
         <span>My Jobs</span>
       </a>
 
-      <!-- 4. Post Job  -->
-      <a routerLink="/dashboard/employer/post-job" routerLinkActive="active" class="nav-item"
-        (click)="onNavItemClick()">
-        <i class="fas fa-plus-circle"></i>
-        <span>Post a Job</span>
-      </a>
 
-      <!-- 5. Applications (The Goal: Hiring) -->
+      <!-- 4. Applications (The Goal: Hiring) -->
       <a routerLink="/dashboard/employer/applications" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
         <i class="fas fa-users"></i>
         <span>Applications</span>
       </a>
 
-      <!-- 6. Company Profile -->
+      <!-- 5. Company Profile -->
       <a routerLink="/dashboard/employer/company-profile" routerLinkActive="active" class="nav-item"
         (click)="onNavItemClick()">
         <i class="fas fa-building"></i>
         <span>Company Profile</span>
+      </a>
+
+      <!-- 6. My Profile -->
+      <a routerLink="/dashboard/employer/profile" routerLinkActive="active" class="nav-item" (click)="onNavItemClick()">
+        <i class="fas fa-user-tie"></i>
+        <span>My Profile</span>
       </a>
 
       <!-- 7. Settings -->
