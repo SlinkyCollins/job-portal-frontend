@@ -31,6 +31,17 @@ While the UI is minimalist, the backend logic is production-grade:
 * **Storage:** Cloudinary API
 * **Infrastructure:** Dockerized Apache environment
 
+### Authentication Architecture
+The complete Hybrid Authentication Flow is maintained in the backend repository as the single source of truth for all auth-related logic, rules, and edge cases. The frontend is designed to align with this flow, ensuring consistent behavior across all authentication scenarios.
+
+Reference: https://github.com/SlinkyCollins/job-portal-backend/blob/main/AUTH_FLOW.md
+
+Frontend implementation notes:
+* Use `signInWithPopup` when no Firebase session exists and use `linkWithPopup` only when a signed-in Firebase user is already present.
+* Always send `social_uid` to the backend during social login and provider-linking flows.
+* Branch behavior based on `auth.currentUser`: treat `null` as sign-in flow and defined users as linking-capable flow.
+* Keep frontend auth behavior aligned with backend contracts for identity resolution, linking rules, and token/session expectations.
+
 ### ⚡ Quick Start
 
 **Prerequisites:** Node.js v18+, NPM.
