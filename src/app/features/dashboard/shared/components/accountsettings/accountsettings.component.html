@@ -121,17 +121,16 @@
   <div class="d-flex flex-wrap gap-2 mb-1">
     <button type="button" *ngIf="showLinkFacebook" class="btn btn-outline-secondary btn-sm" (click)="linkFacebook()"
       [disabled]="isLinkingFacebook || isFacebookLinked">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
-        loading="lazy" alt="Facebook" width="20" height="20" class="me-2" *ngIf="!isLinkingFacebook">
+      <img src="/assets/facebookLogo.png" alt="Facebook" width="20" height="20" class="me-2"
+        *ngIf="!isLinkingFacebook" loading="lazy" />
       <span *ngIf="isLinkingFacebook" class="spinner-border spinner-border-sm me-1"></span>
       {{ isLinkingFacebook ? 'Linking...' : (isFacebookLinked ? 'Facebook Linked' : 'Link Facebook Account') }}
     </button>
 
     <button type="button" *ngIf="showLinkGoogle" class="btn btn-outline-secondary btn-sm" (click)="linkGoogle()"
       [disabled]="isLinkingGoogle || isGoogleLinked">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20"
-        height="20" class="me-2" loading="lazy" *ngIf="!isLinkingGoogle">
+      <img src="/assets/googleLogo.png" alt="Google" width="20" height="20" class="me-2"
+        *ngIf="!isLinkingGoogle" loading="lazy" />
       <span *ngIf="isLinkingGoogle" class="spinner-border spinner-border-sm me-1"></span>
       {{ isLinkingGoogle ? 'Linking...' : (isGoogleLinked ? 'Google Linked' : 'Link Google Account') }}
     </button>
@@ -145,14 +144,12 @@
       <div *ngFor="let provider of linkedProviders" class="connected-account-pill">
 
         <!-- Google Icon -->
-        <img *ngIf="provider.includes('google')"
-          src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20"
-          height="20" loading="lazy">
+        <img *ngIf="provider.includes('google')" src="/assets/googleLogo.png" alt="Google" width="20"
+          height="20" loading="lazy" />
 
         <!-- Facebook Icon -->
-        <img *ngIf="provider.includes('facebook')"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/32px-Facebook_f_logo_%282019%29.svg.png"
-          loading="lazy" alt="Facebook" width="20" height="20">
+        <img *ngIf="provider.includes('facebook')" src="/assets/facebookLogo.png" alt="Facebook" width="20"
+          height="20" loading="lazy" />
 
         <!-- Provider Name -->
         <span class="ms-2 fw-semibold text-dark">
