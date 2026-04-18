@@ -180,7 +180,7 @@ export class SavedJobsComponent implements OnInit {
           const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('removeModal'));
           if (modal) modal.hide();
         } else {
-          this.toastr.error(response.msg || 'Failed to remove job.');
+          this.toastr.error(response.message || 'Failed to remove job.');
         }
         this.isRemoving = false;
       },

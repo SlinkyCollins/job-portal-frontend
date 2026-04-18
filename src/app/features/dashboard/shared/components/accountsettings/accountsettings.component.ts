@@ -152,9 +152,9 @@ export class AccountsettingsComponent implements OnInit {
         }
         this.isVerifyingOldPassword = false;
       },
-      error: () => {
+      error: (error) => {
         this.oldPasswordVerified = false;
-        this.authService.toastr.error('Verification failed.');
+        this.authService.toastr.error(error?.error.message || 'Verification failed. Please try again.');
         this.isVerifyingOldPassword = false;
       }
     });
@@ -191,12 +191,12 @@ export class AccountsettingsComponent implements OnInit {
 
             this.profileForm.markAsPristine();
           } else {
-            this.toastr.error(response.msg || 'Update failed');
+            this.toastr.error(response.message || 'Update failed');
           }
           this.isProfileSaving = false;
         },
         error: (err) => {
-          this.toastr.error(err.error?.msg || 'Update failed');
+          this.toastr.error(err.error?.message || 'Update failed');
           this.isProfileSaving = false;
         }
       });

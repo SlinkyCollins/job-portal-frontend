@@ -39,7 +39,6 @@ export class LoginComponent {
     return `${this.apiService.apiUrl}/${endpoint}`;
   }
 
-
   clearPassword() {
     this.password = '';
   }
@@ -86,8 +85,8 @@ export class LoginComponent {
         } else if (error.status === 404) {
           this.toastr.error('Invalid Credentials');
         } else {
-          console.log(error.msg);
-          this.toastr.error(error?.error.msg || 'Login failed. Please try again.');
+          console.log(error.message);
+          this.toastr.error(error?.error.message || 'Login failed. Please try again.');
         }
         console.error(error);
         console.log('Error Response:', error.error);

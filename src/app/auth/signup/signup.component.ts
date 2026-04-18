@@ -62,7 +62,7 @@ export class SignupComponent {
     }, (err: any) => {
       this.loading = false;
       if (err.status === 403) {
-        this.toastr.info(err.error.msg);
+        this.toastr.info(err.error.message);
       } else if (err.status === 500) {
         this.toastr.error('Server error. Please try again.');
       } else {

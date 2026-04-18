@@ -252,7 +252,7 @@ export class AuthService {
             job.isSaved = false;
             this.toastr.success(`${job.title} removed from saved jobs.`);
           } else {
-            this.toastr.error(res.msg);
+            this.toastr.error(res.message);
           }
           job.isSaving = false;
         },
@@ -268,7 +268,7 @@ export class AuthService {
             job.isSaved = true;
             this.toastr.success(`${job.title} saved!`);
           } else {
-            this.toastr.error(res.msg);
+            this.toastr.error(res.message);
           }
           job.isSaving = false;
         },
@@ -428,7 +428,7 @@ export class AuthService {
               });
             } else {
               // Handle suspended/other errors
-              this.toastr.error(response.msg || 'Login failed');
+              this.toastr.error(response.message || 'Login failed');
               // Reset flags
               this.isGoogleLoading = false;
               this.isFacebookLoading = false;

@@ -64,13 +64,13 @@ export class RoleSelectComponent {
             this.router.navigate([`/dashboard/${this.role.replace('_', '')}`]);
           } else {
             this.isSubmitting = false;
-            this.toastr.error(response.msg || 'Role save failed');
+            this.toastr.error(response.message || 'Role save failed');
           }
         },
         error: (err: any) => {
           this.isSubmitting = false;
           console.error('Save role error:', err);
-          this.toastr.error(err.error?.msg || 'Role save failed');
+          this.toastr.error(err.error?.message || 'Role save failed');
         }
       });
     }

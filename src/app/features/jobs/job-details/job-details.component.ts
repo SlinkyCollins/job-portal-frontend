@@ -162,7 +162,7 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
           this.isRetracted = res.job.isRetracted || false;
           this.job.is_closed = res.job.is_closed || false;
         } else {
-          this.errorMsg = res.msg || 'Job not found';
+          this.errorMsg = res.message || 'Job not found';
         }
         this.isLoading = false;
       },
@@ -254,10 +254,10 @@ export class JobDetailsComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if (res.status) {
           this.hasApplied = true;
-          this.authService.toastr.success(res.msg);
+          this.authService.toastr.success(res.message || 'Application submitted successfully!');
           this.closeApplyModal();
         } else {
-          this.authService.toastr.error(res.msg);
+          this.authService.toastr.error(res.message || 'Failed to submit application.');
         }
         this.isApplying = false;
       },
