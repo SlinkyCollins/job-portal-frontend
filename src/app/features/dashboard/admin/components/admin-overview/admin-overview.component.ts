@@ -19,7 +19,7 @@ export class AdminOverviewComponent implements OnInit {
   };
   isLoading: boolean = true;
 
-  constructor(private adminService: AdminService) {}
+  constructor(private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.loadStats();
@@ -29,8 +29,15 @@ export class AdminOverviewComponent implements OnInit {
     this.isLoading = true;
     this.adminService.getDashboardStats().subscribe({
       next: (res: any) => {
-        if (res.status) {
-          this.stats = res.data;
+        if (res?.status) {
+          const payload = res.data ?? res; // works for both {data:{...}} and flat response
+          this.stats = {
+            total_users: Number(payload.total_users ?? 0),
+            job_seekers: Number(payload.job_seekers ?? 0),
+            employers: Number(payload.employers ?? 0),
+            total_jobs: Number(payload.total_jobs ?? 0),
+            applications: Number(payload.applications ?? 0)
+          };
         }
         this.isLoading = false;
       },

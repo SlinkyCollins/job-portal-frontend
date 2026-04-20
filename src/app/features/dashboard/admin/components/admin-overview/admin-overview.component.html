@@ -11,7 +11,7 @@
     </div>
     <div class="stat-info">
       <h3>Total Users</h3>
-      <p class="stat-value" *ngIf="!isLoading">{{ stats.total_users | number }}</p>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats?.total_users | number }}</p>
       <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-success" role="status"></div>
     </div>
   </div>
@@ -22,7 +22,7 @@
     </div>
     <div class="stat-info">
       <h3>Job Seekers</h3>
-      <p class="stat-value" *ngIf="!isLoading">{{ stats.job_seekers | number }}</p>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats?.job_seekers | number }}</p>
       <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-success" role="status"></div>
     </div>
   </div>
@@ -33,7 +33,7 @@
     </div>
     <div class="stat-info">
       <h3>Employers</h3>
-      <p class="stat-value" *ngIf="!isLoading">{{ stats.employers | number }}</p>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats?.employers | number }}</p>
       <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-success" role="status"></div>
     </div>
   </div>
@@ -44,7 +44,7 @@
     </div>
     <div class="stat-info">
       <h3>Total Jobs</h3>
-      <p class="stat-value" *ngIf="!isLoading">{{ stats.total_jobs | number }}</p>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats?.total_jobs | number }}</p>
       <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-success" role="status"></div>
     </div>
   </div>
@@ -55,7 +55,7 @@
     </div>
     <div class="stat-info">
       <h3>Applications</h3>
-      <p class="stat-value" *ngIf="!isLoading">{{ stats.applications | number }}</p>
+      <p class="stat-value" *ngIf="!isLoading">{{ stats?.applications | number }}</p>
       <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-success" role="status"></div>
     </div>
   </div>
