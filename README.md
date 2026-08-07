@@ -31,6 +31,41 @@ While the UI is minimalist, the backend logic is production-grade:
 * **Storage:** Cloudinary API
 * **Infrastructure:** Dockerized Apache environment
 
+### 📂 Folder Structure
+```text
+└── 📁JobPortal
+    ├── .cursor/
+    ├── .vscode/
+    ├── public/
+    ├── src/
+    │   ├── app/
+    │   │   ├── auth/
+    │   │   ├── core/
+    │   │   ├── features/
+    │   │   │   ├── dashboard/
+    │   │   │   ├── general/
+    │   │   │   ├── home/
+    │   │   │   └── jobs/
+    │   │   ├── shared/
+    │   │   ├── app.component.*
+    │   │   ├── app.config.ts
+    │   │   └── app.routes.ts
+    │   ├── assets/
+    │   ├── environments/
+    │   ├── favicon.png
+    │   ├── index.html
+    │   ├── main.ts
+    │   ├── styles.css
+    │   └── types.d.ts
+    ├── angular.json
+    ├── firebase.json
+    ├── package.json
+    ├── README.md
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    └── tsconfig.spec.json
+```
+
 ### Authentication Architecture
 The complete Hybrid Authentication Flow is maintained in the backend repository as the single source of truth for all auth-related logic, rules, and edge cases. The frontend is designed to align with this flow, ensuring consistent behavior across all authentication scenarios.
 
