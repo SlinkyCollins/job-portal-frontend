@@ -22,7 +22,7 @@ import { InitialsPipe } from '../../../core/pipes/initials.pipe';
 })
 export class SeekerDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public applications: any[] = [];
-  public user: any = '';
+  public user: any = {};
   public sidebarOpen: boolean = false;
   public userDropdownOpen: boolean = false;
   public showLogoutConfirm: boolean = false;

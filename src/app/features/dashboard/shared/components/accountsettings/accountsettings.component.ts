@@ -100,10 +100,10 @@ export class AccountsettingsComponent implements OnInit {
     this.dashboardService.getSettings().subscribe({
       next: (response: any) => {
         console.log(response);
-        this.user = response.data;
+        this.user = response;
 
         // Handle Social Providers
-        if (this.user.linked_providers) {
+        if (this.user?.linked_providers) {
           try {
             this.linkedProviders = typeof this.user.linked_providers === 'string'
               ? JSON.parse(this.user.linked_providers)
