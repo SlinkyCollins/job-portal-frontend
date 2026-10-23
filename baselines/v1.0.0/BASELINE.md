@@ -2,7 +2,7 @@ JobNet v1.0.0 Baseline
 ----------------------
 
 Frontend:
-Angular 18
+Angular 19.2.7
 Commit: ddc7d26
 
 Backend:
