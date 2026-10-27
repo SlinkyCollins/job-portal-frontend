@@ -3,9 +3,9 @@
 
 # JobNet: The Modern Bridge Between Talent & Opportunity
 
-![Build Status](https://img.shields.io/badge/Build-Passing-success) ![Stack](https://img.shields.io/badge/Stack-Angular_18+%7C_Bootstrap-red) ![License](https://img.shields.io/badge/License-MIT-blue)
+![Build Status](https://img.shields.io/badge/Build-Passing-success) ![Stack](https://img.shields.io/badge/Stack-Angular_21%20%7C%20Bootstrap-red) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-**JobNet** is a full-stack recruitment platform designed to simplify how jobs are posted, discovered, and managed. It addresses a persistent problem: many job platforms are unnecessarily complex. It focuses on the essentials, clear discovery for candidates, efficient management for employers, and robust oversight for admins while engineering a sophisticated **Hybrid Architecture** under the hood. It features a high-performance **Angular 18** frontend backed by a hybrid **PHP/MySQL** architecture, offering a unified identity experience across social and native login methods.
+**JobNet** is a full-stack recruitment platform designed to simplify how jobs are posted, discovered, and managed. It addresses a persistent problem: many job platforms are unnecessarily complex. It focuses on the essentials, clear discovery for candidates, efficient management for employers, and robust oversight for admins while engineering a sophisticated **Hybrid Architecture** under the hood. It features a high-performance **Angular 21** frontend backed by a hybrid **PHP/MySQL** architecture, offering a unified identity experience across social and native login methods.
 
 ### 🚀 Why JobNet Exists?
 JobNet was built to model how a real-world job platform should function not as a UI prototype, but as a working system. Rather than chasing visual polish early, the focus was on:
@@ -24,7 +24,7 @@ While the UI is minimalist, the backend logic is production-grade:
 * **Asset Offloading:** Integrated **Cloudinary** pipeline for optimizing and serving user CVs and Company Logos.
 
 ### 🛠️ Tech Stack
-* **Frontend:** Angular 18+, RxJS, Bootstrap 5
+* **Frontend:** Angular 21, RxJS, Bootstrap 5
 * **Authentication:** Dual-Strategy (Firebase Social + Native PHP/MySQL), JWT
 * **Backend:** Native PHP 8.2 (API-First Architecture)
 * **Database:** MySQL 8.0 (Aiven Cloud)
@@ -79,7 +79,9 @@ Frontend implementation notes:
 
 ### ⚡ Quick Start
 
-**Prerequisites:** Node.js v18+, NPM.
+**Prerequisites:** Node.js 20.19+, NPM.
+
+The verified Angular 21 upgrade state, known test-suite failures, and deferred upgrade decisions are recorded in [ANGULAR-21-STATUS.md](./ANGULAR-21-STATUS.md).
 
 1.  **Clone the repository**
     ```bash
